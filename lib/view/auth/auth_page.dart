@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/theme/app_font_theme.dart';
 import 'package:putone/view/auth/login_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() {
-    return _AuthPageState();
-  }
-}
-
-class _AuthPageState extends State<AuthPage> {
-  void _onLoginBtnPressed() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const LoginPage()));
-  }
-
-  void _onSingUpBtnPressed() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SignUpPage(),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    void onLoginBtnPressed() {
+      toLoginPage(context: context);
+    }
+
     return Scaffold(
       backgroundColor: AppColorTheme.color().mainColor,
       body: Center(
@@ -60,7 +45,7 @@ class _AuthPageState extends State<AuthPage> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 48, minWidth: 300),
                 child: ElevatedButton(
-                  onPressed: _onLoginBtnPressed,
+                  onPressed: () => toLoginPage(context: context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -83,7 +68,7 @@ class _AuthPageState extends State<AuthPage> {
             Align(
               alignment: const Alignment(0, 0.75),
               child: TextButton(
-                onPressed: _onSingUpBtnPressed,
+                onPressed: () => toSignUpPage(context: context),
                 child: const Text(
                   '新規会員登録',
                   style: TextStyle(

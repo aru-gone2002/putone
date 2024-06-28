@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class FormFieldItem extends StatelessWidget {
-  const FormFieldItem({super.key, required this.itemName});
+  const FormFieldItem({
+    super.key,
+    required this.itemName,
+    required this.validator,
+    required this.onSaved,
+  });
 
   final String itemName;
+  final String? Function(String? text) validator;
+  final void Function(String? text)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +30,8 @@ class FormFieldItem extends StatelessWidget {
             height: 4,
           ),
           TextFormField(
+            validator: validator,
+            onSaved: onSaved,
             maxLines: 1,
             maxLength: 30,
             cursorColor: AppColorTheme.color().mainColor,

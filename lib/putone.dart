@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
+import 'package:putone/view/auth/email_auth_page.dart';
 
 class PuTone extends StatelessWidget {
   const PuTone({super.key});
@@ -25,7 +26,7 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
+      home: const EmailAuthPage(),
     );
   }
 }
