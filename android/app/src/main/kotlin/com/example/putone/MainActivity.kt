@@ -1,0 +1,6 @@
+package com.example.putone
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
