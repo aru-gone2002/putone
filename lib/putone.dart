@@ -18,6 +18,8 @@ class PuTone extends StatelessWidget {
         ),
         fontFamily: 'NotoSans',
         textTheme: const TextTheme(
+          headlineMedium: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           labelLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           labelMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           labelSmall: TextStyle(fontSize: 16),
@@ -26,7 +28,7 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const EmailAuthPage(),
+      home: const AuthPage(),
     );
   }
 }

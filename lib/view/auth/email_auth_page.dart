@@ -2,17 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
-import 'package:putone/view/auth/auth_page.dart';
-import 'package:putone/view/auth/login_page.dart';
 import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/gray_color_text_button.dart';
 
-class EmailAuthPage extends StatelessWidget {
+class EmailAuthPage extends StatefulWidget {
   const EmailAuthPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    //final deviceWidth = MediaQuery.of(context).size.width;
+  State<EmailAuthPage> createState() => _EmailAuthPageState();
+}
 
+class _EmailAuthPageState extends State<EmailAuthPage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         const SizedBox(height: 100),
@@ -32,52 +34,35 @@ class EmailAuthPage extends StatelessWidget {
         ),
         const SizedBox(height: 200),
         Center(
-          child: AccentColorButton(
-              onPressed: () {
-                toFirstProfileSettingPage(context: context);
-              },
-              text: progressFirstProfileSettingText),
+          child: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Column(
+                  children: [
+                    const Text(reSignUpText),
+                    GrayColorTextButton(
+                      onPressed: () {
+                        toSignUpPage(context: context);
+                      },
+                      text: signupTitle,
+                    ),
+                  ],
+                );
+              }
+              return AccentColorButton(
+                  onPressed: () {
+                    toFirstProfileSettingPage(context: context);
+                  },
+                  text: progressFirstProfileSettingText);
+            },
+          ),
         ),
         const Expanded(child: SizedBox()),
       ]),
     );
-    // StreamBuilder(
-    //     stream: FirebaseAuth.instance.userChanges(),
-    //     builder: (context, snapshot) {
-    //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //         return Scaffold(
-    //           body: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.stretch,
-    //               children: [
-    //                 const SizedBox(height: 100),
-    //                 Text(
-    //                   signupTitle,
-    //                   textAlign: TextAlign.center,
-    //                   style: Theme.of(context)
-    //                       .textTheme
-    //                       .headlineLarge!
-    //                       .copyWith(fontWeight: FontWeight.bold),
-    //                 ),
-    //                 const SizedBox(height: 300),
-    //                 Center(
-    //                   child: Text(
-    //                     emailAuthConfirmText,
-    //                     style: Theme.of(context).textTheme.labelMedium,
-    //                     textAlign: TextAlign.center,
-    //                   ),
-    //                 ),
-    //                 const Expanded(child: SizedBox()),
-    //               ]),
-    //         );
-    //       }
-    //       if (snapshot.hasData) {
-    //         print('StreamBuilderのデータ取得');
-    //         if (snapshot.data!.emailVerified) {
-    //           print('emailVerified取得');
-    //           return const LoginPage();
-    //         }
-    //       }
-    //       return const AuthPage();
-    //     });
   }
 }
