@@ -25,6 +25,48 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     _authViewModel.setRef(ref);
   }
 
+  Future<void> signUpFunction(GlobalKey<FormState> formKey) async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      //firebase Authでメールアドレスとパスワードを使ってサインアップし、
+      //メールアドレス認証メールを送る処理を実行
+      final signUpResponse = await _authViewModel.signUpWithEmailAndPassword();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: signUpResponse == null
+                  ? const Text(signUpSucceededText)
+                  : switch (signUpResponse.code) {
+                      'weak-password' => const Text(weakPasswordText),
+                      'email-already-in-use' =>
+                        const Text(emailAlreadyInUseText),
+                      'invalid-email' => const Text(invalidEmailText),
+                      _ => const Text(accountCreateErrorText),
+                    }),
+        );
+      }
+      final signInResponse = await _authViewModel.signInWithEmailAndPassword();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: signInResponse == null
+                  ? const Text(signInSucceededText)
+                  : switch (signInResponse.code) {
+                      'invalid-email' ||
+                      'user-disabled' =>
+                        const Text(invalidEmailText),
+                      'user-not-found' => const Text(userNotFoundText),
+                      'wrong-password' => const Text(wrongPasswordText),
+                      _ => const Text(loginErrorText),
+                    }),
+        );
+      }
+      if (context.mounted) {
+        toEmailAuthPage(context: context);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //final deviceHeight = MediaQuery.of(context).size.height;
@@ -55,6 +97,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               children: [
                 FormFieldItem(
                   itemName: emailAddressTitle,
+                  textRestriction: '',
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return notInputEmailText;
@@ -74,6 +117,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ),
                 FormFieldItem(
                   itemName: passwordTitle,
+                  textRestriction: passwordRestrictionText,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return notInputPasswordText;
@@ -90,99 +134,22 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   },
                 ),
                 const SizedBox(height: 60),
-                SignUpButton(formKey: formKey),
+                AccentColorButton(
+                  onPressed: () async {
+                    await signUpFunction(formKey);
+                  },
+                  text: signupTitle,
+                ),
                 const SizedBox(height: 32),
-                const MoveToLoginPageButton(),
+                GrayColorTextButton(
+                  onPressed: () {},
+                  text: accountExistText,
+                ),
               ],
             ),
           )
         ]),
       ),
-    );
-  }
-}
-
-class SignUpButton extends ConsumerStatefulWidget {
-  const SignUpButton({super.key, required this.formKey});
-
-  final GlobalKey<FormState> formKey;
-
-  @override
-  ConsumerState<SignUpButton> createState() {
-    return _SignUpButtonState();
-  }
-}
-
-class _SignUpButtonState extends ConsumerState<SignUpButton> {
-  final AuthViewModel _authViewModel = AuthViewModel();
-
-  @override
-  void initState() {
-    super.initState();
-    _authViewModel.setRef(ref);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AccentColorButton(
-        onPressed: () async {
-          if (widget.formKey.currentState!.validate()) {
-            print('会員登録ページのvaidatorクリア');
-            widget.formKey.currentState!.save();
-            //firebase Authでメールアドレスとパスワードを使ってサインアップし、
-            //メールアドレス認証メールを送る処理を実行
-            final signUpResponse =
-                await _authViewModel.signUpWithEmailAndPassword();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: signUpResponse == null
-                        ? const Text(signUpSucceededText)
-                        : switch (signUpResponse.code) {
-                            'weak-password' => const Text(weakPasswordText),
-                            'email-already-in-use' =>
-                              const Text(emailAlreadyInUseText),
-                            'invalid-email' => const Text(invalidEmailText),
-                            _ => const Text(accountCreateErrorText),
-                          }),
-              );
-            }
-            final signInResponse =
-                await _authViewModel.signInWithEmailAndPassword();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: signInResponse == null
-                        ? const Text(signInSucceededText)
-                        : switch (signInResponse.code) {
-                            'invalid-email' ||
-                            'user-disabled' =>
-                              const Text(invalidEmailText),
-                            'user-not-found' => const Text(userNotFoundText),
-                            'wrong-password' => const Text(wrongPasswordText),
-                            _ => const Text(loginErrorText),
-                          }),
-              );
-            }
-            if (context.mounted) {
-              toEmailAuthPage(context: context);
-            }
-          }
-        },
-        text: signupTitle);
-  }
-}
-
-class MoveToLoginPageButton extends StatelessWidget {
-  const MoveToLoginPageButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GrayColorTextButton(
-      onPressed: () {},
-      text: accountExistText,
     );
   }
 }

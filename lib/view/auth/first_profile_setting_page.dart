@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
@@ -33,14 +34,16 @@ class _FirstProfileSettingPageState
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
-      body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        const SizedBox(height: 48),
+      body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        const SizedBox(height: 32),
         Form(
           key: formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FormFieldItem(
                   itemName: userIdTitle,
+                  textRestriction: userIdRestrictionText,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return notInputUserIdText;
@@ -56,6 +59,7 @@ class _FirstProfileSettingPageState
                   }),
               FormFieldItem(
                   itemName: userNameTitle,
+                  textRestriction: '',
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return notInputUserNameText;
@@ -65,6 +69,16 @@ class _FirstProfileSettingPageState
                   onSaved: (value) {
                     _profileViewModel.saveUserName(value as String);
                   }),
+              const SizedBox(height: 60),
+              AccentColorButton(
+                onPressed: () {
+                  //FirestoreにユーザーIDとユーザー名が入力したいが、
+                  //まずはproviderに値を入れてから、最後にFirestoreに入れる。
+                  //場所はFirebaseAuthのコレクションに入れる
+                  //初めて作成するため、uidもコレクションに値を追加する。
+                },
+                text: signupTitle,
+              ),
             ],
           ),
         )

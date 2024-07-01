@@ -5,11 +5,13 @@ class FormFieldItem extends StatelessWidget {
   const FormFieldItem({
     super.key,
     required this.itemName,
+    required this.textRestriction,
     required this.validator,
     required this.onSaved,
   });
 
   final String itemName;
+  final String textRestriction;
   final String? Function(String? text) validator;
   final void Function(String? text)? onSaved;
 
@@ -26,6 +28,15 @@ class FormFieldItem extends StatelessWidget {
             itemName,
             style: Theme.of(context).textTheme.labelMedium,
           ),
+          const SizedBox(
+            height: 2,
+          ),
+          if (textRestriction != '')
+            Text(
+              textRestriction,
+              style:
+                  TextStyle(fontSize: 14, color: AppColorTheme.color().gray1),
+            ),
           const SizedBox(
             height: 4,
           ),

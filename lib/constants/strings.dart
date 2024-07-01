@@ -33,3 +33,5 @@ const String isEmailVerifiedText = 'メールアドレス認証を完了済み';
 const String emailIsNotVerifiedText =
     'メールアドレスが認証されていません。\nメールをご確認の上、再度メールアドレスを認証してください。';
 const String missEmailAndreSignUpText = 'メールアドレスを間違えたため、再度会員登録する';
+const String passwordRestrictionText = '半角英数字8文字以上';
+const String userIdRestrictionText = '4文字以上。英小文字・数字・.・_が利用可。';
