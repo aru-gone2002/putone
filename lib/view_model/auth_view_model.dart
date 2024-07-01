@@ -12,20 +12,16 @@ class AuthViewModel {
     _ref = ref;
   }
 
-  String get uid =>
-      _ref.watch(userAuthProvider.select((value) => value.uid)).toString();
+  String get uid => _ref.watch(userAuthProvider.select((value) => value.uid));
 
-  String get userEmail => _ref
-      .watch(userAuthProvider.select((value) => value.userEmail))
-      .toString();
+  String get userEmail =>
+      _ref.watch(userAuthProvider.select((value) => value.userEmail));
 
-  String get userPassword => _ref
-      .watch(userAuthProvider.select((value) => value.userPassword))
-      .toString();
+  String get userPassword =>
+      _ref.watch(userAuthProvider.select((value) => value.userPassword));
 
-  String get userEmailVerified => _ref
-      .watch(userAuthProvider.select((value) => value.userEmailVerified))
-      .toString();
+  bool get userEmailVerified =>
+      _ref.watch(userAuthProvider.select((value) => value.userEmailVerified));
 
   void saveUid(String value) {
     _ref.read(userAuthProvider.notifier).state =
@@ -53,7 +49,6 @@ class AuthViewModel {
       userPassword: userPassword,
     );
 
-    saveUid(_authModel.userCredential.user!.uid);
     return response;
   }
 
@@ -62,6 +57,17 @@ class AuthViewModel {
       userEmail: userEmail,
       userPassword: userPassword,
     );
+    final uid = _authModel.checkUid();
+    saveUid(uid);
     return response;
+  }
+
+  Future<void> checkUserEmailVerified() async {
+    final emailVerified = await _authModel.checkUserEmailVerified();
+    saveEmailVerified(emailVerified);
+  }
+
+  Future signOut() async {
+    _authModel.signOut();
   }
 }

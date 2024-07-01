@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
 import 'package:putone/constants/strings.dart';
-import 'package:putone/view_model/auth_view_model.dart';
 
 class AuthModel {
   FirebaseAuth auth = FirebaseAuth.instance;
-  // AuthViewModel _authViewModel = AuthViewModel();
   late UserCredential userCredential;
 
   Future<FirebaseAuthException?> signUpWithEmailAndPassword({
@@ -17,7 +15,7 @@ class AuthModel {
         email: userEmail,
         password: userPassword,
       );
-      final uid = userCredential.user!.uid;
+      //final uid = userCredential.user!.uid;
       //_authViewModel.saveUid(uid);
 
       await userCredential.user!.sendEmailVerification();
@@ -38,11 +36,6 @@ class AuthModel {
     }
   }
 
-  Future<bool> checkUserEmailVerified() async {
-    final isEmailVerified = await userCredential.user!.emailVerified;
-    return isEmailVerified;
-  }
-
   Future<FirebaseAuthException?> signInWithEmailAndPassword({
     required String userEmail,
     required String userPassword,
@@ -61,5 +54,20 @@ class AuthModel {
         print(loginErrorText);
       }
     }
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  Future<bool> checkUserEmailVerified() async {
+    await auth.currentUser!.reload();
+    final emailVerified = auth.currentUser!.emailVerified;
+    return emailVerified;
+  }
+
+  String checkUid() {
+    final uid = auth.currentUser!.uid;
+    return uid;
   }
 }

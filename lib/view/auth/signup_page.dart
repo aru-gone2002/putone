@@ -57,14 +57,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   itemName: emailAddressTitle,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'メールアドレスが入力されていません';
+                      return notInputEmailText;
                     }
                     if (!RegExp(
                       caseSensitive: false,
                       r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
                       //r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                     ).hasMatch(value)) {
-                      return '正しいメールアドレスを入力してください';
+                      return inputEmailIsNotValidText;
                     }
                     return null;
                   },
@@ -76,12 +76,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   itemName: passwordTitle,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'パスワードが入力されていません';
+                      return notInputPasswordText;
                     }
                     if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
                         // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
                         .hasMatch(value)) {
-                      return '8文字以上で半角英数字記号をそれぞれ一文字以上ずつ入れてください';
+                      return inputPasswordIsNotValidText;
                     }
                     return null;
                   },

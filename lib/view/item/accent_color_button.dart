@@ -7,7 +7,7 @@ class AccentColorButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
   });
-  final Function() onPressed;
+  final void Function()? onPressed;
   final String text;
 
   @override
