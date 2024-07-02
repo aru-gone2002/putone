@@ -4,14 +4,13 @@ import 'package:putone/constants/strings.dart';
 
 class AuthModel {
   FirebaseAuth auth = FirebaseAuth.instance;
-  late UserCredential userCredential;
 
   Future<FirebaseAuthException?> signUpWithEmailAndPassword({
     required String userEmail,
     required String userPassword,
   }) async {
     try {
-      userCredential = await auth.createUserWithEmailAndPassword(
+      final userCredential = await auth.createUserWithEmailAndPassword(
         email: userEmail,
         password: userPassword,
       );

@@ -1,5 +1,6 @@
 //button
 const String accountExistText = '既にアカウントをお持ちの方';
+const String nextProgressBtnText = '次に進む';
 
 //title
 const String signupTitle = '会員登録';
@@ -35,3 +36,6 @@ const String emailIsNotVerifiedText =
 const String missEmailAndreSignUpText = 'メールアドレスを間違えたため、再度会員登録する';
 const String passwordRestrictionText = '半角英数字8文字以上';
 const String userIdRestrictionText = '4文字以上。英小文字・数字・.・_が利用可。';
+
+//snackBar
+const String userIdAndNameCompleteSnackBarText = 'ユーザーIDとユーザー名の登録完了';

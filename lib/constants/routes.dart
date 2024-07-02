@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/auth/first_profile_setting_page.dart';
 import 'package:putone/view/auth/login_page.dart';
+import 'package:putone/view/auth/second_profile_setting_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
 
 void toEmailAuthPage({required BuildContext context}) => Navigator.push(
@@ -30,5 +31,13 @@ void toLoginPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
         builder: ((context) => const LoginPage()),
+      ),
+    );
+
+void toSecondProfileSettingPage({required BuildContext context}) =>
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const SecondProfileSettingPage()),
       ),
     );

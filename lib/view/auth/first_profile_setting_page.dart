@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
@@ -23,6 +24,20 @@ class _FirstProfileSettingPageState
   void initState() {
     super.initState();
     _profileViewModel.setRef(ref);
+  }
+
+  Future<void> setUserIdAndNameFunction(
+      GlobalKey<FormState> formKey, BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      _profileViewModel.getAndSaveUid();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(userIdAndNameCompleteSnackBarText),
+        ),
+      );
+      toSecondProfileSettingPage(context: context);
+    }
   }
 
   @override
@@ -76,8 +91,9 @@ class _FirstProfileSettingPageState
                   //まずはproviderに値を入れてから、最後にFirestoreに入れる。
                   //場所はFirebaseAuthのコレクションに入れる
                   //初めて作成するため、uidもコレクションに値を追加する。
+                  setUserIdAndNameFunction(formKey, context);
                 },
-                text: signupTitle,
+                text: nextProgressBtnText,
               ),
             ],
           ),

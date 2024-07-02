@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/model/auth_model.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
 class ProfileViewModel {
-  //final ProfileModel _authModel = ProfileModel();
+  final ProfileModel _profileModel = ProfileModel();
   late WidgetRef _ref;
 
   void setRef(WidgetRef ref) {
@@ -115,5 +116,10 @@ class ProfileViewModel {
   void saveUserLastLoginTimestamp(DateTime value) {
     _ref.read(userProfileProvider.notifier).state =
         _ref.read(userProfileProvider).copyWith(userLastLoginTimestamp: value);
+  }
+
+  void getAndSaveUid() {
+    final uid = _profileModel.getUid();
+    saveUid(uid);
   }
 }
