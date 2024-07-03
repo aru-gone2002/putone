@@ -9,3 +9,5 @@ final userAuthProvider = StateProvider<UserAuth>(
     userEmailVerified: false,
   ),
 );
+
+final signUpIsLoadingProvider = StateProvider<bool>((ref) => false);

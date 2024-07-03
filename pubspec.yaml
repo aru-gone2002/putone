@@ -51,6 +51,7 @@ dependencies:
   cloud_functions: ^4.6.0
   flutter_riverpod: ^2.4.10
   nil: ^1.1.1
+  firebase_app_check: ^0.2.1+8
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/providers/user_auth_provider.dart';
+import 'package:putone/providers/user_profile_provider.dart';
 
 class AuthViewModel {
   final AuthModel _authModel = AuthModel();
@@ -23,9 +24,15 @@ class AuthViewModel {
   bool get userEmailVerified =>
       _ref.watch(userAuthProvider.select((value) => value.userEmailVerified));
 
+  bool get signUpIsLoading => _ref.watch(signUpIsLoadingProvider);
+
+  UserProfile get userProfile => _ref.watch(userProfileProvider);
+
   void saveUid(String value) {
     _ref.read(userAuthProvider.notifier).state =
         _ref.read(userAuthProvider).copyWith(uid: value);
+    // _ref.read(userProfileProvider.notifier).state =
+    //     _ref.read(userProfileProvider).copyWith(uid: uid);
   }
 
   void saveEmail(String value) {
@@ -43,10 +50,20 @@ class AuthViewModel {
         _ref.read(userAuthProvider).copyWith(userEmailVerified: value);
   }
 
+  void isLoading() {
+    _ref.read(signUpIsLoadingProvider.notifier).state = true;
+  }
+
+  void isCompleted() {
+    _ref.read(signUpIsLoadingProvider.notifier).state = false;
+  }
+
   Future<FirebaseException?> signUpWithEmailAndPassword() async {
     final response = await _authModel.signUpWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,
+      userProfile: userProfile,
+      ref: _ref,
     );
 
     return response;
@@ -57,8 +74,6 @@ class AuthViewModel {
       userEmail: userEmail,
       userPassword: userPassword,
     );
-    final uid = _authModel.checkUid();
-    saveUid(uid);
     return response;
   }
 

@@ -45,23 +45,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     }),
         );
       }
-      final signInResponse = await _authViewModel.signInWithEmailAndPassword();
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: signInResponse == null
-                  ? const Text(signInSucceededText)
-                  : switch (signInResponse.code) {
-                      'invalid-email' ||
-                      'user-disabled' =>
-                        const Text(invalidEmailText),
-                      'user-not-found' => const Text(userNotFoundText),
-                      'wrong-password' => const Text(wrongPasswordText),
-                      _ => const Text(loginErrorText),
-                    }),
-        );
-      }
-      if (context.mounted) {
+
+      if (context.mounted && signUpResponse == null) {
         toEmailAuthPage(context: context);
       }
     }
@@ -69,11 +54,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final deviceHeight = MediaQuery.of(context).size.height;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -134,11 +117,22 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   },
                 ),
                 const SizedBox(height: 60),
-                AccentColorButton(
-                  onPressed: () async {
-                    await signUpFunction(formKey);
-                  },
-                  text: signupTitle,
+                //isLoadingでグルグルさせる
+                Visibility(
+                  visible: _authViewModel.signUpIsLoading,
+                  replacement: const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: CircularProgressIndicator(),
+                  ),
+                  child: AccentColorButton(
+                    onPressed: () async {
+                      _authViewModel.isLoading();
+                      await signUpFunction(formKey);
+                      _authViewModel.isCompleted();
+                    },
+                    text: signupTitle,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 GrayColorTextButton(

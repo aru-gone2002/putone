@@ -22,6 +22,7 @@ const String signInSucceededText = 'ログインに成功しました';
 const String userNotFoundText = 'メールアドレスが見つかりません';
 const String wrongPasswordText = 'パスワードが間違っています';
 const String loginErrorText = 'ログインエラー';
+const String errorAndRetryText = '何らかのエラーが発生しました。もう一度お試しください';
 const String reSignUpText = '何らかのエラーが発生しました。もう一度会員登録画面に戻って、再度会員登録してください';
 const String notInputEmailText = 'メールアドレスが入力されていません';
 const String inputEmailIsNotValidText = '正しいメールアドレスを入力してください';
