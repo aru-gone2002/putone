@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475371055960",
+    "project_id": "putone-app",
+    "storage_bucket": "putone-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475371055960:android:2f1cb33ae664bed6c1d32d",
+        "android_client_info": {
+          "package_name": "com.example.putone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAad3K4F5s9rPSEzK4MpNnHEgxB4Oz_asU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
