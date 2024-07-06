@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
@@ -117,19 +118,23 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   },
                 ),
                 const SizedBox(height: 60),
-                //isLoadingでグルグルさせる
+                //　isLoadingでグルグルさせる
                 Visibility(
-                  visible: _authViewModel.signUpIsLoading,
-                  replacement: const SizedBox(
+                  visible: !_authViewModel.signUpIsLoading,
+                  replacement: SizedBox(
                     width: 48,
                     height: 48,
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColorTheme.color().accentColor,
+                      ),
+                    ),
                   ),
                   child: AccentColorButton(
                     onPressed: () async {
-                      _authViewModel.isLoading();
+                      _authViewModel.loadingSignUp();
                       await signUpFunction(formKey);
-                      _authViewModel.isCompleted();
+                      _authViewModel.completedSignUp();
                     },
                     text: signupTitle,
                   ),

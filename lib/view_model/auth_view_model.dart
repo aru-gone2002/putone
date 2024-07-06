@@ -26,13 +26,13 @@ class AuthViewModel {
 
   bool get signUpIsLoading => _ref.watch(signUpIsLoadingProvider);
 
+  bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
+
   UserProfile get userProfile => _ref.watch(userProfileProvider);
 
   void saveUid(String value) {
     _ref.read(userAuthProvider.notifier).state =
         _ref.read(userAuthProvider).copyWith(uid: value);
-    // _ref.read(userProfileProvider.notifier).state =
-    //     _ref.read(userProfileProvider).copyWith(uid: uid);
   }
 
   void saveEmail(String value) {
@@ -50,12 +50,20 @@ class AuthViewModel {
         _ref.read(userAuthProvider).copyWith(userEmailVerified: value);
   }
 
-  void isLoading() {
+  void loadingSignUp() {
     _ref.read(signUpIsLoadingProvider.notifier).state = true;
   }
 
-  void isCompleted() {
+  void completedSignUp() {
     _ref.read(signUpIsLoadingProvider.notifier).state = false;
+  }
+
+  void loadingEmailAuth() {
+    _ref.read(emailAuthIsLoadingProvider.notifier).state = true;
+  }
+
+  void completedEmailAuth() {
+    _ref.read(emailAuthIsLoadingProvider.notifier).state = false;
   }
 
   Future<FirebaseException?> signUpWithEmailAndPassword() async {

@@ -40,7 +40,7 @@ class AuthModel {
       final userProfile = authViewModel.userProfile;
       final userProfileMap = userProfile.toJson();
 
-      fireStore.collection('users').doc(uid).set(userProfileMap);
+      await fireStore.collection('users').doc(uid).set(userProfileMap);
 
       await userCredential.user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
