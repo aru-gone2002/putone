@@ -6,6 +6,9 @@ const String nextProgressBtnText = '次に進む';
 const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 
+//appbar
+const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
+
 //title
 const String signupTitle = '会員登録';
 const String emailAddressTitle = "メールアドレス";

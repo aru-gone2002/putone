@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nil/nil.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -56,13 +57,13 @@ class _SecondProfileSettingPageState
                     child: Column(
                       children: [
                         CircleAvatar(
-                          radius: 60,
+                          radius: 72,
                           //child: _profileViewModel.userImg == '' ? nil : ,
                           backgroundImage: _profileViewModel.userImg != ''
                               ? NetworkImage(_profileViewModel.userImg)
                               : null,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 24),
                         Text(
                           registerProfileImgText,
                           style: Theme.of(context).textTheme.labelLarge,
@@ -80,7 +81,9 @@ class _SecondProfileSettingPageState
                         '${_profileViewModel.themeMusicArtistName} / ${_profileViewModel.themeMusicArtistName}',
                     //TODO 処理を追加
                     //テーマソング設定ページに飛ばす
-                    onTap: () {},
+                    onTap: () {
+                      toThemeSongSettingPage(context: context);
+                    },
                     separateCondition: _profileViewModel.themeMusicName != ''),
                 const SizedBox(height: 40),
                 //プロフィール文設定

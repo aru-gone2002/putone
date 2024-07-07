@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
-import 'package:putone/view/auth/first_profile_setting_page.dart';
+import 'package:putone/view/profile/first_profile_setting_page.dart';
 
 class PuTone extends StatelessWidget {
   const PuTone({super.key});
