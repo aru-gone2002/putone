@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/user_auth_provider.dart';
@@ -118,8 +120,17 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(userLastLoginTimestamp: value);
   }
 
-  void getAndSaveUid() {
-    final uid = _profileModel.getUid();
-    saveUid(uid);
+  Future<void> onImageTapped() async {
+    final XFile xFile = await _profileModel.getImageFromGallery();
+    CroppedFile? croppedFile =
+        await _profileModel.returnCroppedFile(xFile: xFile);
+    //croppedFileがnullだったら特に何もしない。
+    //CircleAvatarにbackgroundColorが表示されるだけ
+    if (croppedFile != null) {
+      print(uid);
+      final imgUrl = await _profileModel.uploadProfileImgAndGetURL(
+          uid: uid, croppedFile: croppedFile);
+      saveUserImg(imgUrl);
+    }
   }
 }

@@ -30,7 +30,7 @@ class _FirstProfileSettingPageState
       GlobalKey<FormState> formKey, BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      _profileViewModel.getAndSaveUid();
+      //_profileViewModel.getAndSaveUid();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(userIdAndNameCompleteSnackBarText),
@@ -44,6 +44,7 @@ class _FirstProfileSettingPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           profileSettingTitle,
           style: Theme.of(context).textTheme.headlineMedium,
@@ -63,8 +64,8 @@ class _FirstProfileSettingPageState
                     if (value == null || value.trim().isEmpty) {
                       return notInputUserIdText;
                     }
-                    //小文字と.と_と数字で入力してもらうようにする。正規表現のやつ
-                    if (RegExp(r'^[a-z0-9._]{4,}$').hasMatch(value)) {
+                    //小文字と.と数字で入力してもらうようにする。正規表現のやつ
+                    if (!RegExp(r'^[a-z0-9.]{4,}$').hasMatch(value)) {
                       return inputUserIdIsNotValidText;
                     }
                     return null;
@@ -90,7 +91,6 @@ class _FirstProfileSettingPageState
                   //FirestoreにユーザーIDとユーザー名が入力したいが、
                   //まずはproviderに値を入れてから、最後にFirestoreに入れる。
                   //場所はFirebaseAuthのコレクションに入れる
-                  //初めて作成するため、uidもコレクションに値を追加する。
                   setUserIdAndNameFunction(formKey, context);
                 },
                 text: nextProgressBtnText,
