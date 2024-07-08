@@ -81,8 +81,11 @@ class _SecondProfileSettingPageState
                         '${_profileViewModel.themeMusicArtistName} / ${_profileViewModel.themeMusicArtistName}',
                     //TODO 処理を追加
                     //テーマソング設定ページに飛ばす
-                    onTap: () {
-                      toThemeSongSettingPage(context: context);
+                    onTap: () async {
+                      await _profileViewModel.fetchAccessToken;
+                      if (context.mounted) {
+                        toThemeSongSettingPage(context: context);
+                      }
                     },
                     separateCondition: _profileViewModel.themeMusicName != ''),
                 const SizedBox(height: 40),

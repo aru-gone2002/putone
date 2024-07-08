@@ -30,7 +30,7 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const ThemeSongSettingPage(),
+      home: const AuthPage(),
     );
   }
 }

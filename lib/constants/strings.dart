@@ -6,6 +6,7 @@ const String nextProgressBtnText = '次に進む';
 const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 const String registerBtnText = '登録';
+const String searchBtnText = '検索';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -20,6 +21,7 @@ const String userNameTitle = 'ユーザー名';
 const String cropperTitle = 'Cropper';
 const String themeSongTitle = 'テーマソング';
 const String profileTitle = 'プロフィール文';
+const String musicName = '楽曲名';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';
@@ -49,9 +51,11 @@ const String missEmailAndreSignUpText = 'メールアドレスを間違えたた
 const String passwordRestrictionText = '半角英数字8文字以上';
 const String userIdRestrictionText = '4文字以上。英小文字(a-z)、数字、ビリオド(.)が利用可。';
 const String registerProfileImgText = 'プロフィール画像を登録';
+const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト名で検索してください';
 
 //snackBar
 const String userIdAndNameCompleteSnackBarText = 'ユーザーIDとユーザー名の登録完了';
+const String askEnterTrackOrArtistSnackBarText = '楽曲名かアーティスト名を入れてください';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();

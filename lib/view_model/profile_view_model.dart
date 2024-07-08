@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
+import 'package:putone/providers/spotify_access_provider.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
@@ -54,6 +56,11 @@ class ProfileViewModel {
 
   DateTime get userSignUpTimestamp => _ref
       .watch(userProfileProvider.select((value) => value.userSignUpTimestamp));
+
+  String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
+
+  List<SpotifyTrack> get spotifySearchTracks =>
+      _ref.watch(spotifySearchTracksProvider);
 
   void saveUid(String value) {
     _ref.read(userProfileProvider.notifier).state =
@@ -120,6 +127,14 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(userLastLoginTimestamp: value);
   }
 
+  void saveSpotifyAccessToken(String value) {
+    _ref.read(spotifyAccessTokenProvider.notifier).state = value;
+  }
+
+  void saveSpotifySearchTracks(List<SpotifyTrack> value) {
+    _ref.read(spotifySearchTracksProvider.notifier).state = value;
+  }
+
   Future<void> onImageTapped() async {
     final XFile xFile = await _profileModel.getImageFromGallery();
     CroppedFile? croppedFile =
@@ -132,5 +147,24 @@ class ProfileViewModel {
           uid: uid, croppedFile: croppedFile);
       saveUserImg(imgUrl);
     }
+  }
+
+  Future<void> fetchAccessToken() async {
+    final accessToken = await _profileModel.fetchAccessToken();
+    if (accessToken != null) {
+      saveSpotifyAccessToken(accessToken);
+      print('accessToken: $accessToken');
+    }
+  }
+
+  Future<void> searchTracks(
+      {required String searchTrackName,
+      required String searchArtistName}) async {
+    final List<SpotifyTrack> spotifyTracks = await _profileModel.searchTracks(
+      accessToken: spotifyAccessToken,
+      searchTrackName: searchTrackName,
+      seachArtistName: searchArtistName,
+    );
+    saveSpotifySearchTracks(spotifyTracks);
   }
 }
