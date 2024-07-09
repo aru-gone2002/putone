@@ -144,12 +144,16 @@ class ProfileModel {
 
     //検索の際に曲名が書かれているかでクエリの中身を変更
     if (searchTrackName != '') {
-      trackFilter = 'track%3A$searchTrackName';
+      String trackEncodedQuery = Uri.encodeQueryComponent(searchTrackName);
+      trackFilter = 'track%3A$trackEncodedQuery';
+      //trackFilter = 'track%3A$searchTrackName';
     }
 
     //検索の際にアーティスト名が書かれているかでクエリの中身を変更
     if (seachArtistName != '') {
-      artistFilter = 'artist%3A$seachArtistName';
+      String artistEncodedQuery = Uri.encodeQueryComponent(seachArtistName);
+      artistFilter = 'artist%3A$artistEncodedQuery';
+      //artistFilter = 'artist%3A$seachArtistName';
     }
 
     //書き込まれているかでクエリを分岐
@@ -158,14 +162,17 @@ class ProfileModel {
     } else if (seachArtistName != '' && searchTrackName == '') {
       query = 'q=$artistFilter';
     } else if (seachArtistName != '' && searchTrackName != '') {
-      query = 'q=$searchTrackName&$artistFilter';
+      query = 'q=$trackFilter&$artistFilter';
     }
 
     //リクエストのURL
     final String endPointUrl = '$searchEndPoint?$query&$searchType&$limit';
 
     //http.getで楽曲を検索
-    final response = await http.get(Uri.parse(endPointUrl), headers: headers);
+    final response = await http.get(
+      Uri.parse(endPointUrl),
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> trackData = jsonDecode(response.body);
@@ -178,11 +185,12 @@ class ProfileModel {
         final String trackExternalUrl = tracks[i]['external_urls']['spotify'];
         final String? previewUrl = tracks[i]['preview_url'];
         final SpotifyTrack spotifyTrack = SpotifyTrack(
-            trackImg: trackImg,
-            artistName: artistName,
-            trackName: trackName,
-            trackExternalUrl: trackExternalUrl,
-            previewUrl: previewUrl);
+          trackImg: trackImg,
+          artistName: artistName,
+          trackName: trackName,
+          trackExternalUrl: trackExternalUrl,
+          previewUrl: previewUrl ?? '',
+        );
         print('アーティスト名: $artistName');
         searchResponseTrackList.add(spotifyTrack);
       }

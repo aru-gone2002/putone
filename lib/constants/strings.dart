@@ -11,6 +11,10 @@ const String searchBtnText = '検索';
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
 
+//label
+const String musicNameLabel = '楽曲名';
+const String artistNameLabel = 'アーティスト名';
+
 //title
 const String signupTitle = '会員登録';
 const String emailAddressTitle = "メールアドレス";
@@ -21,7 +25,6 @@ const String userNameTitle = 'ユーザー名';
 const String cropperTitle = 'Cropper';
 const String themeSongTitle = 'テーマソング';
 const String profileTitle = 'プロフィール文';
-const String musicName = '楽曲名';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';

@@ -60,9 +60,9 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(musicName),
+                const Text(musicNameLabel),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.only(left: 16, right: 4),
                   decoration: BoxDecoration(
                       color: AppColorTheme.color().gray3,
                       borderRadius: BorderRadius.circular(4),
@@ -77,7 +77,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          _artistNameController.clear();
+                          _trackNameController.clear();
                         },
                         icon: const Icon(Icons.cancel_outlined),
                       ),
@@ -88,7 +88,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                const Text('アーティスト名'),
+                const Text(artistNameLabel),
                 Container(
                   padding: const EdgeInsets.only(left: 16, right: 4),
                   decoration: BoxDecoration(
