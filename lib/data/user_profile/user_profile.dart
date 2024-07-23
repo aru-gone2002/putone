@@ -19,6 +19,7 @@ class UserProfile with _$UserProfile {
     required String themeMusicArtistName,
     required String themeMusicName,
     required String themeMusicSpotifyUrl,
+    required String themeMusicPreviewUrl,
     required String userProfileMsg,
     required bool userSpotifyConnected,
     required int followingUserCount,

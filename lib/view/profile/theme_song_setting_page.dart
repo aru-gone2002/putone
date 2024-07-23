@@ -186,6 +186,8 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                         final spotifySearchTrack =
                             _profileViewModel.spotifySearchTracks[index];
                         return ListTile(
+                          onTap: () => _profileViewModel.setThemeSong(
+                              track: spotifySearchTrack),
                           leading: Container(
                             height: 56,
                             width: 56,

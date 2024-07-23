@@ -39,6 +39,9 @@ class ProfileViewModel {
   String get themeMusicSpotifyUrl => _ref
       .watch(userProfileProvider.select((value) => value.themeMusicSpotifyUrl));
 
+  String get themeMusicPreviewUrl => _ref
+      .watch(userProfileProvider.select((value) => value.themeMusicPreviewUrl));
+
   String get userProfileMsg =>
       _ref.watch(userProfileProvider.select((value) => value.userProfileMsg));
 
@@ -100,6 +103,11 @@ class ProfileViewModel {
   void saveThemeMusicSpotifyUrl(String value) {
     _ref.read(userProfileProvider.notifier).state =
         _ref.read(userProfileProvider).copyWith(themeMusicSpotifyUrl: value);
+  }
+
+  void saveThemeMusicPreviewUrl(String value) {
+    _ref.read(userProfileProvider.notifier).state =
+        _ref.read(userProfileProvider).copyWith(themeMusicPreviewUrl: value);
   }
 
   void saveUserProfileMsg(String value) {
@@ -166,5 +174,13 @@ class ProfileViewModel {
       seachArtistName: searchArtistName,
     );
     saveSpotifySearchTracks(spotifyTracks);
+  }
+
+  void setThemeSong({required SpotifyTrack track}) {
+    saveThemeMusicName(track.trackName);
+    saveThemeMusicArtistName(track.artistName);
+    saveThemeMusicImg(track.trackImg);
+    saveThemeMusicSpotifyUrl(track.trackExternalUrl);
+    saveThemeMusicPreviewUrl(track.previewUrl ?? '');
   }
 }

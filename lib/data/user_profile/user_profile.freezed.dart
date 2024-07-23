@@ -28,6 +28,7 @@ mixin _$UserProfile {
   String get themeMusicArtistName => throw _privateConstructorUsedError;
   String get themeMusicName => throw _privateConstructorUsedError;
   String get themeMusicSpotifyUrl => throw _privateConstructorUsedError;
+  String get themeMusicPreviewUrl => throw _privateConstructorUsedError;
   String get userProfileMsg => throw _privateConstructorUsedError;
   bool get userSpotifyConnected => throw _privateConstructorUsedError;
   int get followingUserCount => throw _privateConstructorUsedError;
@@ -56,6 +57,7 @@ abstract class $UserProfileCopyWith<$Res> {
       String themeMusicArtistName,
       String themeMusicName,
       String themeMusicSpotifyUrl,
+      String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
       int followingUserCount,
@@ -85,6 +87,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? themeMusicArtistName = null,
     Object? themeMusicName = null,
     Object? themeMusicSpotifyUrl = null,
+    Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
     Object? followingUserCount = null,
@@ -124,6 +127,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
       themeMusicSpotifyUrl: null == themeMusicSpotifyUrl
           ? _value.themeMusicSpotifyUrl
           : themeMusicSpotifyUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      themeMusicPreviewUrl: null == themeMusicPreviewUrl
+          ? _value.themeMusicPreviewUrl
+          : themeMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
               as String,
       userProfileMsg: null == userProfileMsg
           ? _value.userProfileMsg
@@ -170,6 +177,7 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       String themeMusicArtistName,
       String themeMusicName,
       String themeMusicSpotifyUrl,
+      String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
       int followingUserCount,
@@ -197,6 +205,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? themeMusicArtistName = null,
     Object? themeMusicName = null,
     Object? themeMusicSpotifyUrl = null,
+    Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
     Object? followingUserCount = null,
@@ -236,6 +245,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
       themeMusicSpotifyUrl: null == themeMusicSpotifyUrl
           ? _value.themeMusicSpotifyUrl
           : themeMusicSpotifyUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      themeMusicPreviewUrl: null == themeMusicPreviewUrl
+          ? _value.themeMusicPreviewUrl
+          : themeMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
               as String,
       userProfileMsg: null == userProfileMsg
           ? _value.userProfileMsg
@@ -277,6 +290,7 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       required this.themeMusicArtistName,
       required this.themeMusicName,
       required this.themeMusicSpotifyUrl,
+      required this.themeMusicPreviewUrl,
       required this.userProfileMsg,
       required this.userSpotifyConnected,
       required this.followingUserCount,
@@ -304,6 +318,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
   @override
   final String themeMusicSpotifyUrl;
   @override
+  final String themeMusicPreviewUrl;
+  @override
   final String userProfileMsg;
   @override
   final bool userSpotifyConnected;
@@ -318,7 +334,7 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp)';
+    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp)';
   }
 
   @override
@@ -334,6 +350,7 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       ..add(DiagnosticsProperty('themeMusicArtistName', themeMusicArtistName))
       ..add(DiagnosticsProperty('themeMusicName', themeMusicName))
       ..add(DiagnosticsProperty('themeMusicSpotifyUrl', themeMusicSpotifyUrl))
+      ..add(DiagnosticsProperty('themeMusicPreviewUrl', themeMusicPreviewUrl))
       ..add(DiagnosticsProperty('userProfileMsg', userProfileMsg))
       ..add(DiagnosticsProperty('userSpotifyConnected', userSpotifyConnected))
       ..add(DiagnosticsProperty('followingUserCount', followingUserCount))
@@ -361,6 +378,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
                 other.themeMusicName == themeMusicName) &&
             (identical(other.themeMusicSpotifyUrl, themeMusicSpotifyUrl) ||
                 other.themeMusicSpotifyUrl == themeMusicSpotifyUrl) &&
+            (identical(other.themeMusicPreviewUrl, themeMusicPreviewUrl) ||
+                other.themeMusicPreviewUrl == themeMusicPreviewUrl) &&
             (identical(other.userProfileMsg, userProfileMsg) ||
                 other.userProfileMsg == userProfileMsg) &&
             (identical(other.userSpotifyConnected, userSpotifyConnected) ||
@@ -387,6 +406,7 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       themeMusicArtistName,
       themeMusicName,
       themeMusicSpotifyUrl,
+      themeMusicPreviewUrl,
       userProfileMsg,
       userSpotifyConnected,
       followingUserCount,
@@ -418,6 +438,7 @@ abstract class _UserProfile implements UserProfile {
       required final String themeMusicArtistName,
       required final String themeMusicName,
       required final String themeMusicSpotifyUrl,
+      required final String themeMusicPreviewUrl,
       required final String userProfileMsg,
       required final bool userSpotifyConnected,
       required final int followingUserCount,
@@ -444,6 +465,8 @@ abstract class _UserProfile implements UserProfile {
   String get themeMusicName;
   @override
   String get themeMusicSpotifyUrl;
+  @override
+  String get themeMusicPreviewUrl;
   @override
   String get userProfileMsg;
   @override

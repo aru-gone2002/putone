@@ -143,6 +143,7 @@ class ProfileModel {
     };
 
     //検索の際に曲名が書かれているかでクエリの中身を変更
+    //日本語でもqueryを反応できるようにencodeQueryComponentを行う
     if (searchTrackName != '') {
       String trackEncodedQuery = Uri.encodeQueryComponent(searchTrackName);
       trackFilter = 'track%3A$trackEncodedQuery';
@@ -150,6 +151,7 @@ class ProfileModel {
     }
 
     //検索の際にアーティスト名が書かれているかでクエリの中身を変更
+    //日本語でもqueryを反応できるようにencodeQueryComponentを行う
     if (seachArtistName != '') {
       String artistEncodedQuery = Uri.encodeQueryComponent(seachArtistName);
       artistFilter = 'artist%3A$artistEncodedQuery';
