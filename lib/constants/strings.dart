@@ -7,6 +7,7 @@ const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 const String registerBtnText = '登録';
 const String searchBtnText = '検索';
+const String backBtnText = '戻る';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -55,6 +56,7 @@ const String passwordRestrictionText = '半角英数字8文字以上';
 const String userIdRestrictionText = '4文字以上。英小文字(a-z)、数字、ビリオド(.)が利用可。';
 const String registerProfileImgText = 'プロフィール画像を登録';
 const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト名で検索してください';
+const String musicSettingConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
 
 //snackBar
 const String userIdAndNameCompleteSnackBarText = 'ユーザーIDとユーザー名の登録完了';

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
@@ -55,6 +54,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
               style: Theme.of(context).textTheme.labelSmall!.copyWith(
                     color: AppColorTheme.color().gray1,
                   ),
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 20),
             Column(
@@ -186,8 +186,35 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                         final spotifySearchTrack =
                             _profileViewModel.spotifySearchTracks[index];
                         return ListTile(
-                          onTap: () => _profileViewModel.setThemeSong(
-                              track: spotifySearchTrack),
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title:
+                                      const Text(musicSettingConfirmDialogText),
+                                  content: Text(
+                                      '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(backBtnText),
+                                    ),
+                                    TextButton(
+                                        child: const Text(registerBtnText),
+                                        onPressed: () {
+                                          _profileViewModel.setThemeSong(
+                                              track: spotifySearchTrack);
+                                          //ダイアログを閉じる
+                                          Navigator.pop(context);
+                                          //TODO テーマソングの登録画面を閉じる
+                                          //Navigator.pop(context);
+                                        }),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           leading: Container(
                             height: 56,
                             width: 56,
@@ -214,12 +241,13 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
               },
               text: 'アクセストークン取得',
             ),
-            const SizedBox(height: 20),
-            DeepGrayButton(
-                onPressed: () {
-                  //TODO profile_providerにテーマソングとかを入れる処理を行う
-                },
-                text: registerBtnText),
+            // const SizedBox(height: 20),
+            // DeepGrayButton(
+            //   onPressed: () {
+            //     //TODO profile_providerにテーマソングとかを入れる処理を行う
+            //   },
+            //   text: registerBtnText,
+            // ),
           ]),
         ),
       ),
