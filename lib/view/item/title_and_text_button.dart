@@ -26,10 +26,12 @@ class TitleAndTextButton extends StatelessWidget {
       child: InkWell(
           onTap: onTap,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 inputDataLabel,
                 style: Theme.of(context).textTheme.labelLarge,
+                overflow: TextOverflow.ellipsis,
               ),
               separateCondition
                   ? Text(afterInputText)

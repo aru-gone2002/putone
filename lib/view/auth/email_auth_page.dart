@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class EmailAuthPage extends ConsumerStatefulWidget {
   const EmailAuthPage({super.key});
@@ -16,11 +18,13 @@ class EmailAuthPage extends ConsumerStatefulWidget {
 
 class _EmailAuthPageState extends ConsumerState<EmailAuthPage> {
   final AuthViewModel _authViewModel = AuthViewModel();
+  final ProfileViewModel _profileViewModel = ProfileViewModel();
 
   @override
   void initState() {
     super.initState();
     _authViewModel.setRef(ref);
+    _profileViewModel.setRef(ref);
   }
 
   @override
@@ -79,6 +83,8 @@ class _EmailAuthPageState extends ConsumerState<EmailAuthPage> {
                     if (context.mounted) {
                       toFirstProfileSettingPage(context: context);
                       _authViewModel.completedEmailAuth();
+                      //追加
+                      await _profileViewModel.fetchAccessToken();
                     }
                   } else {
                     await _authViewModel.signOut();

@@ -3,6 +3,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile/first_profile_setting_page.dart';
+import 'package:putone/view/profile/profile_msg_setting_page.dart';
 import 'package:putone/view/profile/theme_song_setting_page.dart';
 
 class PuTone extends StatelessWidget {
@@ -30,7 +31,7 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const ThemeSongSettingPage(),
+      home: const AuthPage(),
     );
   }
 }

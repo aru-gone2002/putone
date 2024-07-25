@@ -11,6 +11,7 @@ const String backBtnText = '戻る';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
+const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録';
 
 //label
 const String musicNameLabel = '楽曲名';
