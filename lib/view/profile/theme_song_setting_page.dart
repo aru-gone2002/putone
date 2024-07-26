@@ -44,13 +44,13 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              '選択したテーマソング',
+              selectedThemeSongLabel,
               style: Theme.of(context).textTheme.labelMedium,
             ),
             Text(
               _profileViewModel.themeMusicName != ''
                   ? '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}'
-                  : '以下の楽曲から選択してください',
+                  : askToSelectMusicText,
               style: Theme.of(context).textTheme.labelSmall!.copyWith(
                     color: AppColorTheme.color().gray1,
                   ),
@@ -130,7 +130,8 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                             _trackNameController.text == '') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(askEnterTrackOrArtistSnackBarText),
+                              content:
+                                  Text(askToEnterTrackOrArtistSnackBarText),
                             ),
                           );
                         } else {
@@ -235,19 +236,13 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                       }),
             ),
             const SizedBox(height: 48),
+            //TODO アクセストークンを取得するためのボタン、リリース段階では削除する
             DeepGrayButton(
               onPressed: () async {
                 await _profileViewModel.fetchAccessToken();
               },
               text: 'アクセストークン取得',
             ),
-            // const SizedBox(height: 20),
-            // DeepGrayButton(
-            //   onPressed: () {
-            //     //TODO profile_providerにテーマソングとかを入れる処理を行う
-            //   },
-            //   text: registerBtnText,
-            // ),
           ]),
         ),
       ),

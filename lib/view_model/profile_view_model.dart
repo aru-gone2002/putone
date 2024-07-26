@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
+import 'package:putone/providers/community_provider.dart';
 import 'package:putone/providers/spotify_access_provider.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
@@ -59,6 +61,13 @@ class ProfileViewModel {
 
   DateTime get userSignUpTimestamp => _ref
       .watch(userProfileProvider.select((value) => value.userSignUpTimestamp));
+
+  String get communityId =>
+      _ref.watch(userProfileProvider.select((value) => value.communityId));
+
+  Community get selectedCommunity => _ref.watch(selectedCommunityProvider);
+
+  Map<String, Community> get communityMap => _ref.watch(communityMapProvider);
 
   String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
 
@@ -135,12 +144,21 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(userLastLoginTimestamp: value);
   }
 
+  void saveCommunityId(String value) {
+    _ref.read(userProfileProvider.notifier).state =
+        _ref.read(userProfileProvider).copyWith(communityId: value);
+  }
+
   void saveSpotifyAccessToken(String value) {
     _ref.read(spotifyAccessTokenProvider.notifier).state = value;
   }
 
   void saveSpotifySearchTracks(List<SpotifyTrack> value) {
     _ref.read(spotifySearchTracksProvider.notifier).state = value;
+  }
+
+  void saveSelectedCommunity(Community value) {
+    _ref.read(selectedCommunityProvider.notifier).state = value;
   }
 
   Future<void> onImageTapped() async {

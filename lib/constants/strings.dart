@@ -12,10 +12,16 @@ const String backBtnText = '戻る';
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
 const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録';
+const String communityPageAppbarTitle = 'コミュニティの登録';
 
 //label
 const String musicNameLabel = '楽曲名';
 const String artistNameLabel = 'アーティスト名';
+const String themeSongLabel = 'テーマソング';
+const String profileMsgLabel = 'プロフィール文（120字以内)';
+const String selectedThemeSongLabel = '選択したテーマソング';
+const String belongCommunityLabel = '所属コミュニティ';
+const String selectedCommunityLabel = '選択したコミュニティ';
 
 //title
 const String signupTitle = '会員登録';
@@ -25,7 +31,7 @@ const String profileSettingTitle = 'プロフィール情報の登録';
 const String userIdTitle = 'ユーザーID';
 const String userNameTitle = 'ユーザー名';
 const String cropperTitle = 'Cropper';
-const String themeSongTitle = 'テーマソング';
+
 const String profileTitle = 'プロフィール文';
 
 //text
@@ -58,10 +64,19 @@ const String userIdRestrictionText = '4文字以上。英小文字(a-z)、数字
 const String registerProfileImgText = 'プロフィール画像を登録';
 const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト名で検索してください';
 const String musicSettingConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
+const String profileMsgHintText = '〇〇大学 ××学部';
+const String askToSelectMusicText = '以下の楽曲から選択してください';
+const String communitySettingConfirmDialogText = '以下のコミュニティを登録しますか？';
 
 //snackBar
 const String userIdAndNameCompleteSnackBarText = 'ユーザーIDとユーザー名の登録完了';
-const String askEnterTrackOrArtistSnackBarText = '楽曲名かアーティスト名を入れてください';
+const String askToEnterTrackOrArtistSnackBarText = '楽曲名かアーティスト名を入れてください';
+const String profileMsgSavedSnackBarText = 'プロフィール文が保存されました';
+
+//validator
+const String notInputTextValidator = '文字が入力されていません';
+const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String askSelectCommunityValidator = 'コミュニティを選択してください';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();

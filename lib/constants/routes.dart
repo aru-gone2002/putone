@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
+import 'package:putone/view/profile/community_setting_page.dart';
 import 'package:putone/view/profile/first_profile_setting_page.dart';
 import 'package:putone/view/auth/login_page.dart';
 import 'package:putone/view/profile/profile_msg_setting_page.dart';
@@ -55,5 +56,12 @@ void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
         builder: ((context) => const ProfileMsgSettingPage()),
+      ),
+    );
+
+void toCommunitySettingPage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const CommunitySettingPage()),
       ),
     );

@@ -33,7 +33,7 @@ class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
       formKey.currentState!.save();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('プロフィール文が保存されました'),
+          content: Text(profileMsgSavedSnackBarText),
         ),
       );
       Navigator.pop(context);
@@ -56,7 +56,7 @@ class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'プロフィール文（120字以内)',
+              profileMsgLabel,
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(height: 10),
@@ -65,10 +65,10 @@ class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
               child: TextFormField(
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '文字を入力してください';
+                    return notInputTextValidator;
                   }
                   if (value.length > 120) {
-                    return '120字以下で入力してください';
+                    return askTextLengthLessThanOrEqual120Validator;
                   }
                   return null;
                 },
@@ -83,7 +83,7 @@ class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                   isDense: true,
-                  hintText: '〇〇大学 ××学部',
+                  hintText: profileMsgHintText,
                   hintStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: AppColorTheme.color().gray1,
                       ),

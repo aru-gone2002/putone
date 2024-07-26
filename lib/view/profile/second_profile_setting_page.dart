@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nil/nil.dart';
+import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'dart:io';
@@ -42,11 +43,11 @@ class _SecondProfileSettingPageState
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: spaceWidthMedium),
+          padding: EdgeInsets.symmetric(
+              horizontal: spaceWidthMedium, vertical: spaceHeightMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 48),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,16 +59,16 @@ class _SecondProfileSettingPageState
                       child: Column(
                         children: [
                           CircleAvatar(
-                            radius: 72,
+                            radius: 48,
                             //child: _profileViewModel.userImg == '' ? nil : ,
                             backgroundImage: _profileViewModel.userImg != ''
                                 ? NetworkImage(_profileViewModel.userImg)
                                 : null,
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 16),
                           Text(
                             registerProfileImgText,
-                            style: Theme.of(context).textTheme.labelLarge,
+                            style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ],
                       ),
@@ -76,7 +77,7 @@ class _SecondProfileSettingPageState
                   const SizedBox(height: 64),
                   //テーマソング設定
                   TitleAndTextButton(
-                      inputDataLabel: themeSongTitle,
+                      inputDataLabel: themeSongLabel,
                       beforeInputText: tapForSettingBtnText,
                       afterInputText:
                           '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}',
@@ -84,6 +85,27 @@ class _SecondProfileSettingPageState
                       onTap: () => toThemeSongSettingPage(context: context),
                       separateCondition:
                           _profileViewModel.themeMusicName != ''),
+                  const SizedBox(height: 40),
+                  //コミュニティ設定
+                  TitleAndTextButton(
+                    inputDataLabel: belongCommunityLabel,
+                    separateCondition: _profileViewModel.communityId != '',
+                    beforeInputText: tapForSettingBtnText,
+                    //TODO
+                    //communityMap[_profileViewModel.communityId]では初期値ではnullが返されてしまう。
+                    //そのため、そのプロパティを取るとnull safetyによってエラーが発生してしまう。
+                    //それを防ぐためには、対策を取る必要がある。
+                    //TODO ここは改善する必要がある
+                    afterInputText: _profileViewModel
+                                .communityMap[_profileViewModel.communityId] ==
+                            null
+                        ? ''
+                        : _profileViewModel
+                            .communityMap[_profileViewModel.communityId]!
+                            .communityName,
+                    //コミュニティ設定ページに飛ばす
+                    onTap: () => toCommunitySettingPage(context: context),
+                  ),
                   const SizedBox(height: 40),
                   //プロフィール文設定
                   TitleAndTextButton(

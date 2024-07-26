@@ -26,6 +26,7 @@ class UserProfile with _$UserProfile {
     required int followedUserCount,
     required DateTime userSignUpTimestamp,
     required DateTime userLastLoginTimestamp,
+    required String communityId,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, Object?> json) =>

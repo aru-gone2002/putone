@@ -26,8 +26,8 @@ class _FirstProfileSettingPageState
     _profileViewModel.setRef(ref);
   }
 
-  Future<void> setUserIdAndNameFunction(
-      GlobalKey<FormState> formKey, BuildContext context) async {
+  void setUserIdAndNameFunction(
+      GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       //_profileViewModel.getAndSaveUid();

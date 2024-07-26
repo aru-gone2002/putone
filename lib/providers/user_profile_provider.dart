@@ -18,5 +18,6 @@ final userProfileProvider = StateProvider<UserProfile>(
     userLastLoginTimestamp: DateTime.now(),
     followingUserCount: 0,
     followedUserCount: 0,
+    communityId: '',
   ),
 );

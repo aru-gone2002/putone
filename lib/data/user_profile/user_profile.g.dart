@@ -25,6 +25,7 @@ _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>
           DateTime.parse(json['userSignUpTimestamp'] as String),
       userLastLoginTimestamp:
           DateTime.parse(json['userLastLoginTimestamp'] as String),
+      communityId: json['communityId'] as String,
     );
 
 Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
@@ -45,4 +46,5 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
       'userSignUpTimestamp': instance.userSignUpTimestamp.toIso8601String(),
       'userLastLoginTimestamp':
           instance.userLastLoginTimestamp.toIso8601String(),
+      'communityId': instance.communityId,
     };

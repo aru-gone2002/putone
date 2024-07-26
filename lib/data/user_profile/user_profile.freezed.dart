@@ -35,6 +35,7 @@ mixin _$UserProfile {
   int get followedUserCount => throw _privateConstructorUsedError;
   DateTime get userSignUpTimestamp => throw _privateConstructorUsedError;
   DateTime get userLastLoginTimestamp => throw _privateConstructorUsedError;
+  String get communityId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -63,7 +64,8 @@ abstract class $UserProfileCopyWith<$Res> {
       int followingUserCount,
       int followedUserCount,
       DateTime userSignUpTimestamp,
-      DateTime userLastLoginTimestamp});
+      DateTime userLastLoginTimestamp,
+      String communityId});
 }
 
 /// @nodoc
@@ -94,6 +96,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
+    Object? communityId = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -156,6 +159,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.userLastLoginTimestamp
           : userLastLoginTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -183,7 +190,8 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       int followingUserCount,
       int followedUserCount,
       DateTime userSignUpTimestamp,
-      DateTime userLastLoginTimestamp});
+      DateTime userLastLoginTimestamp,
+      String communityId});
 }
 
 /// @nodoc
@@ -212,6 +220,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
+    Object? communityId = null,
   }) {
     return _then(_$UserProfileImpl(
       uid: null == uid
@@ -274,6 +283,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.userLastLoginTimestamp
           : userLastLoginTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -296,7 +309,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       required this.followingUserCount,
       required this.followedUserCount,
       required this.userSignUpTimestamp,
-      required this.userLastLoginTimestamp});
+      required this.userLastLoginTimestamp,
+      required this.communityId});
 
   factory _$UserProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserProfileImplFromJson(json);
@@ -331,10 +345,12 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
   final DateTime userSignUpTimestamp;
   @override
   final DateTime userLastLoginTimestamp;
+  @override
+  final String communityId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp)';
+    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp, communityId: $communityId)';
   }
 
   @override
@@ -356,8 +372,9 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       ..add(DiagnosticsProperty('followingUserCount', followingUserCount))
       ..add(DiagnosticsProperty('followedUserCount', followedUserCount))
       ..add(DiagnosticsProperty('userSignUpTimestamp', userSignUpTimestamp))
-      ..add(DiagnosticsProperty(
-          'userLastLoginTimestamp', userLastLoginTimestamp));
+      ..add(
+          DiagnosticsProperty('userLastLoginTimestamp', userLastLoginTimestamp))
+      ..add(DiagnosticsProperty('communityId', communityId));
   }
 
   @override
@@ -391,7 +408,9 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
             (identical(other.userSignUpTimestamp, userSignUpTimestamp) ||
                 other.userSignUpTimestamp == userSignUpTimestamp) &&
             (identical(other.userLastLoginTimestamp, userLastLoginTimestamp) ||
-                other.userLastLoginTimestamp == userLastLoginTimestamp));
+                other.userLastLoginTimestamp == userLastLoginTimestamp) &&
+            (identical(other.communityId, communityId) ||
+                other.communityId == communityId));
   }
 
   @JsonKey(ignore: true)
@@ -412,7 +431,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       followingUserCount,
       followedUserCount,
       userSignUpTimestamp,
-      userLastLoginTimestamp);
+      userLastLoginTimestamp,
+      communityId);
 
   @JsonKey(ignore: true)
   @override
@@ -444,7 +464,8 @@ abstract class _UserProfile implements UserProfile {
       required final int followingUserCount,
       required final int followedUserCount,
       required final DateTime userSignUpTimestamp,
-      required final DateTime userLastLoginTimestamp}) = _$UserProfileImpl;
+      required final DateTime userLastLoginTimestamp,
+      required final String communityId}) = _$UserProfileImpl;
 
   factory _UserProfile.fromJson(Map<String, dynamic> json) =
       _$UserProfileImpl.fromJson;
@@ -479,6 +500,8 @@ abstract class _UserProfile implements UserProfile {
   DateTime get userSignUpTimestamp;
   @override
   DateTime get userLastLoginTimestamp;
+  @override
+  String get communityId;
   @override
   @JsonKey(ignore: true)
   _$$UserProfileImplCopyWith<_$UserProfileImpl> get copyWith =>
