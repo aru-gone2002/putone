@@ -5,6 +5,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
@@ -64,6 +65,8 @@ class ProfileViewModel {
 
   String get communityId =>
       _ref.watch(userProfileProvider.select((value) => value.communityId));
+
+  UserProfile get userProfile => _ref.read(userProfileProvider);
 
   Community get selectedCommunity => _ref.watch(selectedCommunityProvider);
 
@@ -168,7 +171,6 @@ class ProfileViewModel {
     //croppedFileがnullだったら特に何もしない。
     //CircleAvatarにbackgroundColorが表示されるだけ
     if (croppedFile != null) {
-      print(uid);
       final imgUrl = await _profileModel.uploadProfileImgAndGetURL(
           uid: uid, croppedFile: croppedFile);
       saveUserImg(imgUrl);
@@ -179,13 +181,13 @@ class ProfileViewModel {
     final accessToken = await _profileModel.fetchAccessToken();
     if (accessToken != null) {
       saveSpotifyAccessToken(accessToken);
-      print('accessToken: $accessToken');
     }
   }
 
-  Future<void> searchTracks(
-      {required String searchTrackName,
-      required String searchArtistName}) async {
+  Future<void> searchTracks({
+    required String searchTrackName,
+    required String searchArtistName,
+  }) async {
     final List<SpotifyTrack> spotifyTracks = await _profileModel.searchTracks(
       accessToken: spotifyAccessToken,
       searchTrackName: searchTrackName,
@@ -200,5 +202,9 @@ class ProfileViewModel {
     saveThemeMusicImg(track.trackImg);
     saveThemeMusicSpotifyUrl(track.trackExternalUrl);
     saveThemeMusicPreviewUrl(track.previewUrl ?? '');
+  }
+
+  Future<void> uploadProfileInfo() async {
+    _profileModel.uploadProfileInfo(userProfile: userProfile);
   }
 }

@@ -60,7 +60,6 @@ class _SecondProfileSettingPageState
                         children: [
                           CircleAvatar(
                             radius: 48,
-                            //child: _profileViewModel.userImg == '' ? nil : ,
                             backgroundImage: _profileViewModel.userImg != ''
                                 ? NetworkImage(_profileViewModel.userImg)
                                 : null,
@@ -122,11 +121,21 @@ class _SecondProfileSettingPageState
               const SizedBox(height: 120),
               AccentColorButton(
                 //TODO 処理を追加する
-                onPressed: () {},
+                //プロフィールをFirestoreとFirebaseに追加する
+                //routeを設定する
+                onPressed: () async {
+                  toProfilePage(context: context);
+                  await _profileViewModel.uploadProfileInfo();
+                },
                 text: nextProgressBtnText,
               ),
               const SizedBox(height: 32),
-              DeepGrayButton(onPressed: () {}, text: skipBtnText),
+              DeepGrayButton(
+                onPressed: () {
+                  toProfilePage(context: context);
+                },
+                text: skipBtnText,
+              ),
             ],
           ),
         ),

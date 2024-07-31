@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
-import 'package:putone/view/profile/community_setting_page.dart';
-import 'package:putone/view/profile/first_profile_setting_page.dart';
-import 'package:putone/view/profile/profile_msg_setting_page.dart';
-import 'package:putone/view/profile/second_profile_setting_page.dart';
-import 'package:putone/view/profile/theme_song_setting_page.dart';
+import 'package:putone/view/profile_setting/community_setting_page.dart';
+import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
+import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
+import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
+import 'package:putone/view/profile_setting/theme_song_setting_page.dart';
 
 class PuTone extends StatelessWidget {
   const PuTone({super.key});
@@ -33,7 +33,7 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SecondProfileSettingPage(),
+      home: const AuthPage(),
     );
   }
 }

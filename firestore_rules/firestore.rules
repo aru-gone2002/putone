@@ -8,7 +8,7 @@ service cloud.firestore {
   					return request.auth != null;
   		}
 
-      //ユーザーがログインしているること & 書き込まれるデータのuidプロパティが格納されるuidと一緒かどうか & ログインユーザーが書き込むuidと同じか
+      //ユーザーがログインしていること & 書き込まれるデータのuidプロパティが格納されるuidと一緒かどうか & ログインユーザーが書き込むuidと同じか
   		function isUserAuthenticated(uid) {
           	return isAuthenticated() && uid == request.resource.data.uid && isSameUser(uid);
       }
@@ -37,7 +37,7 @@ service cloud.firestore {
 
       match /users/{uid} {
           allow read: if isAuthenticated();
-          allow create: if isUserAuthenticated(uid) && request.auth.uid == request.resource.data.uid;
+          allow create, update: if isUserAuthenticated(uid) && request.auth.uid == request.resource.data.uid;
       }
       
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,14 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileModel {
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   String getUid() {
     final uid = auth.currentUser!.uid;
@@ -202,5 +206,13 @@ class ProfileModel {
       print('Spotify API Error: ${response.statusCode}');
       return searchResponseTrackList;
     }
+  }
+
+  Future<void> uploadProfileInfo({required UserProfile userProfile}) async {
+    final userProfileMap = userProfile.toJson();
+    await firestore
+        .collection('users')
+        .doc(userProfile.uid)
+        .set(userProfileMap);
   }
 }
