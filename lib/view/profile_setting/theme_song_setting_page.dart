@@ -208,8 +208,8 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                                               track: spotifySearchTrack);
                                           //ダイアログを閉じる
                                           Navigator.pop(context);
-                                          //TODO テーマソングの登録画面を閉じる
-                                          //Navigator.pop(context);
+                                          //テーマソングの登録画面を閉じる
+                                          Navigator.pop(context);
                                         }),
                                   ],
                                 );

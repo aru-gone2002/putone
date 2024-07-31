@@ -77,8 +77,8 @@ class _CommunitySettingPageState extends ConsumerState<CommunitySettingPage> {
                               );
                               //ダイアログを閉じる
                               Navigator.pop(context);
-                              //TODO コミュニティの登録画面を閉じる
-                              //Navigator.pop(context);
+                              //コミュニティの登録画面を閉じる
+                              Navigator.pop(context);
                             }),
                       ],
                     );
