@@ -2,25 +2,30 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-  
+
+      //ユーザーがログインしているかを検証
   		function isAuthenticated() {
   					return request.auth != null;
   		}
-  
-  		function isUserAuthenticated(userId) {
-          	return isAuthenticated() && userId == request.resource.data.userId;
+
+      //ユーザーがログインしていること & 書き込まれるデータのuidプロパティが格納されるuidと一緒かどうか & ログインユーザーが書き込むuidと同じか
+  		function isUserAuthenticated(uid) {
+          	return isAuthenticated() && uid == request.resource.data.uid && isSameUser(uid);
+      }
+
+      function isSameUser(uid) {
+            return uid == request.auth.uid;
       }
 
 
-
-      function isValidUser(user) {
-        return user.size() == 5
-        && 'username' in user && user.username is string
-        && 'userId' in user && user.userId is string
-        && 'email' in user && user.email is string
-        && 'createdAt' in user && user.createdAt is timestamp
-        && 'userCredential' in user && user.userCredential is string;
-      }
+      // function isValidUser(user) {
+      //   return user.size() == 5
+      //   && 'username' in user && user.username is string
+      //   && 'userId' in user && user.userId is string
+      //   && 'email' in user && user.email is string
+      //   && 'createdAt' in user && user.createdAt is timestamp
+      //   && 'userCredential' in user && user.userCredential is string;
+      // }
   
       // match /users/{userId} {
       //     allow read: if isAuthenticated();
@@ -32,7 +37,7 @@ service cloud.firestore {
 
       match /users/{uid} {
           allow read: if isAuthenticated();
-          allow create: if isUserAuthenticated(uid) && request.auth.uid == request.resource.data.uid;
+          allow create, update: if isUserAuthenticated(uid) && request.auth.uid == request.resource.data.uid;
       }
       
   }

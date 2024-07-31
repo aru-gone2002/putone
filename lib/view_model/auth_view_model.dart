@@ -28,7 +28,7 @@ class AuthViewModel {
 
   bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
 
-  UserProfile get userProfile => _ref.watch(userProfileProvider);
+  UserProfile get userProfile => _ref.read(userProfileProvider);
 
   void saveUid(String value) {
     _ref.read(userAuthProvider.notifier).state =

@@ -12,10 +12,12 @@ final userProfileProvider = StateProvider<UserProfile>(
     themeMusicArtistName: '',
     themeMusicImg: '',
     themeMusicSpotifyUrl: '',
+    themeMusicPreviewUrl: '',
     userSpotifyConnected: false,
     userSignUpTimestamp: DateTime.now(),
     userLastLoginTimestamp: DateTime.now(),
     followingUserCount: 0,
     followedUserCount: 0,
+    communityId: '',
   ),
 );

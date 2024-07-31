@@ -28,12 +28,14 @@ mixin _$UserProfile {
   String get themeMusicArtistName => throw _privateConstructorUsedError;
   String get themeMusicName => throw _privateConstructorUsedError;
   String get themeMusicSpotifyUrl => throw _privateConstructorUsedError;
+  String get themeMusicPreviewUrl => throw _privateConstructorUsedError;
   String get userProfileMsg => throw _privateConstructorUsedError;
   bool get userSpotifyConnected => throw _privateConstructorUsedError;
   int get followingUserCount => throw _privateConstructorUsedError;
   int get followedUserCount => throw _privateConstructorUsedError;
   DateTime get userSignUpTimestamp => throw _privateConstructorUsedError;
   DateTime get userLastLoginTimestamp => throw _privateConstructorUsedError;
+  String get communityId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,12 +58,14 @@ abstract class $UserProfileCopyWith<$Res> {
       String themeMusicArtistName,
       String themeMusicName,
       String themeMusicSpotifyUrl,
+      String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
       int followingUserCount,
       int followedUserCount,
       DateTime userSignUpTimestamp,
-      DateTime userLastLoginTimestamp});
+      DateTime userLastLoginTimestamp,
+      String communityId});
 }
 
 /// @nodoc
@@ -85,12 +89,14 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? themeMusicArtistName = null,
     Object? themeMusicName = null,
     Object? themeMusicSpotifyUrl = null,
+    Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
     Object? followingUserCount = null,
     Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
+    Object? communityId = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -125,6 +131,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.themeMusicSpotifyUrl
           : themeMusicSpotifyUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      themeMusicPreviewUrl: null == themeMusicPreviewUrl
+          ? _value.themeMusicPreviewUrl
+          : themeMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
+              as String,
       userProfileMsg: null == userProfileMsg
           ? _value.userProfileMsg
           : userProfileMsg // ignore: cast_nullable_to_non_nullable
@@ -149,6 +159,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.userLastLoginTimestamp
           : userLastLoginTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -170,12 +184,14 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       String themeMusicArtistName,
       String themeMusicName,
       String themeMusicSpotifyUrl,
+      String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
       int followingUserCount,
       int followedUserCount,
       DateTime userSignUpTimestamp,
-      DateTime userLastLoginTimestamp});
+      DateTime userLastLoginTimestamp,
+      String communityId});
 }
 
 /// @nodoc
@@ -197,12 +213,14 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? themeMusicArtistName = null,
     Object? themeMusicName = null,
     Object? themeMusicSpotifyUrl = null,
+    Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
     Object? followingUserCount = null,
     Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
+    Object? communityId = null,
   }) {
     return _then(_$UserProfileImpl(
       uid: null == uid
@@ -237,6 +255,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.themeMusicSpotifyUrl
           : themeMusicSpotifyUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      themeMusicPreviewUrl: null == themeMusicPreviewUrl
+          ? _value.themeMusicPreviewUrl
+          : themeMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
+              as String,
       userProfileMsg: null == userProfileMsg
           ? _value.userProfileMsg
           : userProfileMsg // ignore: cast_nullable_to_non_nullable
@@ -261,6 +283,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.userLastLoginTimestamp
           : userLastLoginTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      communityId: null == communityId
+          ? _value.communityId
+          : communityId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -277,12 +303,14 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       required this.themeMusicArtistName,
       required this.themeMusicName,
       required this.themeMusicSpotifyUrl,
+      required this.themeMusicPreviewUrl,
       required this.userProfileMsg,
       required this.userSpotifyConnected,
       required this.followingUserCount,
       required this.followedUserCount,
       required this.userSignUpTimestamp,
-      required this.userLastLoginTimestamp});
+      required this.userLastLoginTimestamp,
+      required this.communityId});
 
   factory _$UserProfileImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserProfileImplFromJson(json);
@@ -304,6 +332,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
   @override
   final String themeMusicSpotifyUrl;
   @override
+  final String themeMusicPreviewUrl;
+  @override
   final String userProfileMsg;
   @override
   final bool userSpotifyConnected;
@@ -315,10 +345,12 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
   final DateTime userSignUpTimestamp;
   @override
   final DateTime userLastLoginTimestamp;
+  @override
+  final String communityId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp)';
+    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp, communityId: $communityId)';
   }
 
   @override
@@ -334,13 +366,15 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       ..add(DiagnosticsProperty('themeMusicArtistName', themeMusicArtistName))
       ..add(DiagnosticsProperty('themeMusicName', themeMusicName))
       ..add(DiagnosticsProperty('themeMusicSpotifyUrl', themeMusicSpotifyUrl))
+      ..add(DiagnosticsProperty('themeMusicPreviewUrl', themeMusicPreviewUrl))
       ..add(DiagnosticsProperty('userProfileMsg', userProfileMsg))
       ..add(DiagnosticsProperty('userSpotifyConnected', userSpotifyConnected))
       ..add(DiagnosticsProperty('followingUserCount', followingUserCount))
       ..add(DiagnosticsProperty('followedUserCount', followedUserCount))
       ..add(DiagnosticsProperty('userSignUpTimestamp', userSignUpTimestamp))
-      ..add(DiagnosticsProperty(
-          'userLastLoginTimestamp', userLastLoginTimestamp));
+      ..add(
+          DiagnosticsProperty('userLastLoginTimestamp', userLastLoginTimestamp))
+      ..add(DiagnosticsProperty('communityId', communityId));
   }
 
   @override
@@ -361,6 +395,8 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
                 other.themeMusicName == themeMusicName) &&
             (identical(other.themeMusicSpotifyUrl, themeMusicSpotifyUrl) ||
                 other.themeMusicSpotifyUrl == themeMusicSpotifyUrl) &&
+            (identical(other.themeMusicPreviewUrl, themeMusicPreviewUrl) ||
+                other.themeMusicPreviewUrl == themeMusicPreviewUrl) &&
             (identical(other.userProfileMsg, userProfileMsg) ||
                 other.userProfileMsg == userProfileMsg) &&
             (identical(other.userSpotifyConnected, userSpotifyConnected) ||
@@ -372,7 +408,9 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
             (identical(other.userSignUpTimestamp, userSignUpTimestamp) ||
                 other.userSignUpTimestamp == userSignUpTimestamp) &&
             (identical(other.userLastLoginTimestamp, userLastLoginTimestamp) ||
-                other.userLastLoginTimestamp == userLastLoginTimestamp));
+                other.userLastLoginTimestamp == userLastLoginTimestamp) &&
+            (identical(other.communityId, communityId) ||
+                other.communityId == communityId));
   }
 
   @JsonKey(ignore: true)
@@ -387,12 +425,14 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       themeMusicArtistName,
       themeMusicName,
       themeMusicSpotifyUrl,
+      themeMusicPreviewUrl,
       userProfileMsg,
       userSpotifyConnected,
       followingUserCount,
       followedUserCount,
       userSignUpTimestamp,
-      userLastLoginTimestamp);
+      userLastLoginTimestamp,
+      communityId);
 
   @JsonKey(ignore: true)
   @override
@@ -418,12 +458,14 @@ abstract class _UserProfile implements UserProfile {
       required final String themeMusicArtistName,
       required final String themeMusicName,
       required final String themeMusicSpotifyUrl,
+      required final String themeMusicPreviewUrl,
       required final String userProfileMsg,
       required final bool userSpotifyConnected,
       required final int followingUserCount,
       required final int followedUserCount,
       required final DateTime userSignUpTimestamp,
-      required final DateTime userLastLoginTimestamp}) = _$UserProfileImpl;
+      required final DateTime userLastLoginTimestamp,
+      required final String communityId}) = _$UserProfileImpl;
 
   factory _UserProfile.fromJson(Map<String, dynamic> json) =
       _$UserProfileImpl.fromJson;
@@ -445,6 +487,8 @@ abstract class _UserProfile implements UserProfile {
   @override
   String get themeMusicSpotifyUrl;
   @override
+  String get themeMusicPreviewUrl;
+  @override
   String get userProfileMsg;
   @override
   bool get userSpotifyConnected;
@@ -456,6 +500,8 @@ abstract class _UserProfile implements UserProfile {
   DateTime get userSignUpTimestamp;
   @override
   DateTime get userLastLoginTimestamp;
+  @override
+  String get communityId;
   @override
   @JsonKey(ignore: true)
   _$$UserProfileImplCopyWith<_$UserProfileImpl> get copyWith =>

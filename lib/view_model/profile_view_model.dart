@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:putone/data/community/community.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
+import 'package:putone/providers/community_provider.dart';
+import 'package:putone/providers/spotify_access_provider.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
@@ -35,6 +42,9 @@ class ProfileViewModel {
   String get themeMusicSpotifyUrl => _ref
       .watch(userProfileProvider.select((value) => value.themeMusicSpotifyUrl));
 
+  String get themeMusicPreviewUrl => _ref
+      .watch(userProfileProvider.select((value) => value.themeMusicPreviewUrl));
+
   String get userProfileMsg =>
       _ref.watch(userProfileProvider.select((value) => value.userProfileMsg));
 
@@ -52,6 +62,20 @@ class ProfileViewModel {
 
   DateTime get userSignUpTimestamp => _ref
       .watch(userProfileProvider.select((value) => value.userSignUpTimestamp));
+
+  String get communityId =>
+      _ref.watch(userProfileProvider.select((value) => value.communityId));
+
+  UserProfile get userProfile => _ref.read(userProfileProvider);
+
+  Community get selectedCommunity => _ref.watch(selectedCommunityProvider);
+
+  Map<String, Community> get communityMap => _ref.watch(communityMapProvider);
+
+  String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
+
+  List<SpotifyTrack> get spotifySearchTracks =>
+      _ref.watch(spotifySearchTracksProvider);
 
   void saveUid(String value) {
     _ref.read(userProfileProvider.notifier).state =
@@ -93,6 +117,11 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(themeMusicSpotifyUrl: value);
   }
 
+  void saveThemeMusicPreviewUrl(String value) {
+    _ref.read(userProfileProvider.notifier).state =
+        _ref.read(userProfileProvider).copyWith(themeMusicPreviewUrl: value);
+  }
+
   void saveUserProfileMsg(String value) {
     _ref.read(userProfileProvider.notifier).state =
         _ref.read(userProfileProvider).copyWith(userProfileMsg: value);
@@ -118,8 +147,64 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(userLastLoginTimestamp: value);
   }
 
-  void getAndSaveUid() {
-    final uid = _profileModel.getUid();
-    saveUid(uid);
+  void saveCommunityId(String value) {
+    _ref.read(userProfileProvider.notifier).state =
+        _ref.read(userProfileProvider).copyWith(communityId: value);
+  }
+
+  void saveSpotifyAccessToken(String value) {
+    _ref.read(spotifyAccessTokenProvider.notifier).state = value;
+  }
+
+  void saveSpotifySearchTracks(List<SpotifyTrack> value) {
+    _ref.read(spotifySearchTracksProvider.notifier).state = value;
+  }
+
+  void saveSelectedCommunity(Community value) {
+    _ref.read(selectedCommunityProvider.notifier).state = value;
+  }
+
+  Future<void> onImageTapped() async {
+    final XFile xFile = await _profileModel.getImageFromGallery();
+    CroppedFile? croppedFile =
+        await _profileModel.returnCroppedFile(xFile: xFile);
+    //croppedFileがnullだったら特に何もしない。
+    //CircleAvatarにbackgroundColorが表示されるだけ
+    if (croppedFile != null) {
+      final imgUrl = await _profileModel.uploadProfileImgAndGetURL(
+          uid: uid, croppedFile: croppedFile);
+      saveUserImg(imgUrl);
+    }
+  }
+
+  Future<void> fetchAccessToken() async {
+    final accessToken = await _profileModel.fetchAccessToken();
+    if (accessToken != null) {
+      saveSpotifyAccessToken(accessToken);
+    }
+  }
+
+  Future<void> searchTracks({
+    required String searchTrackName,
+    required String searchArtistName,
+  }) async {
+    final List<SpotifyTrack> spotifyTracks = await _profileModel.searchTracks(
+      accessToken: spotifyAccessToken,
+      searchTrackName: searchTrackName,
+      seachArtistName: searchArtistName,
+    );
+    saveSpotifySearchTracks(spotifyTracks);
+  }
+
+  void setThemeSong({required SpotifyTrack track}) {
+    saveThemeMusicName(track.trackName);
+    saveThemeMusicArtistName(track.artistName);
+    saveThemeMusicImg(track.trackImg);
+    saveThemeMusicSpotifyUrl(track.trackExternalUrl);
+    saveThemeMusicPreviewUrl(track.previewUrl ?? '');
+  }
+
+  Future<void> uploadProfileInfo() async {
+    _profileModel.uploadProfileInfo(userProfile: userProfile);
   }
 }

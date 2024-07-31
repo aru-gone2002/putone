@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAuthenticated() {
+  					return request.auth != null;
+  	}
+    
+    function isSameUser(uid) {
+            return uid == request.auth.uid;
+    }
+
+    // match /{allPaths=**} {
+    //   allow read, write: if true;
+    // }
+
+    match /users/{uid}/{imageId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isSameUser(uid);
+    }
+  }
+}

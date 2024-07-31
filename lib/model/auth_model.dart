@@ -11,7 +11,7 @@ import 'package:putone/view_model/profile_view_model.dart';
 
 class AuthModel {
   FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<FirebaseAuthException?> signUpWithEmailAndPassword({
     required String userEmail,
@@ -40,7 +40,7 @@ class AuthModel {
       final userProfile = authViewModel.userProfile;
       final userProfileMap = userProfile.toJson();
 
-      await fireStore.collection('users').doc(uid).set(userProfileMap);
+      await firestore.collection('users').doc(uid).set(userProfileMap);
 
       await userCredential.user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
