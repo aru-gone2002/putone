@@ -56,7 +56,7 @@ void toThemeSongSettingPage({required BuildContext context}) => Navigator.push(
 void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const ProfileMsgSettingPage()),
+        builder: ((context) => ProfileMsgSettingPage()),
       ),
     );
 

@@ -8,24 +8,11 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class ProfileMsgSettingPage extends ConsumerStatefulWidget {
-  const ProfileMsgSettingPage({super.key});
+class ProfileMsgSettingPage extends StatelessWidget {
+  ProfileMsgSettingPage({super.key});
 
-  @override
-  ConsumerState<ProfileMsgSettingPage> createState() {
-    return _ProfileMsgSettingPageState();
-  }
-}
-
-class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _profileViewModel.setRef(ref);
-  }
 
   void setUserProfileMsgFunction(
       GlobalKey<FormState> formKey, BuildContext context) async {
@@ -62,46 +49,52 @@ class _ProfileMsgSettingPageState extends ConsumerState<ProfileMsgSettingPage> {
             const SizedBox(height: 10),
             Form(
               key: formKey,
-              child: TextFormField(
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return notInputTextValidator;
-                  }
-                  if (value.length > 120) {
-                    return askTextLengthLessThanOrEqual120Validator;
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _profileViewModel.saveUserProfileMsg(value!);
-                },
-                maxLines: 6,
-                maxLength: 120,
-                //expands: true,
-                cursorColor: AppColorTheme.color().mainColor,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                  isDense: true,
-                  hintText: profileMsgHintText,
-                  hintStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: AppColorTheme.color().gray1,
+              child: Consumer(
+                builder: (context, ref, _) {
+                  _profileViewModel.setRef(ref);
+                  return TextFormField(
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return notInputTextValidator;
+                      }
+                      if (value.length > 120) {
+                        return askTextLengthLessThanOrEqual120Validator;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _profileViewModel.saveUserProfileMsg(value!);
+                    },
+                    maxLines: 6,
+                    maxLength: 120,
+                    //expands: true,
+                    cursorColor: AppColorTheme.color().mainColor,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 12),
+                      isDense: true,
+                      hintText: profileMsgHintText,
+                      hintStyle:
+                          Theme.of(context).textTheme.labelMedium!.copyWith(
+                                color: AppColorTheme.color().gray1,
+                              ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: AppColorTheme.color().gray1,
+                          width: 1.0,
+                        ),
                       ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColorTheme.color().gray1,
-                      width: 1.0,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: AppColorTheme.color().mainColor,
+                          width: 2.0,
+                        ),
+                      ),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColorTheme.color().mainColor,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
             const SizedBox(
