@@ -84,7 +84,6 @@ flutter:
   assets:
     - assets/images/putone_logo_white_transparent.png
     - assets/images/putone_logo_black_transparent.png
-    - assets/images/idol.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
