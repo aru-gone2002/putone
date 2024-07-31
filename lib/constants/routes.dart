@@ -63,7 +63,7 @@ void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
 void toCommunitySettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const CommunitySettingPage()),
+        builder: ((context) => CommunitySettingPage()),
       ),
     );
 
