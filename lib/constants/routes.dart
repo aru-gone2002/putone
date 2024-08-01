@@ -20,7 +20,7 @@ void toFirstProfileSettingPage({required BuildContext context}) =>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const FirstProfileSettingPage()),
+        builder: ((context) => FirstProfileSettingPage()),
       ),
     );
 
@@ -56,14 +56,14 @@ void toThemeSongSettingPage({required BuildContext context}) => Navigator.push(
 void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => ProfileMsgSettingPage()),
+        builder: ((context) => const ProfileMsgSettingPage()),
       ),
     );
 
 void toCommunitySettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => CommunitySettingPage()),
+        builder: ((context) => const CommunitySettingPage()),
       ),
     );
 
