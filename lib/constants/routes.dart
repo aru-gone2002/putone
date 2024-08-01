@@ -49,7 +49,7 @@ void toSecondProfileSettingPage({required BuildContext context}) =>
 void toThemeSongSettingPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const ThemeSongSettingPage()),
+        builder: ((context) => ThemeSongSettingPage()),
       ),
     );
 

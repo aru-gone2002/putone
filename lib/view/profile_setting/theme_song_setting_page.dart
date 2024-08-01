@@ -8,25 +8,12 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class ThemeSongSettingPage extends ConsumerStatefulWidget {
-  const ThemeSongSettingPage({super.key});
+class ThemeSongSettingPage extends StatelessWidget {
+  ThemeSongSettingPage({super.key});
 
-  @override
-  ConsumerState<ThemeSongSettingPage> createState() {
-    return _ThemeSongSettingPageState();
-  }
-}
-
-class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
   final TextEditingController _trackNameController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _profileViewModel.setRef(ref);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +34,18 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
               selectedThemeSongLabel,
               style: Theme.of(context).textTheme.labelMedium,
             ),
-            Text(
-              _profileViewModel.themeMusicName != ''
-                  ? '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}'
-                  : askToSelectMusicText,
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: AppColorTheme.color().gray1,
-                  ),
-              overflow: TextOverflow.ellipsis,
-            ),
+            Consumer(builder: (context, ref, _) {
+              _profileViewModel.setRef(ref);
+              return Text(
+                _profileViewModel.themeMusicName != ''
+                    ? '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}'
+                    : askToSelectMusicText,
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: AppColorTheme.color().gray1,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              );
+            }),
             const SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,29 +108,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                   child: SizedBox(
                     height: 40,
                     width: 108,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColorTheme.color().gray1,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                      ),
-                      //onPressed
-                      onPressed: () {
-                        if (_artistNameController.text == '' &&
-                            _trackNameController.text == '') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text(askToEnterTrackOrArtistSnackBarText),
-                            ),
-                          );
-                        } else {
-                          _profileViewModel.searchTracks(
-                            searchTrackName: _trackNameController.text,
-                            searchArtistName: _artistNameController.text,
-                          );
-                        }
-                      },
+                    child: Consumer(
                       child: const Row(
                         children: [
                           Icon(
@@ -159,6 +127,34 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                           ),
                         ],
                       ),
+                      builder: (context, ref, child) {
+                        _profileViewModel.setRef(ref);
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColorTheme.color().gray1,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                          ),
+                          //onPressed
+                          onPressed: () {
+                            if (_artistNameController.text == '' &&
+                                _trackNameController.text == '') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text(askToEnterTrackOrArtistSnackBarText),
+                                ),
+                              );
+                            } else {
+                              _profileViewModel.searchTracks(
+                                searchTrackName: _trackNameController.text,
+                                searchArtistName: _artistNameController.text,
+                              );
+                            }
+                          },
+                          child: child,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -166,82 +162,94 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
             ),
             const SizedBox(height: 24),
             Container(
-              height: 300,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: const [
-                    BoxShadow(
-                        blurRadius: 4,
-                        offset: Offset(2, 4),
-                        spreadRadius: 2,
-                        color: Color.fromARGB(60, 0, 0, 0)),
-                  ]),
-              child: _profileViewModel.spotifySearchTracks.isEmpty
-                  ? const Center(
-                      child: Text(askToSearchByTrackAndArtistText),
-                    )
-                  : ListView.builder(
-                      itemCount: _profileViewModel.spotifySearchTracks.length,
-                      itemBuilder: (context, index) {
-                        final spotifySearchTrack =
-                            _profileViewModel.spotifySearchTracks[index];
-                        return ListTile(
-                          onTap: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title:
-                                      const Text(musicSettingConfirmDialogText),
-                                  content: Text(
-                                      '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text(backBtnText),
+                height: 300,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: const [
+                      BoxShadow(
+                          blurRadius: 4,
+                          offset: Offset(2, 4),
+                          spreadRadius: 2,
+                          color: Color.fromARGB(60, 0, 0, 0)),
+                    ]),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    _profileViewModel.setRef(ref);
+                    return _profileViewModel.spotifySearchTracks.isEmpty
+                        ? const Center(
+                            child: Text(askToSearchByTrackAndArtistText),
+                          )
+                        : ListView.builder(
+                            itemCount:
+                                _profileViewModel.spotifySearchTracks.length,
+                            itemBuilder: (context, index) {
+                              final spotifySearchTrack =
+                                  _profileViewModel.spotifySearchTracks[index];
+                              return ListTile(
+                                onTap: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                            musicSettingConfirmDialogText),
+                                        content: Text(
+                                            '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text(backBtnText),
+                                          ),
+                                          TextButton(
+                                              child:
+                                                  const Text(registerBtnText),
+                                              onPressed: () {
+                                                _profileViewModel.setThemeSong(
+                                                    track: spotifySearchTrack);
+                                                //ダイアログを閉じる
+                                                Navigator.pop(context);
+                                                //テーマソングの登録画面を閉じる
+                                                Navigator.pop(context);
+                                              }),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                leading: Container(
+                                  height: 56,
+                                  width: 56,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    image: DecorationImage(
+                                      //Spotify APIのSearchで取得してきた楽曲の画像を入れる。
+                                      image: NetworkImage(
+                                          spotifySearchTrack.trackImg),
                                     ),
-                                    TextButton(
-                                        child: const Text(registerBtnText),
-                                        onPressed: () {
-                                          _profileViewModel.setThemeSong(
-                                              track: spotifySearchTrack);
-                                          //ダイアログを閉じる
-                                          Navigator.pop(context);
-                                          //テーマソングの登録画面を閉じる
-                                          Navigator.pop(context);
-                                        }),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          leading: Container(
-                            height: 56,
-                            width: 56,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              image: DecorationImage(
-                                //Spotify APIのSearchで取得してきた楽曲の画像を入れる。
-                                image:
-                                    NetworkImage(spotifySearchTrack.trackImg),
-                              ),
-                            ),
-                          ),
-                          //Spotify APIのSearchで取得してきた楽曲の名前を入れる。
-                          title: Text(spotifySearchTrack.trackName),
-                          //Spotify APIのSearchで取得してきたアーティストの名前を入れる。
-                          subtitle: Text(spotifySearchTrack.artistName),
-                        );
-                      }),
-            ),
+                                  ),
+                                ),
+                                //Spotify APIのSearchで取得してきた楽曲の名前を入れる。
+                                title: Text(spotifySearchTrack.trackName),
+                                //Spotify APIのSearchで取得してきたアーティストの名前を入れる。
+                                subtitle: Text(spotifySearchTrack.artistName),
+                              );
+                            });
+                  },
+                )),
             const SizedBox(height: 48),
             //TODO アクセストークンを取得するためのボタン、リリース段階では削除する
-            DeepGrayButton(
-              onPressed: () async {
-                await _profileViewModel.fetchAccessToken();
+            Consumer(
+              builder: (context, ref, _) {
+                _profileViewModel.setRef(ref);
+                return DeepGrayButton(
+                  onPressed: () async {
+                    await _profileViewModel.fetchAccessToken();
+                  },
+                  text: 'アクセストークン取得',
+                );
               },
-              text: 'アクセストークン取得',
             ),
           ]),
         ),
