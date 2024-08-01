@@ -6,31 +6,16 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class FirstProfileSettingPage extends ConsumerStatefulWidget {
-  const FirstProfileSettingPage({super.key});
+class FirstProfileSettingPage extends StatelessWidget {
+  FirstProfileSettingPage({super.key});
 
-  @override
-  ConsumerState<FirstProfileSettingPage> createState() {
-    return _FirstProfileSettingPageState();
-  }
-}
-
-class _FirstProfileSettingPageState
-    extends ConsumerState<FirstProfileSettingPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ProfileViewModel _profileViewModel = ProfileViewModel();
-
-  @override
-  void initState() {
-    super.initState();
-    _profileViewModel.setRef(ref);
-  }
 
   void setUserIdAndNameFunction(
       GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      //_profileViewModel.getAndSaveUid();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(userIdAndNameCompleteSnackBarText),
@@ -57,34 +42,46 @@ class _FirstProfileSettingPageState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FormFieldItem(
-                  itemName: userIdTitle,
-                  textRestriction: userIdRestrictionText,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return notInputUserIdText;
-                    }
-                    //小文字と.と数字で入力してもらうようにする。正規表現のやつ
-                    if (!RegExp(r'^[a-z0-9.]{4,}$').hasMatch(value)) {
-                      return inputUserIdIsNotValidText;
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _profileViewModel.saveUserId(value as String);
-                  }),
-              FormFieldItem(
-                  itemName: userNameTitle,
-                  textRestriction: '',
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return notInputUserNameText;
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _profileViewModel.saveUserName(value as String);
-                  }),
+              Consumer(
+                builder: (context, ref, _) {
+                  _profileViewModel.setRef(ref);
+                  return FormFieldItem(
+                    itemName: userIdTitle,
+                    textRestriction: userIdRestrictionText,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return notInputUserIdText;
+                      }
+                      //小文字と.と数字で入力してもらうようにする。正規表現のやつ
+                      if (!RegExp(r'^[a-z0-9.]{4,}$').hasMatch(value)) {
+                        return inputUserIdIsNotValidText;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _profileViewModel.saveUserId(value as String);
+                    },
+                  );
+                },
+              ),
+              Consumer(
+                builder: (context, ref, child) {
+                  _profileViewModel.setRef(ref);
+                  return FormFieldItem(
+                    itemName: userNameTitle,
+                    textRestriction: '',
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return notInputUserNameText;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _profileViewModel.saveUserName(value as String);
+                    },
+                  );
+                },
+              ),
               const SizedBox(height: 60),
               AccentColorButton(
                 onPressed: () {
