@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/theme/app_font_theme.dart';
-import 'package:putone/view/auth/login_page.dart';
-import 'package:putone/view/auth/signup_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

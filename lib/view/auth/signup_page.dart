@@ -8,54 +8,40 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
+class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
-  ConsumerState<SignUpPage> createState() {
-    return _SignUpPageState();
-  }
-}
+  Widget build(BuildContext context) {
+    final AuthViewModel authViewModel = AuthViewModel();
+    final formKey = GlobalObjectKey<FormState>(context);
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
-  final AuthViewModel _authViewModel = AuthViewModel();
+    Future<void> signUpFunction(GlobalObjectKey<FormState> formKey) async {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        //firebase Authでメールアドレスとパスワードを使ってサインアップし、
+        //メールアドレス認証メールを送る処理を実行
+        final signUpResponse = await authViewModel.signUpWithEmailAndPassword();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: signUpResponse == null
+                    ? const Text(signUpSucceededText)
+                    : switch (signUpResponse.code) {
+                        'weak-password' => const Text(weakPasswordText),
+                        'email-already-in-use' =>
+                          const Text(emailAlreadyInUseText),
+                        'invalid-email' => const Text(invalidEmailText),
+                        _ => const Text(accountCreateErrorText),
+                      }),
+          );
+        }
 
-  @override
-  void initState() {
-    super.initState();
-    _authViewModel.setRef(ref);
-  }
-
-  Future<void> signUpFunction(GlobalKey<FormState> formKey) async {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      //firebase Authでメールアドレスとパスワードを使ってサインアップし、
-      //メールアドレス認証メールを送る処理を実行
-      final signUpResponse = await _authViewModel.signUpWithEmailAndPassword();
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: signUpResponse == null
-                  ? const Text(signUpSucceededText)
-                  : switch (signUpResponse.code) {
-                      'weak-password' => const Text(weakPasswordText),
-                      'email-already-in-use' =>
-                        const Text(emailAlreadyInUseText),
-                      'invalid-email' => const Text(invalidEmailText),
-                      _ => const Text(accountCreateErrorText),
-                    }),
-        );
-      }
-
-      if (context.mounted && signUpResponse == null) {
-        toEmailAuthPage(context: context);
+        if (context.mounted && signUpResponse == null) {
+          toEmailAuthPage(context: context);
+        }
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -96,48 +82,57 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     return null;
                   },
                   onSaved: (value) {
-                    _authViewModel.saveEmail(value as String);
+                    authViewModel.saveEmail(value as String);
                   },
                 ),
-                FormFieldItem(
-                  itemName: passwordTitle,
-                  textRestriction: passwordRestrictionText,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return notInputPasswordText;
-                    }
-                    if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
-                        // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
-                        .hasMatch(value)) {
-                      return inputPasswordIsNotValidText;
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authViewModel.savePassword(value as String);
-                  },
-                ),
+                Consumer(builder: (context, ref, _) {
+                  authViewModel.setRef(ref);
+                  return FormFieldItem(
+                    itemName: passwordTitle,
+                    textRestriction: passwordRestrictionText,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return notInputPasswordText;
+                      }
+                      if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
+                          // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+                          .hasMatch(value)) {
+                        return inputPasswordIsNotValidText;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      authViewModel.savePassword(value as String);
+                    },
+                  );
+                }),
                 const SizedBox(height: 60),
                 //　isLoadingでグルグルさせる
-                Visibility(
-                  visible: !_authViewModel.signUpIsLoading,
-                  replacement: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColorTheme.color().accentColor,
-                      ),
+                Consumer(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColorTheme.color().accentColor,
                     ),
                   ),
-                  child: AccentColorButton(
-                    onPressed: () async {
-                      _authViewModel.loadingSignUp();
-                      await signUpFunction(formKey);
-                      _authViewModel.completedSignUp();
-                    },
-                    text: signupTitle,
-                  ),
+                  builder: (context, ref, child) {
+                    authViewModel.setRef(ref);
+                    return Visibility(
+                      visible: !authViewModel.signUpIsLoading,
+                      replacement: SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: child,
+                      ),
+                      child: AccentColorButton(
+                        onPressed: () async {
+                          authViewModel.loadingSignUp();
+                          await signUpFunction(formKey);
+                          authViewModel.completedSignUp();
+                        },
+                        text: signupTitle,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 32),
                 GrayColorTextButton(

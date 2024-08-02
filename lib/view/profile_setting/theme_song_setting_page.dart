@@ -4,13 +4,11 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class ThemeSongSettingPage extends ConsumerStatefulWidget {
   const ThemeSongSettingPage({super.key});
-
   @override
   ConsumerState<ThemeSongSettingPage> createState() {
     return _ThemeSongSettingPageState();
@@ -26,6 +24,13 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
   void initState() {
     super.initState();
     _profileViewModel.setRef(ref);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _trackNameController.dispose();
+    _artistNameController.dispose();
   }
 
   @override
@@ -56,6 +61,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                   ),
               overflow: TextOverflow.ellipsis,
             ),
+
             const SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,13 +239,14 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                           //Spotify APIのSearchで取得してきたアーティストの名前を入れる。
                           subtitle: Text(spotifySearchTrack.artistName),
                         );
-                      }),
+                      },
+                    ),
             ),
             const SizedBox(height: 48),
             //TODO アクセストークンを取得するためのボタン、リリース段階では削除する
             DeepGrayButton(
               onPressed: () async {
-                await _profileViewModel.fetchAccessToken();
+                await _profileViewModel.fetchSpotifyAccessToken();
               },
               text: 'アクセストークン取得',
             ),
