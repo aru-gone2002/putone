@@ -8,17 +8,16 @@ import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class EmailAuthPage extends ConsumerWidget {
+class EmailAuthPage extends StatelessWidget {
   const EmailAuthPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
-    authViewModel.setRef(ref);
-    profileViewModel.setRef(ref);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         const SizedBox(height: 100),
         Text(
@@ -37,59 +36,66 @@ class EmailAuthPage extends ConsumerWidget {
         ),
         const SizedBox(height: 200),
         Center(
-          child: Visibility(
-            visible: !authViewModel.emailAuthIsLoading,
-            replacement: SizedBox(
-              width: 48,
-              height: 48,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  AppColorTheme.color().accentColor,
-                ),
+          child: Consumer(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppColorTheme.color().accentColor,
               ),
             ),
-            child: AccentColorButton(
-              onPressed: () async {
-                authViewModel.loadingEmailAuth();
-                final signInResponse =
-                    await authViewModel.signInWithEmailAndPassword();
+            builder: (context, ref, child) {
+              authViewModel.setRef(ref);
+              profileViewModel.setRef(ref);
+              return Visibility(
+                visible: !authViewModel.emailAuthIsLoading,
+                replacement: SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: child,
+                ),
+                child: AccentColorButton(
+                  onPressed: () async {
+                    authViewModel.loadingEmailAuth();
+                    final signInResponse =
+                        await authViewModel.signInWithEmailAndPassword();
 
-                //　ログインが失敗した時の処理
-                if (signInResponse != null && context.mounted) {
-                  authViewModel.completedEmailAuth();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(errorAndRetryText),
-                      duration: Duration(milliseconds: 6000),
-                    ),
-                  );
-                }
-
-                //　ログインがちゃんと成功した時の処理
-                if (signInResponse == null) {
-                  await authViewModel.checkUserEmailVerified();
-                  if (authViewModel.userEmailVerified) {
-                    if (context.mounted) {
-                      toFirstProfileSettingPage(context: context);
-                      authViewModel.completedEmailAuth();
-                      await profileViewModel.fetchSpotifyAccessToken();
-                    }
-                  } else {
-                    await authViewModel.signOut();
-                    if (context.mounted) {
+                    //　ログインが失敗した時の処理
+                    if (signInResponse != null && context.mounted) {
                       authViewModel.completedEmailAuth();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text(emailIsNotVerifiedText),
+                          content: Text(errorAndRetryText),
                           duration: Duration(milliseconds: 6000),
                         ),
                       );
                     }
-                  }
-                }
-              },
-              text: isEmailVerifiedText,
-            ),
+
+                    //　ログインがちゃんと成功した時の処理
+                    if (signInResponse == null) {
+                      await authViewModel.checkUserEmailVerified();
+                      if (authViewModel.userEmailVerified) {
+                        if (context.mounted) {
+                          toFirstProfileSettingPage(context: context);
+                          authViewModel.completedEmailAuth();
+                          await profileViewModel.fetchSpotifyAccessToken();
+                        }
+                      } else {
+                        await authViewModel.signOut();
+                        if (context.mounted) {
+                          authViewModel.completedEmailAuth();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(emailIsNotVerifiedText),
+                              duration: Duration(milliseconds: 6000),
+                            ),
+                          );
+                        }
+                      }
+                    }
+                  },
+                  text: isEmailVerifiedText,
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(height: 48),

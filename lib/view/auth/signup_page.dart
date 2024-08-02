@@ -8,14 +8,13 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 
-class SignUpPage extends ConsumerWidget {
+class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
-    authViewModel.setRef(ref);
 
     Future<void> signUpFunction(GlobalObjectKey<FormState> formKey) async {
       if (formKey.currentState!.validate()) {
@@ -86,45 +85,54 @@ class SignUpPage extends ConsumerWidget {
                     authViewModel.saveEmail(value as String);
                   },
                 ),
-                FormFieldItem(
-                  itemName: passwordTitle,
-                  textRestriction: passwordRestrictionText,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return notInputPasswordText;
-                    }
-                    if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
-                        // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
-                        .hasMatch(value)) {
-                      return inputPasswordIsNotValidText;
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    authViewModel.savePassword(value as String);
-                  },
-                ),
+                Consumer(builder: (context, ref, _) {
+                  authViewModel.setRef(ref);
+                  return FormFieldItem(
+                    itemName: passwordTitle,
+                    textRestriction: passwordRestrictionText,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return notInputPasswordText;
+                      }
+                      if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
+                          // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+                          .hasMatch(value)) {
+                        return inputPasswordIsNotValidText;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      authViewModel.savePassword(value as String);
+                    },
+                  );
+                }),
                 const SizedBox(height: 60),
                 //　isLoadingでグルグルさせる
-                Visibility(
-                  visible: !authViewModel.signUpIsLoading,
-                  replacement: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColorTheme.color().accentColor,
-                      ),
+                Consumer(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColorTheme.color().accentColor,
                     ),
                   ),
-                  child: AccentColorButton(
-                    onPressed: () async {
-                      authViewModel.loadingSignUp();
-                      await signUpFunction(formKey);
-                      authViewModel.completedSignUp();
-                    },
-                    text: signupTitle,
-                  ),
+                  builder: (context, ref, child) {
+                    authViewModel.setRef(ref);
+                    return Visibility(
+                      visible: !authViewModel.signUpIsLoading,
+                      replacement: SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: child,
+                      ),
+                      child: AccentColorButton(
+                        onPressed: () async {
+                          authViewModel.loadingSignUp();
+                          await signUpFunction(formKey);
+                          authViewModel.completedSignUp();
+                        },
+                        text: signupTitle,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 32),
                 GrayColorTextButton(

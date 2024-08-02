@@ -6,7 +6,7 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class FirstProfileSettingPage extends ConsumerWidget {
+class FirstProfileSettingPage extends StatelessWidget {
   const FirstProfileSettingPage({super.key});
 
   void setUserIdAndNameFunction(
@@ -23,10 +23,9 @@ class FirstProfileSettingPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
-    profileViewModel.setRef(ref);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,15 +35,16 @@ class FirstProfileSettingPage extends ConsumerWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
-      body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        const SizedBox(height: 32),
-        Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Consumer(
-                builder: (context, ref, _) {
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 32),
+          Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
                     itemName: userIdTitle,
@@ -63,10 +63,8 @@ class FirstProfileSettingPage extends ConsumerWidget {
                       profileViewModel.saveUserId(value as String);
                     },
                   );
-                },
-              ),
-              Consumer(
-                builder: (context, ref, child) {
+                }),
+                Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
                     itemName: userNameTitle,
@@ -81,22 +79,22 @@ class FirstProfileSettingPage extends ConsumerWidget {
                       profileViewModel.saveUserName(value as String);
                     },
                   );
-                },
-              ),
-              const SizedBox(height: 60),
-              AccentColorButton(
-                onPressed: () {
-                  //FirestoreにユーザーIDとユーザー名が入力したいが、
-                  //まずはproviderに値を入れてから、最後にFirestoreに入れる。
-                  //場所はFirebaseAuthのコレクションに入れる
-                  setUserIdAndNameFunction(formKey, context);
-                },
-                text: nextProgressBtnText,
-              ),
-            ],
-          ),
-        )
-      ]),
+                }),
+                const SizedBox(height: 60),
+                AccentColorButton(
+                  onPressed: () {
+                    //FirestoreにユーザーIDとユーザー名が入力したいが、
+                    //まずはproviderに値を入れてから、最後にFirestoreに入れる。
+                    //場所はFirebaseAuthのコレクションに入れる
+                    setUserIdAndNameFunction(formKey, context);
+                  },
+                  text: nextProgressBtnText,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
