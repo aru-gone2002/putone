@@ -215,4 +215,15 @@ class ProfileModel {
         .doc(userProfile.uid)
         .set(userProfileMap);
   }
+
+  Future<void> addUserToCommunity(
+      {required String uid, required String communityId}) async {
+    final Map<String, dynamic> communityUserId = {'uid': uid};
+    await firestore
+        .collection('communities')
+        .doc(communityId)
+        .collection('users')
+        .doc(uid)
+        .set(communityUserId);
+  }
 }

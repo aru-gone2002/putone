@@ -10,11 +10,22 @@ service cloud.firestore {
 
       //ユーザーがログインしていること & 書き込まれるデータのuidプロパティが格納されるuidと一緒かどうか & ログインユーザーが書き込むuidと同じか
   		function isUserAuthenticated(uid) {
-          	return isAuthenticated() && uid == request.resource.data.uid && isSameUser(uid);
+          	return isAuthenticated() && isUidOfDataSameToDocUid(uid) && isLoginUidSameToDocUid(uid);
       }
 
-      function isSameUser(uid) {
+      //ログインユーザーがdocのuidと同じか
+      function isLoginUidSameToDocUid(uid) {
             return uid == request.auth.uid;
+      }
+
+      //ログインしているユーザーのuidと送られてきたデータのuidが一致しているか確認する
+      function isUidOfDataSameToLoginUid() {
+        return request.auth.uid == request.resource.data.uid;
+      }
+
+      //書き込まれるデータのuidプロパティがdocのuidと一緒かどうか
+      function isUidOfDataSameToDocUid(uid) {
+        return uid == request.resource.data.uid;
       }
 
 
@@ -37,8 +48,11 @@ service cloud.firestore {
 
       match /users/{uid} {
           allow read: if isAuthenticated();
-          allow create, update: if isUserAuthenticated(uid) && request.auth.uid == request.resource.data.uid;
+          allow create, update: if isUserAuthenticated(uid);
       }
-      
+      match /communities/{communityId}/users/{uid} {
+        allow read: if isAuthenticated();
+        allow create, update: if isUserAuthenticated(uid);
+      }
   }
 }

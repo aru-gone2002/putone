@@ -207,4 +207,8 @@ class ProfileViewModel {
   Future<void> uploadProfileInfo() async {
     _profileModel.uploadProfileInfo(userProfile: userProfile);
   }
+
+  Future<void> addUserToCommunity() async {
+    await _profileModel.addUserToCommunity(uid: uid, communityId: communityId);
+  }
 }
