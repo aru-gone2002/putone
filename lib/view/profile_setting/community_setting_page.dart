@@ -13,7 +13,7 @@ class CommunitySettingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
-    final GlobalKey<FormFieldState> formKey = GlobalKey<FormFieldState>();
+    final formKey = GlobalObjectKey<FormFieldState>(context);
     profileViewModel.setRef(ref);
 
     return Scaffold(

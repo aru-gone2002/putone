@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nil/nil.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/title_and_text_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class SecondProfileSettingPage extends ConsumerStatefulWidget {
+class SecondProfileSettingPage extends ConsumerWidget {
   const SecondProfileSettingPage({super.key});
 
   @override
-  ConsumerState<SecondProfileSettingPage> createState() {
-    return _SecondProfileSettingPageState();
-  }
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ProfileViewModel profileViewModel = ProfileViewModel();
+    profileViewModel.setRef(ref);
 
-class _SecondProfileSettingPageState
-    extends ConsumerState<SecondProfileSettingPage> {
-  final ProfileViewModel _profileViewModel = ProfileViewModel();
-
-  @override
-  void initState() {
-    super.initState();
-    _profileViewModel.setRef(ref);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -54,14 +38,14 @@ class _SecondProfileSettingPageState
                   Center(
                     child: InkWell(
                       onTap: () async {
-                        await _profileViewModel.onImageTapped();
+                        await profileViewModel.onImageTapped();
                       },
                       child: Column(
                         children: [
                           CircleAvatar(
                             radius: 48,
-                            backgroundImage: _profileViewModel.userImg != ''
-                                ? NetworkImage(_profileViewModel.userImg)
+                            backgroundImage: profileViewModel.userImg != ''
+                                ? NetworkImage(profileViewModel.userImg)
                                 : null,
                           ),
                           const SizedBox(height: 16),
@@ -79,28 +63,27 @@ class _SecondProfileSettingPageState
                       inputDataLabel: themeSongLabel,
                       beforeInputText: tapForSettingBtnText,
                       afterInputText:
-                          '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}',
+                          '${profileViewModel.themeMusicName} / ${profileViewModel.themeMusicArtistName}',
                       //テーマソング設定ページに飛ばす
                       onTap: () => toThemeSongSettingPage(context: context),
-                      separateCondition:
-                          _profileViewModel.themeMusicName != ''),
+                      separateCondition: profileViewModel.themeMusicName != ''),
                   const SizedBox(height: 40),
                   //コミュニティ設定
                   TitleAndTextButton(
                     inputDataLabel: belongCommunityLabel,
-                    separateCondition: _profileViewModel.communityId != '',
+                    separateCondition: profileViewModel.communityId != '',
                     beforeInputText: tapForSettingBtnText,
                     //TODO
                     //communityMap[_profileViewModel.communityId]では初期値ではnullが返されてしまう。
                     //そのため、そのプロパティを取るとnull safetyによってエラーが発生してしまう。
                     //それを防ぐためには、対策を取る必要がある。
                     //TODO ここは改善する必要がある
-                    afterInputText: _profileViewModel
-                                .communityMap[_profileViewModel.communityId] ==
+                    afterInputText: profileViewModel
+                                .communityMap[profileViewModel.communityId] ==
                             null
                         ? ''
-                        : _profileViewModel
-                            .communityMap[_profileViewModel.communityId]!
+                        : profileViewModel
+                            .communityMap[profileViewModel.communityId]!
                             .communityName,
                     //コミュニティ設定ページに飛ばす
                     onTap: () => toCommunitySettingPage(context: context),
@@ -110,12 +93,11 @@ class _SecondProfileSettingPageState
                   TitleAndTextButton(
                       inputDataLabel: profileTitle,
                       beforeInputText: tapForSettingBtnText,
-                      afterInputText: _profileViewModel.userProfileMsg,
+                      afterInputText: profileViewModel.userProfileMsg,
 
                       //プロフィール文設定ページに飛ばす
                       onTap: () => toProfileMsgSettingPage(context: context),
-                      separateCondition:
-                          _profileViewModel.userProfileMsg != ''),
+                      separateCondition: profileViewModel.userProfileMsg != ''),
                 ],
               ),
               const SizedBox(height: 120),
@@ -125,7 +107,7 @@ class _SecondProfileSettingPageState
                 //routeを設定する
                 onPressed: () async {
                   toProfilePage(context: context);
-                  await _profileViewModel.uploadProfileInfo();
+                  await profileViewModel.uploadProfileInfo();
                 },
                 text: nextProgressBtnText,
               ),

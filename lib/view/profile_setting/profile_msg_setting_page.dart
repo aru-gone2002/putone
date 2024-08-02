@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
@@ -27,7 +26,7 @@ class ProfileMsgSettingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final formKey = GlobalObjectKey<FormState>(context);
     profileViewModel.setRef(ref);
 
     return Scaffold(

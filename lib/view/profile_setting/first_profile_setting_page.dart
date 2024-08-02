@@ -6,11 +6,8 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class FirstProfileSettingPage extends StatelessWidget {
-  FirstProfileSettingPage({super.key});
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ProfileViewModel _profileViewModel = ProfileViewModel();
+class FirstProfileSettingPage extends ConsumerWidget {
+  const FirstProfileSettingPage({super.key});
 
   void setUserIdAndNameFunction(
       GlobalKey<FormState> formKey, BuildContext context) {
@@ -26,7 +23,11 @@ class FirstProfileSettingPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ProfileViewModel profileViewModel = ProfileViewModel();
+    final formKey = GlobalObjectKey<FormState>(context);
+    profileViewModel.setRef(ref);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -44,7 +45,7 @@ class FirstProfileSettingPage extends StatelessWidget {
             children: [
               Consumer(
                 builder: (context, ref, _) {
-                  _profileViewModel.setRef(ref);
+                  profileViewModel.setRef(ref);
                   return FormFieldItem(
                     itemName: userIdTitle,
                     textRestriction: userIdRestrictionText,
@@ -59,14 +60,14 @@ class FirstProfileSettingPage extends StatelessWidget {
                       return null;
                     },
                     onSaved: (value) {
-                      _profileViewModel.saveUserId(value as String);
+                      profileViewModel.saveUserId(value as String);
                     },
                   );
                 },
               ),
               Consumer(
                 builder: (context, ref, child) {
-                  _profileViewModel.setRef(ref);
+                  profileViewModel.setRef(ref);
                   return FormFieldItem(
                     itemName: userNameTitle,
                     textRestriction: '',
@@ -77,7 +78,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                       return null;
                     },
                     onSaved: (value) {
-                      _profileViewModel.saveUserName(value as String);
+                      profileViewModel.saveUserName(value as String);
                     },
                   );
                 },

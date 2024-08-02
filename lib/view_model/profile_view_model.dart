@@ -177,7 +177,7 @@ class ProfileViewModel {
     }
   }
 
-  Future<void> fetchAccessToken() async {
+  Future<void> fetchSpotifyAccessToken() async {
     final accessToken = await _profileModel.fetchAccessToken();
     if (accessToken != null) {
       saveSpotifyAccessToken(accessToken);
