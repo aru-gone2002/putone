@@ -152,6 +152,10 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(communityId: value);
   }
 
+  void saveUserProfile(UserProfile value) {
+    _ref.read(userProfileProvider.notifier).state = value;
+  }
+
   void saveSpotifyAccessToken(String value) {
     _ref.read(spotifyAccessTokenProvider.notifier).state = value;
   }
@@ -210,5 +214,12 @@ class ProfileViewModel {
 
   Future<void> addUserToCommunity() async {
     await _profileModel.addUserToCommunity(uid: uid, communityId: communityId);
+  }
+
+  Future<void> getUserProfile(String uid) async {
+    final userProfile = await _profileModel.getUserProfile(uid);
+    if (userProfile != null) {
+      saveUserProfile(userProfile);
+    }
   }
 }

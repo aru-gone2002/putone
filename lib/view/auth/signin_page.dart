@@ -7,38 +7,62 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
+    final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
-    Future<void> signUpFunction(GlobalObjectKey<FormState> formKey) async {
+    Future<void> signInFunction(GlobalObjectKey<FormState> formKey) async {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        //firebase Authでメールアドレスとパスワードを使ってサインアップし、
-        //メールアドレス認証メールを送る処理を実行
-        final signUpResponse = await authViewModel.signUpWithEmailAndPassword();
+
+        //firebase Authでメールアドレスとパスワードを使ってサインインする
+        final signInResponse = await authViewModel.signInWithEmailAndPassword();
+
         if (context.mounted) {
+          //サインインに失敗した時用にSnackBarを表示する
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: signUpResponse == null
-                    ? const Text(signUpSucceededText)
-                    : switch (signUpResponse.code) {
-                        'weak-password' => const Text(weakPasswordText),
-                        'email-already-in-use' =>
-                          const Text(emailAlreadyInUseText),
-                        'invalid-email' => const Text(invalidEmailText),
-                        _ => const Text(accountCreateErrorText),
+                content: signInResponse == null
+                    ? const Text(signInSucceededText)
+                    : switch (signInResponse.code) {
+                        'invalid-email' ||
+                        'user-disabled' =>
+                          const Text(invalidEmailText),
+                        'user-not-found' => const Text(userNotFoundText),
+                        'wrong-password' => const Text(wrongPasswordText),
+                        _ => const Text(signInErrorText),
                       }),
           );
         }
 
-        if (context.mounted && signUpResponse == null) {
-          toEmailAuthPage(context: context);
+        //サインインが成功したか確認する
+        if (signInResponse == null) {
+          //uidをuser_auth_providerに格納する
+          authViewModel.checkUid();
+          //uidをuser_profile_providerに格納する
+          profileViewModel.saveUid(authViewModel.uid);
+          //メールアドレスが認証されているかをチェックする
+          await authViewModel.checkUserEmailVerified();
+          //メールアドレスが認証されているかで遷移先を変更
+          if (authViewModel.userEmailVerified) {
+            //自分のプロフィール情報を取得し、user_profile_providerに格納
+            await profileViewModel.getUserProfile(authViewModel.uid);
+            if (context.mounted) {
+              toProfilePage(context: context);
+            }
+          } else {
+            if (context.mounted) {
+              toEmailAuthPage(context: context);
+            }
+            await authViewModel.sendEmailVerification();
+          }
         }
       }
     }
@@ -49,7 +73,7 @@ class SignUpPage extends StatelessWidget {
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           const SizedBox(height: 100),
           Text(
-            signupTitle,
+            signInTitle,
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
@@ -89,15 +113,11 @@ class SignUpPage extends StatelessWidget {
                   authViewModel.setRef(ref);
                   return FormFieldItem(
                     itemName: passwordLabel,
-                    textRestriction: passwordRestrictionText,
+                    textRestriction: '',
+                    //TODO validatorは緩くする
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return notInputPasswordText;
-                      }
-                      if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
-                          // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
-                          .hasMatch(value)) {
-                        return inputPasswordIsNotValidText;
                       }
                       return null;
                     },
@@ -107,7 +127,7 @@ class SignUpPage extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 60),
-                //　isLoadingでグルグルさせる
+                //isLoadingでグルグルさせる
                 Consumer(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -116,29 +136,36 @@ class SignUpPage extends StatelessWidget {
                   ),
                   builder: (context, ref, child) {
                     authViewModel.setRef(ref);
+                    profileViewModel.setRef(ref);
                     return Visibility(
-                      visible: !authViewModel.signUpIsLoading,
+                      visible: !authViewModel.signInIsLoading,
                       replacement: SizedBox(
                         width: 48,
                         height: 48,
                         child: child,
                       ),
                       child: AccentColorButton(
+                        //loadingSignInメソッドをauthViewModelに作成
+                        //メールアドレスとパスワードを使って、FirebaseAuthでログインする
+                        //メールアドレスが認証されていなかったらメールアドレスを認証する画面を表示させる
+                        //ユーザーのプロフィール情報を取得する
+                        //completedSignInメソッドをauthViewModelに作成
                         onPressed: () async {
-                          authViewModel.loadingSignUp();
-                          await signUpFunction(formKey);
-                          authViewModel.completedSignUp();
+                          authViewModel.loadingSignIn();
+                          await signInFunction(formKey);
+                          authViewModel.completedSignIn();
                         },
-                        text: signupTitle,
+                        text: signInBtnText,
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 32),
                 GrayColorTextButton(
-                  onPressed: () => toSignInPage(context: context),
-                  text: accountExistBtnText,
+                  onPressed: () => toSignUpPage(context: context),
+                  text: accountNotExistBtnText,
                 ),
+                //TODO パスワードを再発行するボタンを作成する
               ],
             ),
           )

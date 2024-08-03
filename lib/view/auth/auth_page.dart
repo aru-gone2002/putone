@@ -8,10 +8,6 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onLoginBtnPressed() {
-      toLoginPage(context: context);
-    }
-
     return Scaffold(
       backgroundColor: AppColorTheme.color().mainColor,
       body: Center(
@@ -43,7 +39,7 @@ class AuthPage extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 48, minWidth: 300),
                 child: ElevatedButton(
-                  onPressed: () => toLoginPage(context: context),
+                  onPressed: () => toSignInPage(context: context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(

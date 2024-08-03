@@ -3,7 +3,7 @@ import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/profile_setting/community_setting_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
-import 'package:putone/view/auth/login_page.dart';
+import 'package:putone/view/auth/signin_page.dart';
 import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
 import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
@@ -31,10 +31,10 @@ void toSignUpPage({required BuildContext context}) => Navigator.push(
       ),
     );
 
-void toLoginPage({required BuildContext context}) => Navigator.push(
+void toSignInPage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const LoginPage()),
+        builder: ((context) => const SignInPage()),
       ),
     );
 

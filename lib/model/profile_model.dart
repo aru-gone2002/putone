@@ -226,4 +226,15 @@ class ProfileModel {
         .doc(uid)
         .set(communityUserId);
   }
+
+  Future<UserProfile?> getUserProfile(String uid) async {
+    try {
+      final response = await firestore.collection('users').doc(uid).get();
+      final responseData = response.data() as Map<String, dynamic>;
+      final userProfile = UserProfile.fromJson(responseData);
+      return userProfile;
+    } catch (e) {
+      print('Error getting document: $e');
+    }
+  }
 }

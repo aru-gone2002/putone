@@ -47,7 +47,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
-                    itemName: userIdTitle,
+                    itemName: userIdLabel,
                     textRestriction: userIdRestrictionText,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -67,7 +67,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
-                    itemName: userNameTitle,
+                    itemName: userNameLabel,
                     textRestriction: '',
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {

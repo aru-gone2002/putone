@@ -1,13 +1,15 @@
 import 'package:uuid/uuid.dart';
 
 //button
-const String accountExistText = '既にアカウントをお持ちの方';
+const String accountExistBtnText = '既にアカウントをお持ちの方';
 const String nextProgressBtnText = '次に進む';
 const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 const String registerBtnText = '登録';
 const String searchBtnText = '検索';
 const String backBtnText = '戻る';
+const String accountNotExistBtnText = '会員登録する';
+const String signInBtnText = 'ログイン';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -15,7 +17,11 @@ const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録'
 const String communityPageAppbarTitle = 'コミュニティの登録';
 
 //label
+const String emailAddressLabel = "メールアドレス";
+const String passwordLabel = "パスワード";
 const String musicNameLabel = '楽曲名';
+const String userIdLabel = 'ユーザーID';
+const String userNameLabel = 'ユーザー名';
 const String artistNameLabel = 'アーティスト名';
 const String themeSongLabel = 'テーマソング';
 const String profileMsgLabel = 'プロフィール文（120字以内)';
@@ -25,14 +31,10 @@ const String selectedCommunityLabel = '選択したコミュニティ';
 
 //title
 const String signupTitle = '会員登録';
-const String emailAddressTitle = "メールアドレス";
-const String passwordTitle = "パスワード";
 const String profileSettingTitle = 'プロフィール情報の登録';
-const String userIdTitle = 'ユーザーID';
-const String userNameTitle = 'ユーザー名';
 const String cropperTitle = 'Cropper';
-
 const String profileTitle = 'プロフィール文';
+const String signInTitle = 'ログイン';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';
@@ -45,7 +47,7 @@ const String signUpSucceededText = '会員登録に成功しました';
 const String signInSucceededText = 'ログインに成功しました';
 const String userNotFoundText = 'メールアドレスが見つかりません';
 const String wrongPasswordText = 'パスワードが間違っています';
-const String loginErrorText = 'ログインエラー';
+const String signInErrorText = 'ログインエラー';
 const String errorAndRetryText = '何らかのエラーが発生しました。もう一度お試しください';
 const String reSignUpText = '何らかのエラーが発生しました。もう一度会員登録画面に戻って、再度会員登録してください';
 const String notInputEmailText = 'メールアドレスが入力されていません';
