@@ -1,12 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
-import 'package:putone/view/auth/email_auth_page.dart';
-import 'package:putone/view/profile_setting/community_setting_page.dart';
-import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
-import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
-import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
-import 'package:putone/view/profile_setting/theme_song_setting_page.dart';
+import 'package:putone/view/profile_page/profile_page.dart';
+import 'package:putone/view/splash_screen.dart';
 
 class PuTone extends StatelessWidget {
   const PuTone({super.key});
@@ -33,7 +30,18 @@ class PuTone extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          }
+          if (snapshot.hasData) {
+            return const ProfilePage();
+          }
+          return const AuthPage();
+        },
+      ),
     );
   }
 }
