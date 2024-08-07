@@ -26,6 +26,8 @@ class AuthViewModel {
 
   bool get signUpIsLoading => _ref.watch(signUpIsLoadingProvider);
 
+  bool get signInIsLoading => _ref.watch(signInIsLoadingProvider);
+
   bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
 
   UserProfile get userProfile => _ref.read(userProfileProvider);
@@ -58,6 +60,14 @@ class AuthViewModel {
     _ref.read(signUpIsLoadingProvider.notifier).state = false;
   }
 
+  void loadingSignIn() {
+    _ref.read(signInIsLoadingProvider.notifier).state = true;
+  }
+
+  void completedSignIn() {
+    _ref.read(signUpIsLoadingProvider.notifier).state = false;
+  }
+
   void loadingEmailAuth() {
     _ref.read(emailAuthIsLoadingProvider.notifier).state = true;
   }
@@ -82,7 +92,13 @@ class AuthViewModel {
       userEmail: userEmail,
       userPassword: userPassword,
     );
+    //profileViewModelのsaveUidでuidをuser_profile_providerに入れる。
+
     return response;
+  }
+
+  Future<void> sendEmailVerification() async {
+    await _authModel.sendEmailVerification();
   }
 
   Future<void> checkUserEmailVerified() async {
@@ -90,7 +106,12 @@ class AuthViewModel {
     saveEmailVerified(emailVerified);
   }
 
-  Future signOut() async {
+  Future<void> signOut() async {
     _authModel.signOut();
+  }
+
+  Future<void> checkUid() async {
+    final uid = _authModel.checkUid();
+    saveUid(uid);
   }
 }

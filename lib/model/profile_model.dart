@@ -215,4 +215,26 @@ class ProfileModel {
         .doc(userProfile.uid)
         .set(userProfileMap);
   }
+
+  Future<void> addUserToCommunity(
+      {required String uid, required String communityId}) async {
+    final Map<String, dynamic> communityUserId = {'uid': uid};
+    await firestore
+        .collection('communities')
+        .doc(communityId)
+        .collection('users')
+        .doc(uid)
+        .set(communityUserId);
+  }
+
+  Future<UserProfile?> getUserProfile(String uid) async {
+    try {
+      final response = await firestore.collection('users').doc(uid).get();
+      final responseData = response.data() as Map<String, dynamic>;
+      final userProfile = UserProfile.fromJson(responseData);
+      return userProfile;
+    } catch (e) {
+      print('Error getting document: $e');
+    }
+  }
 }

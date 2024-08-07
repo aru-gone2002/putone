@@ -76,13 +76,17 @@ class AuthModel {
       } else if (e.code == 'wrong-password') {
         print(wrongPasswordText);
       } else {
-        print(loginErrorText);
+        print(signInErrorText);
       }
     }
   }
 
   Future<void> signOut() async {
     await auth.signOut();
+  }
+
+  Future<void> sendEmailVerification() async {
+    await auth.currentUser!.sendEmailVerification();
   }
 
   Future<bool> checkUserEmailVerified() async {

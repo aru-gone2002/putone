@@ -12,4 +12,6 @@ final userAuthProvider = StateProvider<UserAuth>(
 
 final signUpIsLoadingProvider = StateProvider<bool>((ref) => false);
 
+final signInIsLoadingProvider = StateProvider<bool>((ref) => false);
+
 final emailAuthIsLoadingProvider = StateProvider<bool>((ref) => false);
