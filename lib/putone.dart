@@ -1,15 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart';
+import 'package:putone/database.dart';
+import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
-class PuTone extends StatelessWidget {
-  const PuTone({super.key});
+class PuTone extends ConsumerWidget {
+  const PuTone({super.key, required this.database});
+
+  final AppDatabase database;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ProfileViewModel profileViewModel = ProfileViewModel();
+    profileViewModel.setRef(ref);
+    //userProfileDBProviderにdatabaseを追加
+    // ref.read(userProfileDBProvider.notifier).state = database;
+
     return MaterialApp(
       title: 'PuTone',
       theme: ThemeData(
@@ -37,7 +49,16 @@ class PuTone extends StatelessWidget {
             return const SplashScreen();
           }
           if (snapshot.hasData) {
-            return const ProfilePage();
+            Future(
+              () async {
+                final userBaseProfiles = await getAllUserBaseProfiles(database);
+                final userBaseProfile = userBaseProfiles.first;
+                profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
+                //TODO userBaseProfileの内容をproviderにぶち込む
+              },
+            );
+            //このdatabaseはなくてもあっても。
+            return ProfilePage(database: database);
           }
           return const AuthPage();
         },

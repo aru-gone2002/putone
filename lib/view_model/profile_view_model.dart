@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
+import 'package:putone/database.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
@@ -73,6 +74,8 @@ class ProfileViewModel {
   Map<String, Community> get communityMap => _ref.watch(communityMapProvider);
 
   String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
+
+  // AppDatabase get userProfileDB => _ref.watch(userProfileDBProvider);
 
   List<SpotifyTrack> get spotifySearchTracks =>
       _ref.watch(spotifySearchTracksProvider);
@@ -166,6 +169,23 @@ class ProfileViewModel {
 
   void saveSelectedCommunity(Community value) {
     _ref.read(selectedCommunityProvider.notifier).state = value;
+  }
+
+  //ローカルDBにあるユーザーのプロフィール情報をproviderに格納する
+  void saveUserProfileLocalDBData(UserBaseProfile value) {
+    saveUid(value.uid);
+    saveUserId(value.userId);
+    saveUserName(value.userName);
+    saveUserImg(value.userImg);
+    saveThemeMusicImg(value.themeMusicImg);
+    saveThemeMusicName(value.themeMusicArtistName);
+    saveThemeMusicArtistName(value.themeMusicName);
+    saveThemeMusicSpotifyUrl(value.themeMusicSpotifyUrl);
+    //TODO ここのnullSafetyは確認しなければならない
+    saveThemeMusicPreviewUrl(value.themeMusicPreviewUrl!);
+    saveUserProfileMsg(value.userProfileMsg);
+    saveUserSpotifyConnected(value.userSpotifyConnected);
+    saveCommunityId(value.communityId);
   }
 
   Future<void> onImageTapped() async {
