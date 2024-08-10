@@ -10,16 +10,14 @@ import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class PuTone extends ConsumerWidget {
+class PuTone extends StatelessWidget {
   const PuTone({super.key, required this.database});
 
   final AppDatabase database;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
-    profileViewModel.setRef(ref);
-    profileViewModel.saveAppDatabase(database);
 
     return MaterialApp(
       title: 'PuTone',
@@ -41,28 +39,35 @@ class PuTone extends ConsumerWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          }
-          if (snapshot.hasData) {
-            Future(
-              () async {
-                //ローカルDBからデータを取得
-                final userBaseProfiles =
-                    await database.getAllUserBaseProfiles();
-                final userBaseProfile = userBaseProfiles.first;
-                //userBaseProfileの内容をproviderに入れる
-                profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
-              },
-            );
-            return const ProfilePage();
-          }
-          return const AuthPage();
-        },
-      ),
+      home: Consumer(builder: (context, ref, _) {
+        profileViewModel.setRef(ref);
+        //TODO エラーの箇所
+        //profileViewModel.saveAppDatabase(database);
+
+        return StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SplashScreen();
+            }
+            if (snapshot.hasData) {
+              Future(
+                () async {
+                  profileViewModel.saveAppDatabase(database);
+                  //ローカルDBからデータを取得
+                  final userBaseProfiles =
+                      await database.getAllUserBaseProfiles();
+                  final userBaseProfile = userBaseProfiles.first;
+                  //userBaseProfileの内容をproviderに入れる
+                  profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
+                },
+              );
+              return const ProfilePage();
+            }
+            return const AuthPage();
+          },
+        );
+      }),
     );
   }
 }
