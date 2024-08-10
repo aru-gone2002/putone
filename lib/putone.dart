@@ -19,8 +19,7 @@ class PuTone extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
     profileViewModel.setRef(ref);
-    //userProfileDBProviderにdatabaseを追加
-    // ref.read(userProfileDBProvider.notifier).state = database;
+    profileViewModel.saveAppDatabase(database);
 
     return MaterialApp(
       title: 'PuTone',
@@ -51,14 +50,15 @@ class PuTone extends ConsumerWidget {
           if (snapshot.hasData) {
             Future(
               () async {
-                final userBaseProfiles = await getAllUserBaseProfiles(database);
+                //ローカルDBからデータを取得
+                final userBaseProfiles =
+                    await database.getAllUserBaseProfiles();
                 final userBaseProfile = userBaseProfiles.first;
+                //userBaseProfileの内容をproviderに入れる
                 profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
-                //TODO userBaseProfileの内容をproviderにぶち込む
               },
             );
-            //このdatabaseはなくてもあっても。
-            return ProfilePage(database: database);
+            return const ProfilePage();
           }
           return const AuthPage();
         },

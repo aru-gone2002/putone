@@ -130,9 +130,11 @@ class SecondProfileSettingPage extends StatelessWidget {
                   onPressed: () async {
                     toProfilePage(context: context);
                     await profileViewModel.uploadProfileInfo();
+                    //TODO ローカルDBにデータを入れる処理を行う。
+                    await profileViewModel.appDatabase!
+                        .insertUserBaseProfile(profileViewModel.userProfile);
                     //TODO コミュニティが入力されていたら、コミュニティにそのユーザーを追加する機能を実装する
-                    if (profileViewModel.communityId != 'none' ||
-                        profileViewModel.communityId != '') {
+                    if (profileViewModel.communityId != 'none') {
                       await profileViewModel.addUserToCommunity();
                     }
                   },

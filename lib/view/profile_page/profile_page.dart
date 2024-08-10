@@ -9,9 +9,12 @@ import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
-  const ProfilePage({super.key, required this.database});
+  const ProfilePage({
+    super.key,
+    //required this.database,
+  });
 
-  final AppDatabase database;
+  //final AppDatabase database;
 
   @override
   ConsumerState<ProfilePage> createState() => _ProfilePageState();
@@ -21,19 +24,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   final AuthViewModel _authViewModel = AuthViewModel();
   final ProfileViewModel _profileViewModel = ProfileViewModel();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  late UserBaseProfile userBaseProfile;
+  //late UserBaseProfile userBaseProfile;
 
   @override
   void initState() {
     super.initState();
     _authViewModel.setRef(ref);
     _profileViewModel.setRef(ref);
-    Future(
-      () async {
-        final userBaseProfiles = await getAllUserBaseProfiles(widget.database);
-        userBaseProfile = userBaseProfiles.first;
-      },
-    );
+    // Future(
+    //   () async {
+    //     final userBaseProfiles = await widget.database.getAllUserBaseProfiles();
+    //     userBaseProfile = userBaseProfiles.first;
+    //   },
+    // );
   }
 
   //userBaseProfileにローカルDBから取得した情報が入っているため、それをUserProfileProviderに格納する
@@ -42,96 +45,111 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white,
-                    AppColorTheme.color().mainColor,
-                  ],
-                ),
-              ),
-              height: 160,
-              child: Stack(
-                fit: StackFit.expand,
+      body: StreamBuilder<Object>(
+          stream: _profileViewModel.appDatabase!.watchAllUserBaseProfiles(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('データの読み込みに失敗しました'),
+              );
+            }
+            return SafeArea(
+              child: Column(
                 children: [
-                  Align(
-                    alignment: const Alignment(-0.95, -0.85),
-                    child: Container(
-                      height: 48,
-                      width: 140,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: AppColorTheme.color().gray2,
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white,
+                          AppColorTheme.color().mainColor,
+                        ],
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ExtendedImage.network(
-                            _profileViewModel.themeMusicImg,
-                            width: 34,
-                            height: 34,
-                            fit: BoxFit.cover,
-                            cache: true,
-                            shape: BoxShape.rectangle,
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    height: 160,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Align(
+                          alignment: const Alignment(-0.95, -0.85),
+                          child: Container(
+                            height: 48,
+                            width: 140,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: AppColorTheme.color().gray2,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  _profileViewModel.themeMusicName,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                                ExtendedImage.network(
+                                  _profileViewModel.themeMusicImg,
+                                  width: 34,
+                                  height: 34,
+                                  fit: BoxFit.cover,
+                                  cache: true,
+                                  shape: BoxShape.rectangle,
                                 ),
-                                Text(
-                                  _profileViewModel.themeMusicArtistName,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.white,
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _profileViewModel.themeMusicName,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      Text(
+                                        _profileViewModel.themeMusicArtistName,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 )
                               ],
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                        Align(
+                          alignment: const Alignment(0.95, -0.9),
+                          child: IconButton(
+                            icon: const Icon(Icons.dehaze_sharp),
+                            onPressed: () {
+                              _scaffoldKey.currentState?.openEndDrawer();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Align(
-                    alignment: const Alignment(0.95, -0.9),
-                    child: IconButton(
-                      icon: const Icon(Icons.dehaze_sharp),
-                      onPressed: () {
-                        _scaffoldKey.currentState?.openEndDrawer();
-                      },
-                    ),
+                  const Center(
+                    child: Text('プロフィール画面'),
                   ),
                 ],
               ),
-            ),
-            const Center(
-              child: Text('プロフィール画面'),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
       endDrawer: Drawer(
         child: ListView(
           children: [

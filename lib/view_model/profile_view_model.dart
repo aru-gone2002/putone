@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,11 +5,9 @@ import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/database.dart';
-import 'package:putone/model/auth_model.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
 import 'package:putone/providers/spotify_access_provider.dart';
-import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
 class ProfileViewModel {
@@ -75,7 +71,7 @@ class ProfileViewModel {
 
   String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
 
-  // AppDatabase get userProfileDB => _ref.watch(userProfileDBProvider);
+  AppDatabase? get appDatabase => _ref.watch(appDataBaseProvider);
 
   List<SpotifyTrack> get spotifySearchTracks =>
       _ref.watch(spotifySearchTracksProvider);
@@ -169,6 +165,10 @@ class ProfileViewModel {
 
   void saveSelectedCommunity(Community value) {
     _ref.read(selectedCommunityProvider.notifier).state = value;
+  }
+
+  void saveAppDatabase(AppDatabase value) {
+    _ref.read(appDataBaseProvider.notifier).state = value;
   }
 
   //ローカルDBにあるユーザーのプロフィール情報をproviderに格納する

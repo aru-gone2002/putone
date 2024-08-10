@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:drift/native.dart';
@@ -41,32 +42,47 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
-}
 
-/// データベースから全てのUserBaseProfileをストリームとして取得する。
-/// UserBaseProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
-Stream<List<UserBaseProfile>> watchAllUserBaseProfiles(AppDatabase db) {
-  return db.select(db.userBaseProfiles).watch();
-}
+  /// データベースから全てのUserBaseProfileをストリームとして取得する。
+  /// UserBaseProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
+  Stream<List<UserBaseProfile>> watchAllUserBaseProfiles() {
+    return (select(userBaseProfiles)).watch();
+  }
 
-/// データベースから全てのUserBaseProfileを一度だけ取得する。
-Future<List<UserBaseProfile>> getAllUserBaseProfiles(AppDatabase db) {
-  return db.select(db.userBaseProfiles).get();
-}
+  /// データベースから全てのUserBaseProfileを一度だけ取得する。
+  Future<List<UserBaseProfile>> getAllUserBaseProfiles() {
+    return (select(userBaseProfiles)).get();
+  }
 
-/// 新しいUserBaseProfileをデータベースに挿入する。
-Future insertUserBaseProfile(AppDatabase db, UserBaseProfile userBaseProfile) {
-  return db.into(db.userBaseProfiles).insert(userBaseProfile);
-}
+  /// 新しいUserBaseProfileをデータベースに挿入する。
+  Future insertUserBaseProfile(UserProfile userProfile) {
+    return into(userBaseProfiles).insert(
+      UserBaseProfilesCompanion(
+        uid: Value(userProfile.uid),
+        userId: Value(userProfile.userId),
+        userName: Value(userProfile.userName),
+        userImg: Value(userProfile.userImg),
+        themeMusicImg: Value(userProfile.themeMusicImg),
+        themeMusicName: Value(userProfile.themeMusicArtistName),
+        themeMusicArtistName: Value(userProfile.themeMusicArtistName),
+        themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
+        themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
+        userProfileMsg: Value(userProfile.userProfileMsg),
+        userSpotifyConnected: Value(userProfile.userSpotifyConnected),
+        communityId: Value(userProfile.communityId),
+      ),
+    );
+  }
 
-/// UserBaseProfileを更新する。
-Future updateUserBaseProfile(AppDatabase db, UserBaseProfile userBaseProfile) {
-  return db.update(db.userBaseProfiles).replace(userBaseProfile);
-}
+  /// UserBaseProfileを更新する。
+  Future updateUserBaseProfile(UserBaseProfile userBaseProfile) {
+    return (update(userBaseProfiles)).replace(userBaseProfile);
+  }
 
-/// データベースからUserBaseProfileを削除する。
-Future deleteUserBaseProfile(AppDatabase db, UserBaseProfile userBaseProfile) {
-  return db.delete(db.userBaseProfiles).delete(userBaseProfile);
+  /// データベースからUserBaseProfileを削除する。
+  Future deleteUserBaseProfile(UserBaseProfile userBaseProfile) {
+    return delete(userBaseProfiles).delete(userBaseProfile);
+  }
 }
 
 LazyDatabase _openConnection() {
