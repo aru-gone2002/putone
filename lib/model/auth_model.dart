@@ -30,13 +30,18 @@ class AuthModel {
       authViewModel.setRef(ref);
       profileViewModel.setRef(ref);
 
+      //signUpの返り値からuidを取得している
       final uid = userCredential.user!.uid;
 
+      //uidをUserAuthProviderのuidと
+      //UserProfileProviderのuid, userId, userNameに格納している
+      //名前とかuserIdが全く表示されないのを防ぐ
       authViewModel.saveUid(uid);
       profileViewModel.saveUid(uid);
       profileViewModel.saveUserId(uid);
       profileViewModel.saveUserName(uid);
 
+      //UserProfileProviderに格納されている情報全てを取得
       final userProfile = authViewModel.userProfile;
       final userProfileMap = userProfile.toJson();
 

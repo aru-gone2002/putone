@@ -55,18 +55,24 @@ class EmailAuthPage extends StatelessWidget {
                 child: AccentColorButton(
                   onPressed: () async {
                     authViewModel.loadingEmailAuth();
+                    authViewModel.fromSignIn();
+                    //TODO ここでsnapshot.hasDataが発火してしまうため、対応が必要
                     final signInResponse =
                         await authViewModel.signInWithEmailAndPassword();
 
-                    //　ログインが失敗した時の処理
-                    if (signInResponse != null && context.mounted) {
+                    //　ログインが失敗した時の処理（裏での処理）
+                    if (signInResponse != null) {
+                      await authViewModel.signOut();
                       authViewModel.completedEmailAuth();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(errorAndRetryText),
-                          duration: Duration(milliseconds: 6000),
-                        ),
-                      );
+                      authViewModel.refreshFromSignIn();
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(errorAndRetryText),
+                            duration: Duration(milliseconds: 6000),
+                          ),
+                        );
+                      }
                     }
 
                     //　ログインがちゃんと成功した時の処理
@@ -77,17 +83,6 @@ class EmailAuthPage extends StatelessWidget {
                           toFirstProfileSettingPage(context: context);
                           authViewModel.completedEmailAuth();
                           await profileViewModel.fetchSpotifyAccessToken();
-                        }
-                      } else {
-                        await authViewModel.signOut();
-                        if (context.mounted) {
-                          authViewModel.completedEmailAuth();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(emailIsNotVerifiedText),
-                              duration: Duration(milliseconds: 6000),
-                            ),
-                          );
                         }
                       }
                     }

@@ -63,7 +63,7 @@ class AppDatabase extends _$AppDatabase {
         userName: Value(userProfile.userName),
         userImg: Value(userProfile.userImg),
         themeMusicImg: Value(userProfile.themeMusicImg),
-        themeMusicName: Value(userProfile.themeMusicArtistName),
+        themeMusicName: Value(userProfile.themeMusicName),
         themeMusicArtistName: Value(userProfile.themeMusicArtistName),
         themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
         themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
@@ -80,8 +80,8 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// データベースからUserBaseProfileを削除する。
-  Future deleteUserBaseProfile(UserBaseProfile userBaseProfile) {
-    return delete(userBaseProfiles).delete(userBaseProfile);
+  Future deleteUserBaseProfile() {
+    return delete(userBaseProfiles).go();
   }
 }
 

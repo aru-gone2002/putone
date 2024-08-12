@@ -18,11 +18,14 @@ class SignInPage extends StatelessWidget {
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
-    Future<void> signInFunction(GlobalObjectKey<FormState> formKey) async {
+    Future<void> signInFunction(
+        GlobalObjectKey<FormState> formKey, WidgetRef ref) async {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
+        authViewModel.fromSignIn();
 
         //firebase Authでメールアドレスとパスワードを使ってサインインする
+        //TODO この時点でsnapshot.hasDataが発火してしまってしまっているため対策を取る必要がある。
         final signInResponse = await authViewModel.signInWithEmailAndPassword();
 
         if (context.mounted) {
@@ -54,8 +57,15 @@ class SignInPage extends StatelessWidget {
           if (authViewModel.userEmailVerified) {
             //自分のプロフィール情報を取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
+            print('getUserProfileをしました');
+            //TODO UserProfileProviderに入っている情報をデータベースに入れる。
+            //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる
+            await profileViewModel.appDatabase!
+                .insertUserBaseProfile(profileViewModel.userProfile);
+            print('insertUserBaseProfileをしました');
             if (context.mounted) {
-              toProfilePage(context: context);
+              //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
+              toProfilePage(context: context, ref: ref);
             }
           } else {
             if (context.mounted) {
@@ -63,6 +73,8 @@ class SignInPage extends StatelessWidget {
             }
             await authViewModel.sendEmailVerification();
           }
+        } else {
+          authViewModel.refreshFromSignIn();
         }
       }
     }
@@ -152,7 +164,7 @@ class SignInPage extends StatelessWidget {
                         //completedSignInメソッドをauthViewModelに作成
                         onPressed: () async {
                           authViewModel.loadingSignIn();
-                          await signInFunction(formKey);
+                          await signInFunction(formKey, ref);
                           authViewModel.completedSignIn();
                         },
                         text: signInBtnText,

@@ -128,7 +128,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                   //プロフィールをFirestoreとFirebaseに追加する
                   //routeを設定する
                   onPressed: () async {
-                    toProfilePage(context: context);
+                    toProfilePage(context: context, ref: ref);
                     await profileViewModel.uploadProfileInfo();
                     //TODO ローカルDBにデータを入れる処理を行う。
                     await profileViewModel.appDatabase!
@@ -142,12 +142,14 @@ class SecondProfileSettingPage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 32),
-              DeepGrayButton(
-                onPressed: () {
-                  toProfilePage(context: context);
-                },
-                text: skipBtnText,
-              ),
+              Consumer(builder: (context, ref, _) {
+                return DeepGrayButton(
+                  onPressed: () {
+                    toProfilePage(context: context, ref: ref);
+                  },
+                  text: skipBtnText,
+                );
+              }),
             ],
           ),
         ),

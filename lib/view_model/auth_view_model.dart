@@ -30,6 +30,8 @@ class AuthViewModel {
 
   bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
 
+  bool get isSignIn => _ref.watch(isSignInProvider);
+
   UserProfile get userProfile => _ref.read(userProfileProvider);
 
   void saveUid(String value) {
@@ -76,6 +78,14 @@ class AuthViewModel {
     _ref.read(emailAuthIsLoadingProvider.notifier).state = false;
   }
 
+  void fromSignIn() {
+    _ref.read(isSignInProvider.notifier).state = true;
+  }
+
+  void refreshFromSignIn() {
+    _ref.read(isSignInProvider.notifier).state = false;
+  }
+
   Future<FirebaseException?> signUpWithEmailAndPassword() async {
     final response = await _authModel.signUpWithEmailAndPassword(
       userEmail: userEmail,
@@ -107,7 +117,8 @@ class AuthViewModel {
   }
 
   Future<void> signOut() async {
-    _authModel.signOut();
+    refreshFromSignIn();
+    await _authModel.signOut();
   }
 
   Future<void> checkUid() async {
