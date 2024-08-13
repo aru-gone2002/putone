@@ -69,7 +69,7 @@ class SignInPage extends StatelessWidget {
             await authViewModel.sendEmailVerification();
           }
         } else {
-          authViewModel.refreshFromSignIn();
+          authViewModel.refreshFromSignInAndSignOut();
         }
       }
     }

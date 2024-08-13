@@ -178,8 +178,8 @@ class ProfileViewModel {
     saveUserName(value.userName);
     saveUserImg(value.userImg);
     saveThemeMusicImg(value.themeMusicImg);
-    saveThemeMusicName(value.themeMusicArtistName);
-    saveThemeMusicArtistName(value.themeMusicName);
+    saveThemeMusicName(value.themeMusicName);
+    saveThemeMusicArtistName(value.themeMusicArtistName);
     saveThemeMusicSpotifyUrl(value.themeMusicSpotifyUrl);
     //TODO ここのnullSafetyは確認しなければならない
     saveThemeMusicPreviewUrl(value.themeMusicPreviewUrl!);

@@ -85,7 +85,7 @@ class AuthViewModel {
     _ref.read(isSignInAndSignUpProvider.notifier).state = true;
   }
 
-  void refreshFromSignIn() {
+  void refreshFromSignInAndSignOut() {
     _ref.read(isSignInAndSignUpProvider.notifier).state = false;
   }
 
@@ -122,7 +122,7 @@ class AuthViewModel {
   }
 
   Future<void> signOut() async {
-    refreshFromSignIn();
+    refreshFromSignInAndSignOut();
     await _authModel.signOut();
   }
 

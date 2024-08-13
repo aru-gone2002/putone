@@ -36,7 +36,6 @@ class SignUpPage extends StatelessWidget {
           profileViewModel.saveUserId(responseUid);
           profileViewModel.saveUserName(responseUid);
 
-          //profileViewModelでやる
           await profileViewModel.setUserProfileToFirestore();
           await Fluttertoast.showToast(msg: signUpSucceededText);
           await authViewModel.sendEmailVerification();

@@ -181,6 +181,7 @@ class ProfilePage extends ConsumerWidget {
                             //or 最初に取ってきたデータベースを捨てるか
 
                             Navigator.pop(context);
+                            Navigator.pop(context);
                             await authViewModel.signOut();
                             // await profileViewModel.appDatabase!
                             //     .deleteUserBaseProfile();
