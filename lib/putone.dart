@@ -25,15 +25,6 @@ class PuTone extends ConsumerWidget {
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
 
-    // Future<Widget> directProfilePageFunction() async {
-    //   profileViewModel.saveAppDatabase(database);
-    //   final userBaseProfiles = await database.getAllUserBaseProfiles();
-    //   final userBaseProfile = userBaseProfiles.first;
-    //   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
-
-    //   return const ProfilePage();
-    // }
-
     return MaterialApp(
       title: 'PuTone',
       theme: ThemeData(
@@ -65,20 +56,6 @@ class PuTone extends ConsumerWidget {
               return nil;
             } else {
               print('snapshot.hasDataが実行されています');
-
-              // Future(() async {
-              //   //AppDataBaseのインスタンスをproviderに格納
-              //   profileViewModel.saveAppDatabase(database);
-              //   //ローカルDBからデータを取得
-              //   final userBaseProfiles =
-              //       await database.getAllUserBaseProfiles();
-              //   print('ローカルDBからデータを取得');
-              //   final userBaseProfile = userBaseProfiles.first;
-              //   print('firstを実行');
-              //   //userBaseProfileの内容をproviderに入れる
-              //   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
-              //   print('saveUserProfileLocalDBDataを実施');
-              // });
 
               WidgetsBinding.instance.addPostFrameCallback((_) async {
                 //AppDataBaseのインスタンスをproviderに格納

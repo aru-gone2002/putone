@@ -242,4 +242,9 @@ class ProfileViewModel {
       saveUserProfile(userProfile);
     }
   }
+
+  Future<void> setUserProfileToFirestore() async {
+    await _profileModel.setUserProfileToFirestore(
+        uid: uid, userProfile: userProfile);
+  }
 }

@@ -23,8 +23,6 @@ class ProfilePage extends ConsumerWidget {
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
 
-    //TODO 問題
-
     return Scaffold(
       key: scaffoldKey,
       body: StreamBuilder<Object>(
@@ -38,7 +36,7 @@ class ProfilePage extends ConsumerWidget {
             }
             if (snapshot.hasError) {
               return const Center(
-                child: Text('データの読み込みに失敗しました'),
+                child: Text(failToReadDataErrorText),
               );
             }
             return SafeArea(
@@ -75,6 +73,7 @@ class ProfilePage extends ConsumerWidget {
                               children: [
                                 //TODO アプリを閉じて再度開いた場合、
                                 //この時点でUserProfileProviderにローカルのデータが入っている必要がある。
+                                //UserProfileProviderには情報が入っていない可能性があるため分岐を行う必要がある。
                                 //TODO ログインとかした場合には事前にFirestoreから情報を取得して、
                                 //UserProfileProviderにデータが入った状態となっている
                                 ExtendedImage.network(
@@ -114,7 +113,6 @@ class ProfilePage extends ConsumerWidget {
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        //TODO 条件付きでprofileViewModelの中身が''じゃなかったら
                                         profileViewModel.themeMusicArtistName ==
                                                 ''
                                             ? (snapshot.data!
@@ -161,14 +159,14 @@ class ProfilePage extends ConsumerWidget {
           children: [
             InkWell(
               child: const ListTile(
-                title: Text('ログアウトする'),
+                title: Text(signOutBtnText),
               ),
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('ログアウトしますか？'),
+                      title: const Text(askwhetherSignOutOrNotDialogTitle),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
@@ -188,7 +186,7 @@ class ProfilePage extends ConsumerWidget {
                             //     .deleteUserBaseProfile();
                             database.deleteUserBaseProfile();
                           },
-                          child: const Text('ログアウトする'),
+                          child: const Text(signOutBtnText),
                         ),
                       ],
                     );

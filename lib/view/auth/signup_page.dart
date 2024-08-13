@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -14,6 +18,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
+    final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signUpFunction(GlobalObjectKey<FormState> formKey) async {
@@ -22,23 +27,29 @@ class SignUpPage extends StatelessWidget {
         //firebase Authでメールアドレスとパスワードを使ってサインアップし、
         //メールアドレス認証メールを送る処理を実行
         final signUpResponse = await authViewModel.signUpWithEmailAndPassword();
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: signUpResponse == null
-                    ? const Text(signUpSucceededText)
-                    : switch (signUpResponse.code) {
-                        'weak-password' => const Text(weakPasswordText),
-                        'email-already-in-use' =>
-                          const Text(emailAlreadyInUseText),
-                        'invalid-email' => const Text(invalidEmailText),
-                        _ => const Text(accountCreateErrorText),
-                      }),
-          );
+
+        if (signUpResponse is UserCredential) {
+          final responseUid = signUpResponse.user!.uid;
+          authViewModel.saveUid(responseUid);
+          profileViewModel.saveUid(responseUid);
+          profileViewModel.saveUserId(responseUid);
+          profileViewModel.saveUserName(responseUid);
+
+          //profileViewModelでやる
+          await profileViewModel.setUserProfileToFirestore();
+          await Fluttertoast.showToast(msg: signUpSucceededText);
+
+          if (context.mounted) toEmailAuthPage(context: context);
         }
 
-        if (context.mounted && signUpResponse == null) {
-          toEmailAuthPage(context: context);
+        if (signUpResponse is FirebaseException) {
+          await Fluttertoast.showToast(
+              msg: switch (signUpResponse.code) {
+            'weak-password' => weakPasswordText,
+            'email-already-in-use' => emailAlreadyInUseText,
+            'invalid-email' => invalidEmailText,
+            _ => accountCreateErrorText,
+          });
         }
       }
     }
@@ -116,6 +127,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                   builder: (context, ref, child) {
                     authViewModel.setRef(ref);
+                    profileViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signUpIsLoading,
                       replacement: SizedBox(

@@ -10,6 +10,7 @@ const String searchBtnText = '検索';
 const String backBtnText = '戻る';
 const String accountNotExistBtnText = '会員登録する';
 const String signInBtnText = 'ログイン';
+const String signOutBtnText = 'ログアウト';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -79,6 +80,12 @@ const String profileMsgSavedSnackBarText = 'プロフィール文が保存され
 const String notInputTextValidator = '文字が入力されていません';
 const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
+
+//dialog title
+const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';
+
+//error
+const String failToReadDataErrorText = 'データの読み込みに失敗しました';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();

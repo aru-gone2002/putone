@@ -13,41 +13,17 @@ class AuthModel {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<FirebaseAuthException?> signUpWithEmailAndPassword({
+  Future<dynamic> signUpWithEmailAndPassword({
     required String userEmail,
     required String userPassword,
     required UserProfile userProfile,
-    required WidgetRef ref,
   }) async {
     try {
       final userCredential = await auth.createUserWithEmailAndPassword(
         email: userEmail,
         password: userPassword,
       );
-
-      final AuthViewModel authViewModel = AuthViewModel();
-      final ProfileViewModel profileViewModel = ProfileViewModel();
-      authViewModel.setRef(ref);
-      profileViewModel.setRef(ref);
-
-      //signUpの返り値からuidを取得している
-      final uid = userCredential.user!.uid;
-
-      //uidをUserAuthProviderのuidと
-      //UserProfileProviderのuid, userId, userNameに格納している
-      //名前とかuserIdが全く表示されないのを防ぐ
-      authViewModel.saveUid(uid);
-      profileViewModel.saveUid(uid);
-      profileViewModel.saveUserId(uid);
-      profileViewModel.saveUserName(uid);
-
-      //UserProfileProviderに格納されている情報全てを取得
-      final userProfile = authViewModel.userProfile;
-      final userProfileMap = userProfile.toJson();
-
-      await firestore.collection('users').doc(uid).set(userProfileMap);
-
-      await userCredential.user!.sendEmailVerification();
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print(weakPasswordText);

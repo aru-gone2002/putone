@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/auth_model.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class AuthViewModel {
   final AuthModel _authModel = AuthModel();
@@ -86,18 +89,19 @@ class AuthViewModel {
     _ref.read(isSignInProvider.notifier).state = false;
   }
 
-  Future<FirebaseException?> signUpWithEmailAndPassword() async {
+  Future<dynamic> signUpWithEmailAndPassword() async {
+    //createUserWithEmailAndPasswordの返り値をもらう。userCredentialとして格納
     final response = await _authModel.signUpWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,
       userProfile: userProfile,
-      ref: _ref,
     );
-
     return response;
   }
 
+  //TODO signInの処理をしっかりと分けるようにする
   Future<FirebaseException?> signInWithEmailAndPassword() async {
+    fromSignIn();
     final response = await _authModel.signInWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,

@@ -64,7 +64,6 @@ class EmailAuthPage extends StatelessWidget {
                     if (signInResponse != null) {
                       await authViewModel.signOut();
                       authViewModel.completedEmailAuth();
-                      authViewModel.refreshFromSignIn();
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

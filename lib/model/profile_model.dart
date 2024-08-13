@@ -257,4 +257,10 @@ class ProfileModel {
     //   ),
     // );
   }
+
+  Future<void> setUserProfileToFirestore(
+      {required String uid, required UserProfile userProfile}) async {
+    final userProfileMap = userProfile.toJson();
+    await firestore.collection('users').doc(uid).set(userProfileMap);
+  }
 }

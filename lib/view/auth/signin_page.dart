@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -22,31 +24,24 @@ class SignInPage extends StatelessWidget {
         GlobalObjectKey<FormState> formKey, WidgetRef ref) async {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        authViewModel.fromSignIn();
 
         //firebase Authでメールアドレスとパスワードを使ってサインインする
-        //TODO この時点でsnapshot.hasDataが発火してしまってしまっているため対策を取る必要がある。
+        //isSignInをtrueにする。
         final signInResponse = await authViewModel.signInWithEmailAndPassword();
 
-        if (context.mounted) {
-          //サインインに失敗した時用にSnackBarを表示する
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: signInResponse == null
-                    ? const Text(signInSucceededText)
-                    : switch (signInResponse.code) {
-                        'invalid-email' ||
-                        'user-disabled' =>
-                          const Text(invalidEmailText),
-                        'user-not-found' => const Text(userNotFoundText),
-                        'wrong-password' => const Text(wrongPasswordText),
-                        _ => const Text(signInErrorText),
-                      }),
-          );
+        if (signInResponse is FirebaseAuthException) {
+          await Fluttertoast.showToast(
+              msg: switch (signInResponse.code) {
+            'invalid-email' || 'user-disabled' => invalidEmailText,
+            'user-not-found' => userNotFoundText,
+            'wrong-password' => wrongPasswordText,
+            _ => signInErrorText,
+          });
         }
 
         //サインインが成功したか確認する
         if (signInResponse == null) {
+          await Fluttertoast.showToast(msg: signInSucceededText);
           //uidをuser_auth_providerに格納する
           authViewModel.checkUid();
           //uidをuser_profile_providerに格納する
@@ -59,7 +54,7 @@ class SignInPage extends StatelessWidget {
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
             //TODO UserProfileProviderに入っている情報をデータベースに入れる。
-            //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる
+            //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
             await profileViewModel.appDatabase!
                 .insertUserBaseProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
