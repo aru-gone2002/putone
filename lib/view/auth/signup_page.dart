@@ -26,6 +26,7 @@ class SignUpPage extends StatelessWidget {
         formKey.currentState!.save();
         //firebase Authでメールアドレスとパスワードを使ってサインアップし、
         //メールアドレス認証メールを送る処理を実行
+        //fromSignInAndSignUpを実行し、snapshot.hasDataが起きないようにする
         final signUpResponse = await authViewModel.signUpWithEmailAndPassword();
 
         if (signUpResponse is UserCredential) {
@@ -38,6 +39,7 @@ class SignUpPage extends StatelessWidget {
           //profileViewModelでやる
           await profileViewModel.setUserProfileToFirestore();
           await Fluttertoast.showToast(msg: signUpSucceededText);
+          await authViewModel.sendEmailVerification();
 
           if (context.mounted) toEmailAuthPage(context: context);
         }

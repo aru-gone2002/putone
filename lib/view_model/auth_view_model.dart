@@ -33,7 +33,7 @@ class AuthViewModel {
 
   bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
 
-  bool get isSignIn => _ref.watch(isSignInProvider);
+  bool get isSignIn => _ref.watch(isSignInAndSignUpProvider);
 
   UserProfile get userProfile => _ref.read(userProfileProvider);
 
@@ -81,15 +81,16 @@ class AuthViewModel {
     _ref.read(emailAuthIsLoadingProvider.notifier).state = false;
   }
 
-  void fromSignIn() {
-    _ref.read(isSignInProvider.notifier).state = true;
+  void fromSignInAndSignUp() {
+    _ref.read(isSignInAndSignUpProvider.notifier).state = true;
   }
 
   void refreshFromSignIn() {
-    _ref.read(isSignInProvider.notifier).state = false;
+    _ref.read(isSignInAndSignUpProvider.notifier).state = false;
   }
 
   Future<dynamic> signUpWithEmailAndPassword() async {
+    fromSignInAndSignUp();
     //createUserWithEmailAndPasswordの返り値をもらう。userCredentialとして格納
     final response = await _authModel.signUpWithEmailAndPassword(
       userEmail: userEmail,
@@ -101,7 +102,7 @@ class AuthViewModel {
 
   //TODO signInの処理をしっかりと分けるようにする
   Future<FirebaseException?> signInWithEmailAndPassword() async {
-    fromSignIn();
+    fromSignInAndSignUp();
     final response = await _authModel.signInWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,

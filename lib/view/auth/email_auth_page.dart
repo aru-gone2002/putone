@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -55,34 +56,35 @@ class EmailAuthPage extends StatelessWidget {
                 child: AccentColorButton(
                   onPressed: () async {
                     authViewModel.loadingEmailAuth();
-                    authViewModel.fromSignIn();
+                    //認証が終わっていない場合、SignInページからAuthPageに来る場合もあるため、こちらでも行っておく
+                    authViewModel.fromSignInAndSignUp();
                     //TODO ここでsnapshot.hasDataが発火してしまうため、対応が必要
                     final signInResponse =
                         await authViewModel.signInWithEmailAndPassword();
 
-                    //　ログインが失敗した時の処理（裏での処理）
+                    //　サインインが失敗した時の処理（裏での処理）
                     if (signInResponse != null) {
                       await authViewModel.signOut();
                       authViewModel.completedEmailAuth();
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(errorAndRetryText),
-                            duration: Duration(milliseconds: 6000),
-                          ),
-                        );
-                      }
+                      Fluttertoast.showToast(msg: errorAndRetryText);
+                      // if (context.mounted) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text(errorAndRetryText),
+                      //       duration: Duration(milliseconds: 6000),
+                      //     ),
+                      //   );
+                      // }
                     }
 
-                    //　ログインがちゃんと成功した時の処理
+                    //　サインインがちゃんと成功した時の処理
                     if (signInResponse == null) {
                       await authViewModel.checkUserEmailVerified();
                       if (authViewModel.userEmailVerified) {
-                        if (context.mounted) {
+                        if (context.mounted)
                           toFirstProfileSettingPage(context: context);
-                          authViewModel.completedEmailAuth();
-                          await profileViewModel.fetchSpotifyAccessToken();
-                        }
+                        authViewModel.completedEmailAuth();
+                        await profileViewModel.fetchSpotifyAccessToken();
                       }
                     }
                   },
