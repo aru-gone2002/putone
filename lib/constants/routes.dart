@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/profile_setting/community_setting_page.dart';
@@ -80,3 +81,10 @@ void toProfilePage({required BuildContext context, required WidgetRef ref}) {
     ),
   );
 }
+
+void toAuthPage({required BuildContext context}) => Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const AuthPage()),
+      ),
+    );

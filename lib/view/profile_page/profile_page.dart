@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/database.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -182,6 +183,7 @@ class ProfilePage extends ConsumerWidget {
 
                             Navigator.pop(context);
                             Navigator.pop(context);
+                            toAuthPage(context: context);
                             await authViewModel.signOut();
                             // await profileViewModel.appDatabase!
                             //     .deleteUserBaseProfile();
