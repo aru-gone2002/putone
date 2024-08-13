@@ -5,6 +5,8 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/deep_gray_button.dart';
+import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
@@ -23,6 +25,9 @@ class ProfilePage extends ConsumerWidget {
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+
+    const double sideProfileWidth = 132;
+    const double profileImgSize = 112;
 
     return Scaffold(
       key: scaffoldKey,
@@ -54,17 +59,19 @@ class ProfilePage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    height: 160,
+                    height: 200,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
+                        //左のライン
+                        //お気に入り楽曲の表示
                         Align(
                           alignment: const Alignment(-0.95, -0.85),
                           child: Container(
                             height: 48,
-                            width: 140,
+                            width: sideProfileWidth,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4),
                               color: AppColorTheme.color().gray2,
@@ -105,11 +112,13 @@ class ProfilePage extends ConsumerWidget {
                                                 .first
                                                 .themeMusicName
                                             : profileViewModel.themeMusicName,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
@@ -136,6 +145,140 @@ class ProfilePage extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        //ユーザー名とユーザーID
+                        Align(
+                          alignment: const Alignment(-0.95, 0),
+                          child: SizedBox(
+                            width: sideProfileWidth,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                //ユーザー名
+                                Text(
+                                  profileViewModel.userName == ''
+                                      ? (snapshot.data!
+                                              as List<UserBaseProfile>)
+                                          .first
+                                          .userName
+                                      : profileViewModel.userName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+
+                                //ユーザーID
+                                Text(
+                                  profileViewModel.userId == ''
+                                      ? '@${(snapshot.data! as List<UserBaseProfile>).first.userId}'
+                                      : '@${profileViewModel.userId}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //フォローとフォロワー
+                        Align(
+                          alignment: const Alignment(-0.95, 0.65),
+                          child: SizedBox(
+                            width: sideProfileWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '24',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    const Text(
+                                      'フォロー',
+                                      style: TextStyle(fontSize: 10),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 16),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '32',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    const Text(
+                                      'フォロワー',
+                                      style: TextStyle(fontSize: 10),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //真ん中
+                        //ユーザー画像の表示
+                        Align(
+                          alignment: const Alignment(0, 0),
+                          child: ExtendedImage.network(
+                            profileViewModel.userImg == ''
+                                ? (snapshot.data! as List<UserBaseProfile>)
+                                    .first
+                                    .userImg
+                                : profileViewModel.userImg,
+                            width: profileImgSize,
+                            height: profileImgSize,
+                            fit: BoxFit.cover,
+                            cache: true,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        //右のライン
+                        //ハンバーガーメニュー
+                        Align(
+                          alignment: const Alignment(0.65, -0.9),
+                          child: ElevatedButton.icon(
+                            label: const Text('編集'),
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 16,
+                            ),
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.zero,
+                              backgroundColor: AppColorTheme.color().gray2,
+                              foregroundColor: Colors.white,
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                            ),
+                          ),
+                        ),
                         Align(
                           alignment: const Alignment(0.95, -0.9),
                           child: IconButton(
@@ -143,6 +286,23 @@ class ProfilePage extends ConsumerWidget {
                             onPressed: () {
                               scaffoldKey.currentState?.openEndDrawer();
                             },
+                          ),
+                        ),
+                        Align(
+                          alignment: const Alignment(0.95, 0),
+                          child: SizedBox(
+                            width: sideProfileWidth,
+                            child: Text(
+                              profileViewModel.userProfileMsg == ''
+                                  ? (snapshot.data! as List<UserBaseProfile>)
+                                      .first
+                                      .userProfileMsg
+                                  : profileViewModel.userProfileMsg,
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.center,
+                              softWrap: true,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                           ),
                         ),
                       ],

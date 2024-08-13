@@ -78,7 +78,7 @@ const String profileMsgSavedSnackBarText = 'プロフィール文が保存され
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
-const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
 
 //dialog title

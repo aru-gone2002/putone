@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -56,8 +57,8 @@ class ProfileMsgSettingPage extends StatelessWidget {
                       if (value == null || value.trim().isEmpty) {
                         return notInputTextValidator;
                       }
-                      if (value.length > 120) {
-                        return askTextLengthLessThanOrEqual120Validator;
+                      if (value.length > maxProfileTextLength) {
+                        return askTextLengthLessThanOrEqual80Validator;
                       }
                       return null;
                     },
@@ -65,7 +66,7 @@ class ProfileMsgSettingPage extends StatelessWidget {
                       profileViewModel.saveUserProfileMsg(value!);
                     },
                     maxLines: 6,
-                    maxLength: 120,
+                    maxLength: maxProfileTextLength,
                     //expands: true,
                     cursorColor: AppColorTheme.color().mainColor,
                     decoration: InputDecoration(

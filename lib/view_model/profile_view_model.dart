@@ -24,6 +24,9 @@ class ProfileViewModel {
   String get userId =>
       _ref.watch(userProfileProvider.select((value) => value.userId));
 
+  String get userName =>
+      _ref.watch(userProfileProvider.select((value) => value.userName));
+
   String get userImg =>
       _ref.watch(userProfileProvider.select((value) => value.userImg));
 
