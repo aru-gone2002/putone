@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/database.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:http/http.dart' as http;
 

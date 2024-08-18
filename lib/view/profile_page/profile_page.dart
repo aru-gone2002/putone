@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
-import 'package:putone/database.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
@@ -88,7 +88,7 @@ class ProfilePage extends ConsumerWidget {
                                   profileViewModel.themeMusicImg == ''
                                       ?
                                       //ローカルDBから画像を取得
-                                      (snapshot.data! as List<UserBaseProfile>)
+                                      (snapshot.data! as List<LocalUserProfile>)
                                           .first
                                           .themeMusicImg
                                       : profileViewModel.themeMusicImg,
@@ -108,7 +108,7 @@ class ProfilePage extends ConsumerWidget {
                                       Text(
                                         profileViewModel.themeMusicName == ''
                                             ? (snapshot.data!
-                                                    as List<UserBaseProfile>)
+                                                    as List<LocalUserProfile>)
                                                 .first
                                                 .themeMusicName
                                             : profileViewModel.themeMusicName,
@@ -126,7 +126,7 @@ class ProfilePage extends ConsumerWidget {
                                         profileViewModel.themeMusicArtistName ==
                                                 ''
                                             ? (snapshot.data!
-                                                    as List<UserBaseProfile>)
+                                                    as List<LocalUserProfile>)
                                                 .first
                                                 .themeMusicArtistName
                                             : profileViewModel
@@ -157,7 +157,7 @@ class ProfilePage extends ConsumerWidget {
                                 Text(
                                   profileViewModel.userName == ''
                                       ? (snapshot.data!
-                                              as List<UserBaseProfile>)
+                                              as List<LocalUserProfile>)
                                           .first
                                           .userName
                                       : profileViewModel.userName,
@@ -172,7 +172,7 @@ class ProfilePage extends ConsumerWidget {
                                 //ユーザーID
                                 Text(
                                   profileViewModel.userId == ''
-                                      ? '@${(snapshot.data! as List<UserBaseProfile>).first.userId}'
+                                      ? '@${(snapshot.data! as List<LocalUserProfile>).first.userId}'
                                       : '@${profileViewModel.userId}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -241,7 +241,7 @@ class ProfilePage extends ConsumerWidget {
                             width: sideProfileWidth,
                             child: Text(
                               profileViewModel.communityId == ''
-                                  ? '${(snapshot.data! as List<UserBaseProfile>).first.communityId} 所属'
+                                  ? '${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]} 所属'
                                   : '${profileViewModel.communityId} 所属',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -255,7 +255,7 @@ class ProfilePage extends ConsumerWidget {
                           alignment: const Alignment(0, 0),
                           child: ExtendedImage.network(
                             profileViewModel.userImg == ''
-                                ? (snapshot.data! as List<UserBaseProfile>)
+                                ? (snapshot.data! as List<LocalUserProfile>)
                                     .first
                                     .userImg
                                 : profileViewModel.userImg,
@@ -310,7 +310,7 @@ class ProfilePage extends ConsumerWidget {
                             width: sideProfileWidth,
                             child: Text(
                               profileViewModel.userProfileMsg == ''
-                                  ? (snapshot.data! as List<UserBaseProfile>)
+                                  ? (snapshot.data! as List<LocalUserProfile>)
                                       .first
                                       .userProfileMsg
                                   : profileViewModel.userProfileMsg,
@@ -363,7 +363,7 @@ class ProfilePage extends ConsumerWidget {
                             await authViewModel.signOut();
                             // await profileViewModel.appDatabase!
                             //     .deleteUserBaseProfile();
-                            database.deleteUserBaseProfile();
+                            database.deleteLocalUserProfile();
                           },
                           child: const Text(signOutBtnText),
                         ),

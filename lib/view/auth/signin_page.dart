@@ -56,7 +56,7 @@ class SignInPage extends StatelessWidget {
             //TODO UserProfileProviderに入っている情報をデータベースに入れる。
             //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
             await profileViewModel.appDatabase!
-                .insertUserBaseProfile(profileViewModel.userProfile);
+                .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。

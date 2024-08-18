@@ -2,32 +2,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/community/community.dart';
 
 final communityMapProvider = StateProvider<Map<String, Community>>((ref) => {
-      'rikadai': Community(
+      'rikadai': const Community(
         communityId: 'rikadai',
         communityName: '東京理科大学',
-        communityMemberUids: [],
       ),
-      'musashino': Community(
+      'musashino': const Community(
         communityId: 'musashino',
         communityName: '武蔵野大学',
-        communityMemberUids: [],
       ),
-      'toudai': Community(
+      'toudai': const Community(
         communityId: 'toudai',
         communityName: '東京大学',
-        communityMemberUids: [],
       ),
-      'none': Community(
+      'none': const Community(
         communityId: 'none',
-        communityName: '未参加',
-        communityMemberUids: [],
+        communityName: '未所属',
       ),
     });
 
 final selectedCommunityProvider = StateProvider<Community>(
   (ref) => const Community(
     communityId: 'none',
-    communityName: '未参加',
-    communityMemberUids: [],
+    communityName: '未所属',
   ),
 );

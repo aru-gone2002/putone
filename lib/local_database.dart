@@ -8,12 +8,12 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:drift/native.dart';
 
-part 'database.g.dart';
+part 'local_database.g.dart';
 
 //データのモデルを定義
 //というアノテーションを使って、このテーブルの各行の型の名前をTodoItemに設定します。これにより、このテーブルの各行はTodoItemという型を持つことになります。←書かなくても自動でやってくれる
-@DataClassName('UserBaseProfile')
-class UserBaseProfiles extends Table {
+@DataClassName('LocalUserProfile')
+class LocalUserProfiles extends Table {
   TextColumn get uid => text()();
   TextColumn get userId => text().withLength(min: 4, max: 20)();
   TextColumn get userName => text().withLength(min: 1, max: 20)();
@@ -33,9 +33,36 @@ class UserBaseProfiles extends Table {
   TextColumn get communityId => text().withDefault(const Constant('none'))();
 }
 
+//お気に入りアーティストのテーブル
+@DataClassName('LocalUserFavoriteArtist')
+class LocalUserFavoriteArtists extends Table {
+  TextColumn get uid => text()();
+  TextColumn get userFavoriteArtistId => text()();
+  TextColumn get userFavoriteArtistName => text()();
+  TextColumn get userFavoriteArtistImg => text()();
+}
+
+@DataClassName('LocalUserPost')
+class LocalUserPosts extends Table {
+  TextColumn get uid => text()();
+  TextColumn get postId => text()();
+  TextColumn get postMusicImg => text()();
+  TextColumn get postMusicAritstName => text()();
+  TextColumn get postMusicName => text()();
+  TextColumn get postMsg => text()();
+  DateTimeColumn get postTimestamp => dateTime()();
+  TextColumn get postMusicSpotifyUrl => text()();
+  TextColumn get postMusicPreciewUrl =>
+      text().withDefault(const Constant(''))();
+}
+
 //AppDatabaseがDriftのデータベースであり、
 //そのデータのテーブルズとしてTodoItemsのリストを指定
-@DriftDatabase(tables: [UserBaseProfiles])
+@DriftDatabase(tables: [
+  LocalUserProfiles,
+  LocalUserFavoriteArtists,
+  LocalUserPosts,
+])
 class AppDatabase extends _$AppDatabase {
   //AppDatabaseをインスタンス化した際に_openConnection()を実行することを明記
   AppDatabase() : super(_openConnection());
@@ -45,19 +72,19 @@ class AppDatabase extends _$AppDatabase {
 
   /// データベースから全てのUserBaseProfileをストリームとして取得する。
   /// UserBaseProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
-  Stream<List<UserBaseProfile>> watchAllUserBaseProfiles() {
-    return (select(userBaseProfiles)).watch();
+  Stream<List<LocalUserProfile>> watchAllUserBaseProfiles() {
+    return (select(localUserProfiles)).watch();
   }
 
   /// データベースから全てのUserBaseProfileを一度だけ取得する。
-  Future<List<UserBaseProfile>> getAllUserBaseProfiles() {
-    return (select(userBaseProfiles)).get();
+  Future<List<LocalUserProfile>> getAllUserBaseProfiles() {
+    return (select(localUserProfiles)).get();
   }
 
   /// 新しいUserBaseProfileをデータベースに挿入する。
-  Future insertUserBaseProfile(UserProfile userProfile) {
-    return into(userBaseProfiles).insert(
-      UserBaseProfilesCompanion(
+  Future insertLocalUserProfile(UserProfile userProfile) {
+    return into(localUserProfiles).insert(
+      LocalUserProfilesCompanion(
         uid: Value(userProfile.uid),
         userId: Value(userProfile.userId),
         userName: Value(userProfile.userName),
@@ -75,13 +102,13 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// UserBaseProfileを更新する。
-  Future updateUserBaseProfile(UserBaseProfile userBaseProfile) {
-    return (update(userBaseProfiles)).replace(userBaseProfile);
+  Future updateLocalUserProfile(LocalUserProfile localUserProfile) {
+    return (update(localUserProfiles)).replace(localUserProfile);
   }
 
-  /// データベースからUserBaseProfileを削除する。
-  Future deleteUserBaseProfile() {
-    return delete(userBaseProfiles).go();
+  /// データベースからLocalUserProfileを削除する。
+  Future deleteLocalUserProfile() {
+    return delete(localUserProfiles).go();
   }
 }
 

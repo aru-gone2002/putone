@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:nil/nil.dart';
-import 'package:putone/database.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/model/auth_model.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';

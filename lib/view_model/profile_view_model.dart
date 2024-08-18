@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/database.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
 import 'package:putone/providers/spotify_access_provider.dart';
@@ -159,7 +159,7 @@ class ProfileViewModel {
   }
 
   //ローカルDBにあるユーザーのプロフィール情報をproviderに格納する
-  void saveUserProfileLocalDBData(UserBaseProfile value) {
+  void saveUserProfileLocalDBData(LocalUserProfile value) {
     saveUid(value.uid);
     saveUserId(value.userId);
     saveUserName(value.userName);

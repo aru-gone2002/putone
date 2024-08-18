@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/database.dart';
+import 'package:putone/local_database.dart';
 
 final userProfileProvider = StateProvider<UserProfile>(
   (ref) => UserProfile(
