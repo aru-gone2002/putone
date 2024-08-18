@@ -17,8 +17,6 @@ final userProfileProvider = StateProvider<UserProfile>(
     userSpotifyConnected: false,
     userSignUpTimestamp: DateTime.now(),
     userLastLoginTimestamp: DateTime.now(),
-    followingUserCount: 0,
-    followedUserCount: 0,
     communityId: 'none',
   ),
 );

@@ -19,8 +19,6 @@ _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>
       themeMusicPreviewUrl: json['themeMusicPreviewUrl'] as String,
       userProfileMsg: json['userProfileMsg'] as String,
       userSpotifyConnected: json['userSpotifyConnected'] as bool,
-      followingUserCount: (json['followingUserCount'] as num).toInt(),
-      followedUserCount: (json['followedUserCount'] as num).toInt(),
       userSignUpTimestamp:
           DateTime.parse(json['userSignUpTimestamp'] as String),
       userLastLoginTimestamp:
@@ -41,8 +39,6 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
       'themeMusicPreviewUrl': instance.themeMusicPreviewUrl,
       'userProfileMsg': instance.userProfileMsg,
       'userSpotifyConnected': instance.userSpotifyConnected,
-      'followingUserCount': instance.followingUserCount,
-      'followedUserCount': instance.followedUserCount,
       'userSignUpTimestamp': instance.userSignUpTimestamp.toIso8601String(),
       'userLastLoginTimestamp':
           instance.userLastLoginTimestamp.toIso8601String(),

@@ -31,8 +31,6 @@ mixin _$UserProfile {
   String get themeMusicPreviewUrl => throw _privateConstructorUsedError;
   String get userProfileMsg => throw _privateConstructorUsedError;
   bool get userSpotifyConnected => throw _privateConstructorUsedError;
-  int get followingUserCount => throw _privateConstructorUsedError;
-  int get followedUserCount => throw _privateConstructorUsedError;
   DateTime get userSignUpTimestamp => throw _privateConstructorUsedError;
   DateTime get userLastLoginTimestamp => throw _privateConstructorUsedError;
   String get communityId => throw _privateConstructorUsedError;
@@ -61,8 +59,6 @@ abstract class $UserProfileCopyWith<$Res> {
       String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
-      int followingUserCount,
-      int followedUserCount,
       DateTime userSignUpTimestamp,
       DateTime userLastLoginTimestamp,
       String communityId});
@@ -92,8 +88,6 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
-    Object? followingUserCount = null,
-    Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
     Object? communityId = null,
@@ -143,14 +137,6 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.userSpotifyConnected
           : userSpotifyConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      followingUserCount: null == followingUserCount
-          ? _value.followingUserCount
-          : followingUserCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      followedUserCount: null == followedUserCount
-          ? _value.followedUserCount
-          : followedUserCount // ignore: cast_nullable_to_non_nullable
-              as int,
       userSignUpTimestamp: null == userSignUpTimestamp
           ? _value.userSignUpTimestamp
           : userSignUpTimestamp // ignore: cast_nullable_to_non_nullable
@@ -187,8 +173,6 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       String themeMusicPreviewUrl,
       String userProfileMsg,
       bool userSpotifyConnected,
-      int followingUserCount,
-      int followedUserCount,
       DateTime userSignUpTimestamp,
       DateTime userLastLoginTimestamp,
       String communityId});
@@ -216,8 +200,6 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? themeMusicPreviewUrl = null,
     Object? userProfileMsg = null,
     Object? userSpotifyConnected = null,
-    Object? followingUserCount = null,
-    Object? followedUserCount = null,
     Object? userSignUpTimestamp = null,
     Object? userLastLoginTimestamp = null,
     Object? communityId = null,
@@ -267,14 +249,6 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.userSpotifyConnected
           : userSpotifyConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      followingUserCount: null == followingUserCount
-          ? _value.followingUserCount
-          : followingUserCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      followedUserCount: null == followedUserCount
-          ? _value.followedUserCount
-          : followedUserCount // ignore: cast_nullable_to_non_nullable
-              as int,
       userSignUpTimestamp: null == userSignUpTimestamp
           ? _value.userSignUpTimestamp
           : userSignUpTimestamp // ignore: cast_nullable_to_non_nullable
@@ -306,8 +280,6 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       required this.themeMusicPreviewUrl,
       required this.userProfileMsg,
       required this.userSpotifyConnected,
-      required this.followingUserCount,
-      required this.followedUserCount,
       required this.userSignUpTimestamp,
       required this.userLastLoginTimestamp,
       required this.communityId});
@@ -338,10 +310,6 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
   @override
   final bool userSpotifyConnected;
   @override
-  final int followingUserCount;
-  @override
-  final int followedUserCount;
-  @override
   final DateTime userSignUpTimestamp;
   @override
   final DateTime userLastLoginTimestamp;
@@ -350,7 +318,7 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, followingUserCount: $followingUserCount, followedUserCount: $followedUserCount, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp, communityId: $communityId)';
+    return 'UserProfile(uid: $uid, userId: $userId, userName: $userName, userImg: $userImg, themeMusicImg: $themeMusicImg, themeMusicArtistName: $themeMusicArtistName, themeMusicName: $themeMusicName, themeMusicSpotifyUrl: $themeMusicSpotifyUrl, themeMusicPreviewUrl: $themeMusicPreviewUrl, userProfileMsg: $userProfileMsg, userSpotifyConnected: $userSpotifyConnected, userSignUpTimestamp: $userSignUpTimestamp, userLastLoginTimestamp: $userLastLoginTimestamp, communityId: $communityId)';
   }
 
   @override
@@ -369,8 +337,6 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       ..add(DiagnosticsProperty('themeMusicPreviewUrl', themeMusicPreviewUrl))
       ..add(DiagnosticsProperty('userProfileMsg', userProfileMsg))
       ..add(DiagnosticsProperty('userSpotifyConnected', userSpotifyConnected))
-      ..add(DiagnosticsProperty('followingUserCount', followingUserCount))
-      ..add(DiagnosticsProperty('followedUserCount', followedUserCount))
       ..add(DiagnosticsProperty('userSignUpTimestamp', userSignUpTimestamp))
       ..add(
           DiagnosticsProperty('userLastLoginTimestamp', userLastLoginTimestamp))
@@ -401,10 +367,6 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
                 other.userProfileMsg == userProfileMsg) &&
             (identical(other.userSpotifyConnected, userSpotifyConnected) ||
                 other.userSpotifyConnected == userSpotifyConnected) &&
-            (identical(other.followingUserCount, followingUserCount) ||
-                other.followingUserCount == followingUserCount) &&
-            (identical(other.followedUserCount, followedUserCount) ||
-                other.followedUserCount == followedUserCount) &&
             (identical(other.userSignUpTimestamp, userSignUpTimestamp) ||
                 other.userSignUpTimestamp == userSignUpTimestamp) &&
             (identical(other.userLastLoginTimestamp, userLastLoginTimestamp) ||
@@ -428,8 +390,6 @@ class _$UserProfileImpl with DiagnosticableTreeMixin implements _UserProfile {
       themeMusicPreviewUrl,
       userProfileMsg,
       userSpotifyConnected,
-      followingUserCount,
-      followedUserCount,
       userSignUpTimestamp,
       userLastLoginTimestamp,
       communityId);
@@ -461,8 +421,6 @@ abstract class _UserProfile implements UserProfile {
       required final String themeMusicPreviewUrl,
       required final String userProfileMsg,
       required final bool userSpotifyConnected,
-      required final int followingUserCount,
-      required final int followedUserCount,
       required final DateTime userSignUpTimestamp,
       required final DateTime userLastLoginTimestamp,
       required final String communityId}) = _$UserProfileImpl;
@@ -492,10 +450,6 @@ abstract class _UserProfile implements UserProfile {
   String get userProfileMsg;
   @override
   bool get userSpotifyConnected;
-  @override
-  int get followingUserCount;
-  @override
-  int get followedUserCount;
   @override
   DateTime get userSignUpTimestamp;
   @override

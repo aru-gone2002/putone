@@ -48,12 +48,6 @@ class ProfileViewModel {
   String get userProfileMsg =>
       _ref.watch(userProfileProvider.select((value) => value.userProfileMsg));
 
-  int get followingUserCount => _ref
-      .watch(userProfileProvider.select((value) => value.followingUserCount));
-
-  int get followedUserCount => _ref
-      .watch(userProfileProvider.select((value) => value.followedUserCount));
-
   bool get userSpotifyConnected => _ref
       .watch(userProfileProvider.select((value) => value.userSpotifyConnected));
 
@@ -127,16 +121,6 @@ class ProfileViewModel {
   void saveUserProfileMsg(String value) {
     _ref.read(userProfileProvider.notifier).state =
         _ref.read(userProfileProvider).copyWith(userProfileMsg: value);
-  }
-
-  void saveFollowingUserCount(int value) {
-    _ref.read(userProfileProvider.notifier).state =
-        _ref.read(userProfileProvider).copyWith(followingUserCount: value);
-  }
-
-  void saveFollowedUserCount(int value) {
-    _ref.read(userProfileProvider.notifier).state =
-        _ref.read(userProfileProvider).copyWith(followedUserCount: value);
   }
 
   void saveUserSpotifyConnected(bool value) {

@@ -183,53 +183,69 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                         //フォローとフォロワー
+                        // Align(
+                        //   alignment: const Alignment(-0.95, 0.65),
+                        //   child: SizedBox(
+                        //     width: sideProfileWidth,
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           children: [
+                        //             Text(
+                        //               '24',
+                        //               textAlign: TextAlign.center,
+                        //               style: Theme.of(context)
+                        //                   .textTheme
+                        //                   .bodyMedium!
+                        //                   .copyWith(
+                        //                       fontWeight: FontWeight.bold),
+                        //             ),
+                        //             const Text(
+                        //               'フォロー',
+                        //               style: TextStyle(fontSize: 10),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         const SizedBox(width: 16),
+                        //         Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           children: [
+                        //             Text(
+                        //               '32',
+                        //               textAlign: TextAlign.center,
+                        //               style: Theme.of(context)
+                        //                   .textTheme
+                        //                   .bodyMedium!
+                        //                   .copyWith(
+                        //                       fontWeight: FontWeight.bold),
+                        //             ),
+                        //             const Text(
+                        //               'フォロワー',
+                        //               style: TextStyle(fontSize: 10),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+
+                        //所属先
                         Align(
                           alignment: const Alignment(-0.95, 0.65),
                           child: SizedBox(
                             width: sideProfileWidth,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '24',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Text(
-                                      'フォロー',
-                                      style: TextStyle(fontSize: 10),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(width: 16),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '32',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Text(
-                                      'フォロワー',
-                                      style: TextStyle(fontSize: 10),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            child: Text(
+                              profileViewModel.communityId == ''
+                                  ? '${(snapshot.data! as List<UserBaseProfile>).first.communityId} 所属'
+                                  : '${profileViewModel.communityId} 所属',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                         ),

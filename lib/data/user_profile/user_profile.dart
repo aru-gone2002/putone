@@ -22,8 +22,6 @@ class UserProfile with _$UserProfile {
     required String themeMusicPreviewUrl,
     required String userProfileMsg,
     required bool userSpotifyConnected,
-    required int followingUserCount,
-    required int followedUserCount,
     required DateTime userSignUpTimestamp,
     required DateTime userLastLoginTimestamp,
     required String communityId,
