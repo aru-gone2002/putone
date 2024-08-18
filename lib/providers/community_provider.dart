@@ -16,13 +16,13 @@ final communityMapProvider = StateProvider<Map<String, Community>>((ref) => {
       ),
       'none': const Community(
         communityId: 'none',
-        communityName: '未所属',
+        communityName: '未設定',
       ),
     });
 
 final selectedCommunityProvider = StateProvider<Community>(
   (ref) => const Community(
     communityId: 'none',
-    communityName: '未所属',
+    communityName: '未設定',
   ),
 );

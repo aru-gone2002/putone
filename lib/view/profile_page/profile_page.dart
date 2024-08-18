@@ -240,9 +240,9 @@ class ProfilePage extends ConsumerWidget {
                           child: SizedBox(
                             width: sideProfileWidth,
                             child: Text(
-                              profileViewModel.communityId == ''
-                                  ? '${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]} 所属'
-                                  : '${profileViewModel.communityId} 所属',
+                              profileViewModel.communityId == 'none'
+                                  ? '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}'
+                                  : '所属：${profileViewModel.communityMap[profileViewModel.communityId]!.communityName}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
