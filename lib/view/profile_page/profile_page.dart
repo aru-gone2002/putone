@@ -327,6 +327,8 @@ class ProfilePage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
+        backgroundColor: AppColorTheme.color().accentColor,
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -65,7 +65,7 @@ class ProfileMsgSettingPage extends StatelessWidget {
                     onSaved: (value) {
                       profileViewModel.saveUserProfileMsg(value!);
                     },
-                    maxLines: 6,
+                    maxLines: 5,
                     maxLength: maxProfileTextLength,
                     //expands: true,
                     cursorColor: AppColorTheme.color().mainColor,
