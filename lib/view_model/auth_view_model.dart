@@ -89,6 +89,13 @@ class AuthViewModel {
     _ref.read(isSignInAndSignUpProvider.notifier).state = false;
   }
 
+  void resetUsetAuthProvider() {
+    saveUid('');
+    savePassword('');
+    saveEmail('');
+    saveEmailVerified(false);
+  }
+
   Future<dynamic> signUpWithEmailAndPassword() async {
     fromSignInAndSignUp();
     //createUserWithEmailAndPasswordの返り値をもらう。userCredentialとして格納

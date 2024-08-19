@@ -182,58 +182,6 @@ class ProfilePage extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        //フォローとフォロワー
-                        // Align(
-                        //   alignment: const Alignment(-0.95, 0.65),
-                        //   child: SizedBox(
-                        //     width: sideProfileWidth,
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       children: [
-                        //         Column(
-                        //           mainAxisSize: MainAxisSize.min,
-                        //           children: [
-                        //             Text(
-                        //               '24',
-                        //               textAlign: TextAlign.center,
-                        //               style: Theme.of(context)
-                        //                   .textTheme
-                        //                   .bodyMedium!
-                        //                   .copyWith(
-                        //                       fontWeight: FontWeight.bold),
-                        //             ),
-                        //             const Text(
-                        //               'フォロー',
-                        //               style: TextStyle(fontSize: 10),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         const SizedBox(width: 16),
-                        //         Column(
-                        //           mainAxisSize: MainAxisSize.min,
-                        //           children: [
-                        //             Text(
-                        //               '32',
-                        //               textAlign: TextAlign.center,
-                        //               style: Theme.of(context)
-                        //                   .textTheme
-                        //                   .bodyMedium!
-                        //                   .copyWith(
-                        //                       fontWeight: FontWeight.bold),
-                        //             ),
-                        //             const Text(
-                        //               'フォロワー',
-                        //               style: TextStyle(fontSize: 10),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-
                         //所属先
                         Align(
                           alignment: const Alignment(-0.95, 0.65),
@@ -356,13 +304,14 @@ class ProfilePage extends ConsumerWidget {
                             //getAllUserBaseProfilesメソッドで取得して、.firstメソッドで入れる
                             //or Streamでやる
                             //or 最初に取ってきたデータベースを捨てるか
-
                             Navigator.pop(context);
                             Navigator.pop(context);
                             toAuthPage(context: context);
                             await authViewModel.signOut();
                             // await profileViewModel.appDatabase!
                             //     .deleteUserBaseProfile();
+                            authViewModel.resetUsetAuthProvider();
+                            profileViewModel.resetUserProfileProvider();
                             database.deleteLocalUserProfile();
                           },
                           child: const Text(signOutBtnText),

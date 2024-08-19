@@ -158,6 +158,20 @@ class ProfileViewModel {
     _ref.read(appDataBaseProvider.notifier).state = value;
   }
 
+  void resetUserProfileProvider() {
+    saveUid('');
+    saveUserId('');
+    saveUserImg('');
+    saveUserName('');
+    saveUserProfileMsg('');
+    saveThemeMusicArtistName('');
+    saveThemeMusicImg('');
+    saveThemeMusicSpotifyUrl('');
+    saveThemeMusicPreviewUrl('');
+    //TODO userSignUpTimestampをどうするか
+    saveCommunityId('none');
+  }
+
   //ローカルDBにあるユーザーのプロフィール情報をproviderに格納する
   void saveUserProfileLocalDBData(LocalUserProfile value) {
     saveUid(value.uid);
