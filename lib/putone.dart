@@ -9,6 +9,7 @@ import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
 import 'package:putone/view/auth/auth_page.dart';
+import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
@@ -59,24 +60,35 @@ class PuTone extends ConsumerWidget {
             if (authViewModel.isSignIn) {
               return nil;
             } else {
-              print('snapshot.hasDataが実行されています');
+              if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                print('snapshot.hasDataが実行されています');
 
-              WidgetsBinding.instance.addPostFrameCallback((_) async {
-                //AppDataBaseのインスタンスをproviderに格納
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  //AppDataBaseのインスタンスをproviderに格納
+                  profileViewModel
+                      .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
+                  //ローカルDBからデータを取得
+                  final userBaseProfiles =
+                      await database.getAllUserBaseProfiles();
+                  print('ローカルDBからデータを取得');
+                  final userBaseProfile = userBaseProfiles.first;
+                  print('firstを実行');
+                  //userBaseProfileの内容をproviderに入れる
+                  profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
+                  print('saveUserProfileLocalDBDataを実施');
+                });
+                //手渡しでAppDatabaseのインスタンスを渡す
+                return ProfilePage(database: database);
+              } else {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  //AppDataBaseのインスタンスをproviderに格納
+                  profileViewModel
+                      .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
+                });
                 profileViewModel
                     .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
-                //ローカルDBからデータを取得
-                final userBaseProfiles =
-                    await database.getAllUserBaseProfiles();
-                print('ローカルDBからデータを取得');
-                final userBaseProfile = userBaseProfiles.first;
-                print('firstを実行');
-                //userBaseProfileの内容をproviderに入れる
-                profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
-                print('saveUserProfileLocalDBDataを実施');
-              });
-              //手渡しでAppDatabaseのインスタンスを渡す
-              return ProfilePage(database: database);
+                return const EmailAuthPage();
+              }
             }
           }
 

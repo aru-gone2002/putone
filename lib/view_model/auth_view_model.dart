@@ -133,7 +133,7 @@ class AuthViewModel {
     await _authModel.signOut();
   }
 
-  Future<void> checkUid() async {
+  void checkUid() async {
     final uid = _authModel.checkUid();
     saveUid(uid);
   }

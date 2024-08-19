@@ -57,7 +57,6 @@ class EmailAuthPage extends StatelessWidget {
                   onPressed: () async {
                     authViewModel.loadingEmailAuth();
                     //認証が終わっていない場合、SignInページからAuthPageに来る場合もあるため、こちらでも行っておく
-                    authViewModel.fromSignInAndSignUp();
                     //TODO ここでsnapshot.hasDataが発火してしまうため、対応が必要
                     final signInResponse =
                         await authViewModel.signInWithEmailAndPassword();
@@ -81,6 +80,15 @@ class EmailAuthPage extends StatelessWidget {
                     if (signInResponse == null) {
                       await authViewModel.checkUserEmailVerified();
                       if (authViewModel.userEmailVerified) {
+                        //TODO uidをUserAuthProviderとUserProfileProviderに入れ、ローカルDBに格納する
+                        authViewModel.checkUid();
+                        profileViewModel.saveUid(authViewModel.uid);
+                        profileViewModel.saveUserId(authViewModel.uid);
+                        profileViewModel.saveUserName(authViewModel.uid);
+                        //TODO appDataBaseProvider経由でローカルDBに格納する。ちょっと危険かも？
+                        profileViewModel.appDatabase!.insertLocalUserProfile(
+                            profileViewModel.userProfile);
+                        //TODO Firestoreに入れるのもこのタイミングでいいんじゃない？
                         if (context.mounted)
                           toFirstProfileSettingPage(context: context);
                         authViewModel.completedEmailAuth();
