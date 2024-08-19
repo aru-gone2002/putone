@@ -133,7 +133,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                     //TODO ローカルDBにデータを入れる処理を行う。
                     //TODO updateの形に変更する
                     await profileViewModel.appDatabase!
-                        .insertLocalUserProfile(profileViewModel.userProfile);
+                        .updateLocalUserProfile(profileViewModel.userProfile);
                     //TODO コミュニティが入力されていたら、コミュニティにそのユーザーを追加する機能を実装する
                     if (profileViewModel.communityId != 'none') {
                       await profileViewModel.addUserToCommunity();

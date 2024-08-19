@@ -19,7 +19,7 @@ class $LocalUserProfilesTable extends LocalUserProfiles
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 20),
+          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 16),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _userNameMeta =
@@ -28,7 +28,7 @@ class $LocalUserProfilesTable extends LocalUserProfiles
   late final GeneratedColumn<String> userName = GeneratedColumn<String>(
       'user_name', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 20),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 16),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _userImgMeta =
@@ -85,7 +85,7 @@ class $LocalUserProfilesTable extends LocalUserProfiles
   late final GeneratedColumn<String> userProfileMsg = GeneratedColumn<String>(
       'user_profile_msg', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 120),
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 80),
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
@@ -99,6 +99,18 @@ class $LocalUserProfilesTable extends LocalUserProfiles
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("user_spotify_connected" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _userSignUpTimestampMeta =
+      const VerificationMeta('userSignUpTimestamp');
+  @override
+  late final GeneratedColumn<DateTime> userSignUpTimestamp =
+      GeneratedColumn<DateTime>('user_sign_up_timestamp', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _userLastLoginTimestampMeta =
+      const VerificationMeta('userLastLoginTimestamp');
+  @override
+  late final GeneratedColumn<DateTime> userLastLoginTimestamp =
+      GeneratedColumn<DateTime>('user_last_login_timestamp', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _communityIdMeta =
       const VerificationMeta('communityId');
   @override
@@ -120,6 +132,8 @@ class $LocalUserProfilesTable extends LocalUserProfiles
         themeMusicPreviewUrl,
         userProfileMsg,
         userSpotifyConnected,
+        userSignUpTimestamp,
+        userLastLoginTimestamp,
         communityId
       ];
   @override
@@ -196,6 +210,22 @@ class $LocalUserProfilesTable extends LocalUserProfiles
           userSpotifyConnected.isAcceptableOrUnknown(
               data['user_spotify_connected']!, _userSpotifyConnectedMeta));
     }
+    if (data.containsKey('user_sign_up_timestamp')) {
+      context.handle(
+          _userSignUpTimestampMeta,
+          userSignUpTimestamp.isAcceptableOrUnknown(
+              data['user_sign_up_timestamp']!, _userSignUpTimestampMeta));
+    } else if (isInserting) {
+      context.missing(_userSignUpTimestampMeta);
+    }
+    if (data.containsKey('user_last_login_timestamp')) {
+      context.handle(
+          _userLastLoginTimestampMeta,
+          userLastLoginTimestamp.isAcceptableOrUnknown(
+              data['user_last_login_timestamp']!, _userLastLoginTimestampMeta));
+    } else if (isInserting) {
+      context.missing(_userLastLoginTimestampMeta);
+    }
     if (data.containsKey('community_id')) {
       context.handle(
           _communityIdMeta,
@@ -236,6 +266,12 @@ class $LocalUserProfilesTable extends LocalUserProfiles
           DriftSqlType.string, data['${effectivePrefix}user_profile_msg'])!,
       userSpotifyConnected: attachedDatabase.typeMapping.read(
           DriftSqlType.bool, data['${effectivePrefix}user_spotify_connected'])!,
+      userSignUpTimestamp: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}user_sign_up_timestamp'])!,
+      userLastLoginTimestamp: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}user_last_login_timestamp'])!,
       communityId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}community_id'])!,
     );
@@ -260,6 +296,8 @@ class LocalUserProfile extends DataClass
   final String? themeMusicPreviewUrl;
   final String userProfileMsg;
   final bool userSpotifyConnected;
+  final DateTime userSignUpTimestamp;
+  final DateTime userLastLoginTimestamp;
   final String communityId;
   const LocalUserProfile(
       {required this.uid,
@@ -273,6 +311,8 @@ class LocalUserProfile extends DataClass
       this.themeMusicPreviewUrl,
       required this.userProfileMsg,
       required this.userSpotifyConnected,
+      required this.userSignUpTimestamp,
+      required this.userLastLoginTimestamp,
       required this.communityId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -290,6 +330,9 @@ class LocalUserProfile extends DataClass
     }
     map['user_profile_msg'] = Variable<String>(userProfileMsg);
     map['user_spotify_connected'] = Variable<bool>(userSpotifyConnected);
+    map['user_sign_up_timestamp'] = Variable<DateTime>(userSignUpTimestamp);
+    map['user_last_login_timestamp'] =
+        Variable<DateTime>(userLastLoginTimestamp);
     map['community_id'] = Variable<String>(communityId);
     return map;
   }
@@ -309,6 +352,8 @@ class LocalUserProfile extends DataClass
           : Value(themeMusicPreviewUrl),
       userProfileMsg: Value(userProfileMsg),
       userSpotifyConnected: Value(userSpotifyConnected),
+      userSignUpTimestamp: Value(userSignUpTimestamp),
+      userLastLoginTimestamp: Value(userLastLoginTimestamp),
       communityId: Value(communityId),
     );
   }
@@ -332,6 +377,10 @@ class LocalUserProfile extends DataClass
       userProfileMsg: serializer.fromJson<String>(json['userProfileMsg']),
       userSpotifyConnected:
           serializer.fromJson<bool>(json['userSpotifyConnected']),
+      userSignUpTimestamp:
+          serializer.fromJson<DateTime>(json['userSignUpTimestamp']),
+      userLastLoginTimestamp:
+          serializer.fromJson<DateTime>(json['userLastLoginTimestamp']),
       communityId: serializer.fromJson<String>(json['communityId']),
     );
   }
@@ -350,6 +399,9 @@ class LocalUserProfile extends DataClass
       'themeMusicPreviewUrl': serializer.toJson<String?>(themeMusicPreviewUrl),
       'userProfileMsg': serializer.toJson<String>(userProfileMsg),
       'userSpotifyConnected': serializer.toJson<bool>(userSpotifyConnected),
+      'userSignUpTimestamp': serializer.toJson<DateTime>(userSignUpTimestamp),
+      'userLastLoginTimestamp':
+          serializer.toJson<DateTime>(userLastLoginTimestamp),
       'communityId': serializer.toJson<String>(communityId),
     };
   }
@@ -366,6 +418,8 @@ class LocalUserProfile extends DataClass
           Value<String?> themeMusicPreviewUrl = const Value.absent(),
           String? userProfileMsg,
           bool? userSpotifyConnected,
+          DateTime? userSignUpTimestamp,
+          DateTime? userLastLoginTimestamp,
           String? communityId}) =>
       LocalUserProfile(
         uid: uid ?? this.uid,
@@ -381,6 +435,9 @@ class LocalUserProfile extends DataClass
             : this.themeMusicPreviewUrl,
         userProfileMsg: userProfileMsg ?? this.userProfileMsg,
         userSpotifyConnected: userSpotifyConnected ?? this.userSpotifyConnected,
+        userSignUpTimestamp: userSignUpTimestamp ?? this.userSignUpTimestamp,
+        userLastLoginTimestamp:
+            userLastLoginTimestamp ?? this.userLastLoginTimestamp,
         communityId: communityId ?? this.communityId,
       );
   @override
@@ -397,6 +454,8 @@ class LocalUserProfile extends DataClass
           ..write('themeMusicPreviewUrl: $themeMusicPreviewUrl, ')
           ..write('userProfileMsg: $userProfileMsg, ')
           ..write('userSpotifyConnected: $userSpotifyConnected, ')
+          ..write('userSignUpTimestamp: $userSignUpTimestamp, ')
+          ..write('userLastLoginTimestamp: $userLastLoginTimestamp, ')
           ..write('communityId: $communityId')
           ..write(')'))
         .toString();
@@ -415,6 +474,8 @@ class LocalUserProfile extends DataClass
       themeMusicPreviewUrl,
       userProfileMsg,
       userSpotifyConnected,
+      userSignUpTimestamp,
+      userLastLoginTimestamp,
       communityId);
   @override
   bool operator ==(Object other) =>
@@ -431,6 +492,8 @@ class LocalUserProfile extends DataClass
           other.themeMusicPreviewUrl == this.themeMusicPreviewUrl &&
           other.userProfileMsg == this.userProfileMsg &&
           other.userSpotifyConnected == this.userSpotifyConnected &&
+          other.userSignUpTimestamp == this.userSignUpTimestamp &&
+          other.userLastLoginTimestamp == this.userLastLoginTimestamp &&
           other.communityId == this.communityId);
 }
 
@@ -446,6 +509,8 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
   final Value<String?> themeMusicPreviewUrl;
   final Value<String> userProfileMsg;
   final Value<bool> userSpotifyConnected;
+  final Value<DateTime> userSignUpTimestamp;
+  final Value<DateTime> userLastLoginTimestamp;
   final Value<String> communityId;
   final Value<int> rowid;
   const LocalUserProfilesCompanion({
@@ -460,6 +525,8 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
     this.themeMusicPreviewUrl = const Value.absent(),
     this.userProfileMsg = const Value.absent(),
     this.userSpotifyConnected = const Value.absent(),
+    this.userSignUpTimestamp = const Value.absent(),
+    this.userLastLoginTimestamp = const Value.absent(),
     this.communityId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -475,11 +542,15 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
     this.themeMusicPreviewUrl = const Value.absent(),
     this.userProfileMsg = const Value.absent(),
     this.userSpotifyConnected = const Value.absent(),
+    required DateTime userSignUpTimestamp,
+    required DateTime userLastLoginTimestamp,
     this.communityId = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : uid = Value(uid),
         userId = Value(userId),
-        userName = Value(userName);
+        userName = Value(userName),
+        userSignUpTimestamp = Value(userSignUpTimestamp),
+        userLastLoginTimestamp = Value(userLastLoginTimestamp);
   static Insertable<LocalUserProfile> custom({
     Expression<String>? uid,
     Expression<String>? userId,
@@ -492,6 +563,8 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
     Expression<String>? themeMusicPreviewUrl,
     Expression<String>? userProfileMsg,
     Expression<bool>? userSpotifyConnected,
+    Expression<DateTime>? userSignUpTimestamp,
+    Expression<DateTime>? userLastLoginTimestamp,
     Expression<String>? communityId,
     Expression<int>? rowid,
   }) {
@@ -511,6 +584,10 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
       if (userProfileMsg != null) 'user_profile_msg': userProfileMsg,
       if (userSpotifyConnected != null)
         'user_spotify_connected': userSpotifyConnected,
+      if (userSignUpTimestamp != null)
+        'user_sign_up_timestamp': userSignUpTimestamp,
+      if (userLastLoginTimestamp != null)
+        'user_last_login_timestamp': userLastLoginTimestamp,
       if (communityId != null) 'community_id': communityId,
       if (rowid != null) 'rowid': rowid,
     });
@@ -528,6 +605,8 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
       Value<String?>? themeMusicPreviewUrl,
       Value<String>? userProfileMsg,
       Value<bool>? userSpotifyConnected,
+      Value<DateTime>? userSignUpTimestamp,
+      Value<DateTime>? userLastLoginTimestamp,
       Value<String>? communityId,
       Value<int>? rowid}) {
     return LocalUserProfilesCompanion(
@@ -542,6 +621,9 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
       themeMusicPreviewUrl: themeMusicPreviewUrl ?? this.themeMusicPreviewUrl,
       userProfileMsg: userProfileMsg ?? this.userProfileMsg,
       userSpotifyConnected: userSpotifyConnected ?? this.userSpotifyConnected,
+      userSignUpTimestamp: userSignUpTimestamp ?? this.userSignUpTimestamp,
+      userLastLoginTimestamp:
+          userLastLoginTimestamp ?? this.userLastLoginTimestamp,
       communityId: communityId ?? this.communityId,
       rowid: rowid ?? this.rowid,
     );
@@ -587,6 +669,14 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
       map['user_spotify_connected'] =
           Variable<bool>(userSpotifyConnected.value);
     }
+    if (userSignUpTimestamp.present) {
+      map['user_sign_up_timestamp'] =
+          Variable<DateTime>(userSignUpTimestamp.value);
+    }
+    if (userLastLoginTimestamp.present) {
+      map['user_last_login_timestamp'] =
+          Variable<DateTime>(userLastLoginTimestamp.value);
+    }
     if (communityId.present) {
       map['community_id'] = Variable<String>(communityId.value);
     }
@@ -610,6 +700,8 @@ class LocalUserProfilesCompanion extends UpdateCompanion<LocalUserProfile> {
           ..write('themeMusicPreviewUrl: $themeMusicPreviewUrl, ')
           ..write('userProfileMsg: $userProfileMsg, ')
           ..write('userSpotifyConnected: $userSpotifyConnected, ')
+          ..write('userSignUpTimestamp: $userSignUpTimestamp, ')
+          ..write('userLastLoginTimestamp: $userLastLoginTimestamp, ')
           ..write('communityId: $communityId, ')
           ..write('rowid: $rowid')
           ..write(')'))

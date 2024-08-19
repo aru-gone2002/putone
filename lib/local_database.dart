@@ -15,8 +15,8 @@ part 'local_database.g.dart';
 @DataClassName('LocalUserProfile')
 class LocalUserProfiles extends Table {
   TextColumn get uid => text()();
-  TextColumn get userId => text().withLength(min: 4, max: 20)();
-  TextColumn get userName => text().withLength(min: 1, max: 20)();
+  TextColumn get userId => text().withLength(min: 4, max: 16)();
+  TextColumn get userName => text().withLength(min: 1, max: 16)();
   TextColumn get userImg => text().withDefault(const Constant(''))();
   TextColumn get themeMusicImg => text().withDefault(const Constant(''))();
   TextColumn get themeMusicName => text().withDefault(const Constant(''))();
@@ -27,9 +27,11 @@ class LocalUserProfiles extends Table {
   TextColumn get themeMusicPreviewUrl =>
       text().withDefault(const Constant('')).nullable()();
   TextColumn get userProfileMsg =>
-      text().withDefault(const Constant('')).withLength(min: 0, max: 120)();
+      text().withDefault(const Constant('')).withLength(min: 0, max: 80)();
   BoolColumn get userSpotifyConnected =>
       boolean().withDefault(const Constant(false))();
+  DateTimeColumn get userSignUpTimestamp => dateTime()();
+  DateTimeColumn get userLastLoginTimestamp => dateTime()();
   TextColumn get communityId => text().withDefault(const Constant('none'))();
 }
 
@@ -83,27 +85,36 @@ class AppDatabase extends _$AppDatabase {
 
   /// 新しいUserBaseProfileをデータベースに挿入する。
   Future insertLocalUserProfile(UserProfile userProfile) {
-    return into(localUserProfiles).insert(
-      LocalUserProfilesCompanion(
-        uid: Value(userProfile.uid),
-        userId: Value(userProfile.userId),
-        userName: Value(userProfile.userName),
-        userImg: Value(userProfile.userImg),
-        themeMusicImg: Value(userProfile.themeMusicImg),
-        themeMusicName: Value(userProfile.themeMusicName),
-        themeMusicArtistName: Value(userProfile.themeMusicArtistName),
-        themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
-        themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
-        userProfileMsg: Value(userProfile.userProfileMsg),
-        userSpotifyConnected: Value(userProfile.userSpotifyConnected),
-        communityId: Value(userProfile.communityId),
-      ),
+    return into(localUserProfiles)
+        .insert(changeUserProfileToLocalUserProfiles(userProfile));
+  }
+
+  ///UserProfileをLocalUserProfilesCompanionに変換する
+  LocalUserProfilesCompanion changeUserProfileToLocalUserProfiles(
+      UserProfile userProfile) {
+    return LocalUserProfilesCompanion(
+      uid: Value(userProfile.uid),
+      userId: Value(userProfile.userId),
+      userName: Value(userProfile.userName),
+      userImg: Value(userProfile.userImg),
+      themeMusicImg: Value(userProfile.themeMusicImg),
+      themeMusicName: Value(userProfile.themeMusicName),
+      themeMusicArtistName: Value(userProfile.themeMusicArtistName),
+      themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
+      themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
+      userProfileMsg: Value(userProfile.userProfileMsg),
+      userSpotifyConnected: Value(userProfile.userSpotifyConnected),
+      userSignUpTimestamp: Value(userProfile.userSignUpTimestamp),
+      userLastLoginTimestamp: Value(userProfile.userLastLoginTimestamp),
+      communityId: Value(userProfile.communityId),
     );
   }
 
   /// UserBaseProfileを更新する。
-  Future updateLocalUserProfile(LocalUserProfile localUserProfile) {
-    return (update(localUserProfiles)).replace(localUserProfile);
+  Future<bool> updateLocalUserProfile(UserProfile userProfile) {
+    return (update(localUserProfiles)).replace(
+      changeUserProfileToLocalUserProfiles(userProfile),
+    );
   }
 
   /// データベースからLocalUserProfileを削除する。
