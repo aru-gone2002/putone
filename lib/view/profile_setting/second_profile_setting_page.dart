@@ -128,11 +128,14 @@ class SecondProfileSettingPage extends StatelessWidget {
                   //プロフィールをFirestoreとFirebaseに追加する
                   //routeを設定する
                   onPressed: () async {
-                    toProfilePage(context: context);
+                    toProfilePage(context: context, ref: ref);
                     await profileViewModel.uploadProfileInfo();
+                    //TODO ローカルDBにデータを入れる処理を行う。
+                    //TODO updateの形に変更する
+                    await profileViewModel.appDatabase!
+                        .updateLocalUserProfile(profileViewModel.userProfile);
                     //TODO コミュニティが入力されていたら、コミュニティにそのユーザーを追加する機能を実装する
-                    if (profileViewModel.communityId != 'none' ||
-                        profileViewModel.communityId != '') {
+                    if (profileViewModel.communityId != 'none') {
                       await profileViewModel.addUserToCommunity();
                     }
                   },
@@ -140,12 +143,14 @@ class SecondProfileSettingPage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 32),
-              DeepGrayButton(
-                onPressed: () {
-                  toProfilePage(context: context);
-                },
-                text: skipBtnText,
-              ),
+              Consumer(builder: (context, ref, _) {
+                return DeepGrayButton(
+                  onPressed: () {
+                    toProfilePage(context: context, ref: ref);
+                  },
+                  text: skipBtnText,
+                );
+              }),
             ],
           ),
         ),

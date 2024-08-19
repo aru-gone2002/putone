@@ -13,7 +13,6 @@ class Community with _$Community {
   const factory Community({
     required String communityId,
     required String communityName,
-    required List<String> communityMemberUids,
   }) = _Community;
 
   factory Community.fromJson(Map<String, Object?> json) =>

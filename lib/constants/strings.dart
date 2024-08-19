@@ -10,6 +10,7 @@ const String searchBtnText = '検索';
 const String backBtnText = '戻る';
 const String accountNotExistBtnText = '会員登録する';
 const String signInBtnText = 'ログイン';
+const String signOutBtnText = 'ログアウト';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -55,7 +56,8 @@ const String inputEmailIsNotValidText = '正しいメールアドレスを入力
 const String notInputPasswordText = 'パスワードが入力されていません';
 const String inputPasswordIsNotValidText = '8文字以上で半角英数字記号をそれぞれ一文字以上ずつ入れてください';
 const String notInputUserIdText = 'ユーザーIDが入力されていません';
-const String inputUserIdIsNotValidText = '小文字の英語・数字・.・_を組み合わせた4文字以上で作成してください';
+const String inputUserIdIsNotValidText = '英小文字・数字・.・を組み合わせた4字以上16字以内で作成してください';
+const String inputUserNameIsNotValidText = '1字以上16字以内で作成してください';
 const String notInputUserNameText = 'ユーザー名が入力されていません';
 const String isEmailVerifiedText = 'メールアドレス認証を完了済み';
 const String emailIsNotVerifiedText =
@@ -77,8 +79,14 @@ const String profileMsgSavedSnackBarText = 'プロフィール文が保存され
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
-const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
+
+//dialog title
+const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';
+
+//error
+const String failToReadDataErrorText = 'データの読み込みに失敗しました';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();

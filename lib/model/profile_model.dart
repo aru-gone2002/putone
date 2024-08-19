@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drift/drift.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:http/http.dart' as http;
 
@@ -236,5 +238,29 @@ class ProfileModel {
     } catch (e) {
       print('Error getting document: $e');
     }
+  }
+
+  Future<void> addUserProfiletoLocalDB(UserProfile userProfile) async {
+    // into(UserBaseProfiles).insert(
+    //   UserBaseProfilesCompanion(
+    //     uid: Value(userProfile.uid),
+    //     userId: Value(userProfile.userId),
+    //     userName: Value(userProfile.userName),
+    //     userImg: Value(userProfile.userImg),
+    //     themeMusicImg: Value(userProfile.themeMusicImg),
+    //     themeMusicArtistName: Value(userProfile.themeMusicArtistName),
+    //     themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
+    //     themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
+    //     userProfileMsg: Value(userProfile.userProfileMsg),
+    //     userSpotifyConnected: Value(userProfile.userSpotifyConnected),
+    //     communityId: Value(userProfile.communityId),
+    //   ),
+    // );
+  }
+
+  Future<void> setUserProfileToFirestore(
+      {required String uid, required UserProfile userProfile}) async {
+    final userProfileMap = userProfile.toJson();
+    await firestore.collection('users').doc(uid).set(userProfileMap);
   }
 }

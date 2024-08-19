@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/model/auth_model.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
 import 'package:putone/providers/spotify_access_provider.dart';
-import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
 class ProfileViewModel {
@@ -26,6 +23,9 @@ class ProfileViewModel {
 
   String get userId =>
       _ref.watch(userProfileProvider.select((value) => value.userId));
+
+  String get userName =>
+      _ref.watch(userProfileProvider.select((value) => value.userName));
 
   String get userImg =>
       _ref.watch(userProfileProvider.select((value) => value.userImg));
@@ -48,12 +48,6 @@ class ProfileViewModel {
   String get userProfileMsg =>
       _ref.watch(userProfileProvider.select((value) => value.userProfileMsg));
 
-  int get followingUserCount => _ref
-      .watch(userProfileProvider.select((value) => value.followingUserCount));
-
-  int get followedUserCount => _ref
-      .watch(userProfileProvider.select((value) => value.followedUserCount));
-
   bool get userSpotifyConnected => _ref
       .watch(userProfileProvider.select((value) => value.userSpotifyConnected));
 
@@ -73,6 +67,8 @@ class ProfileViewModel {
   Map<String, Community> get communityMap => _ref.watch(communityMapProvider);
 
   String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
+
+  AppDatabase? get appDatabase => _ref.watch(appDataBaseProvider);
 
   List<SpotifyTrack> get spotifySearchTracks =>
       _ref.watch(spotifySearchTracksProvider);
@@ -127,16 +123,6 @@ class ProfileViewModel {
         _ref.read(userProfileProvider).copyWith(userProfileMsg: value);
   }
 
-  void saveFollowingUserCount(int value) {
-    _ref.read(userProfileProvider.notifier).state =
-        _ref.read(userProfileProvider).copyWith(followingUserCount: value);
-  }
-
-  void saveFollowedUserCount(int value) {
-    _ref.read(userProfileProvider.notifier).state =
-        _ref.read(userProfileProvider).copyWith(followedUserCount: value);
-  }
-
   void saveUserSpotifyConnected(bool value) {
     _ref.read(userProfileProvider.notifier).state =
         _ref.read(userProfileProvider).copyWith(userSpotifyConnected: value);
@@ -166,6 +152,41 @@ class ProfileViewModel {
 
   void saveSelectedCommunity(Community value) {
     _ref.read(selectedCommunityProvider.notifier).state = value;
+  }
+
+  void saveAppDatabase(AppDatabase value) {
+    _ref.read(appDataBaseProvider.notifier).state = value;
+  }
+
+  void resetUserProfileProvider() {
+    saveUid('');
+    saveUserId('');
+    saveUserImg('');
+    saveUserName('');
+    saveUserProfileMsg('');
+    saveThemeMusicArtistName('');
+    saveThemeMusicImg('');
+    saveThemeMusicSpotifyUrl('');
+    saveThemeMusicPreviewUrl('');
+    //TODO userSignUpTimestampをどうするか
+    saveCommunityId('none');
+  }
+
+  //ローカルDBにあるユーザーのプロフィール情報をproviderに格納する
+  void saveUserProfileLocalDBData(LocalUserProfile value) {
+    saveUid(value.uid);
+    saveUserId(value.userId);
+    saveUserName(value.userName);
+    saveUserImg(value.userImg);
+    saveThemeMusicImg(value.themeMusicImg);
+    saveThemeMusicName(value.themeMusicName);
+    saveThemeMusicArtistName(value.themeMusicArtistName);
+    saveThemeMusicSpotifyUrl(value.themeMusicSpotifyUrl);
+    //TODO ここのnullSafetyは確認しなければならない
+    saveThemeMusicPreviewUrl(value.themeMusicPreviewUrl!);
+    saveUserProfileMsg(value.userProfileMsg);
+    saveUserSpotifyConnected(value.userSpotifyConnected);
+    saveCommunityId(value.communityId);
   }
 
   Future<void> onImageTapped() async {
@@ -221,5 +242,10 @@ class ProfileViewModel {
     if (userProfile != null) {
       saveUserProfile(userProfile);
     }
+  }
+
+  Future<void> setUserProfileToFirestore() async {
+    await _profileModel.setUserProfileToFirestore(
+        uid: uid, userProfile: userProfile);
   }
 }

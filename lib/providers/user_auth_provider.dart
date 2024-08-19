@@ -15,3 +15,5 @@ final signUpIsLoadingProvider = StateProvider<bool>((ref) => false);
 final signInIsLoadingProvider = StateProvider<bool>((ref) => false);
 
 final emailAuthIsLoadingProvider = StateProvider<bool>((ref) => false);
+
+final isSignInAndSignUpProvider = StateProvider<bool>((ref) => false);

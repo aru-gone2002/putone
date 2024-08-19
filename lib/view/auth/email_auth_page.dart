@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -55,40 +56,43 @@ class EmailAuthPage extends StatelessWidget {
                 child: AccentColorButton(
                   onPressed: () async {
                     authViewModel.loadingEmailAuth();
+                    //認証が終わっていない場合、SignInページからAuthPageに来る場合もあるため、こちらでも行っておく
+                    //TODO ここでsnapshot.hasDataが発火してしまうため、対応が必要
                     final signInResponse =
                         await authViewModel.signInWithEmailAndPassword();
 
-                    //　ログインが失敗した時の処理
-                    if (signInResponse != null && context.mounted) {
+                    //　サインインが失敗した時の処理（裏での処理）
+                    if (signInResponse != null) {
+                      await authViewModel.signOut();
                       authViewModel.completedEmailAuth();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(errorAndRetryText),
-                          duration: Duration(milliseconds: 6000),
-                        ),
-                      );
+                      Fluttertoast.showToast(msg: errorAndRetryText);
+                      // if (context.mounted) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text(errorAndRetryText),
+                      //       duration: Duration(milliseconds: 6000),
+                      //     ),
+                      //   );
+                      // }
                     }
 
-                    //　ログインがちゃんと成功した時の処理
+                    //　サインインがちゃんと成功した時の処理
                     if (signInResponse == null) {
                       await authViewModel.checkUserEmailVerified();
                       if (authViewModel.userEmailVerified) {
-                        if (context.mounted) {
+                        //TODO uidをUserAuthProviderとUserProfileProviderに入れ、ローカルDBに格納する
+                        authViewModel.checkUid();
+                        profileViewModel.saveUid(authViewModel.uid);
+                        profileViewModel.saveUserId(authViewModel.uid);
+                        profileViewModel.saveUserName(authViewModel.uid);
+                        //TODO appDataBaseProvider経由でローカルDBに格納する。ちょっと危険かも？
+                        profileViewModel.appDatabase!.insertLocalUserProfile(
+                            profileViewModel.userProfile);
+                        //TODO Firestoreに入れるのもこのタイミングでいいんじゃない？
+                        if (context.mounted)
                           toFirstProfileSettingPage(context: context);
-                          authViewModel.completedEmailAuth();
-                          await profileViewModel.fetchSpotifyAccessToken();
-                        }
-                      } else {
-                        await authViewModel.signOut();
-                        if (context.mounted) {
-                          authViewModel.completedEmailAuth();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(emailIsNotVerifiedText),
-                              duration: Duration(milliseconds: 6000),
-                            ),
-                          );
-                        }
+                        authViewModel.completedEmailAuth();
+                        await profileViewModel.fetchSpotifyAccessToken();
                       }
                     }
                   },

@@ -54,7 +54,8 @@ class FirstProfileSettingPage extends StatelessWidget {
                         return notInputUserIdText;
                       }
                       //小文字と.と数字で入力してもらうようにする。正規表現のやつ
-                      if (!RegExp(r'^[a-z0-9.]{4,}$').hasMatch(value)) {
+                      //TODO 文字数制限をつける
+                      if (!RegExp(r'^[a-z0-9.]{4,16}$').hasMatch(value)) {
                         return inputUserIdIsNotValidText;
                       }
                       return null;
@@ -70,8 +71,12 @@ class FirstProfileSettingPage extends StatelessWidget {
                     itemName: userNameLabel,
                     textRestriction: '',
                     validator: (value) {
+                      //TODO 文字数制限をつける
                       if (value == null || value.trim().isEmpty) {
                         return notInputUserNameText;
+                      }
+                      if (!RegExp(r'^.{1,16}').hasMatch(value)) {
+                        return inputUserIdIsNotValidText;
                       }
                       return null;
                     },

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/auth_model.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class AuthViewModel {
   final AuthModel _authModel = AuthModel();
@@ -29,6 +32,8 @@ class AuthViewModel {
   bool get signInIsLoading => _ref.watch(signInIsLoadingProvider);
 
   bool get emailAuthIsLoading => _ref.watch(emailAuthIsLoadingProvider);
+
+  bool get isSignIn => _ref.watch(isSignInAndSignUpProvider);
 
   UserProfile get userProfile => _ref.read(userProfileProvider);
 
@@ -76,18 +81,35 @@ class AuthViewModel {
     _ref.read(emailAuthIsLoadingProvider.notifier).state = false;
   }
 
-  Future<FirebaseException?> signUpWithEmailAndPassword() async {
+  void fromSignInAndSignUp() {
+    _ref.read(isSignInAndSignUpProvider.notifier).state = true;
+  }
+
+  void refreshFromSignInAndSignOut() {
+    _ref.read(isSignInAndSignUpProvider.notifier).state = false;
+  }
+
+  void resetUsetAuthProvider() {
+    saveUid('');
+    savePassword('');
+    saveEmail('');
+    saveEmailVerified(false);
+  }
+
+  Future<dynamic> signUpWithEmailAndPassword() async {
+    fromSignInAndSignUp();
+    //createUserWithEmailAndPasswordの返り値をもらう。userCredentialとして格納
     final response = await _authModel.signUpWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,
       userProfile: userProfile,
-      ref: _ref,
     );
-
     return response;
   }
 
+  //TODO signInの処理をしっかりと分けるようにする
   Future<FirebaseException?> signInWithEmailAndPassword() async {
+    fromSignInAndSignUp();
     final response = await _authModel.signInWithEmailAndPassword(
       userEmail: userEmail,
       userPassword: userPassword,
@@ -107,10 +129,11 @@ class AuthViewModel {
   }
 
   Future<void> signOut() async {
-    _authModel.signOut();
+    refreshFromSignInAndSignOut();
+    await _authModel.signOut();
   }
 
-  Future<void> checkUid() async {
+  void checkUid() async {
     final uid = _authModel.checkUid();
     saveUid(uid);
   }

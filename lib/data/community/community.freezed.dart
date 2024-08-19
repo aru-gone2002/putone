@@ -22,7 +22,6 @@ Community _$CommunityFromJson(Map<String, dynamic> json) {
 mixin _$Community {
   String get communityId => throw _privateConstructorUsedError;
   String get communityName => throw _privateConstructorUsedError;
-  List<String> get communityMemberUids => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,10 +34,7 @@ abstract class $CommunityCopyWith<$Res> {
   factory $CommunityCopyWith(Community value, $Res Function(Community) then) =
       _$CommunityCopyWithImpl<$Res, Community>;
   @useResult
-  $Res call(
-      {String communityId,
-      String communityName,
-      List<String> communityMemberUids});
+  $Res call({String communityId, String communityName});
 }
 
 /// @nodoc
@@ -56,7 +52,6 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
   $Res call({
     Object? communityId = null,
     Object? communityName = null,
-    Object? communityMemberUids = null,
   }) {
     return _then(_value.copyWith(
       communityId: null == communityId
@@ -67,10 +62,6 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
           ? _value.communityName
           : communityName // ignore: cast_nullable_to_non_nullable
               as String,
-      communityMemberUids: null == communityMemberUids
-          ? _value.communityMemberUids
-          : communityMemberUids // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ) as $Val);
   }
 }
@@ -83,10 +74,7 @@ abstract class _$$CommunityImplCopyWith<$Res>
       __$$CommunityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String communityId,
-      String communityName,
-      List<String> communityMemberUids});
+  $Res call({String communityId, String communityName});
 }
 
 /// @nodoc
@@ -102,7 +90,6 @@ class __$$CommunityImplCopyWithImpl<$Res>
   $Res call({
     Object? communityId = null,
     Object? communityName = null,
-    Object? communityMemberUids = null,
   }) {
     return _then(_$CommunityImpl(
       communityId: null == communityId
@@ -113,10 +100,6 @@ class __$$CommunityImplCopyWithImpl<$Res>
           ? _value.communityName
           : communityName // ignore: cast_nullable_to_non_nullable
               as String,
-      communityMemberUids: null == communityMemberUids
-          ? _value._communityMemberUids
-          : communityMemberUids // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ));
   }
 }
@@ -125,10 +108,7 @@ class __$$CommunityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
   const _$CommunityImpl(
-      {required this.communityId,
-      required this.communityName,
-      required final List<String> communityMemberUids})
-      : _communityMemberUids = communityMemberUids;
+      {required this.communityId, required this.communityName});
 
   factory _$CommunityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommunityImplFromJson(json);
@@ -137,18 +117,10 @@ class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
   final String communityId;
   @override
   final String communityName;
-  final List<String> _communityMemberUids;
-  @override
-  List<String> get communityMemberUids {
-    if (_communityMemberUids is EqualUnmodifiableListView)
-      return _communityMemberUids;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_communityMemberUids);
-  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Community(communityId: $communityId, communityName: $communityName, communityMemberUids: $communityMemberUids)';
+    return 'Community(communityId: $communityId, communityName: $communityName)';
   }
 
   @override
@@ -157,8 +129,7 @@ class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
     properties
       ..add(DiagnosticsProperty('type', 'Community'))
       ..add(DiagnosticsProperty('communityId', communityId))
-      ..add(DiagnosticsProperty('communityName', communityName))
-      ..add(DiagnosticsProperty('communityMemberUids', communityMemberUids));
+      ..add(DiagnosticsProperty('communityName', communityName));
   }
 
   @override
@@ -169,15 +140,12 @@ class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
             (identical(other.communityId, communityId) ||
                 other.communityId == communityId) &&
             (identical(other.communityName, communityName) ||
-                other.communityName == communityName) &&
-            const DeepCollectionEquality()
-                .equals(other._communityMemberUids, _communityMemberUids));
+                other.communityName == communityName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, communityId, communityName,
-      const DeepCollectionEquality().hash(_communityMemberUids));
+  int get hashCode => Object.hash(runtimeType, communityId, communityName);
 
   @JsonKey(ignore: true)
   @override
@@ -196,8 +164,7 @@ class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
 abstract class _Community implements Community {
   const factory _Community(
       {required final String communityId,
-      required final String communityName,
-      required final List<String> communityMemberUids}) = _$CommunityImpl;
+      required final String communityName}) = _$CommunityImpl;
 
   factory _Community.fromJson(Map<String, dynamic> json) =
       _$CommunityImpl.fromJson;
@@ -206,8 +173,6 @@ abstract class _Community implements Community {
   String get communityId;
   @override
   String get communityName;
-  @override
-  List<String> get communityMemberUids;
   @override
   @JsonKey(ignore: true)
   _$$CommunityImplCopyWith<_$CommunityImpl> get copyWith =>
