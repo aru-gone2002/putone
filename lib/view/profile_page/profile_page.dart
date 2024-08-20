@@ -32,7 +32,7 @@ class ProfilePage extends ConsumerWidget {
     return Scaffold(
       key: scaffoldKey,
       body: StreamBuilder<Object>(
-          stream: database.watchAllUserBaseProfiles(),
+          stream: database.watchAllLocalUserProfiles(),
           //stream: profileViewModel.appDatabase!.watchAllUserBaseProfiles(),
           builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -326,7 +326,11 @@ class ProfilePage extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        //TODO 投稿ページに飛ぶようにする
+        onPressed: () async {
+          await profileViewModel.fetchSpotifyAccessToken();
+          if (context.mounted) toPostCreatePage(context: context);
+        },
         backgroundColor: AppColorTheme.color().accentColor,
         child: const Icon(Icons.add),
       ),

@@ -49,7 +49,13 @@ service cloud.firestore {
       match /users/{uid} {
           allow read: if isAuthenticated();
           allow create, update: if isUserAuthenticated(uid);
+
+          match /posts/{postId} {
+            allow read: if isAuthenticated();
+            allow create, delete: if isUserAuthenticated(uid);
+          }
       }
+
       match /communities/{communityId}/users/{uid} {
         allow read: if isAuthenticated();
         allow create, update: if isUserAuthenticated(uid);

@@ -18,19 +18,13 @@ class $LocalUserProfilesTable extends LocalUserProfiles
   @override
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 16),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userNameMeta =
       const VerificationMeta('userName');
   @override
   late final GeneratedColumn<String> userName = GeneratedColumn<String>(
       'user_name', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 16),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userImgMeta =
       const VerificationMeta('userImg');
   @override

@@ -7,6 +7,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class EmailAuthPage extends StatelessWidget {
@@ -16,6 +17,8 @@ class EmailAuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final LocalDatabaseViewModel localDatabaseViewModel =
+        LocalDatabaseViewModel();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,6 +49,7 @@ class EmailAuthPage extends StatelessWidget {
             builder: (context, ref, child) {
               authViewModel.setRef(ref);
               profileViewModel.setRef(ref);
+              localDatabaseViewModel.setRef(ref);
               return Visibility(
                 visible: !authViewModel.emailAuthIsLoading,
                 replacement: SizedBox(
@@ -86,8 +90,9 @@ class EmailAuthPage extends StatelessWidget {
                         profileViewModel.saveUserId(authViewModel.uid);
                         profileViewModel.saveUserName(authViewModel.uid);
                         //TODO appDataBaseProvider経由でローカルDBに格納する。ちょっと危険かも？
-                        profileViewModel.appDatabase!.insertLocalUserProfile(
-                            profileViewModel.userProfile);
+                        await localDatabaseViewModel.appDatabase!
+                            .insertLocalUserProfile(
+                                profileViewModel.userProfile);
                         //TODO Firestoreに入れるのもこのタイミングでいいんじゃない？
                         if (context.mounted)
                           toFirstProfileSettingPage(context: context);

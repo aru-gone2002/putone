@@ -68,8 +68,6 @@ class ProfileViewModel {
 
   String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
 
-  AppDatabase? get appDatabase => _ref.watch(appDataBaseProvider);
-
   List<SpotifyTrack> get spotifySearchTracks =>
       _ref.watch(spotifySearchTracksProvider);
 
@@ -152,10 +150,6 @@ class ProfileViewModel {
 
   void saveSelectedCommunity(Community value) {
     _ref.read(selectedCommunityProvider.notifier).state = value;
-  }
-
-  void saveAppDatabase(AppDatabase value) {
-    _ref.read(appDataBaseProvider.notifier).state = value;
   }
 
   void resetUserProfileProvider() {

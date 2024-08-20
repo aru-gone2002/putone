@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 import 'package:nil/nil.dart';
 import 'package:putone/local_database.dart';
-import 'package:putone/model/auth_model.dart';
-import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
 import 'package:putone/view/auth/auth_page.dart';
@@ -13,6 +10,7 @@ import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class PuTone extends ConsumerWidget {
@@ -24,8 +22,11 @@ class PuTone extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final LocalDatabaseViewModel localDatabaseViewModel =
+        LocalDatabaseViewModel();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+    localDatabaseViewModel.setRef(ref);
 
     return MaterialApp(
       title: 'PuTone',
@@ -50,6 +51,7 @@ class PuTone extends ConsumerWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
+      //home: AdminPage(),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -65,13 +67,13 @@ class PuTone extends ConsumerWidget {
 
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
                   //AppDataBaseのインスタンスをproviderに格納
-                  profileViewModel
+                  localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                   //ローカルDBからデータを取得
-                  final userBaseProfiles =
-                      await database.getAllUserBaseProfiles();
+                  final localUserProfiles =
+                      await database.getAllLocalUserProfiles();
                   print('ローカルDBからデータを取得');
-                  final userBaseProfile = userBaseProfiles.first;
+                  final userBaseProfile = localUserProfiles.first;
                   print('firstを実行');
                   //userBaseProfileの内容をproviderに入れる
                   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
@@ -82,10 +84,10 @@ class PuTone extends ConsumerWidget {
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   //AppDataBaseのインスタンスをproviderに格納
-                  profileViewModel
+                  localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                 });
-                profileViewModel
+                localDatabaseViewModel
                     .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                 return const EmailAuthPage();
               }
@@ -94,7 +96,7 @@ class PuTone extends ConsumerWidget {
 
           //何もない時に表示される。
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            profileViewModel.saveAppDatabase(database);
+            localDatabaseViewModel.saveAppDatabase(database);
           });
           return const AuthPage();
         },

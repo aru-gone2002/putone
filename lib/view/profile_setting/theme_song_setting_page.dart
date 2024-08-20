@@ -1,5 +1,7 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
@@ -63,10 +65,12 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
             ),
 
             const SizedBox(height: 20),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(musicNameLabel),
+                //楽曲名入力フォーム
                 Container(
                   padding: const EdgeInsets.only(left: 16, right: 4),
                   decoration: BoxDecoration(
@@ -95,6 +99,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                   height: 8,
                 ),
                 const Text(artistNameLabel),
+                //アーティスト名入力フォーム
                 Container(
                   padding: const EdgeInsets.only(left: 16, right: 4),
                   decoration: BoxDecoration(
@@ -134,12 +139,8 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                       onPressed: () {
                         if (_artistNameController.text == '' &&
                             _trackNameController.text == '') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text(askToEnterTrackOrArtistSnackBarText),
-                            ),
-                          );
+                          Fluttertoast.showToast(
+                              msg: askToEnterTrackOrArtistToastText);
                         } else {
                           _profileViewModel.searchTracks(
                             searchTrackName: _trackNameController.text,
@@ -171,6 +172,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
               ],
             ),
             const SizedBox(height: 24),
+            //楽曲表示スペース
             Container(
               height: 300,
               decoration: BoxDecoration(
@@ -183,6 +185,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                         spreadRadius: 2,
                         color: Color.fromARGB(60, 0, 0, 0)),
                   ]),
+              //楽曲の表示
               child: _profileViewModel.spotifySearchTracks.isEmpty
                   ? const Center(
                       child: Text(askToSearchByTrackAndArtistText),
@@ -192,6 +195,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                       itemBuilder: (context, index) {
                         final spotifySearchTrack =
                             _profileViewModel.spotifySearchTracks[index];
+                        //楽曲一つ一つの表示ListTile
                         return ListTile(
                           onTap: () async {
                             await showDialog(
@@ -222,17 +226,14 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
                               },
                             );
                           },
-                          leading: Container(
-                            height: 56,
+                          leading: ExtendedImage.network(
+                            spotifySearchTrack.trackImg,
                             width: 56,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              image: DecorationImage(
-                                //Spotify APIのSearchで取得してきた楽曲の画像を入れる。
-                                image:
-                                    NetworkImage(spotifySearchTrack.trackImg),
-                              ),
-                            ),
+                            height: 56,
+                            fit: BoxFit.cover,
+                            cache: true,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(4),
                           ),
                           //Spotify APIのSearchで取得してきた楽曲の名前を入れる。
                           title: Text(spotifySearchTrack.trackName),

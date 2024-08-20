@@ -7,6 +7,7 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/title_and_text_button.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class SecondProfileSettingPage extends StatelessWidget {
@@ -15,6 +16,8 @@ class SecondProfileSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final LocalDatabaseViewModel localDatabaseViewModel =
+        LocalDatabaseViewModel();
 
     return Scaffold(
       appBar: AppBar(
@@ -124,17 +127,19 @@ class SecondProfileSettingPage extends StatelessWidget {
               ),
               const SizedBox(height: 120),
               Consumer(builder: (context, ref, _) {
+                profileViewModel.setRef(ref);
+                localDatabaseViewModel.setRef(ref);
                 return AccentColorButton(
                   //プロフィールをFirestoreとFirebaseに追加する
                   //routeを設定する
                   onPressed: () async {
                     toProfilePage(context: context, ref: ref);
                     await profileViewModel.uploadProfileInfo();
-                    //TODO ローカルDBにデータを入れる処理を行う。
-                    //TODO updateの形に変更する
-                    await profileViewModel.appDatabase!
+                    //ローカルDBにデータを入れる処理を行う。
+                    //updateの形に変更する
+                    await localDatabaseViewModel.appDatabase!
                         .updateLocalUserProfile(profileViewModel.userProfile);
-                    //TODO コミュニティが入力されていたら、コミュニティにそのユーザーを追加する機能を実装する
+                    //コミュニティが入力されていたら、コミュニティにそのユーザーを追加する機能を実装する
                     if (profileViewModel.communityId != 'none') {
                       await profileViewModel.addUserToCommunity();
                     }

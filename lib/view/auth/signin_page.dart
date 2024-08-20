@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -9,6 +10,7 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class SignInPage extends StatelessWidget {
@@ -18,6 +20,8 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final LocalDatabaseViewModel localDatabaseViewModel =
+        LocalDatabaseViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signInFunction(
@@ -55,7 +59,7 @@ class SignInPage extends StatelessWidget {
             print('getUserProfileをしました');
             //TODO UserProfileProviderに入っている情報をデータベースに入れる。
             //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
-            await profileViewModel.appDatabase!
+            await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
             if (context.mounted) {
@@ -97,6 +101,7 @@ class SignInPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FormFieldItem(
+                  maxLength: maxEmailTextLength,
                   itemName: emailAddressLabel,
                   textRestriction: '',
                   validator: (value) {
@@ -119,6 +124,7 @@ class SignInPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   authViewModel.setRef(ref);
                   return FormFieldItem(
+                    maxLength: maxPasswordTextLength,
                     itemName: passwordLabel,
                     textRestriction: '',
                     //TODO validatorは緩くする
@@ -144,6 +150,7 @@ class SignInPage extends StatelessWidget {
                   builder: (context, ref, child) {
                     authViewModel.setRef(ref);
                     profileViewModel.setRef(ref);
+                    localDatabaseViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,
                       replacement: SizedBox(
