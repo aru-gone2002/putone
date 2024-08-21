@@ -5,6 +5,7 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/profile_page/post_grid_view.dart';
 import 'package:putone/view/profile_page/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -47,6 +48,7 @@ class ProfilePage extends ConsumerWidget {
             return SafeArea(
               child: Column(
                 children: [
+                  //プロフィールのトップ画面
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -214,7 +216,7 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                         //右のライン
-                        //ハンバーガーメニュー
+                        //編集ボタン
                         Align(
                           alignment: const Alignment(0.65, -0.9),
                           child: ElevatedButton.icon(
@@ -242,6 +244,7 @@ class ProfilePage extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        //ハンバーガーメニュー
                         Align(
                           alignment: const Alignment(0.95, -0.9),
                           child: IconButton(
@@ -251,6 +254,7 @@ class ProfilePage extends ConsumerWidget {
                             },
                           ),
                         ),
+                        //プロフィール文
                         Align(
                           alignment: const Alignment(0.95, 0),
                           child: SizedBox(
@@ -271,8 +275,12 @@ class ProfilePage extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  const Center(
-                    child: Text('プロフィール画面'),
+                  //投稿表示画面
+                  //TODO
+                  SingleChildScrollView(
+                    child: Expanded(
+                      child: PostGridView(),
+                    ),
                   ),
                 ],
               ),

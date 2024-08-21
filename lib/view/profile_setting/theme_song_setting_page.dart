@@ -46,7 +46,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ThemeSongSettingPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
               horizontal: spaceWidthMedium, vertical: spaceHeightSmall),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
