@@ -29,8 +29,11 @@ class PostAddMsgPage extends StatelessWidget {
     void saveNewPost(
         GlobalObjectKey<FormState> formKey, BuildContext context) async {
       if (formKey.currentState!.validate()) {
+        //msgをproviderに保存
         formKey.currentState!.save();
+        //uidを取得
         authViewModel.checkUid();
+        //providerにpostの情報を保存
         postViewModel.saveUid(authViewModel.uid);
         postViewModel.savePostId(returnUuidV4());
         postViewModel.savePostMusicImg(selectedTrack.trackImg);
@@ -64,13 +67,15 @@ class PostAddMsgPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: spaceWidthMedium, vertical: spaceHeightSmall),
+          padding: const EdgeInsets.symmetric(
+            horizontal: spaceWidthMedium,
+            vertical: spaceHeightSmall,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '選択した曲',
+                selectedSongLabel,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               ListTile(
@@ -147,7 +152,7 @@ class PostAddMsgPage extends StatelessWidget {
                 localDatabaseViewModel.setRef(ref);
                 return AccentColorButton(
                   onPressed: () => saveNewPost(formKey, context),
-                  text: '投稿',
+                  text: postBtnText,
                 );
               }),
             ],

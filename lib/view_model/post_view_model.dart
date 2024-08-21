@@ -103,4 +103,21 @@ class PostViewModel {
   Future<void> uploadPost() async {
     await _postModel.uploadNewPost(post: newPost);
   }
+
+  void insertFirestorePostsToList(List<Post> userPosts) {
+    _ref.read(postsProvider.notifier).state = [
+      ...userPosts,
+    ];
+  }
+
+  Future<List<Post>?> getUserPosts(String authUid) async {
+    final userPosts = await _postModel.getUserPosts(authUid);
+    //returnでuserPostsをリターンして、そこからinsertFirestorePostsToListと
+    //データベースへの格納をすればいいのでは？
+    if (userPosts is List<Post>) {
+      return userPosts;
+    } else {
+      return null;
+    }
+  }
 }

@@ -32,6 +32,7 @@ const String selectedThemeSongLabel = '選択したテーマソング';
 const String belongCommunityLabel = '所属コミュニティ';
 const String selectedCommunityLabel = '選択したコミュニティ';
 const String selectSongLabel = '曲の選択';
+const String selectedSongLabel = '選択した曲';
 
 //title
 const String signupTitle = '会員登録';

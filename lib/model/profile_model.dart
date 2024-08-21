@@ -236,7 +236,7 @@ class ProfileModel {
       final userProfile = UserProfile.fromJson(responseData);
       return userProfile;
     } catch (e) {
-      print('Error getting document: $e');
+      print('Error getting userProfile from Firestore: $e');
     }
   }
 

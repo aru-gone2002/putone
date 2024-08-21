@@ -11,6 +11,7 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class SignInPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final PostViewModel postViewModel = PostViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
@@ -43,7 +45,7 @@ class SignInPage extends StatelessWidget {
           });
         }
 
-        //サインインが成功したか確認する
+        //----サインインが成功時----
         if (signInResponse == null) {
           await Fluttertoast.showToast(msg: signInSucceededText);
           //uidをuser_auth_providerに格納する
@@ -52,13 +54,23 @@ class SignInPage extends StatelessWidget {
           profileViewModel.saveUid(authViewModel.uid);
           //メールアドレスが認証されているかをチェックする
           await authViewModel.checkUserEmailVerified();
-          //メールアドレスが認証されているかで遷移先を変更
+          //----メールアドレスが認証されているかで遷移先を変更----
           if (authViewModel.userEmailVerified) {
-            //自分のプロフィール情報を取得し、user_profile_providerに格納
+            //自分のプロフィール情報をFirestoreから取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
-            //TODO UserProfileProviderに入っている情報をデータベースに入れる。
-            //TODO appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
+            //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
+            final userPosts =
+                await postViewModel.getUserPosts(authViewModel.uid);
+            if (userPosts != null) {
+              postViewModel.insertFirestorePostsToList(userPosts);
+              for (var userPost in userPosts) {
+                await localDatabaseViewModel.appDatabase!
+                    .insertLocalUserPost(userPost);
+              }
+            }
+            //UserProfileProviderに入っている情報をデータベースに入れる。
+            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
@@ -150,6 +162,7 @@ class SignInPage extends StatelessWidget {
                   builder: (context, ref, child) {
                     authViewModel.setRef(ref);
                     profileViewModel.setRef(ref);
+                    postViewModel.setRef(ref);
                     localDatabaseViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,
