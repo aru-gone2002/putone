@@ -5,8 +5,7 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
-import 'package:putone/view/item/gray_color_text_button.dart';
+import 'package:putone/view/profile_page/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
@@ -279,54 +278,9 @@ class ProfilePage extends ConsumerWidget {
               ),
             );
           }),
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            InkWell(
-              child: const ListTile(
-                title: Text(signOutBtnText),
-              ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text(askwhetherSignOutOrNotDialogTitle),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text(backBtnText),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            //TODO ローカルDBを削除する
-                            //引数のUserBaseProfileはUserBaseProfilesの中身の1つであるから、
-                            //getAllUserBaseProfilesメソッドで取得して、.firstメソッドで入れる
-                            //or Streamでやる
-                            //or 最初に取ってきたデータベースを捨てるか
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            toAuthPage(context: context);
-                            await authViewModel.signOut();
-                            // await profileViewModel.appDatabase!
-                            //     .deleteUserBaseProfile();
-                            authViewModel.resetUsetAuthProvider();
-                            profileViewModel.resetUserProfileProvider();
-                            database.deleteLocalUserProfile();
-                          },
-                          child: const Text(signOutBtnText),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      endDrawer: ProfileDrawer(database: database),
       floatingActionButton: FloatingActionButton(
-        //TODO 投稿ページに飛ぶようにする
+        //投稿ページに飛ぶようにする
         onPressed: () async {
           await profileViewModel.fetchSpotifyAccessToken();
           if (context.mounted) toPostCreatePage(context: context);

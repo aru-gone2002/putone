@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -193,35 +194,9 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
                             //TODO ここの機能を変更する
                             //タップしたら、タップした楽曲の情報が次の投稿メッセージ作成画面に行くように変更したい
                             onTap: () async {
-                              //
-
-                              // await showDialog(
-                              //   context: context,
-                              //   builder: (BuildContext context) {
-                              //     return AlertDialog(
-                              //       title: const Text(
-                              //           musicSettingConfirmDialogText),
-                              //       content: Text(
-                              //           '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
-                              //       actions: [
-                              //         TextButton(
-                              //           onPressed: () => Navigator.pop(context),
-                              //           child: const Text(backBtnText),
-                              //         ),
-                              //         TextButton(
-                              //             child: const Text(registerBtnText),
-                              //             onPressed: () {
-                              //               _profileViewModel.setThemeSong(
-                              //                   track: spotifySearchTrack);
-                              //               //ダイアログを閉じる
-                              //               Navigator.pop(context);
-                              //               //テーマソングの登録画面を閉じる
-                              //               Navigator.pop(context);
-                              //             }),
-                              //       ],
-                              //     );
-                              //   },
-                              // );
+                              toPostAddMsgPage(
+                                  context: context,
+                                  selectedTrack: spotifySearchTrack);
                             },
                             //ジャケ写
                             leading: ExtendedImage.network(

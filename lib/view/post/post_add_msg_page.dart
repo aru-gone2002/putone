@@ -39,16 +39,19 @@ class PostAddMsgPage extends StatelessWidget {
         postViewModel.savePostMusicSpotifyUrl(selectedTrack.trackExternalUrl);
         postViewModel.savePostMusicPreviewUrl(selectedTrack.previewUrl ?? '');
         //TODO Firestoreに入れる
-        postViewModel.uploadPost();
+        await postViewModel.uploadPost();
+        print('postをfirestoreにアップロード');
         //TODO ローカルDBに入れる
-        localDatabaseViewModel.appDatabase!
+        await localDatabaseViewModel.appDatabase!
             .insertLocalUserPost(postViewModel.newPost);
         //TODO postsProviderに入れる
         postViewModel.addNewPostToList();
-        Fluttertoast.showToast(msg: newPostSavedToastText);
+        await Fluttertoast.showToast(msg: newPostSavedToastText);
         //元の画面まで戻る
-        Navigator.pop(context);
-        Navigator.pop(context);
+        if (context.mounted) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
       }
     }
 
@@ -85,6 +88,7 @@ class PostAddMsgPage extends StatelessWidget {
                 title: Text(selectedTrack.trackName),
                 //Spotify APIのSearchで取得してきたアーティストの名前を入れる。
                 subtitle: Text(selectedTrack.artistName),
+                contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: 30),
               //TODO 投稿のプロバイダを作成して、プロバイダに情報を入れる
@@ -137,7 +141,7 @@ class PostAddMsgPage extends StatelessWidget {
                 }),
               ),
               const SizedBox(height: 80),
-              //TODO 投稿ぽたんを推した時の処理を書く
+              //TODO 投稿ボタンを推した時の処理を書く
               Consumer(builder: (context, ref, _) {
                 postViewModel.setRef(ref);
                 localDatabaseViewModel.setRef(ref);

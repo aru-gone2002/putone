@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
+import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/post/post_create_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/profile_setting/community_setting_page.dart';
@@ -92,10 +94,22 @@ void toAuthPage({required BuildContext context}) => Navigator.pushReplacement(
       ),
     );
 
-void toPostCreatePage({required BuildContext context}) =>
-    Navigator.pushReplacement(
+void toPostCreatePage({required BuildContext context}) => Navigator.push(
       context,
       MaterialPageRoute(
         builder: ((context) => const PostCreatePage()),
+      ),
+    );
+
+void toPostAddMsgPage({
+  required BuildContext context,
+  required SpotifyTrack selectedTrack,
+}) =>
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => PostAddMsgPage(
+              selectedTrack: selectedTrack,
+            )),
       ),
     );
