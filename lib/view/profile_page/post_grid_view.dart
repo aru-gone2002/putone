@@ -28,12 +28,13 @@ class PostGridView extends ConsumerWidget {
         top: postGridPaddingHeight,
       ),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: postGridViewCrossAxisSpacing,
           mainAxisSpacing: postGridViewMainAxisSpacing,
-          childAspectRatio: postGridItemWidth /
-              (postGridItemWidth + postGridItemTitleSpaceHeight),
+          childAspectRatio: 1,
+          // postGridItemWidth /
+          //     (postGridItemWidth + postGridItemTitleSpaceHeight),
         ),
         itemCount: (snapshot.data as List<LocalUserPost>).length,
         itemBuilder: (context, index) {

@@ -25,7 +25,8 @@ class PostGridItem extends StatelessWidget {
 
     return Container(
       width: postGridItemWidth,
-      height: postGridItemWidth + postGridItemTitleSpaceHeight,
+      //height: postGridItemWidth + postGridItemTitleSpaceHeight,
+      height: postGridItemWidth,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: const [
@@ -55,10 +56,7 @@ class PostGridItem extends StatelessWidget {
                     fit: BoxFit.cover,
                     cache: true,
                     shape: BoxShape.rectangle,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 Align(
@@ -67,16 +65,14 @@ class PostGridItem extends StatelessWidget {
                     width: postGridItemWidth,
                     height: postGridItemWidth,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
-                      ),
+                      borderRadius: BorderRadius.circular(8),
                       gradient: LinearGradient(
                         colors: [
+                          Colors.black.withOpacity(0.2),
                           Colors.black.withOpacity(0),
                           Colors.black.withOpacity(0.8),
                         ],
-                        stops: const [0.6, 1.0],
+                        stops: const [0.1, 0.6, 1.0],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),
@@ -93,9 +89,9 @@ class PostGridItem extends StatelessWidget {
                         Icons.music_note_outlined,
                         color: Colors.white,
                       ),
-                      const SizedBox(width: 2),
+                      const SizedBox(width: 4),
                       SizedBox(
-                        width: postGridItemWidth * 0.75,
+                        width: postGridItemWidth * 0.65,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,8 +116,10 @@ class PostGridItem extends StatelessWidget {
                 ),
                 //TODO ボタンが押されたら赤くする
                 Align(
-                  alignment: const Alignment(0.95, 0.9),
+                  alignment: const Alignment(1.05, 0.95),
                   child: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                     onPressed: () {},
                     icon: const Icon(
                       Icons.favorite_border_outlined,
@@ -132,20 +130,20 @@ class PostGridItem extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: postGridItemTitlePaddingWidth,
-                vertical: postGridItemTitlePaddingHeight,
-              ),
-              child: Text(
-                localUserPost.postMsg,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: postGridItemTitlePaddingWidth,
+          //       vertical: postGridItemTitlePaddingHeight,
+          //     ),
+          //     child: Text(
+          //       localUserPost.postMsg,
+          //       maxLines: 2,
+          //       overflow: TextOverflow.ellipsis,
+          //       textAlign: TextAlign.start,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

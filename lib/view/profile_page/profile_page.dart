@@ -316,7 +316,10 @@ class ProfilePage extends ConsumerWidget {
           if (context.mounted) toPostCreatePage(context: context);
         },
         backgroundColor: AppColorTheme.color().accentColor,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
