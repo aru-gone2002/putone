@@ -89,13 +89,11 @@ class ProfilePage extends ConsumerWidget {
                                 //TODO ログインとかした場合には事前にFirestoreから情報を取得して、
                                 //UserProfileProviderにデータが入った状態となっている
                                 ExtendedImage.network(
-                                  profileViewModel.themeMusicImg == ''
-                                      ?
-                                      //ローカルDBから画像を取得
-                                      (snapshot.data! as List<LocalUserProfile>)
-                                          .first
-                                          .themeMusicImg
-                                      : profileViewModel.themeMusicImg,
+                                  //ローカルDBから画像を取得
+                                  (snapshot.data! as List<LocalUserProfile>)
+                                      .first
+                                      .themeMusicImg,
+
                                   width: 34,
                                   height: 34,
                                   fit: BoxFit.cover,
@@ -110,12 +108,10 @@ class ProfilePage extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        profileViewModel.themeMusicName == ''
-                                            ? (snapshot.data!
-                                                    as List<LocalUserProfile>)
-                                                .first
-                                                .themeMusicName
-                                            : profileViewModel.themeMusicName,
+                                        (snapshot.data!
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .themeMusicName,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -127,14 +123,10 @@ class ProfilePage extends ConsumerWidget {
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        profileViewModel.themeMusicArtistName ==
-                                                ''
-                                            ? (snapshot.data!
-                                                    as List<LocalUserProfile>)
-                                                .first
-                                                .themeMusicArtistName
-                                            : profileViewModel
-                                                .themeMusicArtistName,
+                                        (snapshot.data!
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .themeMusicArtistName,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(
@@ -159,12 +151,9 @@ class ProfilePage extends ConsumerWidget {
                               children: [
                                 //ユーザー名
                                 Text(
-                                  profileViewModel.userName == ''
-                                      ? (snapshot.data!
-                                              as List<LocalUserProfile>)
-                                          .first
-                                          .userName
-                                      : profileViewModel.userName,
+                                  (snapshot.data! as List<LocalUserProfile>)
+                                      .first
+                                      .userName,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
@@ -175,9 +164,7 @@ class ProfilePage extends ConsumerWidget {
 
                                 //ユーザーID
                                 Text(
-                                  profileViewModel.userId == ''
-                                      ? '@${(snapshot.data! as List<LocalUserProfile>).first.userId}'
-                                      : '@${profileViewModel.userId}',
+                                  '@${(snapshot.data! as List<LocalUserProfile>).first.userId}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodyMedium,
@@ -192,9 +179,7 @@ class ProfilePage extends ConsumerWidget {
                           child: SizedBox(
                             width: sideProfileWidth,
                             child: Text(
-                              profileViewModel.communityId == 'none'
-                                  ? '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}'
-                                  : '所属：${profileViewModel.communityMap[profileViewModel.communityId]!.communityName}',
+                              '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
@@ -206,11 +191,9 @@ class ProfilePage extends ConsumerWidget {
                         Align(
                           alignment: const Alignment(0, 0),
                           child: ExtendedImage.network(
-                            profileViewModel.userImg == ''
-                                ? (snapshot.data! as List<LocalUserProfile>)
-                                    .first
-                                    .userImg
-                                : profileViewModel.userImg,
+                            (snapshot.data! as List<LocalUserProfile>)
+                                .first
+                                .userImg,
                             width: profileImgSize,
                             height: profileImgSize,
                             fit: BoxFit.cover,
@@ -223,7 +206,7 @@ class ProfilePage extends ConsumerWidget {
                         Align(
                           alignment: const Alignment(0.65, -0.9),
                           child: ElevatedButton.icon(
-                            label: const Text('編集'),
+                            label: const Text(editBtnText),
                             icon: const Icon(
                               Icons.edit,
                               size: 16,
@@ -263,11 +246,9 @@ class ProfilePage extends ConsumerWidget {
                           child: SizedBox(
                             width: sideProfileWidth,
                             child: Text(
-                              profileViewModel.userProfileMsg == ''
-                                  ? (snapshot.data! as List<LocalUserProfile>)
-                                      .first
-                                      .userProfileMsg
-                                  : profileViewModel.userProfileMsg,
+                              (snapshot.data! as List<LocalUserProfile>)
+                                  .first
+                                  .userProfileMsg,
                               overflow: TextOverflow.clip,
                               textAlign: TextAlign.center,
                               softWrap: true,

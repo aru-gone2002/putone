@@ -12,6 +12,7 @@ const String accountNotExistBtnText = '会員登録する';
 const String signInBtnText = 'ログイン';
 const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
+const String editBtnText = '編集';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
