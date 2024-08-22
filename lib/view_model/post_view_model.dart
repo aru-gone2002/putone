@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/post/post.dart';
+import 'package:putone/local_database.dart';
 import 'package:putone/model/post_model.dart';
 import 'package:putone/providers/post_provider.dart';
 
@@ -36,8 +37,8 @@ class PostViewModel {
   String get postMusicPreviewUrl =>
       _ref.watch(postProvider.select((value) => value.postMusicPreviewUrl));
 
-  int get postLikeCount =>
-      _ref.watch(postProvider.select((value) => value.postLikeCount));
+  // int get postLikeCount =>
+  //     _ref.watch(postProvider.select((value) => value.postLikeCount));
 
   Post get newPost => _ref.watch(postProvider);
 
@@ -88,10 +89,10 @@ class PostViewModel {
         _ref.read(postProvider).copyWith(postMusicPreviewUrl: value);
   }
 
-  void savePostLikeCount(int value) {
-    _ref.read(postProvider.notifier).state =
-        _ref.read(postProvider).copyWith(postLikeCount: value);
-  }
+  // void savePostLikeCount(int value) {
+  //   _ref.read(postProvider.notifier).state =
+  //       _ref.read(postProvider).copyWith(postLikeCount: value);
+  // }
 
   void addNewPostToList() {
     _ref.read(postsProvider.notifier).state = [
@@ -104,7 +105,7 @@ class PostViewModel {
     await _postModel.uploadNewPost(post: newPost);
   }
 
-  void insertFirestorePostsToList(List<Post> userPosts) {
+  void insertPostsToList(List<Post> userPosts) {
     _ref.read(postsProvider.notifier).state = [
       ...userPosts,
     ];
@@ -119,5 +120,24 @@ class PostViewModel {
     } else {
       return null;
     }
+  }
+
+  List<Post> changeLocalUserPoststoPosts(List<LocalUserPost> localUserPosts) {
+    final List<Post> userPosts = [];
+    for (var localUserPost in localUserPosts) {
+      final post = Post(
+        uid: localUserPost.uid,
+        postId: localUserPost.postId,
+        postMusicImg: localUserPost.postMusicImg,
+        postMusicArtistName: localUserPost.postMusicAritstName,
+        postMusicName: localUserPost.postMusicName,
+        postMsg: localUserPost.postMsg,
+        postTimestamp: localUserPost.postTimestamp,
+        postMusicSpotifyUrl: localUserPost.postMusicSpotifyUrl,
+        postMusicPreviewUrl: localUserPost.postMusicPreciewUrl,
+      );
+      userPosts.add(post);
+    }
+    return userPosts;
   }
 }

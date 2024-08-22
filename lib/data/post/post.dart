@@ -20,7 +20,7 @@ class Post with _$Post {
     required DateTime postTimestamp,
     required String postMusicSpotifyUrl,
     required String postMusicPreviewUrl,
-    required int postLikeCount,
+    //required int postLikeCount,
   }) = _Post;
 
   factory Post.fromJson(Map<String, Object?> json) => _$PostFromJson(json);

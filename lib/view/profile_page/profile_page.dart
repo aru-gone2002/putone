@@ -8,6 +8,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/profile_page/post_grid_view.dart';
 import 'package:putone/view/profile_page/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -22,9 +23,11 @@ class ProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final PostViewModel postViewModel = PostViewModel();
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+    postViewModel.setRef(ref);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;

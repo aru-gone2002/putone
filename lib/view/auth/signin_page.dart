@@ -63,7 +63,7 @@ class SignInPage extends StatelessWidget {
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
             if (userPosts != null) {
-              postViewModel.insertFirestorePostsToList(userPosts);
+              postViewModel.insertPostsToList(userPosts);
               for (var userPost in userPosts) {
                 await localDatabaseViewModel.appDatabase!
                     .insertLocalUserPost(userPost);

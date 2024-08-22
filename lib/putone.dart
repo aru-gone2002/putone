@@ -11,6 +11,7 @@ import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class PuTone extends ConsumerWidget {
@@ -22,10 +23,12 @@ class PuTone extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final PostViewModel postViewModel = PostViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+    postViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
 
     return MaterialApp(
@@ -69,15 +72,21 @@ class PuTone extends ConsumerWidget {
                   //AppDataBaseのインスタンスをproviderに格納
                   localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
-                  //ローカルDBからデータを取得
+                  //ローカルDBからUserProfileデータを取得
                   final localUserProfiles =
                       await database.getAllLocalUserProfiles();
-                  print('ローカルDBからデータを取得');
+                  print('ローカルDBからUserProfileデータを取得');
                   final userBaseProfile = localUserProfiles.first;
                   print('firstを実行');
-                  //userBaseProfileの内容をproviderに入れる
+                  //localUserProfileの内容をproviderに入れる
                   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
                   print('saveUserProfileLocalDBDataを実施');
+                  final localUserPosts = await database.getAllLocalUserPosts();
+                  print('ローカルDBからUserPostsデータを取得');
+                  //localUserPostsの内容をproviderに入れる
+                  postViewModel.insertPostsToList(
+                    postViewModel.changeLocalUserPoststoPosts(localUserPosts),
+                  );
                 });
                 //手渡しでAppDatabaseのインスタンスを渡す
                 return ProfilePage(database: database);

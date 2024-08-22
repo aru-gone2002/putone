@@ -16,7 +16,6 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       postTimestamp: DateTime.parse(json['postTimestamp'] as String),
       postMusicSpotifyUrl: json['postMusicSpotifyUrl'] as String,
       postMusicPreviewUrl: json['postMusicPreviewUrl'] as String,
-      postLikeCount: (json['postLikeCount'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -30,5 +29,4 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'postTimestamp': instance.postTimestamp.toIso8601String(),
       'postMusicSpotifyUrl': instance.postMusicSpotifyUrl,
       'postMusicPreviewUrl': instance.postMusicPreviewUrl,
-      'postLikeCount': instance.postLikeCount,
     };

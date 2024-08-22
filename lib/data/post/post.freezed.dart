@@ -29,7 +29,6 @@ mixin _$Post {
   DateTime get postTimestamp => throw _privateConstructorUsedError;
   String get postMusicSpotifyUrl => throw _privateConstructorUsedError;
   String get postMusicPreviewUrl => throw _privateConstructorUsedError;
-  int get postLikeCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,8 +49,7 @@ abstract class $PostCopyWith<$Res> {
       String postMsg,
       DateTime postTimestamp,
       String postMusicSpotifyUrl,
-      String postMusicPreviewUrl,
-      int postLikeCount});
+      String postMusicPreviewUrl});
 }
 
 /// @nodoc
@@ -76,7 +74,6 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? postTimestamp = null,
     Object? postMusicSpotifyUrl = null,
     Object? postMusicPreviewUrl = null,
-    Object? postLikeCount = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -115,10 +112,6 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.postMusicPreviewUrl
           : postMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      postLikeCount: null == postLikeCount
-          ? _value.postLikeCount
-          : postLikeCount // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -139,8 +132,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       String postMsg,
       DateTime postTimestamp,
       String postMusicSpotifyUrl,
-      String postMusicPreviewUrl,
-      int postLikeCount});
+      String postMusicPreviewUrl});
 }
 
 /// @nodoc
@@ -162,7 +154,6 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? postTimestamp = null,
     Object? postMusicSpotifyUrl = null,
     Object? postMusicPreviewUrl = null,
-    Object? postLikeCount = null,
   }) {
     return _then(_$PostImpl(
       uid: null == uid
@@ -201,10 +192,6 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.postMusicPreviewUrl
           : postMusicPreviewUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      postLikeCount: null == postLikeCount
-          ? _value.postLikeCount
-          : postLikeCount // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -221,8 +208,7 @@ class _$PostImpl with DiagnosticableTreeMixin implements _Post {
       required this.postMsg,
       required this.postTimestamp,
       required this.postMusicSpotifyUrl,
-      required this.postMusicPreviewUrl,
-      required this.postLikeCount});
+      required this.postMusicPreviewUrl});
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -245,12 +231,10 @@ class _$PostImpl with DiagnosticableTreeMixin implements _Post {
   final String postMusicSpotifyUrl;
   @override
   final String postMusicPreviewUrl;
-  @override
-  final int postLikeCount;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Post(uid: $uid, postId: $postId, postMusicImg: $postMusicImg, postMusicArtistName: $postMusicArtistName, postMusicName: $postMusicName, postMsg: $postMsg, postTimestamp: $postTimestamp, postMusicSpotifyUrl: $postMusicSpotifyUrl, postMusicPreviewUrl: $postMusicPreviewUrl, postLikeCount: $postLikeCount)';
+    return 'Post(uid: $uid, postId: $postId, postMusicImg: $postMusicImg, postMusicArtistName: $postMusicArtistName, postMusicName: $postMusicName, postMsg: $postMsg, postTimestamp: $postTimestamp, postMusicSpotifyUrl: $postMusicSpotifyUrl, postMusicPreviewUrl: $postMusicPreviewUrl)';
   }
 
   @override
@@ -266,8 +250,7 @@ class _$PostImpl with DiagnosticableTreeMixin implements _Post {
       ..add(DiagnosticsProperty('postMsg', postMsg))
       ..add(DiagnosticsProperty('postTimestamp', postTimestamp))
       ..add(DiagnosticsProperty('postMusicSpotifyUrl', postMusicSpotifyUrl))
-      ..add(DiagnosticsProperty('postMusicPreviewUrl', postMusicPreviewUrl))
-      ..add(DiagnosticsProperty('postLikeCount', postLikeCount));
+      ..add(DiagnosticsProperty('postMusicPreviewUrl', postMusicPreviewUrl));
   }
 
   @override
@@ -289,9 +272,7 @@ class _$PostImpl with DiagnosticableTreeMixin implements _Post {
             (identical(other.postMusicSpotifyUrl, postMusicSpotifyUrl) ||
                 other.postMusicSpotifyUrl == postMusicSpotifyUrl) &&
             (identical(other.postMusicPreviewUrl, postMusicPreviewUrl) ||
-                other.postMusicPreviewUrl == postMusicPreviewUrl) &&
-            (identical(other.postLikeCount, postLikeCount) ||
-                other.postLikeCount == postLikeCount));
+                other.postMusicPreviewUrl == postMusicPreviewUrl));
   }
 
   @JsonKey(ignore: true)
@@ -306,8 +287,7 @@ class _$PostImpl with DiagnosticableTreeMixin implements _Post {
       postMsg,
       postTimestamp,
       postMusicSpotifyUrl,
-      postMusicPreviewUrl,
-      postLikeCount);
+      postMusicPreviewUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -333,8 +313,7 @@ abstract class _Post implements Post {
       required final String postMsg,
       required final DateTime postTimestamp,
       required final String postMusicSpotifyUrl,
-      required final String postMusicPreviewUrl,
-      required final int postLikeCount}) = _$PostImpl;
+      required final String postMusicPreviewUrl}) = _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -356,8 +335,6 @@ abstract class _Post implements Post {
   String get postMusicSpotifyUrl;
   @override
   String get postMusicPreviewUrl;
-  @override
-  int get postLikeCount;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>

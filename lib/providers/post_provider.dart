@@ -12,7 +12,7 @@ final postProvider = StateProvider<Post>(
     postTimestamp: DateTime.now(),
     postMusicSpotifyUrl: '',
     postMusicPreviewUrl: '',
-    postLikeCount: 0,
+    //postLikeCount: 0,
   ),
 );
 
