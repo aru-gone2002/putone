@@ -8,12 +8,14 @@ class FormFieldItem extends StatelessWidget {
     required this.textRestriction,
     required this.validator,
     required this.onSaved,
+    required this.maxLength,
   });
 
   final String itemName;
   final String textRestriction;
   final String? Function(String? text) validator;
   final void Function(String? text)? onSaved;
+  final int maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class FormFieldItem extends StatelessWidget {
             validator: validator,
             onSaved: onSaved,
             maxLines: 1,
-            maxLength: 30,
+            maxLength: maxLength,
             cursorColor: AppColorTheme.color().mainColor,
             decoration: InputDecoration(
               contentPadding:

@@ -5,9 +5,10 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
-import 'package:putone/view/item/gray_color_text_button.dart';
+import 'package:putone/view/profile_page/post_grid_view.dart';
+import 'package:putone/view/profile_page/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -22,45 +23,48 @@ class ProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final PostViewModel postViewModel = PostViewModel();
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+    postViewModel.setRef(ref);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
     return Scaffold(
       key: scaffoldKey,
-      body: StreamBuilder<Object>(
-          stream: database.watchAllUserBaseProfiles(),
-          //stream: profileViewModel.appDatabase!.watchAllUserBaseProfiles(),
-          builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(failToReadDataErrorText),
-              );
-            }
-            return SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.white,
-                          AppColorTheme.color().mainColor,
-                        ],
-                      ),
-                    ),
-                    height: 200,
-                    child: Stack(
+      //ここのStreamBuilderのやつを変更する
+      body: SafeArea(
+        child: Column(
+          children: [
+            //プロフィールのトップ画面
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    AppColorTheme.color().mainColor,
+                  ],
+                ),
+              ),
+              height: 200,
+              child: StreamBuilder<Object>(
+                  stream: database.watchAllLocalUserProfiles(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text(failToReadDataErrorText),
+                      );
+                    }
+                    return Stack(
                       fit: StackFit.expand,
                       children: [
                         //左のライン
@@ -215,7 +219,7 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                         //右のライン
-                        //ハンバーガーメニュー
+                        //編集ボタン
                         Align(
                           alignment: const Alignment(0.65, -0.9),
                           child: ElevatedButton.icon(
@@ -243,6 +247,7 @@ class ProfilePage extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        //ハンバーガーメニュー
                         Align(
                           alignment: const Alignment(0.95, -0.9),
                           child: IconButton(
@@ -252,6 +257,7 @@ class ProfilePage extends ConsumerWidget {
                             },
                           ),
                         ),
+                        //プロフィール文
                         Align(
                           alignment: const Alignment(0.95, 0),
                           child: SizedBox(
@@ -270,65 +276,50 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  const Center(
-                    child: Text('プロフィール画面'),
-                  ),
-                ],
-              ),
-            );
-          }),
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            InkWell(
-              child: const ListTile(
-                title: Text(signOutBtnText),
-              ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text(askwhetherSignOutOrNotDialogTitle),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text(backBtnText),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            //TODO ローカルDBを削除する
-                            //引数のUserBaseProfileはUserBaseProfilesの中身の1つであるから、
-                            //getAllUserBaseProfilesメソッドで取得して、.firstメソッドで入れる
-                            //or Streamでやる
-                            //or 最初に取ってきたデータベースを捨てるか
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            toAuthPage(context: context);
-                            await authViewModel.signOut();
-                            // await profileViewModel.appDatabase!
-                            //     .deleteUserBaseProfile();
-                            authViewModel.resetUsetAuthProvider();
-                            profileViewModel.resetUserProfileProvider();
-                            database.deleteLocalUserProfile();
-                          },
-                          child: const Text(signOutBtnText),
-                        ),
-                      ],
                     );
-                  },
-                );
-              },
+                  }),
+            ),
+
+            //投稿表示画面
+            //TODO
+            Expanded(
+              child: StreamBuilder<Object>(
+                stream: database.watchAllLocalUserPosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(failToReadDataErrorText),
+                    );
+                  }
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text(noPostText),
+                    );
+                  }
+                  return PostGridView(snapshot: snapshot);
+                },
+              ),
             ),
           ],
         ),
       ),
+      endDrawer: ProfileDrawer(database: database),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        //投稿ページに飛ぶようにする
+        onPressed: () async {
+          await profileViewModel.fetchSpotifyAccessToken();
+          if (context.mounted) toPostCreatePage(context: context);
+        },
         backgroundColor: AppColorTheme.color().accentColor,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -18,19 +18,13 @@ class $LocalUserProfilesTable extends LocalUserProfiles
   @override
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 16),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userNameMeta =
       const VerificationMeta('userName');
   @override
   late final GeneratedColumn<String> userName = GeneratedColumn<String>(
       'user_name', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 16),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userImgMeta =
       const VerificationMeta('userImg');
   @override
@@ -1027,11 +1021,11 @@ class $LocalUserPostsTable extends LocalUserPosts
   late final GeneratedColumn<String> postMusicImg = GeneratedColumn<String>(
       'post_music_img', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _postMusicAritstNameMeta =
-      const VerificationMeta('postMusicAritstName');
+  static const VerificationMeta _postMusicArtistNameMeta =
+      const VerificationMeta('postMusicArtistName');
   @override
-  late final GeneratedColumn<String> postMusicAritstName =
-      GeneratedColumn<String>('post_music_aritst_name', aliasedName, false,
+  late final GeneratedColumn<String> postMusicArtistName =
+      GeneratedColumn<String>('post_music_artist_name', aliasedName, false,
           type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _postMusicNameMeta =
       const VerificationMeta('postMusicName');
@@ -1070,7 +1064,7 @@ class $LocalUserPostsTable extends LocalUserPosts
         uid,
         postId,
         postMusicImg,
-        postMusicAritstName,
+        postMusicArtistName,
         postMusicName,
         postMsg,
         postTimestamp,
@@ -1107,13 +1101,13 @@ class $LocalUserPostsTable extends LocalUserPosts
     } else if (isInserting) {
       context.missing(_postMusicImgMeta);
     }
-    if (data.containsKey('post_music_aritst_name')) {
+    if (data.containsKey('post_music_artist_name')) {
       context.handle(
-          _postMusicAritstNameMeta,
-          postMusicAritstName.isAcceptableOrUnknown(
-              data['post_music_aritst_name']!, _postMusicAritstNameMeta));
+          _postMusicArtistNameMeta,
+          postMusicArtistName.isAcceptableOrUnknown(
+              data['post_music_artist_name']!, _postMusicArtistNameMeta));
     } else if (isInserting) {
-      context.missing(_postMusicAritstNameMeta);
+      context.missing(_postMusicArtistNameMeta);
     }
     if (data.containsKey('post_music_name')) {
       context.handle(
@@ -1166,9 +1160,9 @@ class $LocalUserPostsTable extends LocalUserPosts
           .read(DriftSqlType.string, data['${effectivePrefix}post_id'])!,
       postMusicImg: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}post_music_img'])!,
-      postMusicAritstName: attachedDatabase.typeMapping.read(
+      postMusicArtistName: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}post_music_aritst_name'])!,
+          data['${effectivePrefix}post_music_artist_name'])!,
       postMusicName: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}post_music_name'])!,
       postMsg: attachedDatabase.typeMapping
@@ -1194,7 +1188,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
   final String uid;
   final String postId;
   final String postMusicImg;
-  final String postMusicAritstName;
+  final String postMusicArtistName;
   final String postMusicName;
   final String postMsg;
   final DateTime postTimestamp;
@@ -1204,7 +1198,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       {required this.uid,
       required this.postId,
       required this.postMusicImg,
-      required this.postMusicAritstName,
+      required this.postMusicArtistName,
       required this.postMusicName,
       required this.postMsg,
       required this.postTimestamp,
@@ -1216,7 +1210,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
     map['uid'] = Variable<String>(uid);
     map['post_id'] = Variable<String>(postId);
     map['post_music_img'] = Variable<String>(postMusicImg);
-    map['post_music_aritst_name'] = Variable<String>(postMusicAritstName);
+    map['post_music_artist_name'] = Variable<String>(postMusicArtistName);
     map['post_music_name'] = Variable<String>(postMusicName);
     map['post_msg'] = Variable<String>(postMsg);
     map['post_timestamp'] = Variable<DateTime>(postTimestamp);
@@ -1230,7 +1224,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       uid: Value(uid),
       postId: Value(postId),
       postMusicImg: Value(postMusicImg),
-      postMusicAritstName: Value(postMusicAritstName),
+      postMusicArtistName: Value(postMusicArtistName),
       postMusicName: Value(postMusicName),
       postMsg: Value(postMsg),
       postTimestamp: Value(postTimestamp),
@@ -1246,8 +1240,8 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       uid: serializer.fromJson<String>(json['uid']),
       postId: serializer.fromJson<String>(json['postId']),
       postMusicImg: serializer.fromJson<String>(json['postMusicImg']),
-      postMusicAritstName:
-          serializer.fromJson<String>(json['postMusicAritstName']),
+      postMusicArtistName:
+          serializer.fromJson<String>(json['postMusicArtistName']),
       postMusicName: serializer.fromJson<String>(json['postMusicName']),
       postMsg: serializer.fromJson<String>(json['postMsg']),
       postTimestamp: serializer.fromJson<DateTime>(json['postTimestamp']),
@@ -1264,7 +1258,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       'uid': serializer.toJson<String>(uid),
       'postId': serializer.toJson<String>(postId),
       'postMusicImg': serializer.toJson<String>(postMusicImg),
-      'postMusicAritstName': serializer.toJson<String>(postMusicAritstName),
+      'postMusicArtistName': serializer.toJson<String>(postMusicArtistName),
       'postMusicName': serializer.toJson<String>(postMusicName),
       'postMsg': serializer.toJson<String>(postMsg),
       'postTimestamp': serializer.toJson<DateTime>(postTimestamp),
@@ -1277,7 +1271,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
           {String? uid,
           String? postId,
           String? postMusicImg,
-          String? postMusicAritstName,
+          String? postMusicArtistName,
           String? postMusicName,
           String? postMsg,
           DateTime? postTimestamp,
@@ -1287,7 +1281,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
         uid: uid ?? this.uid,
         postId: postId ?? this.postId,
         postMusicImg: postMusicImg ?? this.postMusicImg,
-        postMusicAritstName: postMusicAritstName ?? this.postMusicAritstName,
+        postMusicArtistName: postMusicArtistName ?? this.postMusicArtistName,
         postMusicName: postMusicName ?? this.postMusicName,
         postMsg: postMsg ?? this.postMsg,
         postTimestamp: postTimestamp ?? this.postTimestamp,
@@ -1300,7 +1294,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
           ..write('uid: $uid, ')
           ..write('postId: $postId, ')
           ..write('postMusicImg: $postMusicImg, ')
-          ..write('postMusicAritstName: $postMusicAritstName, ')
+          ..write('postMusicArtistName: $postMusicArtistName, ')
           ..write('postMusicName: $postMusicName, ')
           ..write('postMsg: $postMsg, ')
           ..write('postTimestamp: $postTimestamp, ')
@@ -1315,7 +1309,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       uid,
       postId,
       postMusicImg,
-      postMusicAritstName,
+      postMusicArtistName,
       postMusicName,
       postMsg,
       postTimestamp,
@@ -1328,7 +1322,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
           other.uid == this.uid &&
           other.postId == this.postId &&
           other.postMusicImg == this.postMusicImg &&
-          other.postMusicAritstName == this.postMusicAritstName &&
+          other.postMusicArtistName == this.postMusicArtistName &&
           other.postMusicName == this.postMusicName &&
           other.postMsg == this.postMsg &&
           other.postTimestamp == this.postTimestamp &&
@@ -1340,7 +1334,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
   final Value<String> uid;
   final Value<String> postId;
   final Value<String> postMusicImg;
-  final Value<String> postMusicAritstName;
+  final Value<String> postMusicArtistName;
   final Value<String> postMusicName;
   final Value<String> postMsg;
   final Value<DateTime> postTimestamp;
@@ -1351,7 +1345,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
     this.uid = const Value.absent(),
     this.postId = const Value.absent(),
     this.postMusicImg = const Value.absent(),
-    this.postMusicAritstName = const Value.absent(),
+    this.postMusicArtistName = const Value.absent(),
     this.postMusicName = const Value.absent(),
     this.postMsg = const Value.absent(),
     this.postTimestamp = const Value.absent(),
@@ -1363,7 +1357,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
     required String uid,
     required String postId,
     required String postMusicImg,
-    required String postMusicAritstName,
+    required String postMusicArtistName,
     required String postMusicName,
     required String postMsg,
     required DateTime postTimestamp,
@@ -1373,7 +1367,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
   })  : uid = Value(uid),
         postId = Value(postId),
         postMusicImg = Value(postMusicImg),
-        postMusicAritstName = Value(postMusicAritstName),
+        postMusicArtistName = Value(postMusicArtistName),
         postMusicName = Value(postMusicName),
         postMsg = Value(postMsg),
         postTimestamp = Value(postTimestamp),
@@ -1382,7 +1376,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
     Expression<String>? uid,
     Expression<String>? postId,
     Expression<String>? postMusicImg,
-    Expression<String>? postMusicAritstName,
+    Expression<String>? postMusicArtistName,
     Expression<String>? postMusicName,
     Expression<String>? postMsg,
     Expression<DateTime>? postTimestamp,
@@ -1394,8 +1388,8 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
       if (uid != null) 'uid': uid,
       if (postId != null) 'post_id': postId,
       if (postMusicImg != null) 'post_music_img': postMusicImg,
-      if (postMusicAritstName != null)
-        'post_music_aritst_name': postMusicAritstName,
+      if (postMusicArtistName != null)
+        'post_music_artist_name': postMusicArtistName,
       if (postMusicName != null) 'post_music_name': postMusicName,
       if (postMsg != null) 'post_msg': postMsg,
       if (postTimestamp != null) 'post_timestamp': postTimestamp,
@@ -1411,7 +1405,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
       {Value<String>? uid,
       Value<String>? postId,
       Value<String>? postMusicImg,
-      Value<String>? postMusicAritstName,
+      Value<String>? postMusicArtistName,
       Value<String>? postMusicName,
       Value<String>? postMsg,
       Value<DateTime>? postTimestamp,
@@ -1422,7 +1416,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
       uid: uid ?? this.uid,
       postId: postId ?? this.postId,
       postMusicImg: postMusicImg ?? this.postMusicImg,
-      postMusicAritstName: postMusicAritstName ?? this.postMusicAritstName,
+      postMusicArtistName: postMusicArtistName ?? this.postMusicArtistName,
       postMusicName: postMusicName ?? this.postMusicName,
       postMsg: postMsg ?? this.postMsg,
       postTimestamp: postTimestamp ?? this.postTimestamp,
@@ -1444,9 +1438,9 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
     if (postMusicImg.present) {
       map['post_music_img'] = Variable<String>(postMusicImg.value);
     }
-    if (postMusicAritstName.present) {
-      map['post_music_aritst_name'] =
-          Variable<String>(postMusicAritstName.value);
+    if (postMusicArtistName.present) {
+      map['post_music_artist_name'] =
+          Variable<String>(postMusicArtistName.value);
     }
     if (postMusicName.present) {
       map['post_music_name'] = Variable<String>(postMusicName.value);
@@ -1477,7 +1471,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
           ..write('uid: $uid, ')
           ..write('postId: $postId, ')
           ..write('postMusicImg: $postMusicImg, ')
-          ..write('postMusicAritstName: $postMusicAritstName, ')
+          ..write('postMusicArtistName: $postMusicArtistName, ')
           ..write('postMusicName: $postMusicName, ')
           ..write('postMsg: $postMsg, ')
           ..write('postTimestamp: $postTimestamp, ')

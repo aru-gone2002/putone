@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/view/item/accent_color_button.dart';
@@ -13,11 +15,7 @@ class FirstProfileSettingPage extends StatelessWidget {
       GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(userIdAndNameCompleteSnackBarText),
-        ),
-      );
+      Fluttertoast.showToast(msg: userIdAndNameCompleteToastText);
       toSecondProfileSettingPage(context: context);
     }
   }
@@ -47,6 +45,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
+                    maxLength: userIdAndUserNameTextLength,
                     itemName: userIdLabel,
                     textRestriction: userIdRestrictionText,
                     validator: (value) {
@@ -68,6 +67,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
                   return FormFieldItem(
+                    maxLength: userIdAndUserNameTextLength,
                     itemName: userNameLabel,
                     textRestriction: '',
                     validator: (value) {

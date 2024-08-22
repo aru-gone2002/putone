@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
@@ -15,11 +16,7 @@ class ProfileMsgSettingPage extends StatelessWidget {
       GlobalObjectKey<FormState> formKey, BuildContext context) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(profileMsgSavedSnackBarText),
-        ),
-      );
+      Fluttertoast.showToast(msg: profileMsgSavedToastText);
       Navigator.pop(context);
     }
   }

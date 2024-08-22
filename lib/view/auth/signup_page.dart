@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/model/profile_model.dart';
@@ -78,6 +79,7 @@ class SignUpPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FormFieldItem(
+                  maxLength: maxEmailTextLength,
                   itemName: emailAddressLabel,
                   textRestriction: '',
                   validator: (value) {
@@ -100,6 +102,7 @@ class SignUpPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   authViewModel.setRef(ref);
                   return FormFieldItem(
+                    maxLength: maxPasswordTextLength,
                     itemName: passwordLabel,
                     textRestriction: passwordRestrictionText,
                     validator: (value) {
