@@ -13,10 +13,10 @@ class PostGridView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var size = MediaQuery.of(context).size;
+    //var size = MediaQuery.of(context).size;
     //投稿のGridViewの横の長さを計算
-    final double postGridItemWidth =
-        (size.width - postGridViewCrossAxisSpacing - spaceWidthMedium * 2) / 2;
+    // final double postGridItemWidth =
+    //     (size.width - postGridViewCrossAxisSpacing - spaceWidthMedium * 2) / 2;
 
     final PostViewModel postViewModel = PostViewModel();
     postViewModel.setRef(ref);
@@ -38,6 +38,9 @@ class PostGridView extends ConsumerWidget {
         ),
         itemCount: (snapshot.data as List<LocalUserPost>).length,
         itemBuilder: (context, index) {
+          final localUserPosts = snapshot.data! as List<LocalUserPost>;
+          localUserPosts
+              .sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
           final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
           return PostGridItem(
             //userPost: postViewModel.posts[index],
