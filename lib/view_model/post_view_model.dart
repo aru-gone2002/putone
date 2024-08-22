@@ -129,7 +129,7 @@ class PostViewModel {
         uid: localUserPost.uid,
         postId: localUserPost.postId,
         postMusicImg: localUserPost.postMusicImg,
-        postMusicArtistName: localUserPost.postMusicAritstName,
+        postMusicArtistName: localUserPost.postMusicArtistName,
         postMusicName: localUserPost.postMusicName,
         postMsg: localUserPost.postMsg,
         postTimestamp: localUserPost.postTimestamp,
@@ -139,5 +139,21 @@ class PostViewModel {
       userPosts.add(post);
     }
     return userPosts;
+  }
+
+  void resetPostProvider() {
+    saveUid('');
+    savePostId('');
+    savePostMusicImg('');
+    savePostMusicArtistName('');
+    savePostMusicName('');
+    savePostMsg('');
+    savePostTimestamp(DateTime.now());
+    savePostMusicSpotifyUrl('');
+    savePostMusicPreviewUrl('');
+  }
+
+  void resetPostsProvider() {
+    _ref.read(postsProvider.notifier).state = [];
   }
 }

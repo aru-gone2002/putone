@@ -34,37 +34,37 @@ class ProfilePage extends ConsumerWidget {
 
     return Scaffold(
       key: scaffoldKey,
-      body: StreamBuilder<Object>(
-          stream: database.watchAllLocalUserProfiles(),
-          //stream: profileViewModel.appDatabase!.watchAllUserBaseProfiles(),
-          builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(failToReadDataErrorText),
-              );
-            }
-            return SafeArea(
-              child: Column(
-                children: [
-                  //プロフィールのトップ画面
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.white,
-                          AppColorTheme.color().mainColor,
-                        ],
-                      ),
-                    ),
-                    height: 200,
-                    child: Stack(
+      //ここのStreamBuilderのやつを変更する
+      body: SafeArea(
+        child: Column(
+          children: [
+            //プロフィールのトップ画面
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    AppColorTheme.color().mainColor,
+                  ],
+                ),
+              ),
+              height: 200,
+              child: StreamBuilder<Object>(
+                  stream: database.watchAllLocalUserProfiles(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text(failToReadDataErrorText),
+                      );
+                    }
+                    return Stack(
                       fit: StackFit.expand,
                       children: [
                         //左のライン
@@ -276,19 +276,38 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  //投稿表示画面
-                  //TODO
-                  SingleChildScrollView(
-                    child: Expanded(
-                      child: PostGridView(),
-                    ),
-                  ),
-                ],
+                    );
+                  }),
+            ),
+
+            //投稿表示画面
+            //TODO
+            Expanded(
+              child: StreamBuilder<Object>(
+                stream: database.watchAllLocalUserPosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(failToReadDataErrorText),
+                    );
+                  }
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text(noPostText),
+                    );
+                  }
+                  return PostGridView(snapshot: snapshot);
+                },
               ),
-            );
-          }),
+            ),
+          ],
+        ),
+      ),
       endDrawer: ProfileDrawer(database: database),
       floatingActionButton: FloatingActionButton(
         //投稿ページに飛ぶようにする

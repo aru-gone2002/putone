@@ -76,6 +76,7 @@ const String profileMsgHintText = '〇〇大学 ××学部';
 const String askToSelectMusicText = '以下の楽曲から選択してください';
 const String communitySettingConfirmDialogText = '以下のコミュニティを登録しますか？';
 const String postMsgHintText = '今日の気分や曲への想い、ハマっている理由、おすすめポイントを書こう！';
+const String noPostText = '投稿がありません';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

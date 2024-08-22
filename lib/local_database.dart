@@ -50,7 +50,7 @@ class LocalUserPosts extends Table {
   TextColumn get uid => text()();
   TextColumn get postId => text()();
   TextColumn get postMusicImg => text()();
-  TextColumn get postMusicAritstName => text()();
+  TextColumn get postMusicArtistName => text()();
   TextColumn get postMusicName => text()();
   TextColumn get postMsg => text()();
   DateTimeColumn get postTimestamp => dateTime()();
@@ -165,7 +165,7 @@ class AppDatabase extends _$AppDatabase {
       uid: Value(post.uid),
       postId: Value(post.postId),
       postMusicImg: Value(post.postMusicImg),
-      postMusicAritstName: Value(post.postMusicArtistName),
+      postMusicArtistName: Value(post.postMusicArtistName),
       postMusicName: Value(post.postMusicName),
       postMsg: Value(post.postMsg),
       postTimestamp: Value(post.postTimestamp),

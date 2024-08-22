@@ -5,6 +5,7 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class ProfileDrawer extends ConsumerWidget {
@@ -16,8 +17,10 @@ class ProfileDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
+    final PostViewModel postViewModel = PostViewModel();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
+    postViewModel.setRef(ref);
 
     return Drawer(
       child: ListView(
@@ -52,6 +55,8 @@ class ProfileDrawer extends ConsumerWidget {
                           //     .deleteUserBaseProfile();
                           authViewModel.resetUsetAuthProvider();
                           profileViewModel.resetUserProfileProvider();
+                          postViewModel.resetPostProvider();
+                          postViewModel.resetPostsProvider();
                           database.deleteLocalUserProfile();
                           database.deleteAllLocalUserPosts();
                         },

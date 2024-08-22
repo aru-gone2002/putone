@@ -7,3 +7,5 @@ const double postGridItemImgHeight = 180;
 const double postGridItemTitlePaddingHeight = 4;
 
 const double postGridItemTitleSpaceHeight = 56;
+
+const double postGridPaddingHeight = 12;

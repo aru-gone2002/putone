@@ -3,18 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
+import 'package:putone/local_database.dart';
 
 class PostGridItem extends StatelessWidget {
-  const PostGridItem({super.key, required this.post});
+  const PostGridItem({
+    super.key,
+    //required this.userPost,
+    required this.localUserPost,
+  });
 
-  final Post post;
+  //final Post userPost;
+  final LocalUserPost localUserPost;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     //投稿のGridViewの横の長さを計算
     final double postGridItemWidth =
-        (size.width - postGridViewCrossAxisSpacing - spaceWidthMedium * 2) / 2;
+        (size.width - postGridViewCrossAxisSpacing - postGridPaddingWidth * 2) /
+            2;
 
     return Container(
       width: postGridItemWidth,
@@ -25,29 +32,24 @@ class PostGridItem extends StatelessWidget {
           BoxShadow(
             blurRadius: 4,
             offset: Offset(2, 4),
-            color: Color.fromARGB(35, 0, 0, 0),
+            color: Color.fromARGB(50, 0, 0, 0),
           ),
         ],
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              height: postGridItemWidth,
-              width: postGridItemWidth,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0),
-                    Colors.black.withOpacity(0.8),
-                  ],
-                  stops: const [0.7, 1.0],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                image: DecorationImage(
-                  image: ExtendedImage.network(
-                    post.postMusicImg,
+          SizedBox(
+            width: postGridItemWidth,
+            height: postGridItemWidth,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Align(
+                  alignment: const Alignment(0, 0),
+                  child: ExtendedImage.network(
+                    localUserPost.postMusicImg,
                     width: postGridItemWidth,
                     height: postGridItemWidth,
                     fit: BoxFit.cover,
@@ -57,51 +59,79 @@ class PostGridItem extends StatelessWidget {
                       topLeft: Radius.circular(8),
                       topRight: Radius.circular(8),
                     ),
-                  ) as ImageProvider,
+                  ),
                 ),
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Align(
-                    alignment: const Alignment(-0.95, 0.75),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.music_note_outlined),
-                        const SizedBox(width: 2),
-                        SizedBox(
-                          width: postGridItemWidth * 0.75,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                post.postMusicName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                post.postMusicArtistName,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
+                Align(
+                  alignment: const Alignment(0, 0),
+                  child: Container(
+                    width: postGridItemWidth,
+                    height: postGridItemWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0),
+                          Colors.black.withOpacity(0.8),
+                        ],
+                        stops: const [0.6, 1.0],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: const Alignment(-0.95, 0.85),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.music_note_outlined,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 2),
+                      SizedBox(
+                        width: postGridItemWidth * 0.75,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              localUserPost.postMusicName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              localUserPost.postMusicArtistName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                //TODO ボタンが押されたら赤くする
+                Align(
+                  alignment: const Alignment(0.95, 0.9),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.favorite_border_outlined,
+                      color: Colors.white,
                     ),
                   ),
-                  //TODO ボタンが押されたら赤くする
-                  Align(
-                    alignment: const Alignment(0.95, 0.85),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border_outlined),
-                    ),
-                  ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -109,9 +139,10 @@ class PostGridItem extends StatelessWidget {
                 vertical: postGridItemTitlePaddingHeight,
               ),
               child: Text(
-                post.postMsg,
+                localUserPost.postMsg,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
               ),
             ),
           ),
