@@ -29,7 +29,7 @@ class SecondProfileSettingPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
               horizontal: spaceWidthMedium, vertical: spaceHeightMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,7 +48,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                           child: Column(
                             children: [
                               CircleAvatar(
-                                radius: 48,
+                                radius: profileSetttingUserImgRadiusWidth,
                                 backgroundImage: profileViewModel.userImg != ''
                                     ? NetworkImage(profileViewModel.userImg)
                                     : null,

@@ -1,8 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/constants/width.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/profile_page/post_grid_view.dart';
@@ -88,20 +90,30 @@ class ProfilePage extends ConsumerWidget {
                                 //UserProfileProviderには情報が入っていない可能性があるため分岐を行う必要がある。
                                 //TODO ログインとかした場合には事前にFirestoreから情報を取得して、
                                 //UserProfileProviderにデータが入った状態となっている
-                                ExtendedImage.network(
-                                  profileViewModel.themeMusicImg == ''
-                                      ?
-                                      //ローカルDBから画像を取得
-                                      (snapshot.data! as List<LocalUserProfile>)
-                                          .first
-                                          .themeMusicImg
-                                      : profileViewModel.themeMusicImg,
-                                  width: 34,
-                                  height: 34,
-                                  fit: BoxFit.cover,
-                                  cache: true,
-                                  shape: BoxShape.rectangle,
-                                ),
+                                (snapshot.data! as List<LocalUserProfile>)
+                                            .first
+                                            .themeMusicImg !=
+                                        ''
+                                    ? ExtendedImage.network(
+                                        //ローカルDBから画像を取得
+                                        (snapshot.data!
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .themeMusicImg,
+
+                                        width: favoriteMusicImgWidth,
+                                        height: favoriteMusicImgHeight,
+                                        fit: BoxFit.cover,
+                                        cache: true,
+                                        shape: BoxShape.rectangle,
+                                      )
+                                    : const Image(
+                                        width: favoriteMusicImgWidth,
+                                        height: favoriteMusicImgHeight,
+                                        image: AssetImage(
+                                          'assets/images/favorite_song_is_not_selected.png',
+                                        ),
+                                      ),
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Column(
@@ -110,12 +122,16 @@ class ProfilePage extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        profileViewModel.themeMusicName == ''
+                                        (snapshot.data! as List<
+                                                        LocalUserProfile>)
+                                                    .first
+                                                    .themeMusicName !=
+                                                ''
                                             ? (snapshot.data!
                                                     as List<LocalUserProfile>)
                                                 .first
                                                 .themeMusicName
-                                            : profileViewModel.themeMusicName,
+                                            : themeSongIsNotSelectedText,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -127,14 +143,16 @@ class ProfilePage extends ConsumerWidget {
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        profileViewModel.themeMusicArtistName ==
+                                        (snapshot.data! as List<
+                                                        LocalUserProfile>)
+                                                    .first
+                                                    .themeMusicName !=
                                                 ''
                                             ? (snapshot.data!
                                                     as List<LocalUserProfile>)
                                                 .first
                                                 .themeMusicArtistName
-                                            : profileViewModel
-                                                .themeMusicArtistName,
+                                            : askToSettingThemeSongText,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(
@@ -159,12 +177,9 @@ class ProfilePage extends ConsumerWidget {
                               children: [
                                 //ユーザー名
                                 Text(
-                                  profileViewModel.userName == ''
-                                      ? (snapshot.data!
-                                              as List<LocalUserProfile>)
-                                          .first
-                                          .userName
-                                      : profileViewModel.userName,
+                                  (snapshot.data! as List<LocalUserProfile>)
+                                      .first
+                                      .userName,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
@@ -175,9 +190,7 @@ class ProfilePage extends ConsumerWidget {
 
                                 //ユーザーID
                                 Text(
-                                  profileViewModel.userId == ''
-                                      ? '@${(snapshot.data! as List<LocalUserProfile>).first.userId}'
-                                      : '@${profileViewModel.userId}',
+                                  '@${(snapshot.data! as List<LocalUserProfile>).first.userId}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodyMedium,
@@ -192,9 +205,7 @@ class ProfilePage extends ConsumerWidget {
                           child: SizedBox(
                             width: sideProfileWidth,
                             child: Text(
-                              profileViewModel.communityId == 'none'
-                                  ? '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}'
-                                  : '所属：${profileViewModel.communityMap[profileViewModel.communityId]!.communityName}',
+                              '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyMedium,
@@ -205,29 +216,44 @@ class ProfilePage extends ConsumerWidget {
                         //ユーザー画像の表示
                         Align(
                           alignment: const Alignment(0, 0),
-                          child: ExtendedImage.network(
-                            profileViewModel.userImg == ''
-                                ? (snapshot.data! as List<LocalUserProfile>)
-                                    .first
-                                    .userImg
-                                : profileViewModel.userImg,
-                            width: profileImgSize,
-                            height: profileImgSize,
-                            fit: BoxFit.cover,
-                            cache: true,
-                            shape: BoxShape.circle,
-                          ),
+                          child: (snapshot.data! as List<LocalUserProfile>)
+                                      .first
+                                      .userImg !=
+                                  ''
+                              ? ExtendedImage.network(
+                                  (snapshot.data! as List<LocalUserProfile>)
+                                      .first
+                                      .userImg,
+                                  width: profileImgSize,
+                                  height: profileImgSize,
+                                  fit: BoxFit.cover,
+                                  cache: true,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: AppColorTheme.color().mainColor),
+                                )
+                              : ExtendedImage.asset(
+                                  'assets/images/user_gray_icon.png',
+                                  width: profileImgSize,
+                                  height: profileImgSize,
+                                  shape: BoxShape.circle,
+                                  fit: BoxFit.cover,
+                                  border: Border.all(
+                                      color: AppColorTheme.color().mainColor,
+                                      width: 3.0),
+                                ),
                         ),
                         //右のライン
                         //編集ボタン
                         Align(
                           alignment: const Alignment(0.65, -0.9),
                           child: ElevatedButton.icon(
-                            label: const Text('編集'),
+                            label: const Text(editBtnText),
                             icon: const Icon(
                               Icons.edit,
                               size: 16,
                             ),
+                            //TODO プロフィール編集画面を作成する
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size.zero,
@@ -263,11 +289,14 @@ class ProfilePage extends ConsumerWidget {
                           child: SizedBox(
                             width: sideProfileWidth,
                             child: Text(
-                              profileViewModel.userProfileMsg == ''
+                              (snapshot.data! as List<LocalUserProfile>)
+                                          .first
+                                          .userProfileMsg !=
+                                      ''
                                   ? (snapshot.data! as List<LocalUserProfile>)
                                       .first
                                       .userProfileMsg
-                                  : profileViewModel.userProfileMsg,
+                                  : 'プロフィール\nメッセージ\n未登録',
                               overflow: TextOverflow.clip,
                               textAlign: TextAlign.center,
                               softWrap: true,
