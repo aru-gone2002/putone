@@ -78,6 +78,8 @@ const String askToSelectMusicText = '以下の楽曲から選択してくださ�
 const String communitySettingConfirmDialogText = '以下のコミュニティを登録しますか？';
 const String postMsgHintText = '今日の気分や曲への想い、ハマっている理由、おすすめポイントを書こう！';
 const String noPostText = '投稿がありません';
+const String themeSongIsNotSelectedText = 'テーマ曲未選択';
+const String askToSettingThemeSongText = 'テーマ曲を選択してください';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

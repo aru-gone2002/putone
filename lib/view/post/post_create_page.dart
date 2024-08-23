@@ -47,7 +47,7 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: spaceWidthMedium,
             vertical: spaceHeightSmall,
           ),

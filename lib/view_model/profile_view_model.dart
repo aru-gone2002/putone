@@ -159,6 +159,7 @@ class ProfileViewModel {
     saveUserName('');
     saveUserProfileMsg('');
     saveThemeMusicArtistName('');
+    saveThemeMusicName('');
     saveThemeMusicImg('');
     saveThemeMusicSpotifyUrl('');
     saveThemeMusicPreviewUrl('');
