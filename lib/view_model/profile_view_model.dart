@@ -250,4 +250,10 @@ class ProfileViewModel {
       newUserId: newUserId,
     );
   }
+
+  Future<void> updateFirestoreThemeMusicInfo(
+      {required SpotifyTrack spotifyTrack}) async {
+    await _profileModel.updateFirestoreThemeMusicInfo(
+        uid: uid, spotifyTrack: spotifyTrack);
+  }
 }

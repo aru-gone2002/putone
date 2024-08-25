@@ -5,6 +5,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
@@ -33,6 +34,10 @@ class ProfilePage extends ConsumerWidget {
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
+
+    Future<void> createPostFunction(SpotifyTrack spotifyTrack) async {
+      toPostAddMsgPage(context: context, selectedTrack: spotifyTrack);
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -256,6 +261,7 @@ class ProfilePage extends ConsumerWidget {
                             //TODO プロフィール編集画面を作成する
                             onPressed: () =>
                                 toEditProfilePage(context: context),
+                            //toEditProfilePage(context: context),
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size.zero,
                               backgroundColor: AppColorTheme.color().gray2,
@@ -343,7 +349,14 @@ class ProfilePage extends ConsumerWidget {
         //投稿ページに飛ぶようにする
         onPressed: () async {
           await profileViewModel.fetchSpotifyAccessToken();
-          if (context.mounted) toPostCreatePage(context: context);
+          if (context.mounted) {
+            toSelectSongPage(
+              context: context,
+              appBarTitle: postCreatePageAppbarTitle,
+              onTap: createPostFunction,
+              isVisibleCurrentMusicInfo: false,
+            );
+          }
         },
         backgroundColor: AppColorTheme.color().accentColor,
         child: const Icon(

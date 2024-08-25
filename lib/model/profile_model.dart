@@ -261,9 +261,29 @@ class ProfileModel {
     required String newUserId,
   }) async {
     try {
-      await firestore.collection('users').doc(uid).update({'useId': newUserId});
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'userId': newUserId});
     } catch (e) {
       print('Error update userId in Firestore: $e');
+    }
+  }
+
+  Future<void> updateFirestoreThemeMusicInfo({
+    required String uid,
+    required SpotifyTrack spotifyTrack,
+  }) async {
+    try {
+      await firestore.collection('users').doc(uid).update({
+        'themeMusicImg': spotifyTrack.trackImg,
+        'themeMusicArtistName': spotifyTrack.artistName,
+        'themeMusicName': spotifyTrack.trackName,
+        'themeMusicSpotifyUrl': spotifyTrack.trackExternalUrl,
+        'themeMusicPreviewUrl': spotifyTrack.previewUrl,
+      });
+    } catch (e) {
+      print('Error update themeSongInfo in Firestore: $e');
     }
   }
 }

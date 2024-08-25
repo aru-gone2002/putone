@@ -4,6 +4,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/title_and_text_button.dart';
@@ -18,6 +19,35 @@ class SecondProfileSettingPage extends StatelessWidget {
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
+
+    Future<void> setThemeSongFunction(SpotifyTrack spotifySearchTrack) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(setThemeMusicConfirmDialogText),
+            content: Text(
+                //providerに入ったリストの中身をindexで取ってきたものがspotifySearchTrack
+                '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(backBtnText),
+              ),
+              TextButton(
+                  child: const Text(registerBtnText),
+                  onPressed: () {
+                    profileViewModel.setThemeSong(track: spotifySearchTrack);
+                    //ダイアログを閉じる
+                    Navigator.pop(context);
+                    //テーマソングの登録画面を閉じる
+                    Navigator.pop(context);
+                  }),
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +106,11 @@ class SecondProfileSettingPage extends StatelessWidget {
                           afterInputText:
                               '${profileViewModel.themeMusicName} / ${profileViewModel.themeMusicArtistName}',
                           //テーマソング設定ページに飛ばす
-                          onTap: () => toThemeSongSettingPage(context: context),
+                          onTap: () => toSelectSongPage(
+                              context: context,
+                              appBarTitle: themeSongSettingPageAppbarTitle,
+                              onTap: setThemeSongFunction,
+                              isVisibleCurrentMusicInfo: true),
                           separateCondition:
                               profileViewModel.themeMusicName != '');
                     },
