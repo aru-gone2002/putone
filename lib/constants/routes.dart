@@ -5,6 +5,8 @@ import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/post/post_create_page.dart';
+import 'package:putone/view/profile_page/edit_profile_page.dart';
+import 'package:putone/view/profile_page/edit_user_name_page.dart';
 import 'package:putone/view/profile_page/profile_page.dart';
 import 'package:putone/view/profile_setting/community_setting_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
@@ -111,5 +113,19 @@ void toPostAddMsgPage({
         builder: ((context) => PostAddMsgPage(
               selectedTrack: selectedTrack,
             )),
+      ),
+    );
+
+void toEditProfilePage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const EditProfilePage()),
+      ),
+    );
+
+void toEditUserNamePage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const EditUserNamePage()),
       ),
     );

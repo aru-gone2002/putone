@@ -23,7 +23,7 @@ class SecondProfileSettingPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          profileSettingTitle,
+          profileSettingAppbarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
@@ -64,7 +64,8 @@ class SecondProfileSettingPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 64),
+                  const SizedBox(
+                      height: betweenUserImgAndOtherProfileInfoHeight),
                   //テーマソング設定
                   Consumer(
                     builder: (context, ref, _) {
@@ -80,33 +81,29 @@ class SecondProfileSettingPage extends StatelessWidget {
                               profileViewModel.themeMusicName != '');
                     },
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: betweenTitleAndTextHeight),
                   //コミュニティ設定
                   Consumer(
                     builder: (context, ref, _) {
                       profileViewModel.setRef(ref);
                       return TitleAndTextButton(
                         inputDataLabel: belongCommunityLabel,
-                        separateCondition: profileViewModel.communityId != '',
+                        separateCondition:
+                            profileViewModel.communityId != 'none',
                         beforeInputText: tapForSettingBtnText,
                         //TODO
                         //communityMap[_profileViewModel.communityId]では初期値ではnullが返されてしまう。
                         //そのため、そのプロパティを取るとnull safetyによってエラーが発生してしまう。
                         //それを防ぐためには、対策を取る必要がある。
-                        //TODO ここは改善する必要がある
-                        afterInputText: profileViewModel.communityMap[
-                                    profileViewModel.communityId] ==
-                                null
-                            ? ''
-                            : profileViewModel
-                                .communityMap[profileViewModel.communityId]!
-                                .communityName,
+                        afterInputText: profileViewModel
+                            .communityMap[profileViewModel.communityId]!
+                            .communityName,
                         //コミュニティ設定ページに飛ばす
                         onTap: () => toCommunitySettingPage(context: context),
                       );
                     },
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: betweenTitleAndTextHeight),
                   //プロフィール文設定
                   Consumer(
                     builder: (context, ref, child) {
@@ -134,7 +131,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                   //routeを設定する
                   onPressed: () async {
                     toProfilePage(context: context, ref: ref);
-                    await profileViewModel.uploadProfileInfo();
+                    await profileViewModel.setUserProfileToFirestore();
                     //ローカルDBにデータを入れる処理を行う。
                     //updateの形に変更する
                     await localDatabaseViewModel.appDatabase!

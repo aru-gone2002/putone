@@ -13,12 +13,16 @@ const String signInBtnText = 'ログイン';
 const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
 const String editBtnText = '編集';
+const String changeBtnText = '変更';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
 const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録';
 const String communityPageAppbarTitle = 'コミュニティの登録';
 const String postCreatePageAppbarTitle = '投稿作成画面';
+const String profileSettingAppbarTitle = 'プロフィール情報の登録';
+const String editProfileAppbarTitle = 'プロフィール情報の編集';
+const String editUserNameAppbarTitle = 'ユーザー名の変更';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -34,10 +38,11 @@ const String belongCommunityLabel = '所属コミュニティ';
 const String selectedCommunityLabel = '選択したコミュニティ';
 const String selectSongLabel = '曲の選択';
 const String selectedSongLabel = '選択した曲';
+const String currentUserNameLabel = '現在の名前';
+const String afterChangedUserNameLabel = '変更後の名前';
 
 //title
 const String signupTitle = '会員登録';
-const String profileSettingTitle = 'プロフィール情報の登録';
 const String cropperTitle = 'Cropper';
 const String profileTitle = 'プロフィール文';
 const String signInTitle = 'ログイン';
@@ -80,6 +85,7 @@ const String postMsgHintText = '今日の気分や曲への想い、ハマって
 const String noPostText = '投稿がありません';
 const String themeSongIsNotSelectedText = 'テーマ曲未選択';
 const String askToSettingThemeSongText = 'テーマ曲を選択してください';
+const String editProfileImgText = 'プロフィール画像を編集';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

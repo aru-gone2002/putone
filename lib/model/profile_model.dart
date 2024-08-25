@@ -210,7 +210,8 @@ class ProfileModel {
     }
   }
 
-  Future<void> uploadProfileInfo({required UserProfile userProfile}) async {
+  Future<void> setUserProfileToFirestore(
+      {required UserProfile userProfile}) async {
     final userProfileMap = userProfile.toJson();
     await firestore
         .collection('users')
@@ -240,27 +241,17 @@ class ProfileModel {
     }
   }
 
-  Future<void> addUserProfiletoLocalDB(UserProfile userProfile) async {
-    // into(UserBaseProfiles).insert(
-    //   UserBaseProfilesCompanion(
-    //     uid: Value(userProfile.uid),
-    //     userId: Value(userProfile.userId),
-    //     userName: Value(userProfile.userName),
-    //     userImg: Value(userProfile.userImg),
-    //     themeMusicImg: Value(userProfile.themeMusicImg),
-    //     themeMusicArtistName: Value(userProfile.themeMusicArtistName),
-    //     themeMusicSpotifyUrl: Value(userProfile.themeMusicSpotifyUrl),
-    //     themeMusicPreviewUrl: Value(userProfile.themeMusicPreviewUrl),
-    //     userProfileMsg: Value(userProfile.userProfileMsg),
-    //     userSpotifyConnected: Value(userProfile.userSpotifyConnected),
-    //     communityId: Value(userProfile.communityId),
-    //   ),
-    // );
-  }
-
-  Future<void> setUserProfileToFirestore(
-      {required String uid, required UserProfile userProfile}) async {
-    final userProfileMap = userProfile.toJson();
-    await firestore.collection('users').doc(uid).set(userProfileMap);
+  Future<void> updateFirestoreUserName({
+    required String uid,
+    required String newUserName,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'userName': newUserName});
+    } catch (e) {
+      print('Error update userName in Firestore: $e');
+    }
   }
 }

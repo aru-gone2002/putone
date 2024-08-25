@@ -254,7 +254,8 @@ class ProfilePage extends ConsumerWidget {
                               size: 16,
                             ),
                             //TODO プロフィール編集画面を作成する
-                            onPressed: () {},
+                            onPressed: () =>
+                                toEditProfilePage(context: context),
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size.zero,
                               backgroundColor: AppColorTheme.color().gray2,

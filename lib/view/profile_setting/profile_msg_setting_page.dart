@@ -34,7 +34,7 @@ class ProfileMsgSettingPage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             horizontal: spaceWidthMedium, vertical: spaceHeightSmall),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

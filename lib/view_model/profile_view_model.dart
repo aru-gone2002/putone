@@ -224,8 +224,8 @@ class ProfileViewModel {
     saveThemeMusicPreviewUrl(track.previewUrl ?? '');
   }
 
-  Future<void> uploadProfileInfo() async {
-    _profileModel.uploadProfileInfo(userProfile: userProfile);
+  Future<void> setUserProfileToFirestore() async {
+    _profileModel.setUserProfileToFirestore(userProfile: userProfile);
   }
 
   Future<void> addUserToCommunity() async {
@@ -239,8 +239,8 @@ class ProfileViewModel {
     }
   }
 
-  Future<void> setUserProfileToFirestore() async {
-    await _profileModel.setUserProfileToFirestore(
-        uid: uid, userProfile: userProfile);
+  Future<void> updateFirestoreUserName({required String newUserName}) async {
+    await _profileModel.updateFirestoreUserName(
+        uid: uid, newUserName: newUserName);
   }
 }

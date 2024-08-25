@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/constants/validators.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
@@ -82,19 +83,7 @@ class SignUpPage extends StatelessWidget {
                   maxLength: maxEmailTextLength,
                   itemName: emailAddressLabel,
                   textRestriction: '',
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return notInputEmailText;
-                    }
-                    if (!RegExp(
-                      caseSensitive: false,
-                      r"^[\w!#$%&'*+/=?`{|}~^-]+(\.[\w!#$%&'*+/=?`{|}~^-]+)*@([A-Z0-9-]{2,6})\.(?:\w{3}|\w{2}\.\w{2})$",
-                      //r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                    ).hasMatch(value)) {
-                      return inputEmailIsNotValidText;
-                    }
-                    return null;
-                  },
+                  validator: (value) => emailValidator(value),
                   onSaved: (value) {
                     authViewModel.saveEmail(value as String);
                   },
@@ -105,17 +94,7 @@ class SignUpPage extends StatelessWidget {
                     maxLength: maxPasswordTextLength,
                     itemName: passwordLabel,
                     textRestriction: passwordRestrictionText,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return notInputPasswordText;
-                      }
-                      if (!RegExp(r'^[a-zA-Z0-9\W]{8,}$')
-                          // r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
-                          .hasMatch(value)) {
-                        return inputPasswordIsNotValidText;
-                      }
-                      return null;
-                    },
+                    validator: (value) => passwordValidator(value),
                     onSaved: (value) {
                       authViewModel.savePassword(value as String);
                     },
