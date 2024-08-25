@@ -68,9 +68,7 @@ class EditProfilePage extends StatelessWidget {
                     inputDataLabel: userNameLabel,
                     beforeInputText: tapForSettingBtnText,
                     afterInputText: profileViewModel.userName,
-                    //ユーザー名編集ページに飛ばす
                     onTap: () => toEditUserNamePage(context: context),
-                    //toThemeSongSettingPage(context: context),
                     separateCondition: profileViewModel.userName != '');
               },
             ),
@@ -83,9 +81,7 @@ class EditProfilePage extends StatelessWidget {
                     inputDataLabel: userIdLabel,
                     beforeInputText: tapForSettingBtnText,
                     afterInputText: profileViewModel.userId,
-                    //TODO ユーザーID編集ページに飛ばす
-                    onTap: () {},
-                    //toThemeSongSettingPage(context: context),
+                    onTap: () => toEditUserIdPage(context: context),
                     separateCondition: profileViewModel.userId != '');
               },
             ),

@@ -7,7 +7,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
-import 'package:putone/view/profile_page/profile_page.dart';
+import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';

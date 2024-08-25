@@ -23,6 +23,7 @@ const String postCreatePageAppbarTitle = '投稿作成画面';
 const String profileSettingAppbarTitle = 'プロフィール情報の登録';
 const String editProfileAppbarTitle = 'プロフィール情報の編集';
 const String editUserNameAppbarTitle = 'ユーザー名の変更';
+const String editUserIdAppbarTitle = 'ユーザーIDの変更';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -38,8 +39,10 @@ const String belongCommunityLabel = '所属コミュニティ';
 const String selectedCommunityLabel = '選択したコミュニティ';
 const String selectSongLabel = '曲の選択';
 const String selectedSongLabel = '選択した曲';
-const String currentUserNameLabel = '現在の名前';
-const String afterChangedUserNameLabel = '変更後の名前';
+const String currentUserNameLabel = '現在のユーザー名';
+const String afterChangedUserNameLabel = '変更後のユーザー名';
+const String currentUserIdLabel = '現在のユーザーId';
+const String afterChangedUserIdLabel = '変更後のユーザーID';
 
 //title
 const String signupTitle = '会員登録';

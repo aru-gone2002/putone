@@ -243,4 +243,11 @@ class ProfileViewModel {
     await _profileModel.updateFirestoreUserName(
         uid: uid, newUserName: newUserName);
   }
+
+  Future<void> updateFirestoreUserId({required String newUserId}) async {
+    await _profileModel.updateFirestoreUserId(
+      uid: uid,
+      newUserId: newUserId,
+    );
+  }
 }

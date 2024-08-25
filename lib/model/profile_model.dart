@@ -241,6 +241,7 @@ class ProfileModel {
     }
   }
 
+  // ----Firestoreを一項目ずつupdate----
   Future<void> updateFirestoreUserName({
     required String uid,
     required String newUserName,
@@ -252,6 +253,17 @@ class ProfileModel {
           .update({'userName': newUserName});
     } catch (e) {
       print('Error update userName in Firestore: $e');
+    }
+  }
+
+  Future<void> updateFirestoreUserId({
+    required String uid,
+    required String newUserId,
+  }) async {
+    try {
+      await firestore.collection('users').doc(uid).update({'useId': newUserId});
+    } catch (e) {
+      print('Error update userId in Firestore: $e');
     }
   }
 }
