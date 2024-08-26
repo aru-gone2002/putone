@@ -13,6 +13,7 @@ import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
+import 'package:putone/view_model/spotify_view_model.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({
@@ -27,10 +28,12 @@ class ProfilePage extends ConsumerWidget {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final PostViewModel postViewModel = PostViewModel();
+    final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
+    spotifyViewModel.setRef(ref);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
@@ -370,7 +373,7 @@ class ProfilePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         //投稿ページに飛ぶようにする
         onPressed: () async {
-          await profileViewModel.fetchSpotifyAccessToken();
+          await spotifyViewModel.fetchSpotifyAccessToken();
           if (context.mounted) {
             toSelectSongPage(
               context: context,

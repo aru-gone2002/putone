@@ -2,14 +2,13 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:nil/nil.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
+import 'package:putone/view_model/spotify_view_model.dart';
 
 class SelectSongPage extends ConsumerStatefulWidget {
   const SelectSongPage({
@@ -31,6 +30,7 @@ class SelectSongPage extends ConsumerStatefulWidget {
 
 class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
+  final SpotifyViewModel _spotifyViewModel = SpotifyViewModel();
   final TextEditingController _trackNameController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
 
@@ -38,6 +38,7 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
   void initState() {
     super.initState();
     _profileViewModel.setRef(ref);
+    _spotifyViewModel.setRef(ref);
   }
 
   @override
@@ -149,7 +150,6 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
                   ),
                   const SizedBox(height: 24),
                   //検索ボタン
-                  //TODO この中身のproviderViewModelはspotifyViewModelに移行する
                   Center(
                     child: SizedBox(
                       height: 40,
@@ -167,7 +167,7 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
                             Fluttertoast.showToast(
                                 msg: askToEnterTrackOrArtistToastText);
                           } else {
-                            _profileViewModel.searchTracks(
+                            _spotifyViewModel.searchTracks(
                               searchTrackName: _trackNameController.text,
                               searchArtistName: _artistNameController.text,
                             );
@@ -212,15 +212,15 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
                     ]),
                 //楽曲の表示
                 //TODO この中身のproviderViewModelはspotifyViewModelに移行する
-                child: _profileViewModel.spotifySearchTracks.isEmpty
+                child: _spotifyViewModel.spotifySearchTracks.isEmpty
                     ? const Center(
                         child: Text(askToSearchByTrackAndArtistText),
                       )
                     : ListView.builder(
-                        itemCount: _profileViewModel.spotifySearchTracks.length,
+                        itemCount: _spotifyViewModel.spotifySearchTracks.length,
                         itemBuilder: (context, index) {
                           final spotifySearchTrack =
-                              _profileViewModel.spotifySearchTracks[index];
+                              _spotifyViewModel.spotifySearchTracks[index];
                           //楽曲一つ一つの表示ListTile
                           return ListTile(
                             //TODO ここの処理を渡してもらうようにする

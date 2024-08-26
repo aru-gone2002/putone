@@ -7,7 +7,6 @@ import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/community_provider.dart';
-import 'package:putone/providers/spotify_access_provider.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 
 class ProfileViewModel {
@@ -65,11 +64,6 @@ class ProfileViewModel {
   Community get selectedCommunity => _ref.watch(selectedCommunityProvider);
 
   Map<String, Community> get communityMap => _ref.watch(communityMapProvider);
-
-  String get spotifyAccessToken => _ref.watch(spotifyAccessTokenProvider);
-
-  List<SpotifyTrack> get spotifySearchTracks =>
-      _ref.watch(spotifySearchTracksProvider);
 
   void saveUid(String value) {
     _ref.read(userProfileProvider.notifier).state =
@@ -140,14 +134,6 @@ class ProfileViewModel {
     _ref.read(userProfileProvider.notifier).state = value;
   }
 
-  void saveSpotifyAccessToken(String value) {
-    _ref.read(spotifyAccessTokenProvider.notifier).state = value;
-  }
-
-  void saveSpotifySearchTracks(List<SpotifyTrack> value) {
-    _ref.read(spotifySearchTracksProvider.notifier).state = value;
-  }
-
   void saveSelectedCommunity(Community value) {
     _ref.read(selectedCommunityProvider.notifier).state = value;
   }
@@ -195,25 +181,6 @@ class ProfileViewModel {
           uid: uid, croppedFile: croppedFile);
       saveUserImg(imgUrl);
     }
-  }
-
-  Future<void> fetchSpotifyAccessToken() async {
-    final accessToken = await _profileModel.fetchAccessToken();
-    if (accessToken != null) {
-      saveSpotifyAccessToken(accessToken);
-    }
-  }
-
-  Future<void> searchTracks({
-    required String searchTrackName,
-    required String searchArtistName,
-  }) async {
-    final List<SpotifyTrack> spotifyTracks = await _profileModel.searchTracks(
-      accessToken: spotifyAccessToken,
-      searchTrackName: searchTrackName,
-      seachArtistName: searchArtistName,
-    );
-    saveSpotifySearchTracks(spotifyTracks);
   }
 
   void setThemeSong({required SpotifyTrack track}) {

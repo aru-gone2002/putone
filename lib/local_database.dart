@@ -100,9 +100,6 @@ class AppDatabase extends _$AppDatabase {
         .write(
       changeUserProfileToLocalUserProfile(userProfile),
     );
-    // return (update(localUserProfiles)).replace(
-    //   changeUserProfileToLocalUserProfile(userProfile),
-    // );
   }
 
   // ローカルDBからLocalUserProfileを削除する。
