@@ -74,7 +74,6 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
                     Text(
                       currentThemeSongLabel,
                       style: Theme.of(context).textTheme.labelMedium,
-                      // textAlign: TextAlign.start,
                     ),
                     //TODO ここは変更する必要があるかも
                     Text(

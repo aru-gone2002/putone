@@ -71,248 +71,270 @@ class ProfilePage extends ConsumerWidget {
                         child: Text(failToReadDataErrorText),
                       );
                     }
-                    return Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        //左のライン
-                        //お気に入り楽曲の表示
-                        Align(
-                          alignment: const Alignment(-0.95, -0.85),
-                          child: Container(
-                            height: 48,
-                            width: sideProfileWidth,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: AppColorTheme.color().gray2,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                //TODO アプリを閉じて再度開いた場合、
-                                //この時点でUserProfileProviderにローカルのデータが入っている必要がある。
-                                //UserProfileProviderには情報が入っていない可能性があるため分岐を行う必要がある。
-                                //TODO ログインとかした場合には事前にFirestoreから情報を取得して、
-                                //UserProfileProviderにデータが入った状態となっている
-                                (snapshot.data! as List<LocalUserProfile>)
-                                            .first
-                                            .themeMusicImg !=
-                                        ''
-                                    ? ExtendedImage.network(
-                                        //ローカルDBから画像を取得
-                                        (snapshot.data!
-                                                as List<LocalUserProfile>)
-                                            .first
-                                            .themeMusicImg,
-
-                                        width: favoriteMusicImgWidth,
-                                        height: favoriteMusicImgHeight,
-                                        fit: BoxFit.cover,
-                                        cache: true,
-                                        shape: BoxShape.rectangle,
-                                      )
-                                    : const Image(
-                                        width: favoriteMusicImgWidth,
-                                        height: favoriteMusicImgHeight,
-                                        image: AssetImage(
-                                          'assets/images/favorite_song_is_not_selected.png',
-                                        ),
-                                      ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: Text(notExistProfileDataText),
+                      );
+                    }
+                    //リストの中身を消しただけではhasDataがtrueのままになってしまうことがわかった
+                    return (snapshot.data as List<LocalUserProfile>).isEmpty
+                        ? const Center(
+                            child: Text(notExistProfileDataText),
+                          )
+                        : Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              //左のライン
+                              //お気に入り楽曲の表示
+                              Align(
+                                alignment: const Alignment(-0.95, -0.85),
+                                child: Container(
+                                  height: 48,
+                                  width: sideProfileWidth,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: AppColorTheme.color().gray2,
+                                  ),
+                                  child: Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        (snapshot.data! as List<
-                                                        LocalUserProfile>)
-                                                    .first
-                                                    .themeMusicName !=
-                                                ''
-                                            ? (snapshot.data!
-                                                    as List<LocalUserProfile>)
-                                                .first
-                                                .themeMusicName
-                                            : themeSongIsNotSelectedText,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
+                                      //アプリを閉じて再度開いた場合、
+                                      //この時点でUserProfileProviderにローカルのデータが入っている必要がある。
+                                      //UserProfileProviderには情報が入っていない可能性があるため分岐を行う必要がある。
+                                      //ログインとかした場合には事前にFirestoreから情報を取得して、
+                                      //UserProfileProviderにデータが入った状態となっている
+                                      (snapshot.data as List<LocalUserProfile>)
+                                                  .first
+                                                  .themeMusicImg !=
+                                              ''
+                                          ? ExtendedImage.network(
+                                              //ローカルDBから画像を取得
+                                              (snapshot.data
+                                                      as List<LocalUserProfile>)
+                                                  .first
+                                                  .themeMusicImg,
+                                              width: favoriteMusicImgWidth,
+                                              height: favoriteMusicImgHeight,
+                                              fit: BoxFit.cover,
+                                              cache: true,
+                                              shape: BoxShape.rectangle,
+                                            )
+                                          : const Image(
+                                              width: favoriteMusicImgWidth,
+                                              height: favoriteMusicImgHeight,
+                                              image: AssetImage(
+                                                'assets/images/favorite_song_is_not_selected.png',
+                                              ),
                                             ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      ),
-                                      Text(
-                                        (snapshot.data! as List<
-                                                        LocalUserProfile>)
-                                                    .first
-                                                    .themeMusicName !=
-                                                ''
-                                            ? (snapshot.data!
-                                                    as List<LocalUserProfile>)
-                                                .first
-                                                .themeMusicArtistName
-                                            : askToSettingThemeSongText,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.white,
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              (snapshot.data as List<
+                                                              LocalUserProfile>)
+                                                          .first
+                                                          .themeMusicName !=
+                                                      ''
+                                                  ? (snapshot.data as List<
+                                                          LocalUserProfile>)
+                                                      .first
+                                                      .themeMusicName
+                                                  : themeSongIsNotSelectedText,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                            Text(
+                                              (snapshot.data as List<
+                                                              LocalUserProfile>)
+                                                          .first
+                                                          .themeMusicName !=
+                                                      ''
+                                                  ? (snapshot.data as List<
+                                                          LocalUserProfile>)
+                                                      .first
+                                                      .themeMusicArtistName
+                                                  : askToSettingThemeSongText,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        //ユーザー名とユーザーID
-                        Align(
-                          alignment: const Alignment(-0.95, 0),
-                          child: SizedBox(
-                            width: sideProfileWidth,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                //ユーザー名
-                                Text(
-                                  (snapshot.data! as List<LocalUserProfile>)
-                                      .first
-                                      .userName,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(fontWeight: FontWeight.bold),
                                 ),
-
-                                //ユーザーID
-                                Text(
-                                  '@${(snapshot.data! as List<LocalUserProfile>).first.userId}',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        //所属先
-                        Align(
-                          alignment: const Alignment(-0.95, 0.65),
-                          child: SizedBox(
-                            width: sideProfileWidth,
-                            child: Text(
-                              '所属：${profileViewModel.communityMap[(snapshot.data! as List<LocalUserProfile>).first.communityId]!.communityName}',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        ),
-                        //真ん中
-                        //ユーザー画像の表示
-                        Align(
-                          alignment: const Alignment(0, 0),
-                          child: (snapshot.data! as List<LocalUserProfile>)
-                                      .first
-                                      .userImg !=
-                                  ''
-                              ? ExtendedImage.network(
-                                  (snapshot.data! as List<LocalUserProfile>)
-                                      .first
-                                      .userImg,
-                                  width: profileImgSize,
-                                  height: profileImgSize,
-                                  fit: BoxFit.cover,
-                                  cache: true,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: AppColorTheme.color().mainColor),
-                                )
-                              : ExtendedImage.asset(
-                                  'assets/images/user_gray_icon.png',
-                                  width: profileImgSize,
-                                  height: profileImgSize,
-                                  shape: BoxShape.circle,
-                                  fit: BoxFit.cover,
-                                  border: Border.all(
-                                      color: AppColorTheme.color().mainColor,
-                                      width: 3.0),
-                                ),
-                        ),
-                        //右のライン
-                        //編集ボタン
-                        Align(
-                          alignment: const Alignment(0.65, -0.9),
-                          child: ElevatedButton.icon(
-                            label: const Text(editBtnText),
-                            icon: const Icon(
-                              Icons.edit,
-                              size: 16,
-                            ),
-                            //TODO プロフィール編集画面を作成する
-                            onPressed: () =>
-                                toEditProfilePage(context: context),
-                            //toEditProfilePage(context: context),
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size.zero,
-                              backgroundColor: AppColorTheme.color().gray2,
-                              foregroundColor: Colors.white,
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                            ),
-                          ),
-                        ),
-                        //ハンバーガーメニュー
-                        Align(
-                          alignment: const Alignment(0.95, -0.9),
-                          child: IconButton(
-                            icon: const Icon(Icons.dehaze_sharp),
-                            onPressed: () {
-                              scaffoldKey.currentState?.openEndDrawer();
-                            },
-                          ),
-                        ),
-                        //プロフィール文
-                        Align(
-                          alignment: const Alignment(0.95, 0),
-                          child: SizedBox(
-                            width: sideProfileWidth,
-                            child: Text(
-                              (snapshot.data! as List<LocalUserProfile>)
-                                          .first
-                                          .userProfileMsg !=
-                                      ''
-                                  ? (snapshot.data! as List<LocalUserProfile>)
-                                      .first
-                                      .userProfileMsg
-                                  : 'プロフィール\nメッセージ\n未登録',
-                              overflow: TextOverflow.clip,
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+                              //ユーザー名とユーザーID
+                              Align(
+                                alignment: const Alignment(-0.95, 0),
+                                child: SizedBox(
+                                  width: sideProfileWidth,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      //ユーザー名
+                                      Text(
+                                        (snapshot.data
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .userName,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
+                                      ),
+
+                                      //ユーザーID
+                                      Text(
+                                        '@${(snapshot.data! as List<LocalUserProfile>).first.userId}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              //所属先
+                              Align(
+                                alignment: const Alignment(-0.95, 0.65),
+                                child: SizedBox(
+                                  width: sideProfileWidth,
+                                  child: Text(
+                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ),
+                              //真ん中
+                              //ユーザー画像の表示
+                              Align(
+                                alignment: const Alignment(0, 0),
+                                child: (snapshot.data as List<LocalUserProfile>)
+                                            .first
+                                            .userImg !=
+                                        ''
+                                    ? ExtendedImage.network(
+                                        (snapshot.data
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .userImg,
+                                        width: profileImgSize,
+                                        height: profileImgSize,
+                                        fit: BoxFit.cover,
+                                        cache: true,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: AppColorTheme.color()
+                                                .mainColor),
+                                      )
+                                    : ExtendedImage.asset(
+                                        'assets/images/user_gray_icon.png',
+                                        width: profileImgSize,
+                                        height: profileImgSize,
+                                        shape: BoxShape.circle,
+                                        fit: BoxFit.cover,
+                                        border: Border.all(
+                                            color:
+                                                AppColorTheme.color().mainColor,
+                                            width: 3.0),
+                                      ),
+                              ),
+                              //右のライン
+                              //編集ボタン
+                              Align(
+                                alignment: const Alignment(0.65, -0.9),
+                                child: ElevatedButton.icon(
+                                  label: const Text(editBtnText),
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    size: 16,
+                                  ),
+                                  //プロフィール編集画面を作成する
+                                  onPressed: () =>
+                                      toEditProfilePage(context: context),
+                                  //toEditProfilePage(context: context),
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    backgroundColor:
+                                        AppColorTheme.color().gray2,
+                                    foregroundColor: Colors.white,
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                  ),
+                                ),
+                              ),
+                              //ハンバーガーメニュー
+                              Align(
+                                alignment: const Alignment(0.95, -0.9),
+                                child: IconButton(
+                                  icon: const Icon(Icons.dehaze_sharp),
+                                  onPressed: () {
+                                    scaffoldKey.currentState?.openEndDrawer();
+                                  },
+                                ),
+                              ),
+                              //プロフィール文
+                              Align(
+                                alignment: const Alignment(0.95, 0),
+                                child: SizedBox(
+                                  width: sideProfileWidth,
+                                  child: Text(
+                                    (snapshot.data as List<LocalUserProfile>)
+                                                .first
+                                                .userProfileMsg !=
+                                            ''
+                                        ? (snapshot.data
+                                                as List<LocalUserProfile>)
+                                            .first
+                                            .userProfileMsg
+                                        : notRegisteredProfileMsgText,
+                                    overflow: TextOverflow.clip,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
                   }),
             ),
 

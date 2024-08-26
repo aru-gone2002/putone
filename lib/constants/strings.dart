@@ -91,6 +91,11 @@ const String themeSongIsNotSelectedText = 'テーマ曲未選択';
 const String askToSettingThemeSongText = 'テーマ曲を選択してください';
 const String editProfileImgText = 'プロフィール画像を編集';
 const String editThemeMusicConfirmDialogText = '以下の楽曲にテーマソングを変更しますか？';
+const String notRegisteredUserNameText = 'ユーザー名未登録';
+const String notRegisteredUserIdText = 'ユーザーID未登録';
+const String notRegisteredCommunityIdText = '所属：未所属';
+const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
+const String notExistProfileDataText = 'プロフィール情報が存在しません';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

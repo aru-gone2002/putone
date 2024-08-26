@@ -129,8 +129,8 @@ class AuthViewModel {
   }
 
   Future<void> signOut() async {
-    refreshFromSignInAndSignOut();
     await _authModel.signOut();
+    refreshFromSignInAndSignOut();
   }
 
   void checkUid() async {
