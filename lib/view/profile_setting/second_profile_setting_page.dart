@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
@@ -5,6 +6,7 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/title_and_text_button.dart';
@@ -77,12 +79,29 @@ class SecondProfileSettingPage extends StatelessWidget {
                           },
                           child: Column(
                             children: [
-                              CircleAvatar(
-                                radius: profileSetttingUserImgRadiusWidth,
-                                backgroundImage: profileViewModel.userImg != ''
-                                    ? NetworkImage(profileViewModel.userImg)
-                                    : null,
-                              ),
+                              profileViewModel.userImg != ''
+                                  ? ExtendedImage.network(
+                                      profileViewModel.userImg,
+                                      width: profileSetttingUserImgWidth * 2,
+                                      height: profileSetttingUserImgWidth * 2,
+                                      fit: BoxFit.cover,
+                                      cache: true,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color:
+                                              AppColorTheme.color().mainColor),
+                                    )
+                                  : ExtendedImage.asset(
+                                      'assets/images/user_gray_icon.png',
+                                      width: profileSetttingUserImgWidth,
+                                      height: profileSetttingUserImgWidth,
+                                      shape: BoxShape.circle,
+                                      fit: BoxFit.cover,
+                                      border: Border.all(
+                                        color: AppColorTheme.color().mainColor,
+                                        width: 3.0,
+                                      ),
+                                    ),
                               const SizedBox(height: 16),
                               Text(
                                 registerProfileImgText,
