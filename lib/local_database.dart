@@ -81,7 +81,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   // ローカルDBから全てのLocalUserProfileを一度だけ取得する。
-  Future<List<LocalUserProfile>> getAllLocalUserProfiles() {
+  Future<List<LocalUserProfile>> getLocalUserProfiles() {
     return (select(localUserProfiles)).get();
   }
 

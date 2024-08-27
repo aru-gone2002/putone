@@ -74,7 +74,7 @@ class PuTone extends ConsumerWidget {
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                   //ローカルDBからUserProfileデータを取得
                   final localUserProfiles =
-                      await database.getAllLocalUserProfiles();
+                      await database.getLocalUserProfiles();
                   print('ローカルDBからUserProfileデータを取得');
                   final userBaseProfile = localUserProfiles.first;
                   print('firstを実行');
@@ -102,7 +102,6 @@ class PuTone extends ConsumerWidget {
               }
             }
           }
-
           //何もない時に表示される。
           WidgetsBinding.instance.addPostFrameCallback((_) {
             localDatabaseViewModel.saveAppDatabase(database);
