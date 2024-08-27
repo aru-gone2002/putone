@@ -5,6 +5,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
@@ -43,6 +44,38 @@ class SecondProfileSettingPage extends StatelessWidget {
                     //ダイアログを閉じる
                     Navigator.pop(context);
                     //テーマソングの登録画面を閉じる
+                    Navigator.pop(context);
+                  }),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> setCommunityFunction(Community? community) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(setCommunityConfirmDialogText),
+            content: Text(
+              community!.communityName,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(backBtnText),
+              ),
+              TextButton(
+                  child: const Text(registerBtnText),
+                  onPressed: () {
+                    //ProfileのproviderにcommunityIdを保存する
+                    profileViewModel.saveCommunityId(
+                      community.communityId,
+                    );
+                    //ダイアログを閉じる
+                    Navigator.pop(context);
+                    //コミュニティの登録画面を閉じる
                     Navigator.pop(context);
                   }),
             ],
@@ -152,7 +185,14 @@ class SecondProfileSettingPage extends StatelessWidget {
                             .communityMap[profileViewModel.communityId]!
                             .communityName,
                         //コミュニティ設定ページに飛ばす
-                        onTap: () => toCommunitySettingPage(context: context),
+                        onTap: () => toSelectCommunityPage(
+                          context: context,
+                          onPressed: setCommunityFunction,
+                          appBarTitle: setCommunityPageAppbarTitle,
+                          showCurrentCommunity: false,
+                          btnText: registerBtnText,
+                          labelText: selectedCommunityLabel,
+                        ),
                       );
                     },
                   ),

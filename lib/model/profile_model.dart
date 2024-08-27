@@ -142,4 +142,29 @@ class ProfileModel {
       print('Error update themeSongInfo in Firestore: $e');
     }
   }
+
+  Future<void> updateFirestoreCommunityId({
+    required String uid,
+    required String newCommunityId,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'communityId': newCommunityId});
+    } catch (e) {
+      print('Error update communityId in Firestore: $e');
+    }
+  }
+
+  //
+  Future<void> deleteUserFromCommunity(
+      {required String uid, required String communityId}) async {
+    await firestore
+        .collection('communities')
+        .doc(communityId)
+        .collection('users')
+        .doc(uid)
+        .delete();
+  }
 }

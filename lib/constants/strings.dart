@@ -18,13 +18,14 @@ const String changeBtnText = '変更';
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
 const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録';
-const String communityPageAppbarTitle = 'コミュニティの登録';
+const String setCommunityPageAppbarTitle = 'コミュニティの登録';
 const String postCreatePageAppbarTitle = '投稿作成画面';
 const String profileSettingAppbarTitle = 'プロフィール情報の登録';
 const String editProfileAppbarTitle = 'プロフィール情報の編集';
 const String editUserNameAppbarTitle = 'ユーザー名の変更';
 const String editUserIdAppbarTitle = 'ユーザーIDの変更';
 const String editThemeSongAppBarTitle = 'テーマソングの変更';
+const String editCommunityAppBarTitle = 'コミュニティの変更';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -44,6 +45,8 @@ const String currentUserNameLabel = '現在のユーザー名';
 const String afterChangedUserNameLabel = '変更後のユーザー名';
 const String currentUserIdLabel = '現在のユーザーId';
 const String afterChangedUserIdLabel = '変更後のユーザーID';
+const String currentCommunityLabel = '現在のコミュニティ';
+const String afterChangedCommunityLabel = '変更後のコミュニティ';
 
 //title
 const String signupTitle = '会員登録';
@@ -84,7 +87,7 @@ const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト�
 const String setThemeMusicConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
 const String profileMsgHintText = '〇〇大学 ××学部';
 const String askToSelectMusicText = '以下の楽曲から選択してください';
-const String communitySettingConfirmDialogText = '以下のコミュニティを登録しますか？';
+const String setCommunityConfirmDialogText = '以下のコミュニティを登録しますか？';
 const String postMsgHintText = '今日の気分や曲への想い、ハマっている理由、おすすめポイントを書こう！';
 const String noPostText = '投稿がありません';
 const String themeSongIsNotSelectedText = 'テーマ曲未選択';
@@ -96,6 +99,7 @@ const String notRegisteredUserIdText = 'ユーザーID未登録';
 const String notRegisteredCommunityIdText = '所属：未所属';
 const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
+const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

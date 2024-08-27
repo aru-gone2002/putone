@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
@@ -8,7 +9,7 @@ import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
-import 'package:putone/view/profile_setting/community_setting_page.dart';
+import 'package:putone/view/module_page/select_community_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
 import 'package:putone/view/auth/signin_page.dart';
 import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
@@ -79,10 +80,24 @@ void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
       ),
     );
 
-void toCommunitySettingPage({required BuildContext context}) => Navigator.push(
+void toSelectCommunityPage({
+  required BuildContext context,
+  required void Function(Community? community)? onPressed,
+  required String appBarTitle,
+  required bool showCurrentCommunity,
+  required String btnText,
+  required String labelText,
+}) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const CommunitySettingPage()),
+        builder: ((context) => SelectCommunityPage(
+              onPressed: onPressed,
+              appBarTitle: appBarTitle,
+              showCurrentCommunity: showCurrentCommunity,
+              btnText: btnText,
+              labelText: labelText,
+            )),
       ),
     );
 

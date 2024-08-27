@@ -223,4 +223,18 @@ class ProfileViewModel {
     await _profileModel.updateFirestoreThemeMusicInfo(
         uid: uid, spotifyTrack: spotifyTrack);
   }
+
+  Future<void> updateFirestoreCommunityId(
+      {required String newCommunityId}) async {
+    await _profileModel.updateFirestoreCommunityId(
+      uid: uid,
+      newCommunityId: newCommunityId,
+    );
+  }
+
+  Future<void> deleteUserFromCommunity(
+      {required String uid, required String communityId}) async {
+    await _profileModel.deleteUserFromCommunity(
+        uid: uid, communityId: communityId);
+  }
 }
