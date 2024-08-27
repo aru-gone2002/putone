@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/constants/validators.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -29,7 +30,7 @@ class FirstProfileSettingPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          profileSettingTitle,
+          profileSettingAppbarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
@@ -48,17 +49,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                     maxLength: userIdAndUserNameTextLength,
                     itemName: userIdLabel,
                     textRestriction: userIdRestrictionText,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return notInputUserIdText;
-                      }
-                      //小文字と.と数字で入力してもらうようにする。正規表現のやつ
-                      //TODO 文字数制限をつける
-                      if (!RegExp(r'^[a-z0-9.]{4,16}$').hasMatch(value)) {
-                        return inputUserIdIsNotValidText;
-                      }
-                      return null;
-                    },
+                    validator: (value) => userIdValidator(value),
                     onSaved: (value) {
                       profileViewModel.saveUserId(value as String);
                     },
@@ -70,16 +61,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                     maxLength: userIdAndUserNameTextLength,
                     itemName: userNameLabel,
                     textRestriction: '',
-                    validator: (value) {
-                      //TODO 文字数制限をつける
-                      if (value == null || value.trim().isEmpty) {
-                        return notInputUserNameText;
-                      }
-                      if (!RegExp(r'^.{1,16}').hasMatch(value)) {
-                        return inputUserIdIsNotValidText;
-                      }
-                      return null;
-                    },
+                    validator: (value) => userNameValidator(value),
                     onSaved: (value) {
                       profileViewModel.saveUserName(value as String);
                     },

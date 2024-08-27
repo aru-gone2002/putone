@@ -1,9 +1,14 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/community/community.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view/item/title_and_text_button.dart';
@@ -19,11 +24,81 @@ class SecondProfileSettingPage extends StatelessWidget {
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
 
+    Future<void> setThemeSongFunction(SpotifyTrack spotifySearchTrack) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(setThemeMusicConfirmDialogText),
+            content: Text(
+                //providerに入ったリストの中身をindexで取ってきたものがspotifySearchTrack
+                '${spotifySearchTrack.trackName} / ${spotifySearchTrack.artistName}'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(backBtnText),
+              ),
+              TextButton(
+                  child: const Text(registerBtnText),
+                  onPressed: () {
+                    profileViewModel.setThemeSong(track: spotifySearchTrack);
+                    //ダイアログを閉じる
+                    Navigator.pop(context);
+                    //テーマソングの登録画面を閉じる
+                    Navigator.pop(context);
+                  }),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> setCommunityFunction(Community? community) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(setCommunityConfirmDialogText),
+            content: Text(
+              community!.communityName,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(backBtnText),
+              ),
+              TextButton(
+                  child: const Text(registerBtnText),
+                  onPressed: () {
+                    //ProfileのproviderにcommunityIdを保存する
+                    profileViewModel.saveCommunityId(
+                      community.communityId,
+                    );
+                    //ダイアログを閉じる
+                    Navigator.pop(context);
+                    //コミュニティの登録画面を閉じる
+                    Navigator.pop(context);
+                  }),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> setUserProfileMsgFunction(
+        GlobalObjectKey<FormState> formKey, BuildContext context) async {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        await Fluttertoast.showToast(msg: saveProfileMsgToastText);
+        if (context.mounted) Navigator.pop(context);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          profileSettingTitle,
+          profileSettingAppbarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
@@ -47,12 +122,29 @@ class SecondProfileSettingPage extends StatelessWidget {
                           },
                           child: Column(
                             children: [
-                              CircleAvatar(
-                                radius: profileSetttingUserImgRadiusWidth,
-                                backgroundImage: profileViewModel.userImg != ''
-                                    ? NetworkImage(profileViewModel.userImg)
-                                    : null,
-                              ),
+                              profileViewModel.userImg != ''
+                                  ? ExtendedImage.network(
+                                      profileViewModel.userImg,
+                                      width: profileSetttingUserImgWidth * 2,
+                                      height: profileSetttingUserImgWidth * 2,
+                                      fit: BoxFit.cover,
+                                      cache: true,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color:
+                                              AppColorTheme.color().mainColor),
+                                    )
+                                  : ExtendedImage.asset(
+                                      'assets/images/user_gray_icon.png',
+                                      width: profileSetttingUserImgWidth,
+                                      height: profileSetttingUserImgWidth,
+                                      shape: BoxShape.circle,
+                                      fit: BoxFit.cover,
+                                      border: Border.all(
+                                        color: AppColorTheme.color().mainColor,
+                                        width: 3.0,
+                                      ),
+                                    ),
                               const SizedBox(height: 16),
                               Text(
                                 registerProfileImgText,
@@ -64,7 +156,8 @@ class SecondProfileSettingPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 64),
+                  const SizedBox(
+                      height: betweenUserImgAndOtherProfileInfoHeight),
                   //テーマソング設定
                   Consumer(
                     builder: (context, ref, _) {
@@ -75,38 +168,45 @@ class SecondProfileSettingPage extends StatelessWidget {
                           afterInputText:
                               '${profileViewModel.themeMusicName} / ${profileViewModel.themeMusicArtistName}',
                           //テーマソング設定ページに飛ばす
-                          onTap: () => toThemeSongSettingPage(context: context),
+                          onTap: () => toSelectSongPage(
+                              context: context,
+                              appBarTitle: themeSongSettingPageAppbarTitle,
+                              onTap: setThemeSongFunction,
+                              isVisibleCurrentMusicInfo: true),
                           separateCondition:
                               profileViewModel.themeMusicName != '');
                     },
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: betweenTitleAndTextHeight),
                   //コミュニティ設定
                   Consumer(
                     builder: (context, ref, _) {
                       profileViewModel.setRef(ref);
                       return TitleAndTextButton(
                         inputDataLabel: belongCommunityLabel,
-                        separateCondition: profileViewModel.communityId != '',
+                        separateCondition:
+                            profileViewModel.communityId != 'none',
                         beforeInputText: tapForSettingBtnText,
                         //TODO
                         //communityMap[_profileViewModel.communityId]では初期値ではnullが返されてしまう。
                         //そのため、そのプロパティを取るとnull safetyによってエラーが発生してしまう。
                         //それを防ぐためには、対策を取る必要がある。
-                        //TODO ここは改善する必要がある
-                        afterInputText: profileViewModel.communityMap[
-                                    profileViewModel.communityId] ==
-                                null
-                            ? ''
-                            : profileViewModel
-                                .communityMap[profileViewModel.communityId]!
-                                .communityName,
+                        afterInputText: profileViewModel
+                            .communityMap[profileViewModel.communityId]!
+                            .communityName,
                         //コミュニティ設定ページに飛ばす
-                        onTap: () => toCommunitySettingPage(context: context),
+                        onTap: () => toSelectCommunityPage(
+                          context: context,
+                          onPressed: setCommunityFunction,
+                          appBarTitle: setCommunityPageAppbarTitle,
+                          showCurrentCommunity: false,
+                          btnText: registerBtnText,
+                          labelText: selectedCommunityLabel,
+                        ),
                       );
                     },
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: betweenTitleAndTextHeight),
                   //プロフィール文設定
                   Consumer(
                     builder: (context, ref, child) {
@@ -117,8 +217,13 @@ class SecondProfileSettingPage extends StatelessWidget {
                           afterInputText: profileViewModel.userProfileMsg,
 
                           //プロフィール文設定ページに飛ばす
-                          onTap: () =>
-                              toProfileMsgSettingPage(context: context),
+                          onTap: () => toWriteProfileMsgPage(
+                                context: context,
+                                appBarTitle: setProfileMsgPageAppbarTitle,
+                                showCurrentProfileMsg: false,
+                                onPressed: setUserProfileMsgFunction,
+                                labelText: profileMsgLabel,
+                              ),
                           separateCondition:
                               profileViewModel.userProfileMsg != '');
                     },
@@ -134,7 +239,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                   //routeを設定する
                   onPressed: () async {
                     toProfilePage(context: context, ref: ref);
-                    await profileViewModel.uploadProfileInfo();
+                    await profileViewModel.setUserProfileToFirestore();
                     //ローカルDBにデータを入れる処理を行う。
                     //updateの形に変更する
                     await localDatabaseViewModel.appDatabase!

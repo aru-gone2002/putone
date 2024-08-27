@@ -13,12 +13,20 @@ const String signInBtnText = 'ログイン';
 const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
 const String editBtnText = '編集';
+const String changeBtnText = '変更';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
-const String profileMsgSettingPageAppbarTitle = 'プロフィール文の登録';
-const String communityPageAppbarTitle = 'コミュニティの登録';
+const String setProfileMsgPageAppbarTitle = 'プロフィール文の登録';
+const String setCommunityPageAppbarTitle = 'コミュニティの登録';
 const String postCreatePageAppbarTitle = '投稿作成画面';
+const String profileSettingAppbarTitle = 'プロフィール情報の登録';
+const String editProfileAppbarTitle = 'プロフィール情報の編集';
+const String editUserNameAppbarTitle = 'ユーザー名の変更';
+const String editUserIdAppbarTitle = 'ユーザーIDの変更';
+const String editThemeSongAppBarTitle = 'テーマソングの変更';
+const String editCommunityAppBarTitle = 'コミュニティの変更';
+const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -28,16 +36,23 @@ const String userIdLabel = 'ユーザーID';
 const String userNameLabel = 'ユーザー名';
 const String artistNameLabel = 'アーティスト名';
 const String themeSongLabel = 'テーマソング';
-const String profileMsgLabel = 'プロフィール文（120字以内)';
-const String selectedThemeSongLabel = '選択したテーマソング';
+const String profileMsgLabel = 'プロフィール文（80字以内)';
+const String currentThemeSongLabel = '現在のテーマソング';
 const String belongCommunityLabel = '所属コミュニティ';
 const String selectedCommunityLabel = '選択したコミュニティ';
 const String selectSongLabel = '曲の選択';
 const String selectedSongLabel = '選択した曲';
+const String currentUserNameLabel = '現在のユーザー名';
+const String afterChangedUserNameLabel = '変更後のユーザー名';
+const String currentUserIdLabel = '現在のユーザーId';
+const String afterChangedUserIdLabel = '変更後のユーザーID';
+const String currentCommunityLabel = '現在のコミュニティ';
+const String afterChangedCommunityLabel = '変更後のコミュニティ';
+const String currentProfileMsgLabel = '現在のプロフィール文';
+const String afterChangedProfileMsgLabel = '変更後のプロフィール文（80字以内)';
 
 //title
 const String signupTitle = '会員登録';
-const String profileSettingTitle = 'プロフィール情報の登録';
 const String cropperTitle = 'Cropper';
 const String profileTitle = 'プロフィール文';
 const String signInTitle = 'ログイン';
@@ -72,20 +87,29 @@ const String passwordRestrictionText = '半角英数字8文字以上';
 const String userIdRestrictionText = '4文字以上。英小文字(a-z)、数字、ビリオド(.)が利用可。';
 const String registerProfileImgText = 'プロフィール画像を登録';
 const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト名で検索してください';
-const String musicSettingConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
+const String setThemeMusicConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
 const String profileMsgHintText = '〇〇大学 ××学部';
 const String askToSelectMusicText = '以下の楽曲から選択してください';
-const String communitySettingConfirmDialogText = '以下のコミュニティを登録しますか？';
+const String setCommunityConfirmDialogText = '以下のコミュニティを登録しますか？';
 const String postMsgHintText = '今日の気分や曲への想い、ハマっている理由、おすすめポイントを書こう！';
 const String noPostText = '投稿がありません';
 const String themeSongIsNotSelectedText = 'テーマ曲未選択';
 const String askToSettingThemeSongText = 'テーマ曲を選択してください';
+const String editProfileImgText = 'プロフィール画像を編集';
+const String editThemeMusicConfirmDialogText = '以下の楽曲にテーマソングを変更しますか？';
+const String notRegisteredUserNameText = 'ユーザー名未登録';
+const String notRegisteredUserIdText = 'ユーザーID未登録';
+const String notRegisteredCommunityIdText = '所属：未所属';
+const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
+const String notExistProfileDataText = 'プロフィール情報が存在しません';
+const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';
 const String askToEnterTrackOrArtistToastText = '楽曲名かアーティスト名を入れてください';
-const String profileMsgSavedToastText = 'プロフィール文が保存されました';
+const String saveProfileMsgToastText = 'プロフィール文が保存されました';
 const String newPostSavedToastText = '投稿が保存されました';
+const String changeProfileMsgToastText = 'プロフィール文が変更されました';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';

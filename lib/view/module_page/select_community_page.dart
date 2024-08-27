@@ -4,11 +4,25 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/community/community.dart';
+import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class CommunitySettingPage extends StatelessWidget {
-  const CommunitySettingPage({super.key});
+class SelectCommunityPage extends StatelessWidget {
+  const SelectCommunityPage({
+    super.key,
+    required this.onPressed,
+    required this.appBarTitle,
+    required this.showCurrentCommunity,
+    required this.btnText,
+    required this.labelText,
+  });
+
+  final void Function(Community? community)? onPressed;
+  final String appBarTitle;
+  final bool showCurrentCommunity;
+  final String btnText;
+  final String labelText;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +32,41 @@ class CommunitySettingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          communityPageAppbarTitle,
+          appBarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             horizontal: spaceWidthMedium, vertical: spaceHeightSmall),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Visibility(
+            visible: showCurrentCommunity,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  currentCommunityLabel,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Consumer(builder: (context, ref, _) {
+                  profileViewModel.setRef(ref);
+                  return Text(
+                    profileViewModel.communityMap[profileViewModel.communityId]!
+                        .communityName,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          color: AppColorTheme.color().gray1,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  );
+                }),
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
           Text(
-            selectedCommunityLabel,
+            labelText,
             style: Theme.of(context).textTheme.labelMedium,
           ),
           const SizedBox(height: 8),
@@ -43,36 +82,7 @@ class CommunitySettingPage extends StatelessWidget {
                   return null;
                 },
                 key: formKey,
-                onSaved: (value) async {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text(communitySettingConfirmDialogText),
-                          content: Text(
-                            value!.communityName,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text(backBtnText),
-                            ),
-                            TextButton(
-                                child: const Text(registerBtnText),
-                                onPressed: () {
-                                  //ProfileのproviderにcommunityIdを保存する
-                                  profileViewModel.saveCommunityId(
-                                    value.communityId,
-                                  );
-                                  //ダイアログを閉じる
-                                  Navigator.pop(context);
-                                  //コミュニティの登録画面を閉じる
-                                  Navigator.pop(context);
-                                }),
-                          ],
-                        );
-                      });
-                },
+                onSaved: onPressed,
                 onChanged: (value) {
                   profileViewModel.saveSelectedCommunity(value!);
                 },
@@ -93,7 +103,7 @@ class CommunitySettingPage extends StatelessWidget {
                 formKey.currentState!.save();
               }
             },
-            text: registerBtnText,
+            text: btnText,
           ),
         ]),
       ),

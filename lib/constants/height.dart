@@ -7,3 +7,5 @@ const double postGridItemTitlePaddingHeight = 4;
 const double postGridItemTitleSpaceHeight = 56;
 const double postGridPaddingHeight = 12;
 const double favoriteMusicImgHeight = favoriteMusicImgWidth;
+const double betweenTitleAndTextHeight = 40;
+const double betweenUserImgAndOtherProfileInfoHeight = 56;

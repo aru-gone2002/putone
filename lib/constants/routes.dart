@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
+import 'package:putone/view/edit_profile/edit_user_id_page.dart';
+import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
-import 'package:putone/view/post/post_create_page.dart';
-import 'package:putone/view/profile_page/profile_page.dart';
-import 'package:putone/view/profile_setting/community_setting_page.dart';
+import 'package:putone/view/edit_profile/edit_profile_page.dart';
+import 'package:putone/view/profile/profile_page.dart';
+import 'package:putone/view/module_page/select_community_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
 import 'package:putone/view/auth/signin_page.dart';
-import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
+import 'package:putone/view/module_page/write_profile_msg_page.dart';
 import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
-import 'package:putone/view/profile_setting/theme_song_setting_page.dart';
+import 'package:putone/view/module_page/select_song_page.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
@@ -53,24 +56,62 @@ void toSecondProfileSettingPage({required BuildContext context}) =>
       ),
     );
 
-void toThemeSongSettingPage({required BuildContext context}) => Navigator.push(
+void toSelectSongPage({
+  required BuildContext context,
+  required String appBarTitle,
+  required void Function(SpotifyTrack spotifyTrack) onTap,
+  required bool isVisibleCurrentMusicInfo,
+}) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const ThemeSongSettingPage()),
+        builder: ((context) => SelectSongPage(
+              appBarTitle: appBarTitle,
+              onTap: onTap,
+              isVisibleCurrentMusicInfo: isVisibleCurrentMusicInfo,
+            )),
       ),
     );
 
-void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
+void toWriteProfileMsgPage({
+  required BuildContext context,
+  required String appBarTitle,
+  required bool showCurrentProfileMsg,
+  required void Function(
+          GlobalObjectKey<FormState> formKey, BuildContext context)?
+      onPressed,
+  required String labelText,
+}) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const ProfileMsgSettingPage()),
+        builder: ((context) => WriteProfileMsgPage(
+              appBarTitle: appBarTitle,
+              showCurrentProfileMsg: showCurrentProfileMsg,
+              onPressed: onPressed,
+              labelText: labelText,
+            )),
       ),
     );
 
-void toCommunitySettingPage({required BuildContext context}) => Navigator.push(
+void toSelectCommunityPage({
+  required BuildContext context,
+  required void Function(Community? community)? onPressed,
+  required String appBarTitle,
+  required bool showCurrentCommunity,
+  required String btnText,
+  required String labelText,
+}) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const CommunitySettingPage()),
+        builder: ((context) => SelectCommunityPage(
+              onPressed: onPressed,
+              appBarTitle: appBarTitle,
+              showCurrentCommunity: showCurrentCommunity,
+              btnText: btnText,
+              labelText: labelText,
+            )),
       ),
     );
 
@@ -94,13 +135,6 @@ void toAuthPage({required BuildContext context}) => Navigator.pushReplacement(
       ),
     );
 
-void toPostCreatePage({required BuildContext context}) => Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => const PostCreatePage()),
-      ),
-    );
-
 void toPostAddMsgPage({
   required BuildContext context,
   required SpotifyTrack selectedTrack,
@@ -111,5 +145,26 @@ void toPostAddMsgPage({
         builder: ((context) => PostAddMsgPage(
               selectedTrack: selectedTrack,
             )),
+      ),
+    );
+
+void toEditProfilePage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const EditProfilePage()),
+      ),
+    );
+
+void toEditUserNamePage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const EditUserNamePage()),
+      ),
+    );
+
+void toEditUserIdPage({required BuildContext context}) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => const EditUserIdPage()),
       ),
     );

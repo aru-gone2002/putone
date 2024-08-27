@@ -3,23 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
-import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
+import 'package:putone/view_model/spotify_view_model.dart';
 
-class PostCreatePage extends ConsumerStatefulWidget {
-  const PostCreatePage({super.key});
+class SelectSongPage extends ConsumerStatefulWidget {
+  const SelectSongPage({
+    super.key,
+    required this.appBarTitle,
+    required this.onTap,
+    required this.isVisibleCurrentMusicInfo,
+  });
+
+  final String appBarTitle;
+  final void Function(SpotifyTrack spotifyTrack) onTap;
+  final bool isVisibleCurrentMusicInfo;
+
   @override
-  ConsumerState<PostCreatePage> createState() {
-    return _PostCreatePageState();
+  ConsumerState<SelectSongPage> createState() {
+    return _ThemeSongSettingPageState();
   }
 }
 
-class _PostCreatePageState extends ConsumerState<PostCreatePage> {
+class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
+  final SpotifyViewModel _spotifyViewModel = SpotifyViewModel();
   final TextEditingController _trackNameController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
 
@@ -27,6 +38,7 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
   void initState() {
     super.initState();
     _profileViewModel.setRef(ref);
+    _spotifyViewModel.setRef(ref);
   }
 
   @override
@@ -41,24 +53,43 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          postCreatePageAppbarTitle,
+          //TODO ここのタイトルも変える必要がある
+          themeSongSettingPageAppbarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: spaceWidthMedium,
-            vertical: spaceHeightSmall,
-          ),
+              horizontal: spaceWidthMedium, vertical: spaceHeightSmall),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                selectSongLabel,
-                style: Theme.of(context).textTheme.labelMedium,
+              //現在のテーマソングを表示するかしないかで分岐する
+              Visibility(
+                visible: widget.isVisibleCurrentMusicInfo,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      currentThemeSongLabel,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    //TODO ここは変更する必要があるかも
+                    Text(
+                      _profileViewModel.themeMusicName != ''
+                          ? '${_profileViewModel.themeMusicName} / ${_profileViewModel.themeMusicArtistName}'
+                          : askToSelectMusicText,
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            color: AppColorTheme.color().gray1,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -136,7 +167,7 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
                             Fluttertoast.showToast(
                                 msg: askToEnterTrackOrArtistToastText);
                           } else {
-                            _profileViewModel.searchTracks(
+                            _spotifyViewModel.searchTracks(
                               searchTrackName: _trackNameController.text,
                               searchArtistName: _artistNameController.text,
                             );
@@ -180,25 +211,20 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
                           color: Color.fromARGB(60, 0, 0, 0)),
                     ]),
                 //楽曲の表示
-                child: _profileViewModel.spotifySearchTracks.isEmpty
+                //TODO この中身のproviderViewModelはspotifyViewModelに移行する
+                child: _spotifyViewModel.spotifySearchTracks.isEmpty
                     ? const Center(
                         child: Text(askToSearchByTrackAndArtistText),
                       )
                     : ListView.builder(
-                        itemCount: _profileViewModel.spotifySearchTracks.length,
+                        itemCount: _spotifyViewModel.spotifySearchTracks.length,
                         itemBuilder: (context, index) {
                           final spotifySearchTrack =
-                              _profileViewModel.spotifySearchTracks[index];
+                              _spotifyViewModel.spotifySearchTracks[index];
                           //楽曲一つ一つの表示ListTile
                           return ListTile(
-                            //TODO ここの機能を変更する
-                            //タップしたら、タップした楽曲の情報が次の投稿メッセージ作成画面に行くように変更したい
-                            onTap: () async {
-                              toPostAddMsgPage(
-                                  context: context,
-                                  selectedTrack: spotifySearchTrack);
-                            },
-                            //ジャケ写
+                            //TODO ここの処理を渡してもらうようにする
+                            onTap: () async => widget.onTap(spotifySearchTrack),
                             leading: ExtendedImage.network(
                               spotifySearchTrack.trackImg,
                               width: 56,
@@ -216,14 +242,6 @@ class _PostCreatePageState extends ConsumerState<PostCreatePage> {
                         },
                       ),
               ),
-              // const SizedBox(height: 48),
-              // //TODO アクセストークンを取得するためのボタン、リリース段階では削除する
-              // DeepGrayButton(
-              //   onPressed: () async {
-              //     await _profileViewModel.fetchSpotifyAccessToken();
-              //   },
-              //   text: 'アクセストークン取得',
-              // ),
             ],
           ),
         ),

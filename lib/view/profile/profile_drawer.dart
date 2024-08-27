@@ -47,8 +47,6 @@ class ProfileDrawer extends ConsumerWidget {
                           //getAllUserBaseProfilesメソッドで取得して、.firstメソッドで入れる
                           //or Streamでやる
                           //or 最初に取ってきたデータベースを捨てるか
-                          Navigator.pop(context);
-                          Navigator.pop(context);
                           toAuthPage(context: context);
                           await authViewModel.signOut();
                           // await profileViewModel.appDatabase!
@@ -57,8 +55,8 @@ class ProfileDrawer extends ConsumerWidget {
                           profileViewModel.resetUserProfileProvider();
                           postViewModel.resetPostProvider();
                           postViewModel.resetPostsProvider();
-                          database.deleteLocalUserProfile();
-                          database.deleteAllLocalUserPosts();
+                          await database.deleteLocalUserProfile();
+                          await database.deleteAllLocalUserPosts();
                         },
                         child: const Text(signOutBtnText),
                       ),

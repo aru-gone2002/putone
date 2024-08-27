@@ -74,24 +74,24 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   //----ユーザーのプロフィール情報----
-  /// ローカルDBから全てのLocalUserProfileをストリームとして取得する。
-  /// LocalUserProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
+  // ローカルDBから全てのLocalUserProfileをストリームとして取得する。
+  // LocalUserProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
   Stream<List<LocalUserProfile>> watchAllLocalUserProfiles() {
     return (select(localUserProfiles)).watch();
   }
 
-  /// ローカルDBから全てのLocalUserProfileを一度だけ取得する。
-  Future<List<LocalUserProfile>> getAllLocalUserProfiles() {
+  // ローカルDBから全てのLocalUserProfileを一度だけ取得する。
+  Future<List<LocalUserProfile>> getLocalUserProfiles() {
     return (select(localUserProfiles)).get();
   }
 
-  /// 新しいLocalUserProfileをローカルDBに挿入する。
+  // 新しいLocalUserProfileをローカルDBに挿入する。
   Future insertLocalUserProfile(UserProfile userProfile) {
     return into(localUserProfiles)
         .insert(changeUserProfileToLocalUserProfile(userProfile));
   }
 
-  /// LocalUserProfilesを更新する。
+  // LocalUserProfilesを更新する。
   Future updateLocalUserProfile(UserProfile userProfile) {
     return (update(localUserProfiles)
           ..where(
@@ -100,17 +100,73 @@ class AppDatabase extends _$AppDatabase {
         .write(
       changeUserProfileToLocalUserProfile(userProfile),
     );
-    // return (update(localUserProfiles)).replace(
-    //   changeUserProfileToLocalUserProfile(userProfile),
-    // );
   }
 
-  /// ローカルDBからLocalUserProfileを削除する。
+  // ローカルDBからLocalUserProfileを削除する。
   Future deleteLocalUserProfile() {
     return delete(localUserProfiles).go();
   }
 
-  ///UserProfileをLocalUserProfilesCompanionに変換する
+  Future updateLocalUserName(
+      {required String uid, required String newUserName}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        userName: Value(newUserName),
+      ),
+    );
+  }
+
+  Future updateLocalUserId({required String uid, required String newUserId}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        userId: Value(newUserId),
+      ),
+    );
+  }
+
+  Future updateLocalThemeMusicInfo({
+    required String uid,
+    required String newThemeMusicArtistName,
+    required String newThemeMusicName,
+    required String newThemeMusicImg,
+    required String newThemeMusicSpotifyUrl,
+    required String newThemeMusicPreviewUrl,
+  }) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        themeMusicArtistName: Value(newThemeMusicArtistName),
+        themeMusicName: Value(newThemeMusicName),
+        themeMusicImg: Value(newThemeMusicImg),
+        themeMusicSpotifyUrl: Value(newThemeMusicSpotifyUrl),
+        themeMusicPreviewUrl: Value(newThemeMusicPreviewUrl),
+      ),
+    );
+  }
+
+  Future updateLocalCommunityId(
+      {required String uid, required String newCommunityId}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        communityId: Value(newCommunityId),
+      ),
+    );
+  }
+
+  Future updateLocalUserProfileMsg(
+      {required String uid, required String newUserProfileMsg}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        userProfileMsg: Value(newUserProfileMsg),
+      ),
+    );
+  }
+
+  //UserProfileをLocalUserProfilesCompanionに変換する
   LocalUserProfilesCompanion changeUserProfileToLocalUserProfile(
       UserProfile userProfile) {
     return LocalUserProfilesCompanion(
@@ -132,34 +188,34 @@ class AppDatabase extends _$AppDatabase {
   }
 
   //----ユーザーの投稿----
-  /// ローカルDBから全てのLocalUserProfileをストリームとして取得する。
-  /// LocalUserProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
+  // ローカルDBから全てのLocalUserProfileをストリームとして取得する。
+  // LocalUserProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
   Stream<List<LocalUserPost>> watchAllLocalUserPosts() {
     return (select(localUserPosts)).watch();
   }
 
-  /// ローカルDBから全てのLocalUserPostを一度だけ取得する。
+  // ローカルDBから全てのLocalUserPostを一度だけ取得する。
   Future<List<LocalUserPost>> getAllLocalUserPosts() {
     return (select(localUserPosts)).get();
   }
 
-  /// 新しいLocalUserPostをローカルDBに挿入する。
+  // 新しいLocalUserPostをローカルDBに挿入する。
   Future insertLocalUserPost(Post post) {
     return into(localUserPosts).insert(changePostToLocalUserPost(post));
   }
 
-  /// ローカルDBから任意のLocalUserProfileを削除する。
+  // ローカルDBから任意のLocalUserProfileを削除する。
   Future deleteSpecificLocalUserPost(Post post) {
     return (delete(localUserPosts)..where((p) => p.postId.equals(post.postId)))
         .go();
   }
 
-  /// ローカルDBから全てのLocalUserProfileを削除する。
+  // ローカルDBから全てのLocalUserProfileを削除する。
   Future deleteAllLocalUserPosts() {
     return delete(localUserPosts).go();
   }
 
-  /// PostをLocalUserPostsCompanionに変換する
+  // PostをLocalUserPostsCompanionに変換する
   LocalUserPostsCompanion changePostToLocalUserPost(Post post) {
     return LocalUserPostsCompanion(
       uid: Value(post.uid),

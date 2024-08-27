@@ -7,7 +7,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
-import 'package:putone/view/profile_page/profile_page.dart';
+import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
@@ -74,7 +74,7 @@ class PuTone extends ConsumerWidget {
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                   //ローカルDBからUserProfileデータを取得
                   final localUserProfiles =
-                      await database.getAllLocalUserProfiles();
+                      await database.getLocalUserProfiles();
                   print('ローカルDBからUserProfileデータを取得');
                   final userBaseProfile = localUserProfiles.first;
                   print('firstを実行');
@@ -102,7 +102,6 @@ class PuTone extends ConsumerWidget {
               }
             }
           }
-
           //何もない時に表示される。
           WidgetsBinding.instance.addPostFrameCallback((_) {
             localDatabaseViewModel.saveAppDatabase(database);
