@@ -237,4 +237,12 @@ class ProfileViewModel {
     await _profileModel.deleteUserFromCommunity(
         uid: uid, communityId: communityId);
   }
+
+  Future<void> updateFirestoreUserProfileMsg(
+      {required String uid, required String newUserProfileMsg}) async {
+    await _profileModel.updateFirestoreUserProfileMsg(
+      uid: uid,
+      newUserProfileMsg: newUserProfileMsg,
+    );
+  }
 }

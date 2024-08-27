@@ -156,6 +156,16 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
+  Future updateLocalUserProfileMsg(
+      {required String uid, required String newUserProfileMsg}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        userProfileMsg: Value(newUserProfileMsg),
+      ),
+    );
+  }
+
   //UserProfileをLocalUserProfilesCompanionに変換する
   LocalUserProfilesCompanion changeUserProfileToLocalUserProfile(
       UserProfile userProfile) {

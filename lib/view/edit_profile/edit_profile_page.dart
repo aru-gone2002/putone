@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
@@ -126,7 +127,27 @@ class EditProfilePage extends StatelessWidget {
       );
     }
 
+    Future<void> editUserProfileMsgFunction(
+        GlobalObjectKey<FormState> formKey, BuildContext context) async {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        //ローカルDBのプロフィール文を変更する
+        await localDatabaseViewModel.appDatabase!.updateLocalUserProfileMsg(
+          uid: profileViewModel.uid,
+          newUserProfileMsg: profileViewModel.userProfileMsg,
+        );
+        //Firestoreのプロフィール文を変更する
+        await profileViewModel.updateFirestoreUserProfileMsg(
+          uid: profileViewModel.uid,
+          newUserProfileMsg: profileViewModel.userProfileMsg,
+        );
+        await Fluttertoast.showToast(msg: changeProfileMsgToastText);
+        if (context.mounted) Navigator.pop(context);
+      }
+    }
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           editProfileAppbarTitle,
@@ -278,13 +299,20 @@ class EditProfilePage extends StatelessWidget {
             Consumer(
               builder: (context, ref, child) {
                 profileViewModel.setRef(ref);
+                localDatabaseViewModel.setRef(ref);
                 return TitleAndTextButton(
                     inputDataLabel: profileTitle,
                     beforeInputText: tapForSettingBtnText,
                     afterInputText: profileViewModel.userProfileMsg,
 
-                    //TODO プロフィール文編集ページに飛ばす
-                    onTap: () => toProfileMsgSettingPage(context: context),
+                    //プロフィール文編集ページに飛ばす
+                    onTap: () => toWriteProfileMsgPage(
+                          context: context,
+                          appBarTitle: editProfileMsgAppbarTitle,
+                          showCurrentProfileMsg: true,
+                          onPressed: editUserProfileMsgFunction,
+                          labelText: afterChangedProfileMsgLabel,
+                        ),
                     separateCondition: profileViewModel.userProfileMsg != '');
               },
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
 
 String? emailValidator(String? value) {
@@ -46,6 +47,16 @@ String? userNameValidator(String? value) {
   }
   if (!RegExp(r'^.{1,16}').hasMatch(value)) {
     return inputUserIdIsNotValidText;
+  }
+  return null;
+}
+
+String? profileMsgValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return notInputTextValidator;
+  }
+  if (value.length > maxProfileTextLength) {
+    return askTextLengthLessThanOrEqual80Validator;
   }
   return null;
 }

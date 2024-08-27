@@ -12,7 +12,7 @@ import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/module_page/select_community_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
 import 'package:putone/view/auth/signin_page.dart';
-import 'package:putone/view/profile_setting/profile_msg_setting_page.dart';
+import 'package:putone/view/module_page/write_profile_msg_page.dart';
 import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
 import 'package:putone/view/module_page/select_song_page.dart';
@@ -73,10 +73,24 @@ void toSelectSongPage({
       ),
     );
 
-void toProfileMsgSettingPage({required BuildContext context}) => Navigator.push(
+void toWriteProfileMsgPage({
+  required BuildContext context,
+  required String appBarTitle,
+  required bool showCurrentProfileMsg,
+  required void Function(
+          GlobalObjectKey<FormState> formKey, BuildContext context)?
+      onPressed,
+  required String labelText,
+}) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: ((context) => const ProfileMsgSettingPage()),
+        builder: ((context) => WriteProfileMsgPage(
+              appBarTitle: appBarTitle,
+              showCurrentProfileMsg: showCurrentProfileMsg,
+              onPressed: onPressed,
+              labelText: labelText,
+            )),
       ),
     );
 

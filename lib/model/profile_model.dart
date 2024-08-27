@@ -157,7 +157,6 @@ class ProfileModel {
     }
   }
 
-  //
   Future<void> deleteUserFromCommunity(
       {required String uid, required String communityId}) async {
     await firestore
@@ -166,5 +165,19 @@ class ProfileModel {
         .collection('users')
         .doc(uid)
         .delete();
+  }
+
+  Future<void> updateFirestoreUserProfileMsg({
+    required String uid,
+    required String newUserProfileMsg,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'userProfileMsg': newUserProfileMsg});
+    } catch (e) {
+      print('Error update userProfileMsg in Firestore: $e');
+    }
   }
 }

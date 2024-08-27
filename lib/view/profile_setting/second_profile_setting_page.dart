@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
@@ -82,6 +83,15 @@ class SecondProfileSettingPage extends StatelessWidget {
           );
         },
       );
+    }
+
+    Future<void> setUserProfileMsgFunction(
+        GlobalObjectKey<FormState> formKey, BuildContext context) async {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        await Fluttertoast.showToast(msg: saveProfileMsgToastText);
+        if (context.mounted) Navigator.pop(context);
+      }
     }
 
     return Scaffold(
@@ -207,8 +217,13 @@ class SecondProfileSettingPage extends StatelessWidget {
                           afterInputText: profileViewModel.userProfileMsg,
 
                           //プロフィール文設定ページに飛ばす
-                          onTap: () =>
-                              toProfileMsgSettingPage(context: context),
+                          onTap: () => toWriteProfileMsgPage(
+                                context: context,
+                                appBarTitle: setProfileMsgPageAppbarTitle,
+                                showCurrentProfileMsg: false,
+                                onPressed: setUserProfileMsgFunction,
+                                labelText: profileMsgLabel,
+                              ),
                           separateCondition:
                               profileViewModel.userProfileMsg != '');
                     },
