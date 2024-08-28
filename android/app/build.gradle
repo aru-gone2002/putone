@@ -15,15 +15,8 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode', '1')
+def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0')
 
 android {
     namespace "com.example.putone"
@@ -68,4 +61,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}
+
