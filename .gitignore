@@ -45,3 +45,8 @@ app.*.map.json
 
 # flutter_dotenv
 .env
+
+# FVM Version Cache
+.fvm/
+.fvmrc
+.vscode/
