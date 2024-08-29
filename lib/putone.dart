@@ -54,7 +54,7 @@ class PuTone extends ConsumerWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      //home: AdminPage(),
+      //home: AdminPage(database: database),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
