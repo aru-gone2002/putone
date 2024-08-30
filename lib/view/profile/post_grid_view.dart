@@ -4,6 +4,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/view/item/post_grid_item.dart';
+import 'package:putone/view/module_page/post_detail_page.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class PostGridView extends ConsumerWidget {
@@ -20,6 +21,12 @@ class PostGridView extends ConsumerWidget {
 
     final PostViewModel postViewModel = PostViewModel();
     postViewModel.setRef(ref);
+
+    void onPostTap(LocalUserPost post) {
+      // 新しいviewへの遷移処理
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => PostDetailView(post: post)));
+    }
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -45,6 +52,7 @@ class PostGridView extends ConsumerWidget {
           return PostGridItem(
             //userPost: postViewModel.posts[index],
             localUserPost: localUserPost,
+            onTap: () => onPostTap(localUserPost),
           );
         },
       ),
