@@ -11,6 +11,7 @@ _$PostLikeImpl _$$PostLikeImplFromJson(Map<String, dynamic> json) =>
       uid: json['uid'] as String,
       postId: json['postId'] as String,
       userImg: json['userImg'] as String,
+      userName: json['userName'] as String,
     );
 
 Map<String, dynamic> _$$PostLikeImplToJson(_$PostLikeImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$PostLikeImplToJson(_$PostLikeImpl instance) =>
       'uid': instance.uid,
       'postId': instance.postId,
       'userImg': instance.userImg,
+      'userName': instance.userName,
     };

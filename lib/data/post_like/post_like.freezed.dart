@@ -23,6 +23,7 @@ mixin _$PostLike {
   String get uid => throw _privateConstructorUsedError;
   String get postId => throw _privateConstructorUsedError;
   String get userImg => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
 
   /// Serializes this PostLike to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $PostLikeCopyWith<$Res> {
   factory $PostLikeCopyWith(PostLike value, $Res Function(PostLike) then) =
       _$PostLikeCopyWithImpl<$Res, PostLike>;
   @useResult
-  $Res call({String uid, String postId, String userImg});
+  $Res call({String uid, String postId, String userImg, String userName});
 }
 
 /// @nodoc
@@ -60,6 +61,7 @@ class _$PostLikeCopyWithImpl<$Res, $Val extends PostLike>
     Object? uid = null,
     Object? postId = null,
     Object? userImg = null,
+    Object? userName = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -74,6 +76,10 @@ class _$PostLikeCopyWithImpl<$Res, $Val extends PostLike>
           ? _value.userImg
           : userImg // ignore: cast_nullable_to_non_nullable
               as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -86,7 +92,7 @@ abstract class _$$PostLikeImplCopyWith<$Res>
       __$$PostLikeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String postId, String userImg});
+  $Res call({String uid, String postId, String userImg, String userName});
 }
 
 /// @nodoc
@@ -105,6 +111,7 @@ class __$$PostLikeImplCopyWithImpl<$Res>
     Object? uid = null,
     Object? postId = null,
     Object? userImg = null,
+    Object? userName = null,
   }) {
     return _then(_$PostLikeImpl(
       uid: null == uid
@@ -119,6 +126,10 @@ class __$$PostLikeImplCopyWithImpl<$Res>
           ? _value.userImg
           : userImg // ignore: cast_nullable_to_non_nullable
               as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -127,7 +138,10 @@ class __$$PostLikeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PostLikeImpl with DiagnosticableTreeMixin implements _PostLike {
   const _$PostLikeImpl(
-      {required this.uid, required this.postId, required this.userImg});
+      {required this.uid,
+      required this.postId,
+      required this.userImg,
+      required this.userName});
 
   factory _$PostLikeImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostLikeImplFromJson(json);
@@ -138,10 +152,12 @@ class _$PostLikeImpl with DiagnosticableTreeMixin implements _PostLike {
   final String postId;
   @override
   final String userImg;
+  @override
+  final String userName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostLike(uid: $uid, postId: $postId, userImg: $userImg)';
+    return 'PostLike(uid: $uid, postId: $postId, userImg: $userImg, userName: $userName)';
   }
 
   @override
@@ -151,7 +167,8 @@ class _$PostLikeImpl with DiagnosticableTreeMixin implements _PostLike {
       ..add(DiagnosticsProperty('type', 'PostLike'))
       ..add(DiagnosticsProperty('uid', uid))
       ..add(DiagnosticsProperty('postId', postId))
-      ..add(DiagnosticsProperty('userImg', userImg));
+      ..add(DiagnosticsProperty('userImg', userImg))
+      ..add(DiagnosticsProperty('userName', userName));
   }
 
   @override
@@ -161,12 +178,14 @@ class _$PostLikeImpl with DiagnosticableTreeMixin implements _PostLike {
             other is _$PostLikeImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.postId, postId) || other.postId == postId) &&
-            (identical(other.userImg, userImg) || other.userImg == userImg));
+            (identical(other.userImg, userImg) || other.userImg == userImg) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, postId, userImg);
+  int get hashCode => Object.hash(runtimeType, uid, postId, userImg, userName);
 
   /// Create a copy of PostLike
   /// with the given fields replaced by the non-null parameter values.
@@ -188,7 +207,8 @@ abstract class _PostLike implements PostLike {
   const factory _PostLike(
       {required final String uid,
       required final String postId,
-      required final String userImg}) = _$PostLikeImpl;
+      required final String userImg,
+      required final String userName}) = _$PostLikeImpl;
 
   factory _PostLike.fromJson(Map<String, dynamic> json) =
       _$PostLikeImpl.fromJson;
@@ -199,6 +219,8 @@ abstract class _PostLike implements PostLike {
   String get postId;
   @override
   String get userImg;
+  @override
+  String get userName;
 
   /// Create a copy of PostLike
   /// with the given fields replaced by the non-null parameter values.

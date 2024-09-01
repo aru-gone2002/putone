@@ -11,6 +11,7 @@ class PostLike with _$PostLike {
     required String uid,
     required String postId,
     required String userImg,
+    required String userName,
   }) = _PostLike;
   factory PostLike.fromJson(Map<String, dynamic> json) =>
       _$PostLikeFromJson(json);

@@ -9,6 +9,7 @@ final postLikeProvider = StateProvider<PostLike>(
     uid: '',
     postId: '',
     userImg: '',
+    userName: '',
   ),
 );
 

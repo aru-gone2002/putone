@@ -7,8 +7,8 @@ class PostLikeModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // 投稿に対していいねを追加/既にいいねしている場合は削除
-  Future<void> updateLike(
-      String postId, String posterUid, String senderUid, String userImg) async {
+  Future<void> updateLike(String postId, String posterUid, String senderUid,
+      String userImg, String userName) async {
     final postLikeRef = _firestore
         .collection('users')
         .doc(posterUid)
@@ -16,7 +16,8 @@ class PostLikeModel {
         .doc(postId)
         .collection('post_like');
     final likeMap = {
-      'uid': senderUid,
+      'uid': userName,
+      'userName': userName,
       'userImg': userImg,
       'postId': postId,
     };
@@ -45,6 +46,7 @@ class PostLikeModel {
           uid: doc['uid'],
           userImg: doc['userImg'],
           postId: doc['postId'],
+          userName: doc['userName'],
         );
       }).toList();
     });
