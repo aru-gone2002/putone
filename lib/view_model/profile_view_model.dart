@@ -218,6 +218,13 @@ class ProfileViewModel {
     );
   }
 
+  Future<void> updateFirestoreUserImg({required String newUserImg}) async {
+    await _profileModel.updateFirestoreUserImg(
+      uid: uid,
+      newUserImg: newUserImg,
+    );
+  }
+
   Future<void> updateFirestoreThemeMusicInfo(
       {required SpotifyTrack spotifyTrack}) async {
     await _profileModel.updateFirestoreThemeMusicInfo(
