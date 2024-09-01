@@ -90,7 +90,7 @@ class SpotifyModel {
       final List<dynamic> tracks = trackData['tracks']['items'];
 
       for (int i = 0; i < tracks.length; i++) {
-        final String trackImg = tracks[i]['album']['images'][2]['url'];
+        final String trackImg = tracks[i]['album']['images'][1]['url'];
         final String artistName = tracks[i]['artists'][0]['name'];
         final String trackName = tracks[i]['name'];
         final String trackExternalUrl = tracks[i]['external_urls']['spotify'];

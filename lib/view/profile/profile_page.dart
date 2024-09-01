@@ -228,7 +228,7 @@ class ProfilePage extends ConsumerWidget {
                                 child: SizedBox(
                                   width: sideProfileWidth,
                                   child: Text(
-                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]?.communityName ?? '未設定'}',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style:
