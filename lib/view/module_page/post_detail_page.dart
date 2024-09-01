@@ -12,13 +12,16 @@ class PostDetailView extends StatefulWidget {
   State<PostDetailView> createState() => _PostDetailViewState();
 }
 
-class _PostDetailViewState extends State<PostDetailView> {
+class _PostDetailViewState extends State<PostDetailView>
+    with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
+    // 画面が開かれたら自動で再生し、画面が閉じられたら自動で停止するため
+    WidgetsBinding.instance.addObserver(this);
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
   }
@@ -51,15 +54,30 @@ class _PostDetailViewState extends State<PostDetailView> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // アプリのライフサイクルの変化に応じた処理を追加
+    if (state == AppLifecycleState.paused) {
+      // アプリがバックグラウンドに移動したとき
+      _audioPlayer.pause();
+      setState(() {
+        _isPlaying = false;
+      });
+    } else if (state == AppLifecycleState.resumed) {
+      _audioPlayer.play();
+      setState(() {
+        _isPlaying = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext contest) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Post Detail'),
-        // ),
         body: GestureDetector(
             onTap: _togglePlayPause,
             child: Stack(
