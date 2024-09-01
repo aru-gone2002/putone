@@ -53,6 +53,12 @@ service cloud.firestore {
           match /posts/{postId} {
             allow read: if isAuthenticated();
             allow create, delete: if isUserAuthenticated(uid);
+
+            match /postlikes/{uid} {
+              allow read: if isAuthenticated();
+              allow create: if isUserAuthenticated(uid);
+              allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+            }
           }
       }
 
