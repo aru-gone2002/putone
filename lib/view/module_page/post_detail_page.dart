@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:putone/local_database.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:putone/model/post_like_model.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 
 class PostDetailView extends StatefulWidget {
@@ -16,6 +17,9 @@ class _PostDetailViewState extends State<PostDetailView>
     with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
+  final PostLikeModel _postLikeModel = PostLikeModel();
+  bool _isLiked = false;
+  int _likeCount = 0;
 
   @override
   void initState() {
@@ -38,6 +42,13 @@ class _PostDetailViewState extends State<PostDetailView>
     } catch (e) {
       print("Error initializing audio player: $e");
     }
+  }
+
+  Future<void> _initLikeStatus() async {
+    final likeStatus = await _postLikeModel.getLikeStatus(widget.post.postId);
+    setState(() {
+      _isLiked = likeStatus;
+    });
   }
 
   void _togglePlayPause() {

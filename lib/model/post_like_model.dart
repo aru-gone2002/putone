@@ -62,4 +62,16 @@ class PostLikeModel {
       return snapshot.docs.length;
     });
   }
+
+  // 投稿に対して自分がいいねしているかどうかを取得
+  Stream<bool> hasUserLiked(String postId, String posterUid, String userId) {
+    final postLikeRef = _firestore
+        .collection('users')
+        .doc(posterUid)
+        .collection('posts')
+        .doc(postId)
+        .collection('post_like')
+        .doc(userId);
+    return postLikeRef.snapshots().map((snapshot) => snapshot.exists);
+  }
 }
