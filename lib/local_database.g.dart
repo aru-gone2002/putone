@@ -434,6 +434,44 @@ class LocalUserProfile extends DataClass
             userLastLoginTimestamp ?? this.userLastLoginTimestamp,
         communityId: communityId ?? this.communityId,
       );
+  LocalUserProfile copyWithCompanion(LocalUserProfilesCompanion data) {
+    return LocalUserProfile(
+      uid: data.uid.present ? data.uid.value : this.uid,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      userName: data.userName.present ? data.userName.value : this.userName,
+      userImg: data.userImg.present ? data.userImg.value : this.userImg,
+      themeMusicImg: data.themeMusicImg.present
+          ? data.themeMusicImg.value
+          : this.themeMusicImg,
+      themeMusicName: data.themeMusicName.present
+          ? data.themeMusicName.value
+          : this.themeMusicName,
+      themeMusicArtistName: data.themeMusicArtistName.present
+          ? data.themeMusicArtistName.value
+          : this.themeMusicArtistName,
+      themeMusicSpotifyUrl: data.themeMusicSpotifyUrl.present
+          ? data.themeMusicSpotifyUrl.value
+          : this.themeMusicSpotifyUrl,
+      themeMusicPreviewUrl: data.themeMusicPreviewUrl.present
+          ? data.themeMusicPreviewUrl.value
+          : this.themeMusicPreviewUrl,
+      userProfileMsg: data.userProfileMsg.present
+          ? data.userProfileMsg.value
+          : this.userProfileMsg,
+      userSpotifyConnected: data.userSpotifyConnected.present
+          ? data.userSpotifyConnected.value
+          : this.userSpotifyConnected,
+      userSignUpTimestamp: data.userSignUpTimestamp.present
+          ? data.userSignUpTimestamp.value
+          : this.userSignUpTimestamp,
+      userLastLoginTimestamp: data.userLastLoginTimestamp.present
+          ? data.userLastLoginTimestamp.value
+          : this.userLastLoginTimestamp,
+      communityId:
+          data.communityId.present ? data.communityId.value : this.communityId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('LocalUserProfile(')
@@ -878,6 +916,22 @@ class LocalUserFavoriteArtist extends DataClass
         userFavoriteArtistImg:
             userFavoriteArtistImg ?? this.userFavoriteArtistImg,
       );
+  LocalUserFavoriteArtist copyWithCompanion(
+      LocalUserFavoriteArtistsCompanion data) {
+    return LocalUserFavoriteArtist(
+      uid: data.uid.present ? data.uid.value : this.uid,
+      userFavoriteArtistId: data.userFavoriteArtistId.present
+          ? data.userFavoriteArtistId.value
+          : this.userFavoriteArtistId,
+      userFavoriteArtistName: data.userFavoriteArtistName.present
+          ? data.userFavoriteArtistName.value
+          : this.userFavoriteArtistName,
+      userFavoriteArtistImg: data.userFavoriteArtistImg.present
+          ? data.userFavoriteArtistImg.value
+          : this.userFavoriteArtistImg,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('LocalUserFavoriteArtist(')
@@ -1288,6 +1342,32 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
         postMusicSpotifyUrl: postMusicSpotifyUrl ?? this.postMusicSpotifyUrl,
         postMusicPreciewUrl: postMusicPreciewUrl ?? this.postMusicPreciewUrl,
       );
+  LocalUserPost copyWithCompanion(LocalUserPostsCompanion data) {
+    return LocalUserPost(
+      uid: data.uid.present ? data.uid.value : this.uid,
+      postId: data.postId.present ? data.postId.value : this.postId,
+      postMusicImg: data.postMusicImg.present
+          ? data.postMusicImg.value
+          : this.postMusicImg,
+      postMusicArtistName: data.postMusicArtistName.present
+          ? data.postMusicArtistName.value
+          : this.postMusicArtistName,
+      postMusicName: data.postMusicName.present
+          ? data.postMusicName.value
+          : this.postMusicName,
+      postMsg: data.postMsg.present ? data.postMsg.value : this.postMsg,
+      postTimestamp: data.postTimestamp.present
+          ? data.postTimestamp.value
+          : this.postTimestamp,
+      postMusicSpotifyUrl: data.postMusicSpotifyUrl.present
+          ? data.postMusicSpotifyUrl.value
+          : this.postMusicSpotifyUrl,
+      postMusicPreciewUrl: data.postMusicPreciewUrl.present
+          ? data.postMusicPreciewUrl.value
+          : this.postMusicPreciewUrl,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('LocalUserPost(')
@@ -1485,6 +1565,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $LocalUserProfilesTable localUserProfiles =
       $LocalUserProfilesTable(this);
   late final $LocalUserFavoriteArtistsTable localUserFavoriteArtists =
@@ -1496,4 +1577,598 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [localUserProfiles, localUserFavoriteArtists, localUserPosts];
+}
+
+typedef $$LocalUserProfilesTableCreateCompanionBuilder
+    = LocalUserProfilesCompanion Function({
+  required String uid,
+  required String userId,
+  required String userName,
+  Value<String> userImg,
+  Value<String> themeMusicImg,
+  Value<String> themeMusicName,
+  Value<String> themeMusicArtistName,
+  Value<String> themeMusicSpotifyUrl,
+  Value<String?> themeMusicPreviewUrl,
+  Value<String> userProfileMsg,
+  Value<bool> userSpotifyConnected,
+  required DateTime userSignUpTimestamp,
+  required DateTime userLastLoginTimestamp,
+  Value<String> communityId,
+  Value<int> rowid,
+});
+typedef $$LocalUserProfilesTableUpdateCompanionBuilder
+    = LocalUserProfilesCompanion Function({
+  Value<String> uid,
+  Value<String> userId,
+  Value<String> userName,
+  Value<String> userImg,
+  Value<String> themeMusicImg,
+  Value<String> themeMusicName,
+  Value<String> themeMusicArtistName,
+  Value<String> themeMusicSpotifyUrl,
+  Value<String?> themeMusicPreviewUrl,
+  Value<String> userProfileMsg,
+  Value<bool> userSpotifyConnected,
+  Value<DateTime> userSignUpTimestamp,
+  Value<DateTime> userLastLoginTimestamp,
+  Value<String> communityId,
+  Value<int> rowid,
+});
+
+class $$LocalUserProfilesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $LocalUserProfilesTable,
+    LocalUserProfile,
+    $$LocalUserProfilesTableFilterComposer,
+    $$LocalUserProfilesTableOrderingComposer,
+    $$LocalUserProfilesTableCreateCompanionBuilder,
+    $$LocalUserProfilesTableUpdateCompanionBuilder> {
+  $$LocalUserProfilesTableTableManager(
+      _$AppDatabase db, $LocalUserProfilesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocalUserProfilesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$LocalUserProfilesTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uid = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String> userName = const Value.absent(),
+            Value<String> userImg = const Value.absent(),
+            Value<String> themeMusicImg = const Value.absent(),
+            Value<String> themeMusicName = const Value.absent(),
+            Value<String> themeMusicArtistName = const Value.absent(),
+            Value<String> themeMusicSpotifyUrl = const Value.absent(),
+            Value<String?> themeMusicPreviewUrl = const Value.absent(),
+            Value<String> userProfileMsg = const Value.absent(),
+            Value<bool> userSpotifyConnected = const Value.absent(),
+            Value<DateTime> userSignUpTimestamp = const Value.absent(),
+            Value<DateTime> userLastLoginTimestamp = const Value.absent(),
+            Value<String> communityId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserProfilesCompanion(
+            uid: uid,
+            userId: userId,
+            userName: userName,
+            userImg: userImg,
+            themeMusicImg: themeMusicImg,
+            themeMusicName: themeMusicName,
+            themeMusicArtistName: themeMusicArtistName,
+            themeMusicSpotifyUrl: themeMusicSpotifyUrl,
+            themeMusicPreviewUrl: themeMusicPreviewUrl,
+            userProfileMsg: userProfileMsg,
+            userSpotifyConnected: userSpotifyConnected,
+            userSignUpTimestamp: userSignUpTimestamp,
+            userLastLoginTimestamp: userLastLoginTimestamp,
+            communityId: communityId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uid,
+            required String userId,
+            required String userName,
+            Value<String> userImg = const Value.absent(),
+            Value<String> themeMusicImg = const Value.absent(),
+            Value<String> themeMusicName = const Value.absent(),
+            Value<String> themeMusicArtistName = const Value.absent(),
+            Value<String> themeMusicSpotifyUrl = const Value.absent(),
+            Value<String?> themeMusicPreviewUrl = const Value.absent(),
+            Value<String> userProfileMsg = const Value.absent(),
+            Value<bool> userSpotifyConnected = const Value.absent(),
+            required DateTime userSignUpTimestamp,
+            required DateTime userLastLoginTimestamp,
+            Value<String> communityId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserProfilesCompanion.insert(
+            uid: uid,
+            userId: userId,
+            userName: userName,
+            userImg: userImg,
+            themeMusicImg: themeMusicImg,
+            themeMusicName: themeMusicName,
+            themeMusicArtistName: themeMusicArtistName,
+            themeMusicSpotifyUrl: themeMusicSpotifyUrl,
+            themeMusicPreviewUrl: themeMusicPreviewUrl,
+            userProfileMsg: userProfileMsg,
+            userSpotifyConnected: userSpotifyConnected,
+            userSignUpTimestamp: userSignUpTimestamp,
+            userLastLoginTimestamp: userLastLoginTimestamp,
+            communityId: communityId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$LocalUserProfilesTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $LocalUserProfilesTable> {
+  $$LocalUserProfilesTableFilterComposer(super.$state);
+  ColumnFilters<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userId => $state.composableBuilder(
+      column: $state.table.userId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userName => $state.composableBuilder(
+      column: $state.table.userName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userImg => $state.composableBuilder(
+      column: $state.table.userImg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get themeMusicImg => $state.composableBuilder(
+      column: $state.table.themeMusicImg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get themeMusicName => $state.composableBuilder(
+      column: $state.table.themeMusicName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get themeMusicArtistName => $state.composableBuilder(
+      column: $state.table.themeMusicArtistName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get themeMusicSpotifyUrl => $state.composableBuilder(
+      column: $state.table.themeMusicSpotifyUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get themeMusicPreviewUrl => $state.composableBuilder(
+      column: $state.table.themeMusicPreviewUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userProfileMsg => $state.composableBuilder(
+      column: $state.table.userProfileMsg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get userSpotifyConnected => $state.composableBuilder(
+      column: $state.table.userSpotifyConnected,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get userSignUpTimestamp => $state.composableBuilder(
+      column: $state.table.userSignUpTimestamp,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get userLastLoginTimestamp =>
+      $state.composableBuilder(
+          column: $state.table.userLastLoginTimestamp,
+          builder: (column, joinBuilders) =>
+              ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get communityId => $state.composableBuilder(
+      column: $state.table.communityId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$LocalUserProfilesTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $LocalUserProfilesTable> {
+  $$LocalUserProfilesTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userId => $state.composableBuilder(
+      column: $state.table.userId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userName => $state.composableBuilder(
+      column: $state.table.userName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userImg => $state.composableBuilder(
+      column: $state.table.userImg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get themeMusicImg => $state.composableBuilder(
+      column: $state.table.themeMusicImg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get themeMusicName => $state.composableBuilder(
+      column: $state.table.themeMusicName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get themeMusicArtistName => $state.composableBuilder(
+      column: $state.table.themeMusicArtistName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get themeMusicSpotifyUrl => $state.composableBuilder(
+      column: $state.table.themeMusicSpotifyUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get themeMusicPreviewUrl => $state.composableBuilder(
+      column: $state.table.themeMusicPreviewUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userProfileMsg => $state.composableBuilder(
+      column: $state.table.userProfileMsg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get userSpotifyConnected => $state.composableBuilder(
+      column: $state.table.userSpotifyConnected,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get userSignUpTimestamp => $state.composableBuilder(
+      column: $state.table.userSignUpTimestamp,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get userLastLoginTimestamp =>
+      $state.composableBuilder(
+          column: $state.table.userLastLoginTimestamp,
+          builder: (column, joinBuilders) =>
+              ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get communityId => $state.composableBuilder(
+      column: $state.table.communityId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$LocalUserFavoriteArtistsTableCreateCompanionBuilder
+    = LocalUserFavoriteArtistsCompanion Function({
+  required String uid,
+  required String userFavoriteArtistId,
+  required String userFavoriteArtistName,
+  required String userFavoriteArtistImg,
+  Value<int> rowid,
+});
+typedef $$LocalUserFavoriteArtistsTableUpdateCompanionBuilder
+    = LocalUserFavoriteArtistsCompanion Function({
+  Value<String> uid,
+  Value<String> userFavoriteArtistId,
+  Value<String> userFavoriteArtistName,
+  Value<String> userFavoriteArtistImg,
+  Value<int> rowid,
+});
+
+class $$LocalUserFavoriteArtistsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $LocalUserFavoriteArtistsTable,
+    LocalUserFavoriteArtist,
+    $$LocalUserFavoriteArtistsTableFilterComposer,
+    $$LocalUserFavoriteArtistsTableOrderingComposer,
+    $$LocalUserFavoriteArtistsTableCreateCompanionBuilder,
+    $$LocalUserFavoriteArtistsTableUpdateCompanionBuilder> {
+  $$LocalUserFavoriteArtistsTableTableManager(
+      _$AppDatabase db, $LocalUserFavoriteArtistsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$LocalUserFavoriteArtistsTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$LocalUserFavoriteArtistsTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uid = const Value.absent(),
+            Value<String> userFavoriteArtistId = const Value.absent(),
+            Value<String> userFavoriteArtistName = const Value.absent(),
+            Value<String> userFavoriteArtistImg = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserFavoriteArtistsCompanion(
+            uid: uid,
+            userFavoriteArtistId: userFavoriteArtistId,
+            userFavoriteArtistName: userFavoriteArtistName,
+            userFavoriteArtistImg: userFavoriteArtistImg,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uid,
+            required String userFavoriteArtistId,
+            required String userFavoriteArtistName,
+            required String userFavoriteArtistImg,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserFavoriteArtistsCompanion.insert(
+            uid: uid,
+            userFavoriteArtistId: userFavoriteArtistId,
+            userFavoriteArtistName: userFavoriteArtistName,
+            userFavoriteArtistImg: userFavoriteArtistImg,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$LocalUserFavoriteArtistsTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $LocalUserFavoriteArtistsTable> {
+  $$LocalUserFavoriteArtistsTableFilterComposer(super.$state);
+  ColumnFilters<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userFavoriteArtistId => $state.composableBuilder(
+      column: $state.table.userFavoriteArtistId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userFavoriteArtistName => $state.composableBuilder(
+      column: $state.table.userFavoriteArtistName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userFavoriteArtistImg => $state.composableBuilder(
+      column: $state.table.userFavoriteArtistImg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$LocalUserFavoriteArtistsTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $LocalUserFavoriteArtistsTable> {
+  $$LocalUserFavoriteArtistsTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userFavoriteArtistId => $state.composableBuilder(
+      column: $state.table.userFavoriteArtistId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userFavoriteArtistName =>
+      $state.composableBuilder(
+          column: $state.table.userFavoriteArtistName,
+          builder: (column, joinBuilders) =>
+              ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userFavoriteArtistImg => $state.composableBuilder(
+      column: $state.table.userFavoriteArtistImg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$LocalUserPostsTableCreateCompanionBuilder = LocalUserPostsCompanion
+    Function({
+  required String uid,
+  required String postId,
+  required String postMusicImg,
+  required String postMusicArtistName,
+  required String postMusicName,
+  required String postMsg,
+  required DateTime postTimestamp,
+  required String postMusicSpotifyUrl,
+  Value<String> postMusicPreciewUrl,
+  Value<int> rowid,
+});
+typedef $$LocalUserPostsTableUpdateCompanionBuilder = LocalUserPostsCompanion
+    Function({
+  Value<String> uid,
+  Value<String> postId,
+  Value<String> postMusicImg,
+  Value<String> postMusicArtistName,
+  Value<String> postMusicName,
+  Value<String> postMsg,
+  Value<DateTime> postTimestamp,
+  Value<String> postMusicSpotifyUrl,
+  Value<String> postMusicPreciewUrl,
+  Value<int> rowid,
+});
+
+class $$LocalUserPostsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $LocalUserPostsTable,
+    LocalUserPost,
+    $$LocalUserPostsTableFilterComposer,
+    $$LocalUserPostsTableOrderingComposer,
+    $$LocalUserPostsTableCreateCompanionBuilder,
+    $$LocalUserPostsTableUpdateCompanionBuilder> {
+  $$LocalUserPostsTableTableManager(
+      _$AppDatabase db, $LocalUserPostsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocalUserPostsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LocalUserPostsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> uid = const Value.absent(),
+            Value<String> postId = const Value.absent(),
+            Value<String> postMusicImg = const Value.absent(),
+            Value<String> postMusicArtistName = const Value.absent(),
+            Value<String> postMusicName = const Value.absent(),
+            Value<String> postMsg = const Value.absent(),
+            Value<DateTime> postTimestamp = const Value.absent(),
+            Value<String> postMusicSpotifyUrl = const Value.absent(),
+            Value<String> postMusicPreciewUrl = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserPostsCompanion(
+            uid: uid,
+            postId: postId,
+            postMusicImg: postMusicImg,
+            postMusicArtistName: postMusicArtistName,
+            postMusicName: postMusicName,
+            postMsg: postMsg,
+            postTimestamp: postTimestamp,
+            postMusicSpotifyUrl: postMusicSpotifyUrl,
+            postMusicPreciewUrl: postMusicPreciewUrl,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String uid,
+            required String postId,
+            required String postMusicImg,
+            required String postMusicArtistName,
+            required String postMusicName,
+            required String postMsg,
+            required DateTime postTimestamp,
+            required String postMusicSpotifyUrl,
+            Value<String> postMusicPreciewUrl = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocalUserPostsCompanion.insert(
+            uid: uid,
+            postId: postId,
+            postMusicImg: postMusicImg,
+            postMusicArtistName: postMusicArtistName,
+            postMusicName: postMusicName,
+            postMsg: postMsg,
+            postTimestamp: postTimestamp,
+            postMusicSpotifyUrl: postMusicSpotifyUrl,
+            postMusicPreciewUrl: postMusicPreciewUrl,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$LocalUserPostsTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $LocalUserPostsTable> {
+  $$LocalUserPostsTableFilterComposer(super.$state);
+  ColumnFilters<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postId => $state.composableBuilder(
+      column: $state.table.postId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMusicImg => $state.composableBuilder(
+      column: $state.table.postMusicImg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMusicArtistName => $state.composableBuilder(
+      column: $state.table.postMusicArtistName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMusicName => $state.composableBuilder(
+      column: $state.table.postMusicName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMsg => $state.composableBuilder(
+      column: $state.table.postMsg,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get postTimestamp => $state.composableBuilder(
+      column: $state.table.postTimestamp,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMusicSpotifyUrl => $state.composableBuilder(
+      column: $state.table.postMusicSpotifyUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get postMusicPreciewUrl => $state.composableBuilder(
+      column: $state.table.postMusicPreciewUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$LocalUserPostsTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $LocalUserPostsTable> {
+  $$LocalUserPostsTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get uid => $state.composableBuilder(
+      column: $state.table.uid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postId => $state.composableBuilder(
+      column: $state.table.postId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMusicImg => $state.composableBuilder(
+      column: $state.table.postMusicImg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMusicArtistName => $state.composableBuilder(
+      column: $state.table.postMusicArtistName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMusicName => $state.composableBuilder(
+      column: $state.table.postMusicName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMsg => $state.composableBuilder(
+      column: $state.table.postMsg,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get postTimestamp => $state.composableBuilder(
+      column: $state.table.postTimestamp,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMusicSpotifyUrl => $state.composableBuilder(
+      column: $state.table.postMusicSpotifyUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get postMusicPreciewUrl => $state.composableBuilder(
+      column: $state.table.postMusicPreciewUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$LocalUserProfilesTableTableManager get localUserProfiles =>
+      $$LocalUserProfilesTableTableManager(_db, _db.localUserProfiles);
+  $$LocalUserFavoriteArtistsTableTableManager get localUserFavoriteArtists =>
+      $$LocalUserFavoriteArtistsTableTableManager(
+          _db, _db.localUserFavoriteArtists);
+  $$LocalUserPostsTableTableManager get localUserPosts =>
+      $$LocalUserPostsTableTableManager(_db, _db.localUserPosts);
 }
