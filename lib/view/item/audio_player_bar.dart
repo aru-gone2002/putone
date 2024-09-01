@@ -9,42 +9,6 @@ class AudioPlayerBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration>(
-      // StreamBuilder<PlayerState>(
-      //   stream: audioPlayer.playerStateStream,
-      //   builder: (context, snapshot) {
-      //     final playerState = snapshot.data;
-      //     final processingState = playerState?.processingState;
-      //     final playing = playerState?.playing;
-      //     if (processingState == ProcessingState.loading ||
-      //         processingState == ProcessingState.buffering) {
-      //       return Container(
-      //         margin: EdgeInsets.all(8.0),
-      //         width: 32.0,
-      //         height: 32.0,
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     } else if (playing != true) {
-      //       return IconButton(
-      //         icon: Icon(Icons.play_arrow),
-      //         iconSize: 32.0,
-      //         onPressed: audioPlayer.play,
-      //       );
-      //     } else if (processingState != ProcessingState.completed) {
-      //       return IconButton(
-      //         icon: Icon(Icons.pause),
-      //         iconSize: 32.0,
-      //         onPressed: audioPlayer.pause,
-      //       );
-      //     } else {
-      //       return IconButton(
-      //         icon: Icon(Icons.replay),
-      //         iconSize: 32.0,
-      //         onPressed: () => audioPlayer.seek(Duration.zero, index: 0),
-      //       );
-      //     }
-      //   },
-      // ),
-
       stream: audioPlayer.positionStream,
       builder: (context, snapshot) {
         final position = snapshot.data;
