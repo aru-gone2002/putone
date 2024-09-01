@@ -59,6 +59,7 @@ service cloud.firestore {
       match /communities/{communityId}/users/{uid} {
         allow read: if isAuthenticated();
         allow create, update: if isUserAuthenticated(uid);
+        allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
       }
   }
 }
