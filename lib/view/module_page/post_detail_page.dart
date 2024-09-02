@@ -1,7 +1,8 @@
+import 'dart:ui';
+import 'package:putone/model/post_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/local_database.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:putone/model/post_like_model.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/view/item/like_button.dart';
@@ -20,6 +21,8 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
+  Map<String, dynamic>? _userInfo;
+  final PostUserModel _postUserModel = PostUserModel();
 
   @override
   void initState() {
@@ -28,6 +31,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     WidgetsBinding.instance.addObserver(this);
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
+    _loadUserInfo();
   }
 
   Future<void> _initAudioPlayer() async {
@@ -41,6 +45,15 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
       });
     } catch (e) {
       print("Error initializing audio player: $e");
+    }
+  }
+
+  Future<void> _loadUserInfo() async {
+    final userInfo = await _postUserModel.getUserInfo(widget.post.uid);
+    if (mounted) {
+      setState(() {
+        _userInfo = userInfo;
+      });
     }
   }
 
@@ -80,50 +93,107 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   }
 
   @override
-  Widget build(BuildContext contest) {
+  Widget build(BuildContext context) {
     return Scaffold(
-        body: GestureDetector(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // 背景画像
+          Image.network(
+            widget.post.postMusicImg,
+            fit: BoxFit.cover,
+          ),
+          // ぼかしエフェクト
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ),
+          // メインコンテンツ
+          GestureDetector(
             onTap: _togglePlayPause,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(widget.post.postMusicImg),
-                      SizedBox(height: 20),
-                      Text(widget.post.postMusicName),
-                      Text(widget.post.postMusicArtistName),
-                      SizedBox(height: 20),
-                      Text(widget.post.postMsg),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          LikeButton(
-                            postId: widget.post.postId,
-                            postOwnerId: widget.post.uid,
-                          ),
-                          SizedBox(width: 20),
-                          SpotifyButton(
-                              spotifyUrl: widget.post.postMusicSpotifyUrl),
-                        ],
-                      ),
-                    ],
+            child: SafeArea(
+              child: Column(
+                children: [
+                  // audio player bar
+                  AudioPlayerBar(
+                    audioPlayer: _audioPlayer,
                   ),
-                ),
-                Positioned(
-                  top: 8,
-                  left: 0,
-                  right: 0,
-                  child: SafeArea(
-                    child: AudioPlayerBar(
-                      audioPlayer: _audioPlayer,
+                  // 投稿者情報
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: _userInfo != null
+                              ? NetworkImage(_userInfo!['userImg'])
+                              : null,
+                          radius: 20,
+                        ),
+                        SizedBox(width: 12),
+                        Text(
+                          _userInfo != null
+                              ? _userInfo!['userName']
+                              : 'Loading...',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
-            )));
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(widget.post.postMusicImg),
+                        SizedBox(height: 20),
+                        Text(
+                          widget.post.postMusicName,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          widget.post.postMusicArtistName,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          widget.post.postMsg,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LikeButton(
+                              postId: widget.post.postId,
+                              postOwnerId: widget.post.uid,
+                            ),
+                            SizedBox(width: 20),
+                            SpotifyButton(
+                              spotifyUrl: widget.post.postMusicSpotifyUrl,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // // オーディオプレイヤーバー
+          // Positioned(
+          //   bottom: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: SafeArea(
+          //     child: AudioPlayerBar(
+          //       audioPlayer: _audioPlayer,
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }

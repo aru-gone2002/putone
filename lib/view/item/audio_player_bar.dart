@@ -16,6 +16,7 @@ class AudioPlayerBar extends StatelessWidget {
         if (position != null && duration != null) {
           return Column(
             children: [
+              SizedBox(height: 10), // Add some spacing here
               LinearProgressIndicator(
                 value: position.inMilliseconds / duration.inMilliseconds,
                 minHeight: 3,
