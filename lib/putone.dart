@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nil/nil.dart';
+import 'package:putone/after_signIn_page.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
@@ -88,8 +89,9 @@ class PuTone extends ConsumerWidget {
                     postViewModel.changeLocalUserPoststoPosts(localUserPosts),
                   );
                 });
+
                 //手渡しでAppDatabaseのインスタンスを渡す
-                return ProfilePage(database: database);
+                return AfterSignInPage(database: database);
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   //AppDataBaseのインスタンスをproviderに格納
