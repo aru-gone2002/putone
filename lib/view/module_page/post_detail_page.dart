@@ -20,7 +20,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
-  final PostLikeModel _postLikeModel = PostLikeModel();
 
   @override
   void initState() {
