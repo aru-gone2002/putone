@@ -126,6 +126,15 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
+  Future updateLocalUserImg({required String uid, required String newUserImg}) {
+    return (update(localUserProfiles)..where((tbl) => tbl.uid.equals(uid)))
+        .write(
+      LocalUserProfilesCompanion(
+        userImg: Value(newUserImg),
+      ),
+    );
+  }
+
   Future updateLocalThemeMusicInfo({
     required String uid,
     required String newThemeMusicArtistName,
