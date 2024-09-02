@@ -14,9 +14,9 @@ class PostLikeModel {
         .doc(posterUid)
         .collection('posts')
         .doc(postId)
-        .collection('post_like');
+        .collection('postlikes');
     final likeMap = {
-      'uid': userName,
+      'uid': senderUid,
       'userName': userName,
       'userImg': userImg,
       'postId': postId,
@@ -39,7 +39,7 @@ class PostLikeModel {
         .doc(posterUid)
         .collection('posts')
         .doc(postId)
-        .collection('post_like');
+        .collection('postlikes');
     return postLikeRef.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return PostLike(
@@ -59,7 +59,7 @@ class PostLikeModel {
         .doc(posterUid)
         .collection('posts')
         .doc(postId)
-        .collection('post_like');
+        .collection('postlikes');
     return postLikeRef.snapshots().map((snapshot) {
       return snapshot.docs.length;
     });
@@ -72,7 +72,7 @@ class PostLikeModel {
         .doc(posterUid)
         .collection('posts')
         .doc(postId)
-        .collection('post_like')
+        .collection('postlikes')
         .doc(userId);
     return postLikeRef.snapshots().map((snapshot) => snapshot.exists);
   }

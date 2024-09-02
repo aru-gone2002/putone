@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:putone/data/post_like/post_like.dart';
 import 'package:putone/local_database.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:putone/model/post_like_model.dart';
-import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/view/item/like_button.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:line_icons/line_icons.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {
   const PostDetailView({super.key, required this.post});
@@ -21,8 +22,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
   final PostLikeModel _postLikeModel = PostLikeModel();
-  late Stream<bool> _isLikedStream;
-  late Stream<int> _likeCountStream;
 
   @override
   void initState() {
@@ -31,11 +30,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     WidgetsBinding.instance.addObserver(this);
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
-    // フレームの描画後に_initLikeStreamsを呼び出す
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _initLikeStreams();
-    // });
-    _initLikeStreams();
   }
 
   Future<void> _initAudioPlayer() async {
@@ -52,17 +46,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     }
   }
 
-  // initState内ではrefを直接使用できないため、
-  // WidgetsBinding.instance.addPostFrameCallback を使用して、
-  // 最初のフレームが描画された後に ref にアクセスする
-  void _initLikeStreams() {
-    final userProfile = ref.read(userProfileProvider);
-    _isLikedStream = _postLikeModel.hasUserLiked(
-        widget.post.postId, widget.post.uid, userProfile.uid);
-    _likeCountStream =
-        _postLikeModel.getPostLikeCount(widget.post.postId, widget.post.uid);
-  }
-
   void _togglePlayPause() {
     setState(() {
       if (_isPlaying) {
@@ -74,50 +57,17 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     });
   }
 
-  Future<void> _toggleLike() async {
-    final userProfile = ref.read(userProfileProvider);
-    if (userProfile.uid.isNotEmpty) {
-      await _postLikeModel.updateLike(
-        widget.post.postId,
-        widget.post.uid,
-        userProfile.uid,
-        userProfile.userImg,
-        userProfile.userName,
+  void _openSpotify() async {
+    // SpotifyのURLを開く処理を追加
+    final Uri spotifyUri = Uri.parse(widget.post.postMusicSpotifyUrl);
+    if (await canLaunchUrl(spotifyUri)) {
+      await launchUrl(spotifyUri);
+    } else {
+      // Handle the error, maybe show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open Spotify link')),
       );
-      _initLikeStreams(); // いいねの状態を再取得
     }
-  }
-
-  void _showLikesList() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return StreamBuilder<List<PostLike>>(
-          stream: _postLikeModel.getPostLikeList(
-              widget.post.postId, widget.post.uid),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No likes yet'));
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final like = snapshot.data![index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(like.userImg),
-                  ),
-                  title: Text('liked user: ${like.userName}'),
-                );
-              },
-            );
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -163,34 +113,19 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                       SizedBox(height: 20),
                       Text(widget.post.postMsg),
                       SizedBox(height: 20),
-                      StreamBuilder<bool>(
-                        stream: _isLikedStream,
-                        builder: (context, isLikedSnapshot) {
-                          return StreamBuilder<int>(
-                            stream: _likeCountStream,
-                            builder: (context, likeCountSnapshot) {
-                              final isLiked = isLikedSnapshot.data ?? false;
-                              final likeCount = likeCountSnapshot.data ?? 0;
-                              return GestureDetector(
-                                onTap: _toggleLike,
-                                onLongPress: _showLikesList,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      isLiked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: isLiked ? Colors.red : null,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text('$likeCount likes'),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        },
+                      Row(
+                        children: [
+                          LikeButton(
+                            postId: widget.post.postId,
+                            postOwnerId: widget.post.uid,
+                          ),
+                          SizedBox(width: 20),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.music_note),
+                            label: Text(''),
+                            onPressed: _openSpotify,
+                          ),
+                        ],
                       ),
                     ],
                   ),
