@@ -27,6 +27,7 @@ const String editUserIdAppbarTitle = 'ユーザーIDの変更';
 const String editThemeSongAppBarTitle = 'テーマソングの変更';
 const String editCommunityAppBarTitle = 'コミュニティの変更';
 const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
+const String homePageAppbarTitle = 'PuTone';
 
 //label
 const String emailAddressLabel = "メールアドレス";
