@@ -91,7 +91,7 @@ class PuTone extends ConsumerWidget {
                 });
 
                 //手渡しでAppDatabaseのインスタンスを渡す
-                return AfterSignInPage(database: database);
+                return const AfterSignInPage();
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   //AppDataBaseのインスタンスをproviderに格納

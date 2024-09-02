@@ -7,9 +7,12 @@ import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
 
 class AfterSignInPage extends ConsumerWidget {
-  const AfterSignInPage({super.key, required this.database});
+  const AfterSignInPage({
+    super.key,
+    // required this.database,
+  });
 
-  final AppDatabase database;
+  // final AppDatabase database;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,9 +20,9 @@ class AfterSignInPage extends ConsumerWidget {
         BottomNavigationBarViewModel();
     bottomNavigationBarViewModel.setRef(ref);
 
-    final List<Widget> bottomNavigationWidgets = [
-      const HomePage(),
-      ProfilePage(database: database)
+    const List<Widget> bottomNavigationWidgets = [
+      HomePage(),
+      ProfilePage(),
     ];
 
     return Scaffold(
