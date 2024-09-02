@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:putone/theme/app_color_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SpotifyButton extends StatelessWidget {
@@ -21,6 +22,8 @@ class SpotifyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(LineIcons.spotify),
+      color: AppColorTheme.color().gray3,
+      iconSize: 40,
       onPressed: () => _openSpotify(context),
     );
   }

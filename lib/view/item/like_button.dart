@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/post_like/post_like.dart';
 import 'package:putone/model/post_like_model.dart';
 import 'package:putone/providers/user_profile_provider.dart';
+import 'package:putone/theme/app_color_theme.dart';
 
 class LikeButton extends ConsumerStatefulWidget {
   final String postId;
@@ -63,7 +64,11 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
               return Center(child: CircularProgressIndicator());
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No likes yet'));
+              return Center(
+                child: Text(
+                  'No likes yet',
+                ),
+              );
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -107,10 +112,16 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
                 children: [
                   Icon(
                     isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: isLiked ? Colors.red : null,
+                    color: isLiked ? Colors.red : AppColorTheme.color().gray3,
+                    size: 40,
                   ),
                   SizedBox(width: 8),
-                  Text('$likeCount likes'),
+                  Text(
+                    '$likeCount likes',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColorTheme.color().gray3,
+                        ),
+                  ),
                 ],
               ),
             );
