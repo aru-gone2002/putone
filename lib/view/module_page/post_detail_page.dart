@@ -5,8 +5,7 @@ import 'package:putone/model/post_like_model.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/view/item/like_button.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:putone/view/item/spotigy_button.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {
   const PostDetailView({super.key, required this.post});
@@ -57,19 +56,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     });
   }
 
-  void _openSpotify() async {
-    // SpotifyのURLを開く処理を追加
-    final Uri spotifyUri = Uri.parse(widget.post.postMusicSpotifyUrl);
-    if (await canLaunchUrl(spotifyUri)) {
-      await launchUrl(spotifyUri);
-    } else {
-      // Handle the error, maybe show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not open Spotify link')),
-      );
-    }
-  }
-
   @override
   void dispose() {
     _audioPlayer.dispose();
@@ -114,24 +100,22 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                       Text(widget.post.postMsg),
                       SizedBox(height: 20),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           LikeButton(
                             postId: widget.post.postId,
                             postOwnerId: widget.post.uid,
                           ),
                           SizedBox(width: 20),
-                          ElevatedButton.icon(
-                            icon: Icon(Icons.music_note),
-                            label: Text(''),
-                            onPressed: _openSpotify,
-                          ),
+                          SpotifyButton(
+                              spotifyUrl: widget.post.postMusicSpotifyUrl),
                         ],
                       ),
                     ],
                   ),
                 ),
                 Positioned(
-                  top: 2,
+                  top: 8,
                   left: 0,
                   right: 0,
                   child: SafeArea(
