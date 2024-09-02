@@ -106,56 +106,80 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
             child: SafeArea(
               child: Column(
                 children: [
-                  // audio player bar
+                  // audio player bar (横いっぱいに広がる)
+                  SizedBox(height: 8), // 上部に余白を追加
                   AudioPlayerBar(
                     audioPlayer: _audioPlayer,
                   ),
-                  // 投稿者情報
-                  PostUserInfo(uid: widget.post.uid),
+                  SizedBox(height: 8), // 下部に余白を追加
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(widget.post.postMusicImg),
-                        SizedBox(height: 20),
-                        Text(
-                          widget.post.postMusicArtistName,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppColorTheme.color().gray3,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          // 投稿者情報
+                          PostUserInfo(
+                              uid: widget.post.uid,
+                              postTimestamp: widget.post.postTimestamp),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 60),
+                                Image.network(widget.post.postMusicImg),
+                                SizedBox(height: 20),
+                                Text(
+                                  widget.post.postMusicArtistName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: AppColorTheme.color().gray3,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  widget.post.postMusicName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                        color: AppColorTheme.color().gray3,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 20),
+                                // コメント（スクロール可能）
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      widget.post.postMsg,
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
-                        ),
-                        Text(
-                          widget.post.postMusicName,
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: AppColorTheme.color().gray3,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          widget.post.postMsg,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppColorTheme.color().gray3,
-                                  ),
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            LikeButton(
-                              postId: widget.post.postId,
-                              postOwnerId: widget.post.uid,
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LikeButton(
+                                      postId: widget.post.postId,
+                                      postOwnerId: widget.post.uid,
+                                    ),
+                                    SizedBox(width: 20),
+                                    SpotifyButton(
+                                      spotifyUrl:
+                                          widget.post.postMusicSpotifyUrl,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 20),
-                            SpotifyButton(
-                              spotifyUrl: widget.post.postMusicSpotifyUrl,
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

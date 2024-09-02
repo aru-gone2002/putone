@@ -113,6 +113,7 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
                   Icon(
                     isLiked ? Icons.favorite : Icons.favorite_border,
                     color: isLiked ? Colors.red : AppColorTheme.color().gray3,
+                    size: 40,
                   ),
                   SizedBox(width: 8),
                   Text(

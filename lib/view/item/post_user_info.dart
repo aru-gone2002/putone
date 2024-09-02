@@ -4,8 +4,10 @@ import 'package:putone/theme/app_color_theme.dart';
 
 class PostUserInfo extends StatefulWidget {
   final String uid;
+  final DateTime postTimestamp;
 
-  const PostUserInfo({Key? key, required this.uid}) : super(key: key);
+  const PostUserInfo({Key? key, required this.uid, required this.postTimestamp})
+      : super(key: key);
 
   @override
   _PostUserInfoState createState() => _PostUserInfoState();
@@ -30,10 +32,24 @@ class _PostUserInfoState extends State<PostUserInfo> {
     }
   }
 
+  String _getTimeAgo() {
+    final now = DateTime.now();
+    final difference = now.difference(widget.postTimestamp);
+    if (difference.inDays > 0) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(5.0),
       child: Row(
         children: [
           CircleAvatar(
@@ -46,6 +62,13 @@ class _PostUserInfoState extends State<PostUserInfo> {
             _userInfo != null ? _userInfo!['userName'] : 'Loading...',
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColorTheme.color().gray3,
+                ),
+          ),
+          SizedBox(width: 10),
+          Text(
+            _getTimeAgo(),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: AppColorTheme.color().gray3.withOpacity(0.7),
                 ),
           ),
         ],
