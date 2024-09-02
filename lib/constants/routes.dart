@@ -118,17 +118,11 @@ void toSelectCommunityPage({
 
 void toProfilePage({
   required BuildContext context,
-  // required WidgetRef ref,
 }) {
-  // final LocalDatabaseViewModel localDatabaseViewModel =
-  //     LocalDatabaseViewModel();
-  // localDatabaseViewModel.setRef(ref);
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: ((context) => const ProfilePage(
-          // database: localDatabaseViewModel.appDatabase!,
-          )),
+      builder: ((context) => const ProfilePage()),
     ),
   );
 }
@@ -176,17 +170,11 @@ void toEditUserIdPage({required BuildContext context}) => Navigator.push(
 
 void toAfterSignInPage({
   required BuildContext context,
-  // required WidgetRef ref,
 }) {
-  // final LocalDatabaseViewModel localDatabaseViewModel =
-  //     LocalDatabaseViewModel();
-  // localDatabaseViewModel.setRef(ref);
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: ((context) => AfterSignInPage(
-          // database: localDatabaseViewModel.appDatabase!,
-          )),
+      builder: ((context) => const AfterSignInPage()),
     ),
   );
 }

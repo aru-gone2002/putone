@@ -19,10 +19,7 @@ import 'package:putone/view_model/spotify_view_model.dart';
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({
     super.key,
-    // required this.database,
   });
-
-  // final AppDatabase database;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,7 +63,6 @@ class ProfilePage extends ConsumerWidget {
               ),
               height: 200,
               child: StreamBuilder<Object>(
-                  // stream: database.watchAllLocalUserProfiles(),
                   stream: localDatabaseViewModel.appDatabase!
                       .watchAllLocalUserProfiles(),
                   builder: (context, snapshot) {
