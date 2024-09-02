@@ -187,10 +187,6 @@ class SecondProfileSettingPage extends StatelessWidget {
                         separateCondition:
                             profileViewModel.communityId != 'none',
                         beforeInputText: tapForSettingBtnText,
-                        //TODO
-                        //communityMap[_profileViewModel.communityId]では初期値ではnullが返されてしまう。
-                        //そのため、そのプロパティを取るとnull safetyによってエラーが発生してしまう。
-                        //それを防ぐためには、対策を取る必要がある。
                         afterInputText: profileViewModel
                             .communityMap[profileViewModel.communityId]!
                             .communityName,
@@ -238,7 +234,7 @@ class SecondProfileSettingPage extends StatelessWidget {
                   //プロフィールをFirestoreとFirebaseに追加する
                   //routeを設定する
                   onPressed: () async {
-                    toProfilePage(context: context, ref: ref);
+                    toAfterSignInPage(context: context);
                     await profileViewModel.setUserProfileToFirestore();
                     //ローカルDBにデータを入れる処理を行う。
                     //updateの形に変更する
@@ -255,9 +251,7 @@ class SecondProfileSettingPage extends StatelessWidget {
               const SizedBox(height: 32),
               Consumer(builder: (context, ref, _) {
                 return DeepGrayButton(
-                  onPressed: () {
-                    toProfilePage(context: context, ref: ref);
-                  },
+                  onPressed: () => toAfterSignInPage(context: context),
                   text: skipBtnText,
                 );
               }),

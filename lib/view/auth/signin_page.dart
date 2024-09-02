@@ -76,7 +76,7 @@ class SignInPage extends StatelessWidget {
             print('insertUserBaseProfileをしました');
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
-              toProfilePage(context: context, ref: ref);
+              toAfterSignInPage(context: context);
             }
           } else {
             if (context.mounted) {
