@@ -20,7 +20,7 @@ class AudioPlayerBar extends StatelessWidget {
               LinearProgressIndicator(
                 value: position.inMilliseconds / duration.inMilliseconds,
                 minHeight: 3,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: AppColorTheme.color().gray3,
                 valueColor: AlwaysStoppedAnimation<Color>(
                     AppColorTheme.color().mainColor),
               ),

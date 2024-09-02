@@ -6,7 +6,9 @@ import 'package:just_audio/just_audio.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/view/item/like_button.dart';
+import 'package:putone/view/item/post_user_info.dart';
 import 'package:putone/view/item/spotigy_button.dart';
+import 'package:putone/theme/app_color_theme.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {
   const PostDetailView({super.key, required this.post});
@@ -21,8 +23,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
-  Map<String, dynamic>? _userInfo;
-  final PostUserModel _postUserModel = PostUserModel();
 
   @override
   void initState() {
@@ -31,7 +31,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     WidgetsBinding.instance.addObserver(this);
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
-    _loadUserInfo();
   }
 
   Future<void> _initAudioPlayer() async {
@@ -45,15 +44,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
       });
     } catch (e) {
       print("Error initializing audio player: $e");
-    }
-  }
-
-  Future<void> _loadUserInfo() async {
-    final userInfo = await _postUserModel.getUserInfo(widget.post.uid);
-    if (mounted) {
-      setState(() {
-        _userInfo = userInfo;
-      });
     }
   }
 
@@ -121,26 +111,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                     audioPlayer: _audioPlayer,
                   ),
                   // 投稿者情報
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: _userInfo != null
-                              ? NetworkImage(_userInfo!['userImg'])
-                              : null,
-                          radius: 20,
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                          _userInfo != null
-                              ? _userInfo!['userName']
-                              : 'Loading...',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
+                  PostUserInfo(uid: widget.post.uid),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -148,17 +119,27 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                         Image.network(widget.post.postMusicImg),
                         SizedBox(height: 20),
                         Text(
-                          widget.post.postMusicName,
-                          style: TextStyle(color: Colors.white),
+                          widget.post.postMusicArtistName,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: AppColorTheme.color().gray3,
+                                  ),
                         ),
                         Text(
-                          widget.post.postMusicArtistName,
-                          style: TextStyle(color: Colors.white),
+                          widget.post.postMusicName,
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: AppColorTheme.color().gray3,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: 20),
                         Text(
                           widget.post.postMsg,
-                          style: TextStyle(color: Colors.white),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: AppColorTheme.color().gray3,
+                                  ),
                         ),
                         SizedBox(height: 20),
                         Row(
@@ -181,17 +162,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
               ),
             ),
           ),
-          // // オーディオプレイヤーバー
-          // Positioned(
-          //   bottom: 0,
-          //   left: 0,
-          //   right: 0,
-          //   child: SafeArea(
-          //     child: AudioPlayerBar(
-          //       audioPlayer: _audioPlayer,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
