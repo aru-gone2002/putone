@@ -1,11 +1,14 @@
+import 'dart:ui';
+import 'package:putone/model/post_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/local_database.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:putone/model/post_like_model.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/view/item/like_button.dart';
+import 'package:putone/view/item/post_user_info.dart';
 import 'package:putone/view/item/spotigy_button.dart';
+import 'package:putone/theme/app_color_theme.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {
   const PostDetailView({super.key, required this.post});
@@ -80,50 +83,111 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   }
 
   @override
-  Widget build(BuildContext contest) {
+  Widget build(BuildContext context) {
     return Scaffold(
-        body: GestureDetector(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // 背景画像
+          Image.network(
+            widget.post.postMusicImg,
+            fit: BoxFit.cover,
+          ),
+          // ぼかしエフェクト
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ),
+          // メインコンテンツ
+          GestureDetector(
             onTap: _togglePlayPause,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(widget.post.postMusicImg),
-                      SizedBox(height: 20),
-                      Text(widget.post.postMusicName),
-                      Text(widget.post.postMusicArtistName),
-                      SizedBox(height: 20),
-                      Text(widget.post.postMsg),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            child: SafeArea(
+              child: Column(
+                children: [
+                  // audio player bar (横いっぱいに広がる)
+                  SizedBox(height: 8), // 上部に余白を追加
+                  AudioPlayerBar(
+                    audioPlayer: _audioPlayer,
+                  ),
+                  SizedBox(height: 8), // 下部に余白を追加
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
                         children: [
-                          LikeButton(
-                            postId: widget.post.postId,
-                            postOwnerId: widget.post.uid,
+                          // 投稿者情報
+                          PostUserInfo(
+                              uid: widget.post.uid,
+                              postTimestamp: widget.post.postTimestamp),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 60),
+                                Image.network(widget.post.postMusicImg),
+                                SizedBox(height: 20),
+                                Text(
+                                  widget.post.postMusicArtistName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: AppColorTheme.color().gray3,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  widget.post.postMusicName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                        color: AppColorTheme.color().gray3,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 20),
+                                // コメント（スクロール可能）
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      widget.post.postMsg,
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LikeButton(
+                                      postId: widget.post.postId,
+                                      postOwnerId: widget.post.uid,
+                                    ),
+                                    SizedBox(width: 20),
+                                    SpotifyButton(
+                                      spotifyUrl:
+                                          widget.post.postMusicSpotifyUrl,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(width: 20),
-                          SpotifyButton(
-                              spotifyUrl: widget.post.postMusicSpotifyUrl),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 8,
-                  left: 0,
-                  right: 0,
-                  child: SafeArea(
-                    child: AudioPlayerBar(
-                      audioPlayer: _audioPlayer,
                     ),
                   ),
-                )
-              ],
-            )));
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
