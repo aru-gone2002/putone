@@ -96,10 +96,20 @@ class EditProfilePage extends StatelessWidget {
               TextButton(
                   child: const Text(changeBtnText),
                   onPressed: () async {
+                    //コミュニティからユーザーを削除
+                    await profileViewModel.deleteUserFromCommunity(
+                        uid: profileViewModel.uid,
+                        communityId: profileViewModel.communityId);
                     //ProfileのproviderにcommunityIdを保存する
                     profileViewModel.saveCommunityId(
                       community.communityId,
                     );
+                    if (context.mounted) {
+                      //ダイアログを閉じる
+                      Navigator.pop(context);
+                      //コミュニティの登録画面を閉じる
+                      Navigator.pop(context);
+                    }
                     //ローカルDBに新しいcommunityIdを入れる
                     await localDatabaseViewModel.appDatabase!
                         .updateLocalCommunityId(
@@ -108,18 +118,8 @@ class EditProfilePage extends StatelessWidget {
                     //firestoreに新しいcommunityIdを入れる
                     await profileViewModel.updateFirestoreCommunityId(
                         newCommunityId: community.communityId);
-                    //コミュニティからユーザーを削除
-                    await profileViewModel.deleteUserFromCommunity(
-                        uid: profileViewModel.uid,
-                        communityId: community.communityId);
                     //コミュニティからユーザーを新しいコミュニティに入れる
                     await profileViewModel.addUserToCommunity();
-                    if (context.mounted) {
-                      //ダイアログを閉じる
-                      Navigator.pop(context);
-                      //コミュニティの登録画面を閉じる
-                      Navigator.pop(context);
-                    }
                   }),
             ],
           );
@@ -146,6 +146,19 @@ class EditProfilePage extends StatelessWidget {
       }
     }
 
+    Future<void> editUserImgFunction() async {
+      //providerに選択したユーザー画像を保存
+      await profileViewModel.onImageTapped();
+      //ローカルDBのuserImgを変更する
+      await localDatabaseViewModel.appDatabase!.updateLocalUserImg(
+        uid: profileViewModel.uid,
+        newUserImg: profileViewModel.userImg,
+      );
+      //firestoreのuserImgを変更する
+      await profileViewModel.updateFirestoreUserImg(
+          newUserImg: profileViewModel.userImg);
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -168,11 +181,9 @@ class EditProfilePage extends StatelessWidget {
               child: Consumer(
                 builder: (context, ref, _) {
                   profileViewModel.setRef(ref);
+                  localDatabaseViewModel.setRef(ref);
                   return InkWell(
-                    onTap: () async {
-                      await profileViewModel.onImageTapped();
-                      //ローカルDBのuserImgを変更する
-                    },
+                    onTap: editUserImgFunction,
                     child: Column(
                       children: [
                         profileViewModel.userImg != ''
