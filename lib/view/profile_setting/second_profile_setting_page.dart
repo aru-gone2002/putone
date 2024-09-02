@@ -125,8 +125,8 @@ class SecondProfileSettingPage extends StatelessWidget {
                               profileViewModel.userImg != ''
                                   ? ExtendedImage.network(
                                       profileViewModel.userImg,
-                                      width: profileSetttingUserImgWidth,
-                                      height: profileSetttingUserImgWidth,
+                                      width: profileSetttingUserImgWidth * 2,
+                                      height: profileSetttingUserImgWidth * 2,
                                       fit: BoxFit.cover,
                                       cache: true,
                                       shape: BoxShape.circle,
