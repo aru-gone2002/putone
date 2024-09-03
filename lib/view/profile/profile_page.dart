@@ -8,6 +8,7 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
@@ -366,6 +367,22 @@ class ProfilePage extends ConsumerWidget {
                 },
               ),
             ),
+            // ------------------------------------------------------------- //
+            // 自分以外のプロフィール画面を開発するために追加した仮のボタン
+            // アカウント検索機能が完成したら、任意のアカウントをタップして
+            // FriendProfilePageに飛べるようにする
+            OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FriendProfilePage(
+                          uid: 'McSH8giP0jWlTkn2PVEfpge8dK62')),
+                );
+              },
+              child: const Text('Temporary Button for Friend\'s Profile'),
+            ),
+            // ------------------------------------------------------------- //
           ],
         ),
       ),
