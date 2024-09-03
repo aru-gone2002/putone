@@ -64,7 +64,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
 
   @override
   void dispose() {
-    // _audioPlayer.dispose();
+    // widget.audioPlayer.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

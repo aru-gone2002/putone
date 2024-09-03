@@ -23,6 +23,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   final PostModel _postModel = PostModel();
   final Map<String, Post> _postMap = {};
   final Map<String, AudioPlayer> _audioPlayers = {};
+  AudioPlayer? _currentPlayer;
 
   @override
   void initState() {
@@ -58,6 +59,16 @@ class _PostListViewState extends ConsumerState<PostListView> {
       _audioPlayers[postId] = player;
     }
     return _audioPlayers[postId]!;
+  }
+
+  void _cleanupAudioPlayers(int currentIndex) {
+    _audioPlayers.forEach((postId, player) {
+      if (player != _currentPlayer) {
+        player.stop();
+        player.dispose();
+      }
+    });
+    _audioPlayers.removeWhere((postId, player) => player != _currentPlayer);
   }
 
   // いらないかも？
@@ -101,14 +112,19 @@ class _PostListViewState extends ConsumerState<PostListView> {
           },
         );
       },
-      onPageChanged: (index) {
+      onPageChanged: (index) async {
         ref.read(postProvider.notifier).state = posts[index];
-        // Dispose audio players for non-visible posts
-        for (var i = 0; i < posts.length; i++) {
-          if (i != index && i != index - 1 && i != index + 1) {
-            _disposeAudioPlayer(posts[i].postId);
-          }
-        }
+
+        // Stop current player if exists
+        await _currentPlayer?.stop();
+
+        // Get new player and start playing
+        _currentPlayer = await _getAudioPlayer(
+            posts[index].postId, posts[index].postMusicPreviewUrl);
+        _currentPlayer?.play();
+
+        // Clean up unused audio players
+        _cleanupAudioPlayers(index);
       },
     ));
   }
