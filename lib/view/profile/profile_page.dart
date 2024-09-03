@@ -377,7 +377,7 @@ class ProfilePage extends ConsumerWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const FriendProfilePage(
-                          uid: 'McSH8giP0jWlTkn2PVEfpge8dK62')),
+                          uid: '63Dhc8HQJzbqiQ9X0wKxewiGSrt2')),
                 );
               },
               child: const Text('Temporary Button for Friend\'s Profile'),
