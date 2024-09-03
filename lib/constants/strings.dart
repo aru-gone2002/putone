@@ -52,6 +52,7 @@ const String currentCommunityLabel = '現在のコミュニティ';
 const String afterChangedCommunityLabel = '変更後のコミュニティ';
 const String currentProfileMsgLabel = '現在のプロフィール文';
 const String afterChangedProfileMsgLabel = '変更後のプロフィール文（80字以内)';
+const String resultOfSearchUserLabel = '検索の結果';
 
 //title
 const String signupTitle = '会員登録';

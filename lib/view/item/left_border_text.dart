@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class LeftBorderText extends StatelessWidget {
-  const LeftBorderText({super.key, required this.label});
+  const LeftBorderText(
+      {super.key, required this.label, required this.borderColor});
 
   final String label;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {

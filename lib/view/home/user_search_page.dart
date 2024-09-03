@@ -1,25 +1,119 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
 import 'package:putone/constants/device_size.dart';
+import 'package:putone/constants/height.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
+import 'package:putone/constants/width.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
-import 'package:putone/view/item/main_color_circular_button.dart';
+import 'package:putone/view/item/circular_button.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
 
 class UserSearchPage extends StatelessWidget {
   const UserSearchPage({super.key});
 
-  Future<void> userSearchFunction(
-      {required String? value,
-      required UserSearchViewModel userSearchViewModel}) async {
+  Widget searchUserDisplay({
+    required UserProfile userProfile,
+    required BuildContext context,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: AppColorTheme.color().mainColor,
+        border: Border.all(
+          width: 2,
+          color: AppColorTheme.color().mainColor,
+        ),
+      ),
+      width: DeviceSize.screenWidthWithPadding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Text(
+              userSearchTitle,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  LeftBorderText(
+                    label: resultOfSearchUserLabel,
+                    borderColor: AppColorTheme.color().mainColor,
+                  ),
+                  const SizedBox(height: 16),
+                  //TODO ここに検索結果を表示する
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: userProfile.userImg != ''
+                        ? ExtendedImage.network(
+                            userProfile.userImg,
+                            width: userImgMediumWidth,
+                            height: userImgMediumHeight,
+                            fit: BoxFit.cover,
+                            cache: true,
+                            shape: BoxShape.circle,
+                          )
+                        : ExtendedImage.asset(
+                            'assets/images/user_gray_icon.png',
+                            width: userImgMediumWidth,
+                            height: userImgMediumHeight,
+                            shape: BoxShape.circle,
+                            fit: BoxFit.cover,
+                          ),
+                    title: Text(
+                      userProfile.userName,
+                    ),
+                    subtitle: Text(userProfile.userId),
+                  ),
+                  const SizedBox(height: 40),
+                  //メインカラーのボタンを入れる
+                  Center(
+                    child: CircularButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      text: backBtnText,
+                      btnColor: AppColorTheme.color().mainColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> userSearchFunction({
+    required String? value,
+    required UserSearchViewModel userSearchViewModel,
+    required BuildContext context,
+  }) async {
     //検索ボタンがグルグルするようにする
     userSearchViewModel.searchingUser();
 
@@ -28,6 +122,18 @@ class UserSearchPage extends StatelessWidget {
     if (result is UserProfile) {
       //TODO 検索結果を表示する
       print('ユーザー検索結果：$result');
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              children: [
+                searchUserDisplay(userProfile: result, context: context),
+              ],
+            );
+          },
+        );
+      }
     }
     if (result == 'no_account') {
       Fluttertoast.showToast(
@@ -94,7 +200,10 @@ class UserSearchPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const LeftBorderText(label: userIdLabel),
+                      LeftBorderText(
+                        label: userIdLabel,
+                        borderColor: AppColorTheme.color().mainColor,
+                      ),
                       const SizedBox(height: 16),
                       Form(
                         key: formKey,
@@ -102,6 +211,7 @@ class UserSearchPage extends StatelessWidget {
                             itemName: userIdLabel,
                             maxLength: userIdAndUserNameTextLength,
                             onSaved: (value) => userSearchFunction(
+                                  context: context,
                                   value: value,
                                   userSearchViewModel: userSearchViewModel,
                                 ),
@@ -125,7 +235,7 @@ class UserSearchPage extends StatelessWidget {
                             return Visibility(
                               visible: !userSearchViewModel.isUserSearching,
                               replacement: child!,
-                              child: MainColorCircularButton(
+                              child: CircularButton(
                                 onPressed: () {
                                   //TODO 処理を書く
                                   if (formKey.currentState!.validate()) {
@@ -133,6 +243,7 @@ class UserSearchPage extends StatelessWidget {
                                   }
                                 },
                                 text: searchBtnText,
+                                btnColor: AppColorTheme.color().mainColor,
                               ),
                             );
                           },

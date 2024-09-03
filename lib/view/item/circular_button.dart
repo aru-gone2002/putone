@@ -3,14 +3,16 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
-class MainColorCircularButton extends StatelessWidget {
-  const MainColorCircularButton({
+class CircularButton extends StatelessWidget {
+  const CircularButton({
     super.key,
     required this.onPressed,
     required this.text,
+    required this.btnColor,
   });
   final void Function()? onPressed;
   final String text;
+  final Color btnColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class MainColorCircularButton extends StatelessWidget {
       width: mainColorButtonWidth,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColorTheme.color().mainColor,
+          backgroundColor: btnColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
