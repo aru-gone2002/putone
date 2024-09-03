@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:putone/data/post/post.dart';
 import 'package:putone/model/post_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/local_database.dart';
@@ -11,9 +12,14 @@ import 'package:putone/view/item/spotigy_button.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {
-  const PostDetailView({super.key, required this.post});
+  const PostDetailView({
+    Key? key,
+    required this.post,
+    required this.audioPlayer,
+  }) : super(key: key);
 
-  final LocalUserPost post;
+  final Post post;
+  final AudioPlayer audioPlayer;
 
   @override
   ConsumerState<PostDetailView> createState() => _PostDetailViewState();
@@ -21,7 +27,7 @@ class PostDetailView extends ConsumerStatefulWidget {
 
 class _PostDetailViewState extends ConsumerState<PostDetailView>
     with WidgetsBindingObserver {
-  late AudioPlayer _audioPlayer;
+  // late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
 
   @override
@@ -29,18 +35,14 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     super.initState();
     // 画面が開かれたら自動で再生し、画面が閉じられたら自動で停止するため
     WidgetsBinding.instance.addObserver(this);
-    _audioPlayer = AudioPlayer();
+    // _audioPlayer = AudioPlayer();
     _initAudioPlayer();
   }
 
   Future<void> _initAudioPlayer() async {
     try {
-      await _audioPlayer.setAudioSource(
-          AudioSource.uri(Uri.parse(widget.post.postMusicPreciewUrl)));
-      // ループモードを設定
-      await _audioPlayer.setLoopMode(LoopMode.all);
-      // widgetが開かれたら自動で再生する
-      _audioPlayer.play();
+      await widget.audioPlayer.setLoopMode(LoopMode.all);
+      widget.audioPlayer.play();
       setState(() {
         _isPlaying = true;
       });
@@ -52,9 +54,9 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   void _togglePlayPause() {
     setState(() {
       if (_isPlaying) {
-        _audioPlayer.pause();
+        widget.audioPlayer.pause();
       } else {
-        _audioPlayer.play();
+        widget.audioPlayer.play();
       }
       _isPlaying = !_isPlaying;
     });
@@ -62,7 +64,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -72,12 +74,12 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     // アプリのライフサイクルの変化に応じた処理を追加
     if (state == AppLifecycleState.paused) {
       // アプリがバックグラウンドに移動したとき
-      _audioPlayer.pause();
+      widget.audioPlayer.pause();
       setState(() {
         _isPlaying = false;
       });
     } else if (state == AppLifecycleState.resumed) {
-      _audioPlayer.play();
+      widget.audioPlayer.play();
       setState(() {
         _isPlaying = true;
       });
@@ -111,7 +113,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                   // audio player bar (横いっぱいに広がる)
                   SizedBox(height: 8), // 上部に余白を追加
                   AudioPlayerBar(
-                    audioPlayer: _audioPlayer,
+                    audioPlayer: widget.audioPlayer,
                   ),
                   SizedBox(height: 8), // 下部に余白を追加
                   Expanded(
