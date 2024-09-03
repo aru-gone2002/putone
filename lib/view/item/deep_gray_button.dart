@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/device_size.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class DeepGrayButton extends StatelessWidget {
@@ -12,12 +13,10 @@ class DeepGrayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: 48,
-        minWidth: deviceWidth * 0.9,
+        minWidth: DeviceSize.screenWidth * 0.9,
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

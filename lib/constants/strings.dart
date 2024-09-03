@@ -28,6 +28,7 @@ const String editThemeSongAppBarTitle = 'テーマソングの変更';
 const String editCommunityAppBarTitle = 'コミュニティの変更';
 const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 const String homePageAppbarTitle = 'PuTone';
+const String userSearchPageAppbarTitle = 'ユーザー検索';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -57,6 +58,7 @@ const String signupTitle = '会員登録';
 const String cropperTitle = 'Cropper';
 const String profileTitle = 'プロフィール文';
 const String signInTitle = 'ログイン';
+const String userSearchTitle = 'ユーザー検索';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';

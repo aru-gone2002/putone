@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/device_size.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/putone.dart';
 import 'firebase_options.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: '.env');
+
   //-----AppCheckの初期化コード-----//
   // await FirebaseAppCheck.instance.activate(
   //   appleProvider:

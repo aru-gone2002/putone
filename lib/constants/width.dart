@@ -6,3 +6,4 @@ const double postGridViewCrossAxisSpacing = 16;
 const double postGridViewMainAxisSpacing = 12;
 const double favoriteMusicImgWidth = 34;
 const double profileSetttingUserImgWidth = 96;
+const double mainColorButtonWidth = 240;

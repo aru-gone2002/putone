@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,7 +16,7 @@ class HomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => toUserSearchPage(context: context),
             icon: const Icon(
               Icons.person_search,
               color: Colors.white,

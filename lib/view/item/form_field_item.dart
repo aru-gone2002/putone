@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/device_size.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class FormFieldItem extends StatelessWidget {
@@ -19,7 +20,7 @@ class FormFieldItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceWidth = DeviceSize.screenWidth;
 
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: 48, maxWidth: deviceWidth * 0.9),
