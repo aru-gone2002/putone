@@ -37,6 +37,8 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     try {
       await _audioPlayer.setAudioSource(
           AudioSource.uri(Uri.parse(widget.post.postMusicPreciewUrl)));
+      // ループモードを設定
+      await _audioPlayer.setLoopMode(LoopMode.all);
       // widgetが開かれたら自動で再生する
       _audioPlayer.play();
       setState(() {
