@@ -53,7 +53,7 @@ class UserSearchPage extends StatelessWidget {
                 )
               ],
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
             //ここに検索結果を表示する
             Center(
               child: Column(
