@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nil/nil.dart';
 import 'package:putone/after_signIn_page.dart';
-import 'package:putone/constants/device_size.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/admin_page.dart';
@@ -28,12 +27,10 @@ class PuTone extends ConsumerWidget {
     final PostViewModel postViewModel = PostViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
-    final DeviceSize deviceSize = DeviceSize();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
-    deviceSize.init(context);
 
     return MaterialApp(
       title: 'PuTone',

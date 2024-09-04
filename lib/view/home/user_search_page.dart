@@ -2,7 +2,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:putone/constants/device_size.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
@@ -22,9 +21,10 @@ class UserSearchPage extends StatelessWidget {
   Widget searchUserDisplay({
     required UserProfile userProfile,
     required BuildContext context,
+    required double dialogWidth,
   }) {
     return SizedBox(
-      width: DeviceSize.screenWidthWithPadding,
+      width: dialogWidth,
       child: Padding(
         padding:
             const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 36),
@@ -114,6 +114,7 @@ class UserSearchPage extends StatelessWidget {
     required String? value,
     required UserSearchViewModel userSearchViewModel,
     required BuildContext context,
+    required double dialogWidth,
   }) async {
     //検索ボタンがグルグルするようにする
     userSearchViewModel.searchingUser();
@@ -130,7 +131,11 @@ class UserSearchPage extends StatelessWidget {
           builder: (context) {
             return SimpleDialog(
               children: [
-                searchUserDisplay(userProfile: result, context: context),
+                searchUserDisplay(
+                  userProfile: result,
+                  context: context,
+                  dialogWidth: dialogWidth,
+                ),
               ],
             );
           },
@@ -154,6 +159,8 @@ class UserSearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserSearchViewModel userSearchViewModel = UserSearchViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceWidthWithPadding = deviceWidth - paddingForDeviceWidth;
 
     return Scaffold(
       appBar: AppBar(
@@ -172,7 +179,7 @@ class UserSearchPage extends StatelessWidget {
               color: AppColorTheme.color().mainColor,
             ),
           ),
-          width: DeviceSize.screenWidthWithPadding,
+          width: deviceWidthWithPadding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -219,6 +226,7 @@ class UserSearchPage extends StatelessWidget {
                                   context: context,
                                   value: value,
                                   userSearchViewModel: userSearchViewModel,
+                                  dialogWidth: deviceWidthWithPadding,
                                 ),
                             validator: (value) => userIdValidator(value)),
                       ),

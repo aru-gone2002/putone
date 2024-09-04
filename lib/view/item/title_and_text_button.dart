@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:putone/constants/device_size.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class TitleAndTextButton extends StatelessWidget {
@@ -20,8 +19,10 @@ class TitleAndTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: DeviceSize.screenWidth * 0.9),
+      constraints: BoxConstraints(maxWidth: deviceWidth * 0.9),
       child: InkWell(
           onTap: onTap,
           child: Column(
