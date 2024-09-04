@@ -14,6 +14,7 @@ const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
 const String editBtnText = '編集';
 const String changeBtnText = '変更';
+const String followBtnText = 'フォロー';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
