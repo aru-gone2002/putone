@@ -13,6 +13,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
 import 'package:putone/view/item/circular_button.dart';
+import 'package:putone/view/item/small_color_button.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
 
 class UserSearchPage extends StatelessWidget {
@@ -22,96 +23,87 @@ class UserSearchPage extends StatelessWidget {
     required UserProfile userProfile,
     required BuildContext context,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LeftBorderText(
-            label: resultOfSearchUserLabel,
-            borderColor: AppColorTheme.color().mainColor,
-            borderHeight: 30,
-            fontSize: 22,
-            labelAndLabelSpace: 12,
-          ),
-          const SizedBox(height: 32),
-          //TODO ここに検索結果を表示する
-          Row(
-            children: [
-              userProfile.userImg != ''
-                  ? ExtendedImage.network(
-                      userProfile.userImg,
-                      width: userImgMediumWidth,
-                      height: userImgMediumHeight,
-                      fit: BoxFit.cover,
-                      cache: true,
-                      shape: BoxShape.circle,
-                    )
-                  : ExtendedImage.asset(
-                      'assets/images/user_gray_icon.png',
-                      width: userImgMediumWidth,
-                      height: userImgMediumHeight,
-                      shape: BoxShape.circle,
-                      fit: BoxFit.cover,
-                    ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      userProfile.userName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium!
-                          .copyWith(fontWeight: FontWeight.normal),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      userProfile.userId,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: AppColorTheme.color().gray2),
-                    ),
-                  ],
+    return SizedBox(
+      width: DeviceSize.screenWidthWithPadding,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 36),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                LeftBorderText(
+                  label: resultOfSearchUserLabel,
+                  borderColor: AppColorTheme.color().mainColor,
+                  borderHeight: 30,
+                  fontSize: 22,
+                  labelAndLabelSpace: 12,
                 ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  backgroundColor: AppColorTheme.color().accentColor,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
+                const Expanded(child: SizedBox()),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    size: 28,
                   ),
-                ),
-                child: const Text(
-                  followBtnText,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 40),
-          //メインカラーのボタンを入れる
-          Center(
-            child: CircularButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              text: backBtnText,
-              btnColor: AppColorTheme.color().mainColor,
+                )
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 32),
+            //ここに検索結果を表示する
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  userProfile.userImg != ''
+                      ? ExtendedImage.network(
+                          userProfile.userImg,
+                          width: userImgLargeWidth,
+                          height: userImgLargeHeight,
+                          fit: BoxFit.cover,
+                          cache: true,
+                          shape: BoxShape.circle,
+                        )
+                      : ExtendedImage.asset(
+                          'assets/images/user_gray_icon.png',
+                          width: userImgLargeWidth,
+                          height: userImgLargeHeight,
+                          shape: BoxShape.circle,
+                          fit: BoxFit.cover,
+                        ),
+                  const SizedBox(height: 32),
+                  Text(
+                    userProfile.userName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(fontWeight: FontWeight.normal),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    userProfile.userId,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: AppColorTheme.color().gray2),
+                  ),
+                  const SizedBox(height: 16),
+                  SmallColorButton(
+                    btntext: followBtnText,
+                    onPressed: () {},
+                    backgroundColor: AppColorTheme.color().accentColor,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

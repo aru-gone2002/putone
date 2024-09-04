@@ -8,3 +8,4 @@ const double favoriteMusicImgWidth = 34;
 const double profileSetttingUserImgWidth = 96;
 const double mainColorButtonWidth = 240;
 const double userImgMediumWidth = 60;
+const double userImgLargeWidth = 120;
