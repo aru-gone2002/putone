@@ -16,10 +16,14 @@ class PostDetailView extends ConsumerStatefulWidget {
     Key? key,
     required this.post,
     required this.audioPlayer,
+    required this.isCurrentPage,
+    required this.onInit,
   }) : super(key: key);
 
   final Post post;
   final AudioPlayer audioPlayer;
+  final bool isCurrentPage;
+  final VoidCallback onInit;
 
   @override
   ConsumerState<PostDetailView> createState() => _PostDetailViewState();
@@ -35,31 +39,45 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     super.initState();
     // 画面が開かれたら自動で再生し、画面が閉じられたら自動で停止するため
     WidgetsBinding.instance.addObserver(this);
-    // _audioPlayer = AudioPlayer();
-    _initAudioPlayer();
+    widget.onInit();
   }
 
-  Future<void> _initAudioPlayer() async {
-    try {
-      await widget.audioPlayer.setLoopMode(LoopMode.all);
-      widget.audioPlayer.play();
-      setState(() {
-        _isPlaying = true;
-      });
-    } catch (e) {
-      print("Error initializing audio player: $e");
+  @override
+  void didUpdateWidget(PostDetailView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isCurrentPage != oldWidget.isCurrentPage) {
+      _updatePlayingState();
     }
   }
 
-  void _togglePlayPause() {
+  void _updatePlayingState() {
+    if (widget.isCurrentPage) {
+      _playAudio();
+    } else {
+      _pauseAudio();
+    }
+  }
+
+  void _playAudio() {
+    widget.audioPlayer?.play();
     setState(() {
-      if (_isPlaying) {
-        widget.audioPlayer.pause();
-      } else {
-        widget.audioPlayer.play();
-      }
-      _isPlaying = !_isPlaying;
+      _isPlaying = true;
     });
+  }
+
+  void _pauseAudio() {
+    widget.audioPlayer?.pause();
+    setState(() {
+      _isPlaying = false;
+    });
+  }
+
+  void _togglePlayPause() {
+    if (_isPlaying) {
+      _pauseAudio();
+    } else {
+      _playAudio();
+    }
   }
 
   @override
@@ -71,18 +89,10 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // アプリのライフサイクルの変化に応じた処理を追加
     if (state == AppLifecycleState.paused) {
-      // アプリがバックグラウンドに移動したとき
-      widget.audioPlayer.pause();
-      setState(() {
-        _isPlaying = false;
-      });
-    } else if (state == AppLifecycleState.resumed) {
-      widget.audioPlayer.play();
-      setState(() {
-        _isPlaying = true;
-      });
+      _pauseAudio();
+    } else if (state == AppLifecycleState.resumed && widget.isCurrentPage) {
+      _playAudio();
     }
   }
 

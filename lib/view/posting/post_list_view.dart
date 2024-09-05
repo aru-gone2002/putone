@@ -22,8 +22,9 @@ class _PostListViewState extends ConsumerState<PostListView> {
   late PageController _pageController;
   final PostModel _postModel = PostModel();
   final Map<String, Post> _postMap = {};
-  final Map<String, AudioPlayer> _audioPlayers = {};
+  final Map<int, AudioPlayer> _audioPlayers = {};
   AudioPlayer? _currentPlayer;
+  int _currentIndex = -1;
 
   @override
   void initState() {
@@ -38,48 +39,41 @@ class _PostListViewState extends ConsumerState<PostListView> {
       ref.read(postsProvider.notifier).state = posts;
       final initialIndex =
           posts.indexWhere((post) => post.postId == widget.initialPostId);
-      if (initialIndex != -1) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _pageController.jumpToPage(initialIndex);
-        });
-      } else {
-        // 指定された投稿が見つからない場合は最新の投稿（リストの先頭）を表示
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _pageController.jumpToPage(0);
-        });
-      }
+      final targetIndex = initialIndex != -1 ? initialIndex : 0;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _pageController.jumpToPage(targetIndex);
+        _initAudioPlayer(targetIndex, posts[targetIndex].postMusicPreviewUrl);
+      });
     }
   }
 
-  Future<AudioPlayer> _getAudioPlayer(String postId, String url) async {
-    if (!_audioPlayers.containsKey(postId)) {
-      final player = AudioPlayer();
-      await player.setUrl(url);
-      await player.setLoopMode(LoopMode.all);
-      _audioPlayers[postId] = player;
+  Future<void> _initAudioPlayer(int index, String url) async {
+    // 現在のプレイヤーを停止して新しいプレイヤーを初期化
+    await _currentPlayer?.pause();
+    await _currentPlayer?.dispose();
+
+    if (!_audioPlayers.containsKey(index)) {
+      _currentPlayer = AudioPlayer();
+      await _currentPlayer!.setUrl(url);
+      await _currentPlayer!.setLoopMode(LoopMode.all);
+      _audioPlayers[index] = _currentPlayer!;
     }
-    return _audioPlayers[postId]!;
-  }
-
-  void _cleanupAudioPlayers(int currentIndex) {
-    _audioPlayers.forEach((postId, player) {
-      if (player != _currentPlayer) {
-        player.stop();
-        player.dispose();
-      }
-    });
-    _audioPlayers.removeWhere((postId, player) => player != _currentPlayer);
-  }
-
-  // いらないかも？
-  void _disposeAudioPlayer(String postId) {
-    final player = _audioPlayers.remove(postId);
-    player?.dispose();
+    _currentPlayer = _audioPlayers[index];
+    await _currentPlayer!.play();
+    _currentIndex = index;
+    // _currentIndex = index;
+    // _audioPlayers[index]?.play();
   }
 
   @override
   void dispose() {
+    // _pageController.dispose();
+    // for (var player in _audioPlayers.values) {
+    //   player.dispose();
+    // }
+    // super.dispose();
     _pageController.dispose();
+    // _currentPlayer?.dispose();
     for (var player in _audioPlayers.values) {
       player.dispose();
     }
@@ -97,34 +91,25 @@ class _PostListViewState extends ConsumerState<PostListView> {
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts[index];
-        return FutureBuilder<AudioPlayer>(
-          future: _getAudioPlayer(post.postId, post.postMusicPreviewUrl),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
-              return PostDetailView(
-                post: post,
-                audioPlayer: snapshot.data!,
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
+
+        if (_currentPlayer == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return PostDetailView(
+          post: post,
+          audioPlayer: _audioPlayers[index] ?? AudioPlayer(),
+          isCurrentPage: index == _currentIndex,
+          onInit: () async {
+            if (index != _currentIndex) {
+              await _initAudioPlayer(index, post.postMusicPreviewUrl);
             }
           },
         );
       },
       onPageChanged: (index) async {
         ref.read(postProvider.notifier).state = posts[index];
-
-        // Stop current player if exists
-        await _currentPlayer?.stop();
-
-        // Get new player and start playing
-        _currentPlayer = await _getAudioPlayer(
-            posts[index].postId, posts[index].postMusicPreviewUrl);
-        _currentPlayer?.play();
-
-        // Clean up unused audio players
-        _cleanupAudioPlayers(index);
+        await _audioPlayers[_currentIndex]?.pause();
+        await _initAudioPlayer(index, posts[index].postMusicPreviewUrl);
       },
     ));
   }
