@@ -13,6 +13,7 @@ import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
 import 'package:putone/view/item/circular_button.dart';
 import 'package:putone/view/item/small_color_button.dart';
+import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
 
 class UserSearchPage extends StatelessWidget {
@@ -59,41 +60,55 @@ class UserSearchPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  userProfile.userImg != ''
-                      ? ExtendedImage.network(
-                          userProfile.userImg,
-                          width: userImgLargeWidth,
-                          height: userImgLargeHeight,
-                          fit: BoxFit.cover,
-                          cache: true,
-                          shape: BoxShape.circle,
-                        )
-                      : ExtendedImage.asset(
-                          'assets/images/user_gray_icon.png',
-                          width: userImgLargeWidth,
-                          height: userImgLargeHeight,
-                          shape: BoxShape.circle,
-                          fit: BoxFit.cover,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                FriendProfilePage(userProfile: userProfile)),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        userProfile.userImg != ''
+                            ? ExtendedImage.network(
+                                userProfile.userImg,
+                                width: userImgLargeWidth,
+                                height: userImgLargeHeight,
+                                fit: BoxFit.cover,
+                                cache: true,
+                                shape: BoxShape.circle,
+                              )
+                            : ExtendedImage.asset(
+                                'assets/images/user_gray_icon.png',
+                                width: userImgLargeWidth,
+                                height: userImgLargeHeight,
+                                shape: BoxShape.circle,
+                                fit: BoxFit.cover,
+                              ),
+                        const SizedBox(height: 32),
+                        Text(
+                          userProfile.userName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(fontWeight: FontWeight.normal),
                         ),
-                  const SizedBox(height: 32),
-                  Text(
-                    userProfile.userName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium!
-                        .copyWith(fontWeight: FontWeight.normal),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    userProfile.userId,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: AppColorTheme.color().gray2),
+                        const SizedBox(height: 8),
+                        Text(
+                          userProfile.userId,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: AppColorTheme.color().gray2),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 16),
                   SmallColorButton(

@@ -46,46 +46,6 @@ class ProfilePage extends ConsumerWidget {
       toPostAddMsgPage(context: context, selectedTrack: spotifyTrack);
     }
 
-    //--------------------------------------------
-    //自分以外のプロフィールを参照するために仮に必要な関数
-    Future<UserProfile> getFriendProfile() async {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      final UserProfile friendProfile;
-      final emptyProfile = UserProfile(
-        uid: '',
-        userId: '',
-        userName: '',
-        userImg: '',
-        themeMusicImg: '',
-        themeMusicArtistName: '',
-        themeMusicName: '',
-        themeMusicSpotifyUrl: '',
-        themeMusicPreviewUrl: '',
-        userProfileMsg: '',
-        userSpotifyConnected: false,
-        userSignUpTimestamp: DateTime.now(),
-        userLastLoginTimestamp: DateTime.now(),
-        communityId: '',
-      );
-      try {
-        final response = await firestore
-            .collection('users')
-            .where('uid', isEqualTo: 'Vb7Zw9p9mJQERwZtlG8ORVtgdLG3')
-            .get();
-        if (response.docs.isNotEmpty) {
-          friendProfile = UserProfile.fromJson(response.docs.first.data());
-          return friendProfile;
-        } else {
-          print('該当するアカウントはありません');
-          return emptyProfile;
-        }
-      } catch (e) {
-        print('Error getting user from Firestore: $e');
-        return emptyProfile;
-      }
-    }
-    //--------------------------------------------
-
     return Scaffold(
       key: scaffoldKey,
       //ここのStreamBuilderのやつを変更する
@@ -411,26 +371,6 @@ class ProfilePage extends ConsumerWidget {
                 },
               ),
             ),
-            // ------------------------------------------------------------- //
-            // 自分以外のプロフィール画面を開発するために追加した仮のボタン
-            // アカウント検索機能が完成したら、任意のアカウントをタップして
-            // FriendProfilePageに飛べるようにする
-            OutlinedButton(
-              onPressed: () {
-                getFriendProfile().then((friendProfile) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FriendProfilePage(
-                        userProfile: friendProfile,
-                      ),
-                    ),
-                  );
-                });
-              },
-              child: const Text('Temporary Button for Friend\'s Profile'),
-            ),
-            // ------------------------------------------------------------- //
           ],
         ),
       ),
