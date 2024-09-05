@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/edit_profile/edit_user_id_page.dart';
 import 'package:putone/view/edit_profile/edit_user_name_page.dart';
+import 'package:putone/view/home/user_search_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
@@ -115,15 +117,13 @@ void toSelectCommunityPage({
       ),
     );
 
-void toProfilePage({required BuildContext context, required WidgetRef ref}) {
-  final LocalDatabaseViewModel localDatabaseViewModel =
-      LocalDatabaseViewModel();
-  localDatabaseViewModel.setRef(ref);
+void toProfilePage({
+  required BuildContext context,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: ((context) =>
-          ProfilePage(database: localDatabaseViewModel.appDatabase!)),
+      builder: ((context) => const ProfilePage()),
     ),
   );
 }
@@ -168,3 +168,25 @@ void toEditUserIdPage({required BuildContext context}) => Navigator.push(
         builder: ((context) => const EditUserIdPage()),
       ),
     );
+
+void toAfterSignInPage({
+  required BuildContext context,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => const AfterSignInPage()),
+    ),
+  );
+}
+
+void toUserSearchPage({
+  required BuildContext context,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => const UserSearchPage()),
+    ),
+  );
+}

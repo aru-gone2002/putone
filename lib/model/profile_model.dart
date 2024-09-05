@@ -1,18 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drift/drift.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,7 +24,7 @@ class ProfileModel {
   Future<XFile> getImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50, maxWidth: 100);
+        source: ImageSource.gallery, imageQuality: 100, maxWidth: 400);
     return image!;
   }
 
@@ -60,8 +55,6 @@ class ProfileModel {
         .child("users")
         .child(uid)
         .child(fileName);
-    print('uid(uploadProfileImgAndGetURL):$uid');
-    print('uid(model):${auth.currentUser!.uid}');
     await storageRef.putFile(profileImgFile);
     return await storageRef.getDownloadURL();
   }
@@ -121,6 +114,20 @@ class ProfileModel {
           .collection('users')
           .doc(uid)
           .update({'userId': newUserId});
+    } catch (e) {
+      print('Error update userId in Firestore: $e');
+    }
+  }
+
+  Future<void> updateFirestoreUserImg({
+    required String uid,
+    required String newUserImg,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .update({'userImg': newUserImg});
     } catch (e) {
       print('Error update userId in Firestore: $e');
     }

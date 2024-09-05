@@ -14,6 +14,7 @@ import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/spotify_view_model.dart';
@@ -21,10 +22,7 @@ import 'package:putone/view_model/spotify_view_model.dart';
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({
     super.key,
-    required this.database,
   });
-
-  final AppDatabase database;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,11 +30,14 @@ class ProfilePage extends ConsumerWidget {
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final PostViewModel postViewModel = PostViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
+    final LocalDatabaseViewModel localDatabaseViewModel =
+        LocalDatabaseViewModel();
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
+    localDatabaseViewModel.setRef(ref);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
@@ -105,7 +106,8 @@ class ProfilePage extends ConsumerWidget {
               ),
               height: 200,
               child: StreamBuilder<Object>(
-                  stream: database.watchAllLocalUserProfiles(),
+                  stream: localDatabaseViewModel.appDatabase!
+                      .watchAllLocalUserProfiles(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -385,10 +387,10 @@ class ProfilePage extends ConsumerWidget {
             ),
 
             //投稿表示画面
-            //TODO
             Expanded(
               child: StreamBuilder<Object>(
-                stream: database.watchAllLocalUserPosts(),
+                stream: localDatabaseViewModel.appDatabase!
+                    .watchAllLocalUserPosts(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -432,7 +434,7 @@ class ProfilePage extends ConsumerWidget {
           ],
         ),
       ),
-      endDrawer: ProfileDrawer(database: database),
+      endDrawer: ProfileDrawer(database: localDatabaseViewModel.appDatabase!),
       floatingActionButton: FloatingActionButton(
         //投稿ページに飛ぶようにする
         onPressed: () async {

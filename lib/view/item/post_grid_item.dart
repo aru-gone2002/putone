@@ -1,8 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
-import 'package:putone/data/post/post.dart';
 import 'package:putone/local_database.dart';
 
 class PostGridItem extends StatelessWidget {
@@ -17,6 +15,7 @@ class PostGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //投稿のGridViewの横の長さを計算
     var size = MediaQuery.of(context).size;
     //投稿のGridViewの横の長さを計算
     final double postGridItemWidth =
