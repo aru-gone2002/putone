@@ -5,6 +5,7 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/view/item/post_grid_item.dart';
 import 'package:putone/view/module_page/post_detail_page.dart';
+import 'package:putone/view/posting/post_list_view.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class PostGridView extends ConsumerWidget {
@@ -25,7 +26,13 @@ class PostGridView extends ConsumerWidget {
     void onPostTap(LocalUserPost post) {
       // 新しいviewへの遷移処理
       Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => PostDetailView(post: post)));
+        MaterialPageRoute(
+          builder: (context) => PostListView(
+            initialPostId: post.postId,
+            uid: post.uid,
+          ),
+        ),
+      );
     }
 
     return Padding(
