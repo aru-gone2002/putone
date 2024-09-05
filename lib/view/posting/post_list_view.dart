@@ -19,17 +19,11 @@ class PostListView extends ConsumerStatefulWidget {
 }
 
 class _PostListViewState extends ConsumerState<PostListView> {
-  // late PageController _pageController;
-  // final PostModel _postModel = PostModel();
-  // final Map<String, Post> _postMap = {};
-  // final Map<int, AudioPlayer> _audioPlayers = {};
-  // AudioPlayer? _currentPlayer;
-  // int _currentIndex = -1;
-
   late PageController _pageController;
   final PostModel _postModel = PostModel();
   AudioPlayer _audioPlayer = AudioPlayer(); // 共通のAudioPlayer
   int _currentIndex = -1;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -47,8 +41,15 @@ class _PostListViewState extends ConsumerState<PostListView> {
       final targetIndex = initialIndex != -1 ? initialIndex : 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _pageController.jumpToPage(targetIndex);
-        // _initAudioPlayer(targetIndex, posts[targetIndex].postMusicPreviewUrl);
         _playAudioForPost(targetIndex);
+      });
+      setState(() {
+        _currentIndex = targetIndex;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
       });
     }
   }
@@ -67,36 +68,10 @@ class _PostListViewState extends ConsumerState<PostListView> {
       print("Error playing audio: $e");
     }
   }
-  // Future<void> _initAudioPlayer(int index, String url) async {
-  //   // 現在のプレイヤーを停止して新しいプレイヤーを初期化
-  //   await _currentPlayer?.pause();
-  //   await _currentPlayer?.dispose();
-
-  //   if (!_audioPlayers.containsKey(index)) {
-  //     _currentPlayer = AudioPlayer();
-  //     await _currentPlayer!.setUrl(url);
-  //     await _currentPlayer!.setLoopMode(LoopMode.all);
-  //     _audioPlayers[index] = _currentPlayer!;
-  //   }
-  //   _currentPlayer = _audioPlayers[index];
-  //   await _currentPlayer!.play();
-  //   _currentIndex = index;
-  //   // _currentIndex = index;
-  //   // _audioPlayers[index]?.play();
-  // }
 
   @override
   void dispose() {
-    // _pageController.dispose();
-    // for (var player in _audioPlayers.values) {
-    //   player.dispose();
-    // }
-    // super.dispose();
     _pageController.dispose();
-    // _currentPlayer?.dispose();
-    // for (var player in _audioPlayers.values) {
-    //   player.dispose();
-    // }
     _audioPlayer.dispose(); // 共通のプレイヤーを解放
     super.dispose();
   }
@@ -105,6 +80,12 @@ class _PostListViewState extends ConsumerState<PostListView> {
   Widget build(BuildContext context) {
     final posts = ref.watch(postsProvider);
 
+    // 投稿がロードされるまでローディング画面を表示
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
         body: PageView.builder(
       scrollDirection: Axis.vertical,
@@ -117,9 +98,6 @@ class _PostListViewState extends ConsumerState<PostListView> {
           audioPlayer: _audioPlayer, // 共通のAudioPlayerを渡す
           isCurrentPage: index == _currentIndex,
           onInit: () async {
-            // if (index != _currentIndex) {
-            //   await _initAudioPlayer(index, post.postMusicPreviewUrl);
-            // }
             if (index != _currentIndex) {
               await _playAudioForPost(index); // ページ切り替え時に音楽を再生
             }
@@ -127,9 +105,6 @@ class _PostListViewState extends ConsumerState<PostListView> {
         );
       },
       onPageChanged: (index) async {
-        // ref.read(postProvider.notifier).state = posts[index];
-        // await _audioPlayers[_currentIndex]?.pause();
-        // await _initAudioPlayer(index, posts[index].postMusicPreviewUrl);
         await _playAudioForPost(index);
       },
     ));
