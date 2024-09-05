@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/profile/friend_profile_page.dart';
@@ -42,6 +44,46 @@ class ProfilePage extends ConsumerWidget {
     Future<void> createPostFunction(SpotifyTrack spotifyTrack) async {
       toPostAddMsgPage(context: context, selectedTrack: spotifyTrack);
     }
+
+    //--------------------------------------------
+    //自分以外のプロフィールを参照するために仮に必要な関数
+    Future<UserProfile> getFriendProfile() async {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final UserProfile friendProfile;
+      final emptyProfile = UserProfile(
+        uid: '',
+        userId: '',
+        userName: '',
+        userImg: '',
+        themeMusicImg: '',
+        themeMusicArtistName: '',
+        themeMusicName: '',
+        themeMusicSpotifyUrl: '',
+        themeMusicPreviewUrl: '',
+        userProfileMsg: '',
+        userSpotifyConnected: false,
+        userSignUpTimestamp: DateTime.now(),
+        userLastLoginTimestamp: DateTime.now(),
+        communityId: '',
+      );
+      try {
+        final response = await firestore
+            .collection('users')
+            .where('uid', isEqualTo: 'Vb7Zw9p9mJQERwZtlG8ORVtgdLG3')
+            .get();
+        if (response.docs.isNotEmpty) {
+          friendProfile = UserProfile.fromJson(response.docs.first.data());
+          return friendProfile;
+        } else {
+          print('該当するアカウントはありません');
+          return emptyProfile;
+        }
+      } catch (e) {
+        print('Error getting user from Firestore: $e');
+        return emptyProfile;
+      }
+    }
+    //--------------------------------------------
 
     return Scaffold(
       key: scaffoldKey,
@@ -373,12 +415,16 @@ class ProfilePage extends ConsumerWidget {
             // FriendProfilePageに飛べるようにする
             OutlinedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const FriendProfilePage(
-                          uid: '63Dhc8HQJzbqiQ9X0wKxewiGSrt2')),
-                );
+                getFriendProfile().then((friendProfile) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FriendProfilePage(
+                        userProfile: friendProfile,
+                      ),
+                    ),
+                  );
+                });
               },
               child: const Text('Temporary Button for Friend\'s Profile'),
             ),
