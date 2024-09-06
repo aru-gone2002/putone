@@ -30,6 +30,7 @@ const String editCommunityAppBarTitle = 'コミュニティの変更';
 const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 const String homePageAppbarTitle = 'PuTone';
 const String userSearchPageAppbarTitle = 'ユーザー検索';
+const String artistFollowPageAppbarTitle = 'アーティスト';
 
 //label
 const String emailAddressLabel = "メールアドレス";
