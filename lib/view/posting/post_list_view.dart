@@ -45,13 +45,11 @@ class _PostListViewState extends ConsumerState<PostListView> {
       });
       setState(() {
         _currentIndex = targetIndex;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
       });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _playAudioForPost(int index) async {
@@ -63,6 +61,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
       await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       _audioPlayer.play(); // 再生
+
       _currentIndex = index;
     } catch (e) {
       print("Error playing audio: $e");
@@ -87,26 +86,54 @@ class _PostListViewState extends ConsumerState<PostListView> {
       );
     }
     return Scaffold(
-        body: PageView.builder(
-      scrollDirection: Axis.vertical,
-      controller: _pageController,
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        final post = posts[index];
-        return PostDetailView(
-          post: post,
-          audioPlayer: _audioPlayer, // 共通のAudioPlayerを渡す
-          isCurrentPage: index == _currentIndex,
-          onInit: () async {
-            if (index != _currentIndex) {
-              await _playAudioForPost(index); // ページ切り替え時に音楽を再生
+        //     body: PageView.builder(
+        //   scrollDirection: Axis.vertical,
+        //   controller: _pageController,
+        //   itemCount: posts.length,
+        //   itemBuilder: (context, index) {
+        //     final post = posts[index];
+        //     return PostDetailView(
+        //       post: post,
+        //       audioPlayer: _audioPlayer, // 共通のAudioPlayerを渡す
+        //       isCurrentPage: index == _currentIndex,
+        //       onInit: () async {
+        //         if (index != _currentIndex) {
+        //           await _playAudioForPost(index); // ページ切り替え時に音楽を再生
+        //         }
+        //       },
+        //     );
+        //   },
+        //   onPageChanged: (index) async {
+        //     await _playAudioForPost(index);
+        //   },
+        // ));
+        body: NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification notification) {
+        if (notification.depth == 0) {
+          if (notification is ScrollUpdateNotification) {
+            final PageMetrics metrics = notification.metrics as PageMetrics;
+            final int currentPage = metrics.page!.round();
+            if (currentPage != _currentIndex) {
+              _playAudioForPost(currentPage);
             }
-          },
-        );
+          }
+        }
+        return false;
       },
-      onPageChanged: (index) async {
-        await _playAudioForPost(index);
-      },
+      child: PageView.builder(
+        scrollDirection: Axis.vertical,
+        controller: _pageController,
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          final post = posts[index];
+          return PostDetailView(
+            post: post,
+            audioPlayer: _audioPlayer,
+            isCurrentPage: index == _currentIndex,
+            onInit: () {}, // onInitは不要になります
+          );
+        },
+      ),
     ));
   }
 }
