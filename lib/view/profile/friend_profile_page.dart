@@ -22,10 +22,8 @@ class FriendProfilePage extends ConsumerStatefulWidget {
 }
 
 class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
-  // --------------------------
   // フォローボタン変化の仮実装用
   bool isFollowing = false;
-  // --------------------------
 
   @override
   void initState() {
@@ -37,22 +35,29 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     final FollowViewModel followViewModel = FollowViewModel();
 
-    followViewModel
-        .isFollowing(uid: widget.userProfile.uid)
-        .then((value) => isFollowing = value);
+    followViewModel.isFollowing(uid: widget.userProfile.uid).then((value) {
+      setState() {
+        isFollowing = value;
+      }
+    });
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
     void pressedFollowButton() {
-      setState() {
-        if (isFollowing) {
-          followViewModel.unfollowUser(uid: widget.userProfile.uid);
+      final String uid = widget.userProfile.uid;
+      if (isFollowing) {
+        followViewModel.unfollowUser(uid: uid);
+        print('Unfollow: $uid');
+        setState(() {
           isFollowing = false;
-        } else {
-          followViewModel.followUser(uid: widget.userProfile.uid);
+        });
+      } else {
+        followViewModel.followUser(uid: uid);
+        print('Follow: $uid');
+        setState(() {
           isFollowing = true;
-        }
+        });
       }
     }
 
@@ -249,7 +254,6 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       pressedFollowButton();
-                      print('Pressed follow button.');
                     },
                     label: Text((!isFollowing) ? 'フォロー' : 'フォロー中'),
                     style: ElevatedButton.styleFrom(

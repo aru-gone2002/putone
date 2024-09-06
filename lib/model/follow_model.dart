@@ -11,7 +11,7 @@ class FollowModel {
   }) async {
     final myProfile = auth.currentUser;
     final Map<String, dynamic> followingUserUid = {'uid': uid};
-    await firestore
+    final response = await firestore
         .collection('users')
         .doc(myProfile!.uid)
         .collection('followings')
@@ -42,6 +42,7 @@ class FollowModel {
           .collection('followings')
           .doc(uid)
           .get();
+      // print('from model: ${followingUser.exists}');
       return followingUser.exists;
     } catch (e) {
       rethrow;
