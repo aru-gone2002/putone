@@ -6,6 +6,7 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:extended_image/extended_image.dart';
 
@@ -34,13 +35,26 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
   @override
   Widget build(BuildContext context) {
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
+    final FollowViewModel followViewModel = FollowViewModel();
+
+    followViewModel
+        .isFollowing(uid: widget.userProfile.uid)
+        .then((value) => isFollowing = value);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
-    // Firestoreからプロフィール情報を取得する
-    //print(widget.uid);
-    //print(profileViewModel.userId);
+    void pressedFollowButton() {
+      setState() {
+        if (isFollowing) {
+          followViewModel.unfollowUser(uid: widget.userProfile.uid);
+          isFollowing = false;
+        } else {
+          followViewModel.followUser(uid: widget.userProfile.uid);
+          isFollowing = true;
+        }
+      }
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -234,7 +248,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                   alignment: const Alignment(0.9, -0.9),
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      setState(() => isFollowing = !isFollowing);
+                      pressedFollowButton();
                       print('Pressed follow button.');
                     },
                     label: Text((!isFollowing) ? 'フォロー' : 'フォロー中'),
