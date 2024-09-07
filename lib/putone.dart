@@ -11,6 +11,7 @@ import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -27,10 +28,12 @@ class PuTone extends ConsumerWidget {
     final PostViewModel postViewModel = PostViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
+    final FollowViewModel followViewModel = FollowViewModel();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
+    followViewModel.setRef(ref);
 
     return MaterialApp(
       title: 'PuTone',
@@ -88,6 +91,8 @@ class PuTone extends ConsumerWidget {
                   postViewModel.insertPostsToList(
                     postViewModel.changeLocalUserPoststoPosts(localUserPosts),
                   );
+                  //フォロー中のユーザーを取得し、providerに追加。
+                  await followViewModel.getFollowingUsers();
                 });
 
                 //手渡しでAppDatabaseのインスタンスを渡す

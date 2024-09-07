@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +7,10 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';

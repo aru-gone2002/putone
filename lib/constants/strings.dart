@@ -15,6 +15,7 @@ const String postBtnText = '投稿';
 const String editBtnText = '編集';
 const String changeBtnText = '変更';
 const String followBtnText = 'フォロー';
+const String followingBtnText = 'フォロー中';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
