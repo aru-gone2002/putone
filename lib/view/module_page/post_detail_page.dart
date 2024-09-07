@@ -115,79 +115,95 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
             ),
           ),
           // メインコンテンツ
-          GestureDetector(
-            onTap: _togglePlayPause,
-            child: SafeArea(
-              child: Column(
-                children: [
-                  // audio player bar (横いっぱいに広がる)
-                  SizedBox(height: 8), // 上部に余白を追加
-                  AudioPlayerBar(
-                    audioPlayer: widget.audioPlayer,
-                  ),
-                  SizedBox(height: 8), // 下部に余白を追加
-                  Expanded(
+          SafeArea(
+            child: Column(
+              children: [
+                // AudioPlayerBar
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: AudioPlayerBar(audioPlayer: widget.audioPlayer),
+                ),
+                // メインコンテンツ
+                Expanded(
+                  child: GestureDetector(
+                    onTap: _togglePlayPause,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
                         children: [
                           // 投稿者情報
                           PostUserInfo(
-                              uid: widget.post.uid,
-                              postTimestamp: widget.post.postTimestamp),
+                            uid: widget.post.uid,
+                            postTimestamp: widget.post.postTimestamp,
+                          ),
+                          // 中央のコンテンツ
                           Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 60),
-                                Image.network(widget.post.postMusicImg),
-                                SizedBox(height: 20),
-                                Text(
-                                  widget.post.postMusicArtistName,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: AppColorTheme.color().gray3,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  widget.post.postMusicName,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                        color: AppColorTheme.color().gray3,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(height: 20),
-                                // コメント（スクロール可能）
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Text(
-                                      widget.post.postMsg,
-                                      style: TextStyle(color: Colors.white),
-                                      textAlign: TextAlign.center,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // 音楽アートワーク
+                                  Flexible(
+                                    flex: 3,
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Image.network(
+                                          widget.post.postMusicImg),
                                     ),
                                   ),
+                                  SizedBox(height: 20),
+                                  // アーティスト名
+                                  Text(
+                                    widget.post.postMusicArtistName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: AppColorTheme.color().gray3,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  // 曲名
+                                  Text(
+                                    widget.post.postMusicName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                          color: AppColorTheme.color().gray3,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 20),
+                                  // コメント
+                                  Flexible(
+                                    flex: 2,
+                                    child: SingleChildScrollView(
+                                      child: Text(
+                                        widget.post.postMsg,
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // 下部のボタン
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                LikeButton(
+                                  postId: widget.post.postId,
+                                  postOwnerId: widget.post.uid,
                                 ),
-                                SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    LikeButton(
-                                      postId: widget.post.postId,
-                                      postOwnerId: widget.post.uid,
-                                    ),
-                                    SizedBox(width: 20),
-                                    SpotifyButton(
-                                      spotifyUrl:
-                                          widget.post.postMusicSpotifyUrl,
-                                    ),
-                                  ],
+                                SizedBox(width: 20),
+                                SpotifyButton(
+                                  spotifyUrl: widget.post.postMusicSpotifyUrl,
                                 ),
                               ],
                             ),
@@ -196,8 +212,8 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

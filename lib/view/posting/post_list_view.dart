@@ -58,9 +58,10 @@ class _PostListViewState extends ConsumerState<PostListView> {
     final post = posts[index];
 
     try {
+      await _audioPlayer.stop(); // 既存の再生を停止
       await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
-      _audioPlayer.play(); // 再生
+      await _audioPlayer.play(); // 再生
 
       _currentIndex = index;
     } catch (e) {

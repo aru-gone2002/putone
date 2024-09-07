@@ -11,14 +11,22 @@ class AudioPlayerBar extends StatelessWidget {
     return StreamBuilder<Duration>(
       stream: audioPlayer.positionStream,
       builder: (context, snapshot) {
-        final position = snapshot.data;
-        final duration = audioPlayer.duration;
-        if (position != null && duration != null) {
+        final position = snapshot.data ?? Duration.zero;
+        final duration = audioPlayer.duration ?? Duration.zero;
+
+        // ゼロ除算を防ぐ
+        final progress = duration.inMilliseconds > 0
+            ? position.inMilliseconds / duration.inMilliseconds
+            : 0.0;
+
+        // progressが0.0から1.0の範囲内にあることを確認
+        final clampedProgress = progress.clamp(0.0, 1.0);
+        if (clampedProgress != null) {
           return Column(
             children: [
               SizedBox(height: 10), // Add some spacing here
               LinearProgressIndicator(
-                value: position.inMilliseconds / duration.inMilliseconds,
+                value: clampedProgress,
                 minHeight: 3,
                 backgroundColor: AppColorTheme.color().gray3,
                 valueColor: AlwaysStoppedAnimation<Color>(
