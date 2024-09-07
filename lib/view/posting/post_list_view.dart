@@ -58,14 +58,20 @@ class _PostListViewState extends ConsumerState<PostListView> {
     final post = posts[index];
 
     try {
-      await _audioPlayer.stop(); // 既存の再生を停止
+      // _audioPlayer.stop(); // 既存の再生を停止
       await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
-      await _audioPlayer.play(); // 再生
-
+      _audioPlayer.play(); // 再生
+      setState(() => _currentIndex = index);
       _currentIndex = index;
     } catch (e) {
       print("Error playing audio: $e");
+      if (e is PlayerException) {
+        if (e.code == 'abort') {
+          await Future.delayed(Duration(seconds: 1));
+          return _playAudioForPost(index);
+        }
+      }
     }
   }
 
@@ -87,27 +93,6 @@ class _PostListViewState extends ConsumerState<PostListView> {
       );
     }
     return Scaffold(
-        //     body: PageView.builder(
-        //   scrollDirection: Axis.vertical,
-        //   controller: _pageController,
-        //   itemCount: posts.length,
-        //   itemBuilder: (context, index) {
-        //     final post = posts[index];
-        //     return PostDetailView(
-        //       post: post,
-        //       audioPlayer: _audioPlayer, // 共通のAudioPlayerを渡す
-        //       isCurrentPage: index == _currentIndex,
-        //       onInit: () async {
-        //         if (index != _currentIndex) {
-        //           await _playAudioForPost(index); // ページ切り替え時に音楽を再生
-        //         }
-        //       },
-        //     );
-        //   },
-        //   onPageChanged: (index) async {
-        //     await _playAudioForPost(index);
-        //   },
-        // ));
         body: NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification notification) {
         if (notification.depth == 0) {
