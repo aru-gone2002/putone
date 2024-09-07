@@ -9,6 +9,7 @@ import 'package:putone/constants/validators.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
 import 'package:putone/view/item/circular_button.dart';
@@ -111,11 +112,14 @@ class UserSearchPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  SmallColorButton(
-                    btntext: followBtnText,
-                    onPressed: () {},
-                    backgroundColor: AppColorTheme.color().accentColor,
+                  FollowButton(isFollowing: 
+                  
                   ),
+                  // SmallColorButton(
+                  //   btntext: followBtnText,
+                  //   onPressed: () {},
+                  //   backgroundColor: AppColorTheme.color().accentColor,
+                  // ),
                 ],
               ),
             ),

@@ -44,10 +44,10 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
-    void pressedFollowButton() {
+    Future<void> pressedFollowButton() async {
       final String uid = widget.userProfile.uid;
       if (isFollowing) {
-        followViewModel.unfollowUser(uid: uid);
+        await followViewModel.unfollowUser(uid: uid);
         print('Unfollow: $uid');
         setState(() {
           isFollowing = false;
@@ -252,8 +252,8 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 Align(
                   alignment: const Alignment(0.9, -0.9),
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      pressedFollowButton();
+                    onPressed: () async {
+                      await pressedFollowButton();
                     },
                     label: Text((!isFollowing) ? 'フォロー' : 'フォロー中'),
                     style: ElevatedButton.styleFrom(

@@ -52,7 +52,8 @@ service cloud.firestore {
 
           match /followings/{followingUid} {
             allow read: if isAuthenticated();
-            allow create, delete: if isUserAuthenticated(uid);
+            allow create: if isUserAuthenticated(uid);
+            allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
           }
 
           match /posts/{postId} {

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
+import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 
 class FollowModel {
@@ -46,6 +48,33 @@ class FollowModel {
       return followingUser.exists;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<dynamic> getFollowingUsers({
+    required String followingUid,
+  }) async {
+    try {
+      final List<FollowingUser> followingUsers = [];
+      final response = await firestore
+          .collection('users')
+          .doc(followingUid)
+          .collection('followings')
+          .get();
+
+      if (response.docs.isEmpty) {
+        return 'no-following-user';
+      } else {
+        //docsの中身を展開して、FollowingUser型に変換する
+        for (var doc in response.docs) {
+          final followingUser = FollowingUser.fromJson(doc.data());
+          followingUsers.add(followingUser);
+        }
+        return followingUsers;
+      }
+    } catch (e) {
+      print('Fail to get following users');
+      return 'Fail to get following users';
     }
   }
 }
