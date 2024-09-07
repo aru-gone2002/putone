@@ -12,7 +12,7 @@ part 'followed_user.g.dart';
 class FollowedUser with _$FollowedUser {
   const factory FollowedUser({
     required String uid,
-    required String followedUserId,
+    required String followedUid,
   }) = _FollowedUser;
 
   factory FollowedUser.fromJson(Map<String, Object?> json) =>

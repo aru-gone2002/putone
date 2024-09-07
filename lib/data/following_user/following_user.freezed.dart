@@ -21,7 +21,7 @@ FollowingUser _$FollowingUserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FollowingUser {
   String get uid => throw _privateConstructorUsedError;
-  String get followingUserId => throw _privateConstructorUsedError;
+  String get followingUid => throw _privateConstructorUsedError;
 
   /// Serializes this FollowingUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $FollowingUserCopyWith<$Res> {
           FollowingUser value, $Res Function(FollowingUser) then) =
       _$FollowingUserCopyWithImpl<$Res, FollowingUser>;
   @useResult
-  $Res call({String uid, String followingUserId});
+  $Res call({String uid, String followingUid});
 }
 
 /// @nodoc
@@ -58,16 +58,16 @@ class _$FollowingUserCopyWithImpl<$Res, $Val extends FollowingUser>
   @override
   $Res call({
     Object? uid = null,
-    Object? followingUserId = null,
+    Object? followingUid = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      followingUserId: null == followingUserId
-          ? _value.followingUserId
-          : followingUserId // ignore: cast_nullable_to_non_nullable
+      followingUid: null == followingUid
+          ? _value.followingUid
+          : followingUid // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -81,7 +81,7 @@ abstract class _$$FollowingUserImplCopyWith<$Res>
       __$$FollowingUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String followingUserId});
+  $Res call({String uid, String followingUid});
 }
 
 /// @nodoc
@@ -98,16 +98,16 @@ class __$$FollowingUserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? followingUserId = null,
+    Object? followingUid = null,
   }) {
     return _then(_$FollowingUserImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      followingUserId: null == followingUserId
-          ? _value.followingUserId
-          : followingUserId // ignore: cast_nullable_to_non_nullable
+      followingUid: null == followingUid
+          ? _value.followingUid
+          : followingUid // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -118,7 +118,7 @@ class __$$FollowingUserImplCopyWithImpl<$Res>
 class _$FollowingUserImpl
     with DiagnosticableTreeMixin
     implements _FollowingUser {
-  const _$FollowingUserImpl({required this.uid, required this.followingUserId});
+  const _$FollowingUserImpl({required this.uid, required this.followingUid});
 
   factory _$FollowingUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$FollowingUserImplFromJson(json);
@@ -126,11 +126,11 @@ class _$FollowingUserImpl
   @override
   final String uid;
   @override
-  final String followingUserId;
+  final String followingUid;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FollowingUser(uid: $uid, followingUserId: $followingUserId)';
+    return 'FollowingUser(uid: $uid, followingUid: $followingUid)';
   }
 
   @override
@@ -139,7 +139,7 @@ class _$FollowingUserImpl
     properties
       ..add(DiagnosticsProperty('type', 'FollowingUser'))
       ..add(DiagnosticsProperty('uid', uid))
-      ..add(DiagnosticsProperty('followingUserId', followingUserId));
+      ..add(DiagnosticsProperty('followingUid', followingUid));
   }
 
   @override
@@ -148,13 +148,13 @@ class _$FollowingUserImpl
         (other.runtimeType == runtimeType &&
             other is _$FollowingUserImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.followingUserId, followingUserId) ||
-                other.followingUserId == followingUserId));
+            (identical(other.followingUid, followingUid) ||
+                other.followingUid == followingUid));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, followingUserId);
+  int get hashCode => Object.hash(runtimeType, uid, followingUid);
 
   /// Create a copy of FollowingUser
   /// with the given fields replaced by the non-null parameter values.
@@ -175,7 +175,7 @@ class _$FollowingUserImpl
 abstract class _FollowingUser implements FollowingUser {
   const factory _FollowingUser(
       {required final String uid,
-      required final String followingUserId}) = _$FollowingUserImpl;
+      required final String followingUid}) = _$FollowingUserImpl;
 
   factory _FollowingUser.fromJson(Map<String, dynamic> json) =
       _$FollowingUserImpl.fromJson;
@@ -183,7 +183,7 @@ abstract class _FollowingUser implements FollowingUser {
   @override
   String get uid;
   @override
-  String get followingUserId;
+  String get followingUid;
 
   /// Create a copy of FollowingUser
   /// with the given fields replaced by the non-null parameter values.

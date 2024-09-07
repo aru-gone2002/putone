@@ -3,66 +3,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view_model/follow_view_model.dart';
+import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:extended_image/extended_image.dart';
 
-class FriendProfilePage extends ConsumerStatefulWidget {
+class FriendProfilePage extends StatelessWidget {
   const FriendProfilePage({super.key, required this.userProfile});
 
   final UserProfile userProfile;
 
   @override
-  ConsumerState<FriendProfilePage> createState() {
-    return FriendProfilePageState();
-  }
-}
-
-class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
-  // フォローボタン変化の仮実装用
-  bool isFollowing = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
-    final FollowViewModel followViewModel = FollowViewModel();
-
-    followViewModel.isFollowing(uid: widget.userProfile.uid).then((value) {
-      setState() {
-        isFollowing = value;
-      }
-    });
+    final ProfileViewModel profileViewModel = ProfileViewModel();
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
-    Future<void> pressedFollowButton() async {
-      final String uid = widget.userProfile.uid;
-      if (isFollowing) {
-        await followViewModel.unfollowUser(uid: uid);
-        print('Unfollow: $uid');
-        setState(() {
-          isFollowing = false;
-        });
-      } else {
-        followViewModel.followUser(uid: uid);
-        print('Follow: $uid');
-        setState(() {
-          isFollowing = true;
-        });
-      }
-    }
-
     return Scaffold(
-      key: scaffoldKey,
       body: Column(
         children: [
           // ヘッダー
@@ -89,7 +49,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 Align(
                   alignment: const Alignment(0, 0.6),
                   child: Text(
-                    widget.userProfile.userName,
+                    userProfile.userName,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -130,9 +90,9 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        (widget.userProfile.themeMusicImg != '')
+                        (userProfile.themeMusicImg != '')
                             ? ExtendedImage.network(
-                                widget.userProfile.themeMusicImg,
+                                userProfile.themeMusicImg,
                                 height: favoriteMusicImgHeight,
                                 width: favoriteMusicImgWidth,
                                 fit: BoxFit.cover,
@@ -153,8 +113,8 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                (widget.userProfile.themeMusicName != '')
-                                    ? widget.userProfile.themeMusicName
+                                (userProfile.themeMusicName != '')
+                                    ? userProfile.themeMusicName
                                     : themeSongIsNotSelectedText,
                                 style: Theme.of(context)
                                     .textTheme
@@ -167,8 +127,8 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                                 maxLines: 1,
                               ),
                               Text(
-                                (widget.userProfile.themeMusicArtistName != '')
-                                    ? widget.userProfile.themeMusicArtistName
+                                (userProfile.themeMusicArtistName != '')
+                                    ? userProfile.themeMusicArtistName
                                     : askToSettingThemeSongText,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -192,7 +152,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          widget.userProfile.userName,
+                          userProfile.userName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
@@ -201,7 +161,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '@${widget.userProfile.userId}',
+                          '@${userProfile.userId}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -212,9 +172,9 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 ),
                 Align(
                   alignment: const Alignment(0, 0),
-                  child: (widget.userProfile.userImg != '')
+                  child: (userProfile.userImg != '')
                       ? ExtendedImage.network(
-                          widget.userProfile.userImg,
+                          userProfile.userImg,
                           width: profileImgSize,
                           height: profileImgSize,
                           fit: BoxFit.cover,
@@ -251,38 +211,23 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 // フォローボタン
                 Align(
                   alignment: const Alignment(0.9, -0.9),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      await pressedFollowButton();
-                    },
-                    label: Text((!isFollowing) ? 'フォロー' : 'フォロー中'),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(100, 6),
-                      backgroundColor: (!isFollowing)
-                          ? AppColorTheme.color().accentColor
-                          : AppColorTheme.color().gray1,
-                      foregroundColor: Colors.white,
-                      textStyle:
-                          Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  child: Consumer(builder: (context, ref, _) {
+                    profileViewModel.setRef(ref);
+                    return FollowButton(
+                      followingUser: FollowingUser(
+                        uid: profileViewModel.uid,
+                        followingUid: userProfile.uid,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 2,
-                      ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
                 Align(
                   alignment: const Alignment(0.95, 0),
                   child: SizedBox(
                     width: sideProfileWidth,
                     child: Text(
-                      (widget.userProfile.userProfileMsg != '')
-                          ? widget.userProfile.userProfileMsg
+                      (userProfile.userProfileMsg != '')
+                          ? userProfile.userProfileMsg
                           : notRegisteredProfileMsgText,
                       overflow: TextOverflow.clip,
                       textAlign: TextAlign.center,

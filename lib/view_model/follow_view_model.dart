@@ -17,21 +17,37 @@ class FollowViewModel {
     _ref.read(followingUsersProvider.notifier).state = value;
   }
 
-  Future<void> followUser({required String uid}) async {
-    await _followModel.addUserToFollowings(uid: uid);
+  void addFollowingUser(FollowingUser value) {
+    _ref.read(followingUsersProvider.notifier).state = [
+      ...followingUsers,
+      value,
+    ];
   }
 
-  Future<void> unfollowUser({required String uid}) async {
-    await _followModel.deleteUserFromFollowings(uid: uid);
+  void deleteFollowingUser(String value) {
+    _ref.read(followingUsersProvider.notifier).state = [
+      ...followingUsers
+          .where((followingUser) => followingUser.followingUid != value)
+          .toList(),
+    ];
+  }
+
+  Future<void> followUser({required FollowingUser followingUser}) async {
+    addFollowingUser(followingUser);
+    await _followModel.addUserToFollowings(followingUser: followingUser);
+  }
+
+  Future<void> unfollowUser({required String followingUid}) async {
+    deleteFollowingUser(followingUid);
+    await _followModel.deleteUserFromFollowings(followingUid: followingUid);
   }
 
   Future<bool> isFollowing({required String uid}) async {
-    return await _followModel.isFollowingUser(uid: uid);
+    return await _followModel.isFollowingUser(followingUid: '');
   }
 
-  Future<void> getFollowingUsers({required String followingUid}) async {
-    final result =
-        await _followModel.getFollowingUsers(followingUid: followingUid);
+  Future<void> getFollowingUsers() async {
+    final result = await _followModel.getFollowingUsers();
     if (result is List<FollowingUser>) {
       saveFollowingUsers(result);
     } else {
