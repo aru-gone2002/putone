@@ -17,13 +17,11 @@ class PostDetailView extends ConsumerStatefulWidget {
     required this.post,
     required this.audioPlayer,
     required this.isCurrentPage,
-    required this.onInit,
   }) : super(key: key);
 
   final Post post;
   final AudioPlayer audioPlayer;
   final bool isCurrentPage;
-  final VoidCallback onInit;
 
   @override
   ConsumerState<PostDetailView> createState() => _PostDetailViewState();
@@ -39,7 +37,6 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     super.initState();
     // 画面が開かれたら自動で再生し、画面が閉じられたら自動で停止するため
     WidgetsBinding.instance.addObserver(this);
-    widget.onInit();
   }
 
   @override
@@ -121,7 +118,10 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                 // AudioPlayerBar
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: AudioPlayerBar(audioPlayer: widget.audioPlayer),
+                  child: widget.post.postMusicPreviewUrl.isNotEmpty
+                      ? AudioPlayerBar(audioPlayer: widget.audioPlayer)
+                      : Text("No preview available",
+                          style: TextStyle(color: Colors.white)),
                 ),
                 // メインコンテンツ
                 Expanded(

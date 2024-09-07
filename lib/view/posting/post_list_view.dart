@@ -56,14 +56,20 @@ class _PostListViewState extends ConsumerState<PostListView> {
     final posts = ref.read(postsProvider);
     if (index < 0 || index >= posts.length) return; // 範囲外を防止
     final post = posts[index];
-
+    if (post.postMusicPreviewUrl.isEmpty) {
+      _audioPlayer.pause(); // 音源がない場合は再生を停止
+      setState(() => _currentIndex = index);
+    }
+    ; // 音源がない場合は再生しない
     try {
-      // _audioPlayer.stop(); // 既存の再生を停止
+      // 既存の再生を停止
+      if (_audioPlayer.playing) {
+        await _audioPlayer.pause();
+      }
       await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       _audioPlayer.play(); // 再生
       setState(() => _currentIndex = index);
-      _currentIndex = index;
     } catch (e) {
       print("Error playing audio: $e");
       if (e is PlayerException) {
@@ -116,7 +122,6 @@ class _PostListViewState extends ConsumerState<PostListView> {
             post: post,
             audioPlayer: _audioPlayer,
             isCurrentPage: index == _currentIndex,
-            onInit: () {}, // onInitは不要になります
           );
         },
       ),
