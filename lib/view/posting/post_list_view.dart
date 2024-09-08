@@ -32,10 +32,31 @@ class _PostListViewState extends ConsumerState<PostListView> {
     _loadPosts();
   }
 
-  Future<void> _loadPosts() async {
+  // Future<void> _loadPosts() async {
+  //   final posts = await _postModel.getPosterPostsByTime(widget.uid);
+  //   if (posts.isNotEmpty) {
+  //     // 自分のpostsPrividerではなく、一時的なTempPostsProviderに格納
+  //     ref.read(TempPostsProvider.notifier).state = posts;
+  //     final initialIndex =
+  //         posts.indexWhere((post) => post.postId == widget.initialPostId);
+  //     final targetIndex = initialIndex != -1 ? initialIndex : 0;
+  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       _pageController.jumpToPage(targetIndex);
+  //       _playAudioForPost(targetIndex);
+  //     });
+  //     setState(() {
+  //       _currentIndex = targetIndex;
+  //     });
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
+
+  Future<List<Post>> _loadPosts() async {
     final posts = await _postModel.getPosterPostsByTime(widget.uid);
     if (posts.isNotEmpty) {
-      ref.read(postsProvider.notifier).state = posts;
+      ref.read(TempPostsProvider.notifier).state = posts;
       final initialIndex =
           posts.indexWhere((post) => post.postId == widget.initialPostId);
       final targetIndex = initialIndex != -1 ? initialIndex : 0;
@@ -43,22 +64,19 @@ class _PostListViewState extends ConsumerState<PostListView> {
         _pageController.jumpToPage(targetIndex);
         _playAudioForPost(targetIndex);
       });
-      setState(() {
-        _currentIndex = targetIndex;
-      });
+      return posts;
     }
-    setState(() {
-      _isLoading = false;
-    });
+    return [];
   }
 
   Future<void> _playAudioForPost(int index) async {
-    final posts = ref.read(postsProvider);
+    final posts = ref.read(TempPostsProvider);
     if (index < 0 || index >= posts.length) return; // 範囲外を防止
     final post = posts[index];
-    if (post.postMusicPreviewUrl.isEmpty) {
-      _audioPlayer.pause(); // 音源がない場合は再生を停止
-      setState(() => _currentIndex = index);
+    if (post.postMusicPreviewUrl == '' || post.postMusicPreviewUrl.isEmpty) {
+      await _audioPlayer.pause(); // 音源がない場合は再生を停止
+      // setState(() => _currentIndex = index);
+      _currentIndex = index;
     }
     ; // 音源がない場合は再生しない
     try {
@@ -69,13 +87,13 @@ class _PostListViewState extends ConsumerState<PostListView> {
       await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       _audioPlayer.play(); // 再生
-      setState(() => _currentIndex = index);
+      _currentIndex = index;
     } catch (e) {
       print("Error playing audio: $e");
       if (e is PlayerException) {
         if (e.code == 'abort') {
-          await Future.delayed(Duration(seconds: 1));
-          return _playAudioForPost(index);
+          // await Future.delayed(Duration(seconds: 1));
+          // return _playAudioForPost(index);
         }
       }
     }
@@ -90,41 +108,92 @@ class _PostListViewState extends ConsumerState<PostListView> {
 
   @override
   Widget build(BuildContext context) {
-    final posts = ref.watch(postsProvider);
-
-    // 投稿がロードされるまでローディング画面を表示
-    if (_isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
     return Scaffold(
-        body: NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification notification) {
-        if (notification.depth == 0) {
-          if (notification is ScrollUpdateNotification) {
-            final PageMetrics metrics = notification.metrics as PageMetrics;
-            final int currentPage = metrics.page!.round();
-            if (currentPage != _currentIndex) {
-              _playAudioForPost(currentPage);
-            }
+      body: FutureBuilder<List<Post>>(
+        future: _loadPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
-        }
-        return false;
-      },
-      child: PageView.builder(
-        scrollDirection: Axis.vertical,
-        controller: _pageController,
-        itemCount: posts.length,
-        itemBuilder: (context, index) {
-          final post = posts[index];
-          return PostDetailView(
-            post: post,
-            audioPlayer: _audioPlayer,
-            isCurrentPage: index == _currentIndex,
+
+          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final posts = snapshot.data!;
+            return NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (notification.depth == 0) {
+                  if (notification is ScrollUpdateNotification) {
+                    final PageMetrics metrics =
+                        notification.metrics as PageMetrics;
+                    final int currentPage = metrics.page!.round();
+                    if (currentPage != _currentIndex) {
+                      _playAudioForPost(currentPage);
+                    }
+                  }
+                }
+                return false;
+              },
+              child: PageView.builder(
+                scrollDirection: Axis.vertical,
+                controller: _pageController,
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  final post = posts[index];
+                  return PostDetailView(
+                    post: post,
+                    audioPlayer: _audioPlayer,
+                    isCurrentPage: index == _currentIndex,
+                  );
+                },
+              ),
+            );
+          }
+
+          return Center(
+            child: Text("No posts available"),
           );
         },
       ),
-    ));
+    );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   final posts = ref.watch(TempPostsProvider);
+
+  //   // 投稿がロードされるまでローディング画面を表示
+  //   if (_isLoading) {
+  //     return Center(
+  //       child: CircularProgressIndicator(),
+  //     );
+  //   }
+  //   return Scaffold(
+  //       body: NotificationListener<ScrollNotification>(
+  //     onNotification: (ScrollNotification notification) {
+  //       if (notification.depth == 0) {
+  //         if (notification is ScrollUpdateNotification) {
+  //           final PageMetrics metrics = notification.metrics as PageMetrics;
+  //           final int currentPage = metrics.page!.round();
+  //           if (currentPage != _currentIndex) {
+  //             _playAudioForPost(currentPage);
+  //           }
+  //         }
+  //       }
+  //       return false;
+  //     },
+  //     child: PageView.builder(
+  //       scrollDirection: Axis.vertical,
+  //       controller: _pageController,
+  //       itemCount: posts.length,
+  //       itemBuilder: (context, index) {
+  //         final post = posts[index];
+  //         return PostDetailView(
+  //           post: post,
+  //           audioPlayer: _audioPlayer,
+  //           isCurrentPage: index == _currentIndex,
+  //         );
+  //       },
+  //     ),
+  //   ));
+  // }
 }

@@ -15,19 +15,15 @@ class PostLikeModel {
         .collection('posts')
         .doc(postId)
         .collection('postlikes');
-    final likeMap = {
-      'uid': senderUid,
-      'userName': userName,
-      'userImg': userImg,
-      'postId': postId,
-    };
+    final PostLike postLike = PostLike(
+        uid: senderUid, userName: userName, postId: postId, userImg: userImg);
     await _firestore.runTransaction((transaction) async {
       if (await postLikeRef.doc(senderUid).get().then((doc) => doc.exists)) {
         // 投稿が見つかれば削除
         await postLikeRef.doc(senderUid).delete();
       } else {
         // 投稿が見つからなければ追加
-        await postLikeRef.doc(senderUid).set(likeMap);
+        await postLikeRef.doc(senderUid).set(postLike.toJson());
       }
     });
   }
