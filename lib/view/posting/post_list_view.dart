@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:path/path.dart' as path;
 import 'package:putone/data/post/post.dart';
 import 'package:putone/model/post_model.dart';
 import 'package:putone/providers/post_provider.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:putone/view/module_page/post_detail_page.dart';
 
 class PostListView extends ConsumerStatefulWidget {
@@ -21,7 +27,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   late PageController _pageController;
   final PostModel _postModel = PostModel();
   AudioPlayer _audioPlayer = AudioPlayer(); // 共通のAudioPlayer
-  late ConcatenatingAudioSource _playlist;
+  late List<LockCachingAudioSource> _audioSources;
   int _currentIndex = -1;
   bool _isLoading = true;
 
@@ -29,7 +35,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    _playlist = ConcatenatingAudioSource(children: []);
+    _audioSources = [];
   }
 
   Future<List<Post>> _loadPosts() async {
@@ -38,11 +44,13 @@ class _PostListViewState extends ConsumerState<PostListView> {
       ref.read(TempPostsProvider.notifier).state = posts;
       final initialIndex =
           posts.indexWhere((post) => post.postId == widget.initialPostId);
+
       final targetIndex = initialIndex != -1 ? initialIndex : 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _pageController.jumpToPage(targetIndex);
         _playAudioForPost(targetIndex);
       });
+      _isLoading = false;
       return posts;
     }
     return [];
@@ -63,7 +71,10 @@ class _PostListViewState extends ConsumerState<PostListView> {
       if (_audioPlayer.playing) {
         await _audioPlayer.pause();
       }
-      await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
+      final _audioSource =
+          await LockCachingAudioSource(Uri.parse(post.postMusicPreviewUrl));
+      await _audioPlayer.setAudioSource(_audioSource);
+      // await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       await _audioPlayer.play(); // 再生
       _currentIndex = index;
@@ -75,9 +86,39 @@ class _PostListViewState extends ConsumerState<PostListView> {
     }
   }
 
+  Future<AudioSource> _getCachedAudioSource(String url) async {
+    try {
+      final cacheDir = await getTemporaryDirectory();
+      final fileName =
+          md5.convert(utf8.encode(url)).toString() + path.extension(url);
+      final file = File('${cacheDir.path}/audio_cache/$fileName');
+
+      if (await file.exists()) {
+        print("Using cached file: ${file.path}");
+        return AudioSource.uri(Uri.file(file.path));
+      } else {
+        print("Downloading file: $url");
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          await file.create(recursive: true);
+          await file.writeAsBytes(response.bodyBytes);
+          print("File cached: ${file.path}");
+          return AudioSource.uri(Uri.file(file.path));
+        } else {
+          print("Failed to download file: ${response.statusCode}");
+          return AudioSource.uri(Uri.parse(url));
+        }
+      }
+    } catch (e) {
+      print("Error in _getCachedAudioSource: $e");
+      return AudioSource.uri(Uri.parse(url));
+    }
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
+    // _audioPlayer.clear();
     _audioPlayer.dispose(); // 共通のプレイヤーを解放
     super.dispose();
   }
