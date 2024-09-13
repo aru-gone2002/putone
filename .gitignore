@@ -50,3 +50,6 @@ app.*.map.json
 .fvm/
 .fvmrc
 .vscode/
+
+# DevTools
+devtools_options.yaml
