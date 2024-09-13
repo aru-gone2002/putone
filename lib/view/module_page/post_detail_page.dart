@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:extended_image/extended_image.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/model/post_user_model.dart';
 import 'package:flutter/material.dart';
@@ -40,14 +41,14 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   }
 
   @override
-  void didUpdateWidget(PostDetailView oldWidget) {
+  Future<void> didUpdateWidget(PostDetailView oldWidget) async {
     super.didUpdateWidget(oldWidget);
     if (widget.isCurrentPage != oldWidget.isCurrentPage) {
-      _updatePlayingState();
+      await _updatePlayingState();
     }
   }
 
-  void _updatePlayingState() {
+  Future<void> _updatePlayingState() async {
     if (widget.isCurrentPage) {
       _playAudio();
     } else {
@@ -55,21 +56,17 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
     }
   }
 
-  void _playAudio() {
-    widget.audioPlayer?.play();
-    setState(() {
-      _isPlaying = true;
-    });
+  void _playAudio() async {
+    await widget.audioPlayer?.play();
+    _isPlaying = true;
   }
 
-  void _pauseAudio() {
-    widget.audioPlayer?.pause();
-    setState(() {
-      _isPlaying = false;
-    });
+  void _pauseAudio() async {
+    await widget.audioPlayer?.pause();
+    _isPlaying = false;
   }
 
-  void _togglePlayPause() {
+  Future<void> _togglePlayPause() async {
     if (_isPlaying) {
       _pauseAudio();
     } else {
@@ -86,10 +83,12 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.resumed) {
+      if (!_isPlaying) {
+        _playAudio(); // プレイヤーが停止している場合のみ再生再開
+      }
+    } else if (state == AppLifecycleState.paused) {
       _pauseAudio();
-    } else if (state == AppLifecycleState.resumed && widget.isCurrentPage) {
-      _playAudio();
     }
   }
 
@@ -100,10 +99,8 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
         fit: StackFit.expand,
         children: [
           // 背景画像
-          Image.network(
-            widget.post.postMusicImg,
-            fit: BoxFit.cover,
-          ),
+          ExtendedImage.network(widget.post.postMusicImg,
+              fit: BoxFit.cover, cache: true),
           // ぼかしエフェクト
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -147,8 +144,9 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                                     flex: 3,
                                     child: AspectRatio(
                                       aspectRatio: 1,
-                                      child: Image.network(
-                                          widget.post.postMusicImg),
+                                      child: ExtendedImage.network(
+                                          widget.post.postMusicImg,
+                                          cache: true),
                                     ),
                                   ),
                                   SizedBox(height: 20),
