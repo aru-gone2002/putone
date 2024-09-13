@@ -10,6 +10,7 @@ import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/follow_count.dart';
 import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
@@ -227,20 +228,29 @@ class ProfilePage extends ConsumerWidget {
                                   ),
                                 ),
                               ),
-                              //所属先
+                              //フォロワー数
                               Align(
-                                alignment: const Alignment(-0.95, 0.65),
-                                child: SizedBox(
-                                  width: sideProfileWidth,
-                                  child: Text(
-                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
+                                alignment: const Alignment(-0.925, 0.75),
+                                child: FollowCount(
+                                  count: '60',
+                                  label: followerCountLabel,
+                                  onTap: () {
+                                    print('Tapped follower button.');
+                                  },
                                 ),
                               ),
+                              //フォロー中数
+                              Align(
+                                alignment: const Alignment(-0.525, 0.75),
+                                child: FollowCount(
+                                  count: '50',
+                                  label: followingCountLabel,
+                                  onTap: () {
+                                    print('Tapped following button.');
+                                  },
+                                ),
+                              ),
+
                               //真ん中
                               //ユーザー画像の表示
                               Align(
@@ -338,6 +348,20 @@ class ProfilePage extends ConsumerWidget {
                                     softWrap: true,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ),
+                              ),
+                              //所属先
+                              Align(
+                                alignment: const Alignment(0.95, 0.75),
+                                child: SizedBox(
+                                  width: sideProfileWidth,
+                                  child: Text(
+                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                   ),
                                 ),
                               ),
