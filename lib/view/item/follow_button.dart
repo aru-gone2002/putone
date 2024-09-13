@@ -30,7 +30,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
     isFollowing = followViewModel.followingUsers
         .where(
           (followingUser) =>
-              followingUser.followingUid == followingUser.followingUid,
+              widget.followingUser.followingUid == followingUser.followingUid,
         )
         .toList()
         .isNotEmpty;
@@ -51,7 +51,8 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
             isFollowing = followViewModel.followingUsers
                 .where(
                   (followingUser) =>
-                      followingUser.followingUid == followingUser.followingUid,
+                      widget.followingUser.followingUid ==
+                      followingUser.followingUid,
                 )
                 .toList()
                 .isNotEmpty;
@@ -66,7 +67,8 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
             isFollowing = followViewModel.followingUsers
                 .where(
                   (followingUser) =>
-                      followingUser.followingUid == followingUser.followingUid,
+                      widget.followingUser.followingUid ==
+                      followingUser.followingUid,
                 )
                 .toList()
                 .isNotEmpty;
