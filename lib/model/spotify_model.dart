@@ -182,7 +182,7 @@ class SpotifyModel {
       final List<dynamic> artists = artistData['artists']['items'];
 
       for (int i = 0; i < artists.length; i++) {
-        final String artistImg = artists[i]['images'][2]['url'];
+        final String artistImg = artists[i]['images'][1]['url'];
         final String artistName = artists[i]['name'];
         final String artistSpotifyId = artists[i]['id'];
         final String spotifyArtistUrl = artists[i]['external_urls']['spotify'];

@@ -140,7 +140,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
                           )
                         : ListView.builder(
                             //TODO このitemの中身を変更する
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             itemCount:
                                 _spotifyViewModel.spotifySearchArtists.length,
@@ -151,7 +151,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
                               return ListTile(
                                 onTap: () {},
                                 contentPadding:
-                                    EdgeInsets.symmetric(vertical: 4),
+                                    const EdgeInsets.symmetric(vertical: 4),
                                 leading: ExtendedImage.network(
                                   spotifySearchArtist.artistImg,
                                   width: 56,
@@ -168,6 +168,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 trailing: ArtistFollowButton(
+                                    key: UniqueKey(),
                                     favoriteArtist: spotifySearchArtist),
                               );
                             },
