@@ -56,6 +56,14 @@ service cloud.firestore {
             allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
           }
 
+          match /followers/{followerUid} {
+            // 相手が自分のコレクションにドキュメントを追加・削除することを許可する
+            // followerUidには相手のUidが入っている
+            allow read: if isAuthenticated();
+            allow create: if isAuthenticated() && isLoginUidSameToDocUid(followerUid) && isUidOfDataSameToDocUid(uid);
+            allow delete: if isAuthenticated() && isLoginUidSameToDocUid(followerUid);
+          }
+
           match /posts/{postId} {
             allow read: if isAuthenticated();
             allow create, delete: if isUserAuthenticated(uid);
