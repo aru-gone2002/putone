@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:crypto/crypto.dart';
-import 'dart:io';
-import 'dart:convert';
-import 'package:path/path.dart' as path;
 import 'package:putone/data/post/post.dart';
 import 'package:putone/model/post_model.dart';
 import 'package:putone/providers/post_provider.dart';
@@ -27,7 +21,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   late PageController _pageController;
   final PostModel _postModel = PostModel();
   AudioPlayer _audioPlayer = AudioPlayer(); // 共通のAudioPlayer
-  late List<LockCachingAudioSource> _audioSources;
+  late LockCachingAudioSource _audioSources;
   int _currentIndex = -1;
   bool _isLoading = true;
 
@@ -35,7 +29,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    _audioSources = [];
+    _audioSources = LockCachingAudioSource(Uri.parse(''));
   }
 
   Future<List<Post>> _loadPosts() async {
@@ -62,7 +56,6 @@ class _PostListViewState extends ConsumerState<PostListView> {
     final post = posts[index];
     if (post.postMusicPreviewUrl == '' || post.postMusicPreviewUrl.isEmpty) {
       await _audioPlayer.pause(); // 音源がない場合は再生を停止
-      // setState(() => _currentIndex = index);
       _currentIndex = index;
     }
     ; // 音源がない場合は再生しない
@@ -71,10 +64,9 @@ class _PostListViewState extends ConsumerState<PostListView> {
       if (_audioPlayer.playing) {
         await _audioPlayer.pause();
       }
-      final _audioSource =
+      _audioSources =
           await LockCachingAudioSource(Uri.parse(post.postMusicPreviewUrl));
-      await _audioPlayer.setAudioSource(_audioSource);
-      // await _audioPlayer.setUrl(post.postMusicPreviewUrl); // 新しい音源を設定
+      await _audioPlayer.setAudioSource(_audioSources);
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       await _audioPlayer.play(); // 再生
       _currentIndex = index;
@@ -86,39 +78,11 @@ class _PostListViewState extends ConsumerState<PostListView> {
     }
   }
 
-  Future<AudioSource> _getCachedAudioSource(String url) async {
-    try {
-      final cacheDir = await getTemporaryDirectory();
-      final fileName =
-          md5.convert(utf8.encode(url)).toString() + path.extension(url);
-      final file = File('${cacheDir.path}/audio_cache/$fileName');
-
-      if (await file.exists()) {
-        print("Using cached file: ${file.path}");
-        return AudioSource.uri(Uri.file(file.path));
-      } else {
-        print("Downloading file: $url");
-        final response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          await file.create(recursive: true);
-          await file.writeAsBytes(response.bodyBytes);
-          print("File cached: ${file.path}");
-          return AudioSource.uri(Uri.file(file.path));
-        } else {
-          print("Failed to download file: ${response.statusCode}");
-          return AudioSource.uri(Uri.parse(url));
-        }
-      }
-    } catch (e) {
-      print("Error in _getCachedAudioSource: $e");
-      return AudioSource.uri(Uri.parse(url));
-    }
-  }
-
   @override
-  void dispose() {
+  void dispose() async {
+    // ページが破棄される際に、オーディオキャッシュを解放
+    _audioSources.clearCache();
     _pageController.dispose();
-    // _audioPlayer.clear();
     _audioPlayer.dispose(); // 共通のプレイヤーを解放
     super.dispose();
   }
