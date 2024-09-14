@@ -95,35 +95,35 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // 背景画像
-          ExtendedImage.network(widget.post.postMusicImg,
-              fit: BoxFit.cover, cache: true),
-          // ぼかしエフェクト
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              color: Colors.black.withOpacity(0.3),
+      body: GestureDetector(
+        onTap: _togglePlayPause,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // 背景画像
+            ExtendedImage.network(widget.post.postMusicImg,
+                fit: BoxFit.cover, cache: true),
+            // ぼかしエフェクト
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
             ),
-          ),
-          // メインコンテンツ
-          SafeArea(
-            child: Column(
-              children: [
-                // AudioPlayerBar
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: widget.post.postMusicPreviewUrl.isNotEmpty
-                      ? AudioPlayerBar(audioPlayer: widget.audioPlayer)
-                      : Text("No preview available",
-                          style: TextStyle(color: Colors.white)),
-                ),
-                // メインコンテンツ
-                Expanded(
-                  child: GestureDetector(
-                    onTap: _togglePlayPause,
+            // メインコンテンツ
+            SafeArea(
+              child: Column(
+                children: [
+                  // AudioPlayerBar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: widget.post.postMusicPreviewUrl.isNotEmpty
+                        ? AudioPlayerBar(audioPlayer: widget.audioPlayer)
+                        : Text("No preview available",
+                            style: TextStyle(color: Colors.white)),
+                  ),
+                  // メインコンテンツ
+                  Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
@@ -210,11 +210,11 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
