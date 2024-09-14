@@ -110,6 +110,10 @@ const String notRegisteredCommunityIdText = '所属：未所属';
 const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
+const String askToSearchByArtistText = 'アーティスト名で検索してください';
+
+//hint text
+const String writeArtistNameHintText = 'アーティスト名を入力';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';
@@ -117,6 +121,7 @@ const String askToEnterTrackOrArtistToastText = '楽曲名かアーティスト�
 const String saveProfileMsgToastText = 'プロフィール文が保存されました';
 const String newPostSavedToastText = '投稿が保存されました';
 const String changeProfileMsgToastText = 'プロフィール文が変更されました';
+const String failToGetArtistInfoToastText = 'アーティスト情報が取得できませんでした';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';

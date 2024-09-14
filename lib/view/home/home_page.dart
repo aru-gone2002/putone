@@ -28,27 +28,12 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           children: [
             Text('ホーム画面です'),
             SizedBox(
               height: 20,
-            ),
-            Consumer(
-              child: const Text('アーティスト検索'),
-              builder: (context, ref, child) {
-                return ElevatedButton(
-                  onPressed: () async {
-                    spotifyViewModel.setRef(ref);
-                    await spotifyViewModel.fetchSpotifyAccessToken();
-                    await spotifyViewModel.searchArtists(
-                      searchArtistName: '東京事変',
-                    );
-                  },
-                  child: child,
-                );
-              },
             ),
           ],
         ),

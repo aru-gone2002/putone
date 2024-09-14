@@ -18,6 +18,9 @@ class SpotifyViewModel {
   List<SpotifyTrack> get spotifySearchTracks =>
       _ref.watch(spotifySearchTracksProvider);
 
+  List<Artist> get spotifySearchArtists =>
+      _ref.watch(spotifySearchArtistsProvider);
+
   void saveSpotifyAccessToken(String value) {
     _ref.read(spotifyAccessTokenProvider.notifier).state = value;
   }

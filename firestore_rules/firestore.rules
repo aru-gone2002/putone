@@ -56,6 +56,11 @@ service cloud.firestore {
             allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
           }
 
+          match /favoriteArtists/{artistId} {
+            allow read: if isAuthenticated();
+            allow create, delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+          }
+
           match /posts/{postId} {
             allow read: if isAuthenticated();
             allow create, delete: if isUserAuthenticated(uid);

@@ -6,4 +6,5 @@ final spotifyAccessTokenProvider = StateProvider<String>((ref) => '');
 
 final spotifySearchTracksProvider =
     StateProvider<List<SpotifyTrack>>((ref) => []);
+
 final spotifySearchArtistsProvider = StateProvider<List<Artist>>((ref) => []);

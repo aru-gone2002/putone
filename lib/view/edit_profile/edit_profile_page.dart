@@ -262,16 +262,14 @@ class EditProfilePage extends StatelessWidget {
                     afterInputText:
                         '${profileViewModel.themeMusicName} / ${profileViewModel.themeMusicArtistName}',
                     //テーマソング編集ページに飛ばす
-                    onTap: () async {
-                      await spotifyViewModel.fetchSpotifyAccessToken();
-                      if (context.mounted) {
-                        toSelectSongPage(
-                          context: context,
-                          appBarTitle: '',
-                          onTap: editThemeSongFunction,
-                          isVisibleCurrentMusicInfo: true,
-                        );
-                      }
+                    onTap: () {
+                      // await spotifyViewModel.fetchSpotifyAccessToken();
+                      toSelectSongPage(
+                        context: context,
+                        appBarTitle: '',
+                        onTap: editThemeSongFunction,
+                        isVisibleCurrentMusicInfo: true,
+                      );
                     },
                     separateCondition: profileViewModel.themeMusicName != '');
               },
