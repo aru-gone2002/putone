@@ -85,5 +85,6 @@ service cloud.firestore {
         allow create, update: if isUserAuthenticated(uid);
         allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
       }
+    }
   }
 }
