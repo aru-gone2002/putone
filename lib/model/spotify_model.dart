@@ -182,18 +182,22 @@ class SpotifyModel {
       final List<dynamic> artists = artistData['artists']['items'];
 
       for (int i = 0; i < artists.length; i++) {
-        final String artistImg = artists[i]['images'][1]['url'];
-        final String artistName = artists[i]['name'];
-        final String artistSpotifyId = artists[i]['id'];
-        final String spotifyArtistUrl = artists[i]['external_urls']['spotify'];
-        final Artist artist = Artist(
-          artistImg: artistImg,
-          artistName: artistName,
-          artistSpotifyId: artistSpotifyId,
-          spotifyArtistUrl: spotifyArtistUrl,
-        );
-        searchResponseArtistList.add(artist);
-        print(artist);
+        //アーティストの画像が入っていない人がいるためそのようなデータは弾く
+        if ((artists[i]['images'] as List).isNotEmpty) {
+          final String artistName = artists[i]['name'];
+          final String artistSpotifyId = artists[i]['id'];
+          final String artistImg = artists[i]['images'][1]['url'];
+          final String spotifyArtistUrl =
+              artists[i]['external_urls']['spotify'];
+          final Artist artist = Artist(
+            artistImg: artistImg,
+            artistName: artistName,
+            artistSpotifyId: artistSpotifyId,
+            spotifyArtistUrl: spotifyArtistUrl,
+          );
+          searchResponseArtistList.add(artist);
+          print(artist);
+        }
       }
 
       return searchResponseArtistList;
