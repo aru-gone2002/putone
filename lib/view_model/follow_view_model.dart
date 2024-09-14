@@ -12,24 +12,33 @@ class FollowViewModel {
   }
 
   List<FollowingUser> get followingUsers => _ref.read(followingUsersProvider);
+  int get followingNum => _ref.read(followingNumProvider);
+  int get followerNum => _ref.read(followerNumProvider);
 
   void saveFollowingUsers(List<FollowingUser> value) {
     _ref.read(followingUsersProvider.notifier).state = value;
   }
 
+  void saveFollowingNum(int value) {
+    _ref.read(followingNumProvider.notifier).state = value;
+  }
+
   void addFollowingUser(FollowingUser value) {
-    _ref.read(followingUsersProvider.notifier).state = [
-      ...followingUsers,
-      value,
-    ];
+    List<FollowingUser> newFollowingUsers = [...followingUsers, value];
+    _ref.read(followingUsersProvider.notifier).state = newFollowingUsers;
+    _ref.read(followingNumProvider.notifier).state = newFollowingUsers.length;
+    print('Followings: ${newFollowingUsers.length}');
   }
 
   void deleteFollowingUser(String value) {
-    _ref.read(followingUsersProvider.notifier).state = [
+    List<FollowingUser> newFollowingUsers = [
       ...followingUsers
           .where((followingUser) => followingUser.followingUid != value)
           .toList(),
     ];
+    _ref.read(followingUsersProvider.notifier).state = newFollowingUsers;
+    _ref.read(followingNumProvider.notifier).state = newFollowingUsers.length;
+    print('Followings: ${newFollowingUsers.length}');
   }
 
   Future<void> followUser({required FollowingUser followingUser}) async {
@@ -53,5 +62,10 @@ class FollowViewModel {
     } else {
       print(result);
     }
+  }
+
+  Future<void> getFollowingNum() async {
+    final followingNum = await _followModel.getFollowingNum();
+    saveFollowingNum(followingNum);
   }
 }

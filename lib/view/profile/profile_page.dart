@@ -15,6 +15,7 @@ import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -33,12 +34,14 @@ class ProfilePage extends ConsumerWidget {
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
+    final FollowViewModel followViewModel = FollowViewModel();
     final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
+    followViewModel.setRef(ref);
 
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
@@ -232,7 +235,7 @@ class ProfilePage extends ConsumerWidget {
                               Align(
                                 alignment: const Alignment(-0.925, 0.75),
                                 child: FollowCount(
-                                  count: '60',
+                                  count: followViewModel.followerNum,
                                   label: followerCountLabel,
                                   onTap: () {
                                     print('Tapped follower button.');
@@ -243,7 +246,7 @@ class ProfilePage extends ConsumerWidget {
                               Align(
                                 alignment: const Alignment(-0.525, 0.75),
                                 child: FollowCount(
-                                  count: '50',
+                                  count: followViewModel.followingNum,
                                   label: followingCountLabel,
                                   onTap: () {
                                     print('Tapped following button.');

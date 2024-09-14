@@ -8,7 +8,7 @@ class FollowCount extends StatelessWidget {
     required this.onTap,
   });
 
-  final String count;
+  final int count;
   final String label;
   final GestureTapCallback onTap;
 
@@ -21,7 +21,7 @@ class FollowCount extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              count,
+              count.toString(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(

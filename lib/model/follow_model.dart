@@ -77,4 +77,30 @@ class FollowModel {
       return 'Fail to get following users';
     }
   }
+
+  Future<int> getFollowingNum() async {
+    try {
+      final List<FollowingUser> followingUsers = [];
+      final uid = auth.currentUser!.uid;
+      final response = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('followings')
+          .get();
+
+      if (response.docs.isEmpty) {
+        return 0;
+      } else {
+        //docsの中身を展開して、FollowingUser型に変換する
+        for (var doc in response.docs) {
+          final followingUser = FollowingUser.fromJson(doc.data());
+          followingUsers.add(followingUser);
+        }
+        return followingUsers.length;
+      }
+    } catch (e) {
+      print('Fail to get following user number.');
+      return 0;
+    }
+  }
 }
