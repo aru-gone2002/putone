@@ -66,6 +66,7 @@ service cloud.firestore {
           match /favoriteArtists/{artistId} {
             allow read: if isAuthenticated();
             allow create, delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+          }
 
           match /posts/{postId} {
             allow read: if isAuthenticated();
@@ -85,6 +86,5 @@ service cloud.firestore {
         allow create, update: if isUserAuthenticated(uid);
         allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
       }
-    }
   }
 }
