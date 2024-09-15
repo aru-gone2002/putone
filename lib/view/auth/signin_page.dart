@@ -9,10 +9,12 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
+import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
+import 'package:putone/view_model/spotify_view_model.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -24,6 +26,8 @@ class SignInPage extends StatelessWidget {
     final PostViewModel postViewModel = PostViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
+    final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
+    final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signInFunction(
@@ -59,6 +63,11 @@ class SignInPage extends StatelessWidget {
             //自分のプロフィール情報をFirestoreから取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
+            //UserProfileProviderに入っている情報をデータベースに入れる。
+            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
+            await localDatabaseViewModel.appDatabase!
+                .insertLocalUserProfile(profileViewModel.userProfile);
+            print('insertUserBaseProfileをしました');
             //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
@@ -69,11 +78,7 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserPost(userPost);
               }
             }
-            //UserProfileProviderに入っている情報をデータベースに入れる。
-            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
-            await localDatabaseViewModel.appDatabase!
-                .insertLocalUserProfile(profileViewModel.userProfile);
-            print('insertUserBaseProfileをしました');
+
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
               toAfterSignInPage(context: context);
@@ -164,6 +169,8 @@ class SignInPage extends StatelessWidget {
                     profileViewModel.setRef(ref);
                     postViewModel.setRef(ref);
                     localDatabaseViewModel.setRef(ref);
+                    artistFollowViewModel.setRef(ref);
+                    spotifyViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,
                       replacement: SizedBox(

@@ -418,16 +418,14 @@ class ProfilePage extends ConsumerWidget {
       endDrawer: ProfileDrawer(database: localDatabaseViewModel.appDatabase!),
       floatingActionButton: FloatingActionButton(
         //投稿ページに飛ぶようにする
-        onPressed: () async {
-          await spotifyViewModel.fetchSpotifyAccessToken();
-          if (context.mounted) {
-            toSelectSongPage(
-              context: context,
-              appBarTitle: postCreatePageAppbarTitle,
-              onTap: createPostFunction,
-              isVisibleCurrentMusicInfo: false,
-            );
-          }
+        onPressed: () {
+          // await spotifyViewModel.fetchSpotifyAccessToken();
+          toSelectSongPage(
+            context: context,
+            appBarTitle: postCreatePageAppbarTitle,
+            onTap: createPostFunction,
+            isVisibleCurrentMusicInfo: false,
+          );
         },
         backgroundColor: AppColorTheme.color().accentColor,
         child: const Icon(

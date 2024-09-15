@@ -17,3 +17,19 @@ final postProvider = StateProvider<Post>(
 );
 
 final postsProvider = StateProvider<List<Post>>((ref) => []);
+
+final TempPostProvider = StateProvider<Post>(
+  (ref) => Post(
+    uid: '',
+    postId: '',
+    postMusicImg: '',
+    postMusicArtistName: '',
+    postMusicName: '',
+    postMsg: '',
+    postTimestamp: DateTime.now(),
+    postMusicSpotifyUrl: '',
+    postMusicPreviewUrl: '',
+  ),
+);
+
+final TempPostsProvider = StateProvider<List<Post>>((ref) => []);

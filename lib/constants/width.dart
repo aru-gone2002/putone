@@ -1,4 +1,5 @@
 const double spaceWidthMedium = 24;
+const double spaceWidthSmall = 16;
 const double postGridPaddingWidth = 12;
 const double postGridItemImgWidth = 180;
 const double postGridItemTitlePaddingWidth = 8;
