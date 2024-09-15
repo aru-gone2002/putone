@@ -29,6 +29,7 @@ class PostModel {
         final userPost = Post.fromJson(docSnapshot.data());
         userPosts.add(userPost);
       }
+      userPosts.sort((a, b) => a.postTimestamp.compareTo(b.postTimestamp));
       return userPosts;
     } catch (e) {
       print('Error getting userPosts from Firestore: $e');

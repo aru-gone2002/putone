@@ -22,6 +22,8 @@ class PostGridView extends ConsumerWidget {
 
     final PostViewModel postViewModel = PostViewModel();
     postViewModel.setRef(ref);
+    //final localUserPosts = snapshot.data! as List<LocalUserPost>;
+    //localUserPosts.sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
 
     void onPostTap(LocalUserPost post) {
       // 新しいviewへの遷移処理
@@ -52,9 +54,6 @@ class PostGridView extends ConsumerWidget {
         ),
         itemCount: (snapshot.data as List<LocalUserPost>).length,
         itemBuilder: (context, index) {
-          final localUserPosts = snapshot.data! as List<LocalUserPost>;
-          localUserPosts
-              .sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
           final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
           return PostGridItem(
             //userPost: postViewModel.posts[index],
