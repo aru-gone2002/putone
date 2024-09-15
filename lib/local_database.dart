@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:putone/data/artist/artist.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -39,10 +40,10 @@ class LocalUserProfiles extends Table {
 //お気に入りアーティストのテーブル
 @DataClassName('LocalUserFavoriteArtist')
 class LocalUserFavoriteArtists extends Table {
-  TextColumn get uid => text()();
   TextColumn get userFavoriteArtistId => text()();
   TextColumn get userFavoriteArtistName => text()();
   TextColumn get userFavoriteArtistImg => text()();
+  TextColumn get userFavoriteArtistSpotifyUrl => text()();
 }
 
 @DataClassName('LocalUserPost')
@@ -197,8 +198,8 @@ class AppDatabase extends _$AppDatabase {
   }
 
   //----ユーザーの投稿----
-  // ローカルDBから全てのLocalUserProfileをストリームとして取得する。
-  // LocalUserProfileが追加、更新、削除されると、このストリームは新しいリストを返す。
+  // ローカルDBから全てのLocalUserPostsをストリームとして取得する。
+  // LocalUserPostsが追加、更新、削除されると、このストリームは新しいリストを返す。
   Stream<List<LocalUserPost>> watchAllLocalUserPosts() {
     return (select(localUserPosts)
           ..orderBy([
@@ -246,6 +247,47 @@ class AppDatabase extends _$AppDatabase {
       postTimestamp: Value(post.postTimestamp),
       postMusicSpotifyUrl: Value(post.postMusicSpotifyUrl),
       postMusicPreciewUrl: Value(post.postMusicPreviewUrl),
+    );
+  }
+
+  //----ユーザーのお気に入りアーティスト情報----
+  // ローカルDBから全てのLocalUserFavoriteArtistsをストリームとして取得する。
+  // LocalUserFavoriteArtistsが追加、更新、削除されると、このストリームは新しいリストを返す。
+  Stream<List<LocalUserFavoriteArtist>> watchAllLocalUserFavoriteArtists() {
+    return (select(localUserFavoriteArtists)).watch();
+  }
+
+  // ローカルDBから全てのLocalUserFavoriteArtistsを一度だけ取得する。
+  Future<List<LocalUserFavoriteArtist>> getAllLocalUserFavoriteArtists() {
+    return (select(localUserFavoriteArtists)).get();
+  }
+
+  // 新しいLocalUserFavoriteArtistをローカルDBに挿入する。
+  Future insertLocalUserFavoriteArtist(Artist artist) {
+    return into(localUserFavoriteArtists)
+        .insert(changeArtistToLocalUserFavoriteArtist(artist));
+  }
+
+  // ローカルDBから任意のLocalUserFavoriteArtistを削除する。
+  Future deleteSpecificLocalUserFavoriteArtist(Artist artist) {
+    return (delete(localUserFavoriteArtists)
+          ..where((a) => a.userFavoriteArtistId.equals(artist.artistSpotifyId)))
+        .go();
+  }
+
+  // ローカルDBから全てのLocalUserFavoriteArtistsを削除する。
+  Future deleteAllLocalUserFavoriteArtists() {
+    return delete(localUserFavoriteArtists).go();
+  }
+
+  // PostをLocalUserPostsCompanionに変換する
+  LocalUserFavoriteArtistsCompanion changeArtistToLocalUserFavoriteArtist(
+      Artist artist) {
+    return LocalUserFavoriteArtistsCompanion(
+      userFavoriteArtistId: Value(artist.artistSpotifyId),
+      userFavoriteArtistImg: Value(artist.artistImg),
+      userFavoriteArtistName: Value(artist.artistName),
+      userFavoriteArtistSpotifyUrl: Value(artist.spotifyArtistUrl),
     );
   }
 }

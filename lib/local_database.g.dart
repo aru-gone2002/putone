@@ -747,11 +747,6 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $LocalUserFavoriteArtistsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _uidMeta = const VerificationMeta('uid');
-  @override
-  late final GeneratedColumn<String> uid = GeneratedColumn<String>(
-      'uid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _userFavoriteArtistIdMeta =
       const VerificationMeta('userFavoriteArtistId');
   @override
@@ -770,12 +765,19 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
   late final GeneratedColumn<String> userFavoriteArtistImg =
       GeneratedColumn<String>('user_favorite_artist_img', aliasedName, false,
           type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userFavoriteArtistSpotifyUrlMeta =
+      const VerificationMeta('userFavoriteArtistSpotifyUrl');
+  @override
+  late final GeneratedColumn<String> userFavoriteArtistSpotifyUrl =
+      GeneratedColumn<String>(
+          'user_favorite_artist_spotify_url', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
-        uid,
         userFavoriteArtistId,
         userFavoriteArtistName,
-        userFavoriteArtistImg
+        userFavoriteArtistImg,
+        userFavoriteArtistSpotifyUrl
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -788,12 +790,6 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('uid')) {
-      context.handle(
-          _uidMeta, uid.isAcceptableOrUnknown(data['uid']!, _uidMeta));
-    } else if (isInserting) {
-      context.missing(_uidMeta);
-    }
     if (data.containsKey('user_favorite_artist_id')) {
       context.handle(
           _userFavoriteArtistIdMeta,
@@ -818,6 +814,15 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
     } else if (isInserting) {
       context.missing(_userFavoriteArtistImgMeta);
     }
+    if (data.containsKey('user_favorite_artist_spotify_url')) {
+      context.handle(
+          _userFavoriteArtistSpotifyUrlMeta,
+          userFavoriteArtistSpotifyUrl.isAcceptableOrUnknown(
+              data['user_favorite_artist_spotify_url']!,
+              _userFavoriteArtistSpotifyUrlMeta));
+    } else if (isInserting) {
+      context.missing(_userFavoriteArtistSpotifyUrlMeta);
+    }
     return context;
   }
 
@@ -828,8 +833,6 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
       {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return LocalUserFavoriteArtist(
-      uid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uid'])!,
       userFavoriteArtistId: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}user_favorite_artist_id'])!,
@@ -839,6 +842,9 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
       userFavoriteArtistImg: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}user_favorite_artist_img'])!,
+      userFavoriteArtistSpotifyUrl: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}user_favorite_artist_spotify_url'])!,
     );
   }
 
@@ -850,31 +856,32 @@ class $LocalUserFavoriteArtistsTable extends LocalUserFavoriteArtists
 
 class LocalUserFavoriteArtist extends DataClass
     implements Insertable<LocalUserFavoriteArtist> {
-  final String uid;
   final String userFavoriteArtistId;
   final String userFavoriteArtistName;
   final String userFavoriteArtistImg;
+  final String userFavoriteArtistSpotifyUrl;
   const LocalUserFavoriteArtist(
-      {required this.uid,
-      required this.userFavoriteArtistId,
+      {required this.userFavoriteArtistId,
       required this.userFavoriteArtistName,
-      required this.userFavoriteArtistImg});
+      required this.userFavoriteArtistImg,
+      required this.userFavoriteArtistSpotifyUrl});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['uid'] = Variable<String>(uid);
     map['user_favorite_artist_id'] = Variable<String>(userFavoriteArtistId);
     map['user_favorite_artist_name'] = Variable<String>(userFavoriteArtistName);
     map['user_favorite_artist_img'] = Variable<String>(userFavoriteArtistImg);
+    map['user_favorite_artist_spotify_url'] =
+        Variable<String>(userFavoriteArtistSpotifyUrl);
     return map;
   }
 
   LocalUserFavoriteArtistsCompanion toCompanion(bool nullToAbsent) {
     return LocalUserFavoriteArtistsCompanion(
-      uid: Value(uid),
       userFavoriteArtistId: Value(userFavoriteArtistId),
       userFavoriteArtistName: Value(userFavoriteArtistName),
       userFavoriteArtistImg: Value(userFavoriteArtistImg),
+      userFavoriteArtistSpotifyUrl: Value(userFavoriteArtistSpotifyUrl),
     );
   }
 
@@ -882,44 +889,46 @@ class LocalUserFavoriteArtist extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return LocalUserFavoriteArtist(
-      uid: serializer.fromJson<String>(json['uid']),
       userFavoriteArtistId:
           serializer.fromJson<String>(json['userFavoriteArtistId']),
       userFavoriteArtistName:
           serializer.fromJson<String>(json['userFavoriteArtistName']),
       userFavoriteArtistImg:
           serializer.fromJson<String>(json['userFavoriteArtistImg']),
+      userFavoriteArtistSpotifyUrl:
+          serializer.fromJson<String>(json['userFavoriteArtistSpotifyUrl']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'uid': serializer.toJson<String>(uid),
       'userFavoriteArtistId': serializer.toJson<String>(userFavoriteArtistId),
       'userFavoriteArtistName':
           serializer.toJson<String>(userFavoriteArtistName),
       'userFavoriteArtistImg': serializer.toJson<String>(userFavoriteArtistImg),
+      'userFavoriteArtistSpotifyUrl':
+          serializer.toJson<String>(userFavoriteArtistSpotifyUrl),
     };
   }
 
   LocalUserFavoriteArtist copyWith(
-          {String? uid,
-          String? userFavoriteArtistId,
+          {String? userFavoriteArtistId,
           String? userFavoriteArtistName,
-          String? userFavoriteArtistImg}) =>
+          String? userFavoriteArtistImg,
+          String? userFavoriteArtistSpotifyUrl}) =>
       LocalUserFavoriteArtist(
-        uid: uid ?? this.uid,
         userFavoriteArtistId: userFavoriteArtistId ?? this.userFavoriteArtistId,
         userFavoriteArtistName:
             userFavoriteArtistName ?? this.userFavoriteArtistName,
         userFavoriteArtistImg:
             userFavoriteArtistImg ?? this.userFavoriteArtistImg,
+        userFavoriteArtistSpotifyUrl:
+            userFavoriteArtistSpotifyUrl ?? this.userFavoriteArtistSpotifyUrl,
       );
   LocalUserFavoriteArtist copyWithCompanion(
       LocalUserFavoriteArtistsCompanion data) {
     return LocalUserFavoriteArtist(
-      uid: data.uid.present ? data.uid.value : this.uid,
       userFavoriteArtistId: data.userFavoriteArtistId.present
           ? data.userFavoriteArtistId.value
           : this.userFavoriteArtistId,
@@ -929,89 +938,95 @@ class LocalUserFavoriteArtist extends DataClass
       userFavoriteArtistImg: data.userFavoriteArtistImg.present
           ? data.userFavoriteArtistImg.value
           : this.userFavoriteArtistImg,
+      userFavoriteArtistSpotifyUrl: data.userFavoriteArtistSpotifyUrl.present
+          ? data.userFavoriteArtistSpotifyUrl.value
+          : this.userFavoriteArtistSpotifyUrl,
     );
   }
 
   @override
   String toString() {
     return (StringBuffer('LocalUserFavoriteArtist(')
-          ..write('uid: $uid, ')
           ..write('userFavoriteArtistId: $userFavoriteArtistId, ')
           ..write('userFavoriteArtistName: $userFavoriteArtistName, ')
-          ..write('userFavoriteArtistImg: $userFavoriteArtistImg')
+          ..write('userFavoriteArtistImg: $userFavoriteArtistImg, ')
+          ..write('userFavoriteArtistSpotifyUrl: $userFavoriteArtistSpotifyUrl')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      uid, userFavoriteArtistId, userFavoriteArtistName, userFavoriteArtistImg);
+  int get hashCode => Object.hash(userFavoriteArtistId, userFavoriteArtistName,
+      userFavoriteArtistImg, userFavoriteArtistSpotifyUrl);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LocalUserFavoriteArtist &&
-          other.uid == this.uid &&
           other.userFavoriteArtistId == this.userFavoriteArtistId &&
           other.userFavoriteArtistName == this.userFavoriteArtistName &&
-          other.userFavoriteArtistImg == this.userFavoriteArtistImg);
+          other.userFavoriteArtistImg == this.userFavoriteArtistImg &&
+          other.userFavoriteArtistSpotifyUrl ==
+              this.userFavoriteArtistSpotifyUrl);
 }
 
 class LocalUserFavoriteArtistsCompanion
     extends UpdateCompanion<LocalUserFavoriteArtist> {
-  final Value<String> uid;
   final Value<String> userFavoriteArtistId;
   final Value<String> userFavoriteArtistName;
   final Value<String> userFavoriteArtistImg;
+  final Value<String> userFavoriteArtistSpotifyUrl;
   final Value<int> rowid;
   const LocalUserFavoriteArtistsCompanion({
-    this.uid = const Value.absent(),
     this.userFavoriteArtistId = const Value.absent(),
     this.userFavoriteArtistName = const Value.absent(),
     this.userFavoriteArtistImg = const Value.absent(),
+    this.userFavoriteArtistSpotifyUrl = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   LocalUserFavoriteArtistsCompanion.insert({
-    required String uid,
     required String userFavoriteArtistId,
     required String userFavoriteArtistName,
     required String userFavoriteArtistImg,
+    required String userFavoriteArtistSpotifyUrl,
     this.rowid = const Value.absent(),
-  })  : uid = Value(uid),
-        userFavoriteArtistId = Value(userFavoriteArtistId),
+  })  : userFavoriteArtistId = Value(userFavoriteArtistId),
         userFavoriteArtistName = Value(userFavoriteArtistName),
-        userFavoriteArtistImg = Value(userFavoriteArtistImg);
+        userFavoriteArtistImg = Value(userFavoriteArtistImg),
+        userFavoriteArtistSpotifyUrl = Value(userFavoriteArtistSpotifyUrl);
   static Insertable<LocalUserFavoriteArtist> custom({
-    Expression<String>? uid,
     Expression<String>? userFavoriteArtistId,
     Expression<String>? userFavoriteArtistName,
     Expression<String>? userFavoriteArtistImg,
+    Expression<String>? userFavoriteArtistSpotifyUrl,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (uid != null) 'uid': uid,
       if (userFavoriteArtistId != null)
         'user_favorite_artist_id': userFavoriteArtistId,
       if (userFavoriteArtistName != null)
         'user_favorite_artist_name': userFavoriteArtistName,
       if (userFavoriteArtistImg != null)
         'user_favorite_artist_img': userFavoriteArtistImg,
+      if (userFavoriteArtistSpotifyUrl != null)
+        'user_favorite_artist_spotify_url': userFavoriteArtistSpotifyUrl,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   LocalUserFavoriteArtistsCompanion copyWith(
-      {Value<String>? uid,
-      Value<String>? userFavoriteArtistId,
+      {Value<String>? userFavoriteArtistId,
       Value<String>? userFavoriteArtistName,
       Value<String>? userFavoriteArtistImg,
+      Value<String>? userFavoriteArtistSpotifyUrl,
       Value<int>? rowid}) {
     return LocalUserFavoriteArtistsCompanion(
-      uid: uid ?? this.uid,
       userFavoriteArtistId: userFavoriteArtistId ?? this.userFavoriteArtistId,
       userFavoriteArtistName:
           userFavoriteArtistName ?? this.userFavoriteArtistName,
       userFavoriteArtistImg:
           userFavoriteArtistImg ?? this.userFavoriteArtistImg,
+      userFavoriteArtistSpotifyUrl:
+          userFavoriteArtistSpotifyUrl ?? this.userFavoriteArtistSpotifyUrl,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1019,9 +1034,6 @@ class LocalUserFavoriteArtistsCompanion
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (uid.present) {
-      map['uid'] = Variable<String>(uid.value);
-    }
     if (userFavoriteArtistId.present) {
       map['user_favorite_artist_id'] =
           Variable<String>(userFavoriteArtistId.value);
@@ -1034,6 +1046,10 @@ class LocalUserFavoriteArtistsCompanion
       map['user_favorite_artist_img'] =
           Variable<String>(userFavoriteArtistImg.value);
     }
+    if (userFavoriteArtistSpotifyUrl.present) {
+      map['user_favorite_artist_spotify_url'] =
+          Variable<String>(userFavoriteArtistSpotifyUrl.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1043,10 +1059,11 @@ class LocalUserFavoriteArtistsCompanion
   @override
   String toString() {
     return (StringBuffer('LocalUserFavoriteArtistsCompanion(')
-          ..write('uid: $uid, ')
           ..write('userFavoriteArtistId: $userFavoriteArtistId, ')
           ..write('userFavoriteArtistName: $userFavoriteArtistName, ')
           ..write('userFavoriteArtistImg: $userFavoriteArtistImg, ')
+          ..write(
+              'userFavoriteArtistSpotifyUrl: $userFavoriteArtistSpotifyUrl, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1862,18 +1879,18 @@ class $$LocalUserProfilesTableOrderingComposer
 
 typedef $$LocalUserFavoriteArtistsTableCreateCompanionBuilder
     = LocalUserFavoriteArtistsCompanion Function({
-  required String uid,
   required String userFavoriteArtistId,
   required String userFavoriteArtistName,
   required String userFavoriteArtistImg,
+  required String userFavoriteArtistSpotifyUrl,
   Value<int> rowid,
 });
 typedef $$LocalUserFavoriteArtistsTableUpdateCompanionBuilder
     = LocalUserFavoriteArtistsCompanion Function({
-  Value<String> uid,
   Value<String> userFavoriteArtistId,
   Value<String> userFavoriteArtistName,
   Value<String> userFavoriteArtistImg,
+  Value<String> userFavoriteArtistSpotifyUrl,
   Value<int> rowid,
 });
 
@@ -1895,31 +1912,31 @@ class $$LocalUserFavoriteArtistsTableTableManager extends RootTableManager<
           orderingComposer: $$LocalUserFavoriteArtistsTableOrderingComposer(
               ComposerState(db, table)),
           updateCompanionCallback: ({
-            Value<String> uid = const Value.absent(),
             Value<String> userFavoriteArtistId = const Value.absent(),
             Value<String> userFavoriteArtistName = const Value.absent(),
             Value<String> userFavoriteArtistImg = const Value.absent(),
+            Value<String> userFavoriteArtistSpotifyUrl = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               LocalUserFavoriteArtistsCompanion(
-            uid: uid,
             userFavoriteArtistId: userFavoriteArtistId,
             userFavoriteArtistName: userFavoriteArtistName,
             userFavoriteArtistImg: userFavoriteArtistImg,
+            userFavoriteArtistSpotifyUrl: userFavoriteArtistSpotifyUrl,
             rowid: rowid,
           ),
           createCompanionCallback: ({
-            required String uid,
             required String userFavoriteArtistId,
             required String userFavoriteArtistName,
             required String userFavoriteArtistImg,
+            required String userFavoriteArtistSpotifyUrl,
             Value<int> rowid = const Value.absent(),
           }) =>
               LocalUserFavoriteArtistsCompanion.insert(
-            uid: uid,
             userFavoriteArtistId: userFavoriteArtistId,
             userFavoriteArtistName: userFavoriteArtistName,
             userFavoriteArtistImg: userFavoriteArtistImg,
+            userFavoriteArtistSpotifyUrl: userFavoriteArtistSpotifyUrl,
             rowid: rowid,
           ),
         ));
@@ -1928,11 +1945,6 @@ class $$LocalUserFavoriteArtistsTableTableManager extends RootTableManager<
 class $$LocalUserFavoriteArtistsTableFilterComposer
     extends FilterComposer<_$AppDatabase, $LocalUserFavoriteArtistsTable> {
   $$LocalUserFavoriteArtistsTableFilterComposer(super.$state);
-  ColumnFilters<String> get uid => $state.composableBuilder(
-      column: $state.table.uid,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
-
   ColumnFilters<String> get userFavoriteArtistId => $state.composableBuilder(
       column: $state.table.userFavoriteArtistId,
       builder: (column, joinBuilders) =>
@@ -1947,16 +1959,17 @@ class $$LocalUserFavoriteArtistsTableFilterComposer
       column: $state.table.userFavoriteArtistImg,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get userFavoriteArtistSpotifyUrl =>
+      $state.composableBuilder(
+          column: $state.table.userFavoriteArtistSpotifyUrl,
+          builder: (column, joinBuilders) =>
+              ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$LocalUserFavoriteArtistsTableOrderingComposer
     extends OrderingComposer<_$AppDatabase, $LocalUserFavoriteArtistsTable> {
   $$LocalUserFavoriteArtistsTableOrderingComposer(super.$state);
-  ColumnOrderings<String> get uid => $state.composableBuilder(
-      column: $state.table.uid,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
-
   ColumnOrderings<String> get userFavoriteArtistId => $state.composableBuilder(
       column: $state.table.userFavoriteArtistId,
       builder: (column, joinBuilders) =>
@@ -1972,6 +1985,12 @@ class $$LocalUserFavoriteArtistsTableOrderingComposer
       column: $state.table.userFavoriteArtistImg,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get userFavoriteArtistSpotifyUrl =>
+      $state.composableBuilder(
+          column: $state.table.userFavoriteArtistSpotifyUrl,
+          builder: (column, joinBuilders) =>
+              ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
 typedef $$LocalUserPostsTableCreateCompanionBuilder = LocalUserPostsCompanion
