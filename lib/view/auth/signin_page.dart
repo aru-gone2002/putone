@@ -78,6 +78,22 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserPost(userPost);
               }
             }
+            //UserProfileProviderに入っている情報をデータベースに入れる。
+            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
+            await localDatabaseViewModel.appDatabase!
+                .insertLocalUserProfile(profileViewModel.userProfile);
+            print('insertLocalUserProfileをしました');
+            //TODO Firestoreからお気に入りアーティスト情報を取得する
+            final userFavoriteArtists =
+                await artistFollowViewModel.getUserFavoriteArtists();
+            if (userFavoriteArtists != null) {
+              artistFollowViewModel.insertArtistsToList(userFavoriteArtists);
+              for (var userFavoriteArtist in userFavoriteArtists) {
+                await localDatabaseViewModel.appDatabase!
+                    .insertLocalUserFavoriteArtist(userFavoriteArtist);
+              }
+            }
+            await spotifyViewModel.fetchSpotifyAccessToken();
 
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
