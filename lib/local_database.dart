@@ -57,7 +57,7 @@ class LocalUserPosts extends Table {
   DateTimeColumn get postTimestamp => dateTime()();
   TextColumn get postMusicSpotifyUrl => text()();
   TextColumn get postMusicPreciewUrl =>
-      text().withDefault(const Constant(''))();
+      text().withDefault(const Constant('')).nullable()();
 }
 
 //AppDatabaseがDriftのローカルDBであり、
@@ -201,12 +201,22 @@ class AppDatabase extends _$AppDatabase {
   // ローカルDBから全てのLocalUserPostsをストリームとして取得する。
   // LocalUserPostsが追加、更新、削除されると、このストリームは新しいリストを返す。
   Stream<List<LocalUserPost>> watchAllLocalUserPosts() {
-    return (select(localUserPosts)).watch();
+    return (select(localUserPosts)
+          ..orderBy([
+            (post) => OrderingTerm(
+                expression: post.postTimestamp, mode: OrderingMode.desc)
+          ]))
+        .watch();
   }
 
   // ローカルDBから全てのLocalUserPostを一度だけ取得する。
   Future<List<LocalUserPost>> getAllLocalUserPosts() {
-    return (select(localUserPosts)).get();
+    return (select(localUserPosts)
+          ..orderBy([
+            (post) => OrderingTerm(
+                expression: post.postTimestamp, mode: OrderingMode.desc)
+          ]))
+        .get();
   }
 
   // 新しいLocalUserPostをローカルDBに挿入する。

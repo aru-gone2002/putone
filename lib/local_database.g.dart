@@ -1126,7 +1126,7 @@ class $LocalUserPostsTable extends LocalUserPosts
       const VerificationMeta('postMusicPreciewUrl');
   @override
   late final GeneratedColumn<String> postMusicPreciewUrl =
-      GeneratedColumn<String>('post_music_preciew_url', aliasedName, false,
+      GeneratedColumn<String>('post_music_preciew_url', aliasedName, true,
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           defaultValue: const Constant(''));
@@ -1245,7 +1245,7 @@ class $LocalUserPostsTable extends LocalUserPosts
           data['${effectivePrefix}post_music_spotify_url'])!,
       postMusicPreciewUrl: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}post_music_preciew_url'])!,
+          data['${effectivePrefix}post_music_preciew_url']),
     );
   }
 
@@ -1264,7 +1264,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
   final String postMsg;
   final DateTime postTimestamp;
   final String postMusicSpotifyUrl;
-  final String postMusicPreciewUrl;
+  final String? postMusicPreciewUrl;
   const LocalUserPost(
       {required this.uid,
       required this.postId,
@@ -1274,7 +1274,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       required this.postMsg,
       required this.postTimestamp,
       required this.postMusicSpotifyUrl,
-      required this.postMusicPreciewUrl});
+      this.postMusicPreciewUrl});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1286,7 +1286,9 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
     map['post_msg'] = Variable<String>(postMsg);
     map['post_timestamp'] = Variable<DateTime>(postTimestamp);
     map['post_music_spotify_url'] = Variable<String>(postMusicSpotifyUrl);
-    map['post_music_preciew_url'] = Variable<String>(postMusicPreciewUrl);
+    if (!nullToAbsent || postMusicPreciewUrl != null) {
+      map['post_music_preciew_url'] = Variable<String>(postMusicPreciewUrl);
+    }
     return map;
   }
 
@@ -1300,7 +1302,9 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       postMsg: Value(postMsg),
       postTimestamp: Value(postTimestamp),
       postMusicSpotifyUrl: Value(postMusicSpotifyUrl),
-      postMusicPreciewUrl: Value(postMusicPreciewUrl),
+      postMusicPreciewUrl: postMusicPreciewUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(postMusicPreciewUrl),
     );
   }
 
@@ -1319,7 +1323,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       postMusicSpotifyUrl:
           serializer.fromJson<String>(json['postMusicSpotifyUrl']),
       postMusicPreciewUrl:
-          serializer.fromJson<String>(json['postMusicPreciewUrl']),
+          serializer.fromJson<String?>(json['postMusicPreciewUrl']),
     );
   }
   @override
@@ -1334,7 +1338,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
       'postMsg': serializer.toJson<String>(postMsg),
       'postTimestamp': serializer.toJson<DateTime>(postTimestamp),
       'postMusicSpotifyUrl': serializer.toJson<String>(postMusicSpotifyUrl),
-      'postMusicPreciewUrl': serializer.toJson<String>(postMusicPreciewUrl),
+      'postMusicPreciewUrl': serializer.toJson<String?>(postMusicPreciewUrl),
     };
   }
 
@@ -1347,7 +1351,7 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
           String? postMsg,
           DateTime? postTimestamp,
           String? postMusicSpotifyUrl,
-          String? postMusicPreciewUrl}) =>
+          Value<String?> postMusicPreciewUrl = const Value.absent()}) =>
       LocalUserPost(
         uid: uid ?? this.uid,
         postId: postId ?? this.postId,
@@ -1357,7 +1361,9 @@ class LocalUserPost extends DataClass implements Insertable<LocalUserPost> {
         postMsg: postMsg ?? this.postMsg,
         postTimestamp: postTimestamp ?? this.postTimestamp,
         postMusicSpotifyUrl: postMusicSpotifyUrl ?? this.postMusicSpotifyUrl,
-        postMusicPreciewUrl: postMusicPreciewUrl ?? this.postMusicPreciewUrl,
+        postMusicPreciewUrl: postMusicPreciewUrl.present
+            ? postMusicPreciewUrl.value
+            : this.postMusicPreciewUrl,
       );
   LocalUserPost copyWithCompanion(LocalUserPostsCompanion data) {
     return LocalUserPost(
@@ -1436,7 +1442,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
   final Value<String> postMsg;
   final Value<DateTime> postTimestamp;
   final Value<String> postMusicSpotifyUrl;
-  final Value<String> postMusicPreciewUrl;
+  final Value<String?> postMusicPreciewUrl;
   final Value<int> rowid;
   const LocalUserPostsCompanion({
     this.uid = const Value.absent(),
@@ -1507,7 +1513,7 @@ class LocalUserPostsCompanion extends UpdateCompanion<LocalUserPost> {
       Value<String>? postMsg,
       Value<DateTime>? postTimestamp,
       Value<String>? postMusicSpotifyUrl,
-      Value<String>? postMusicPreciewUrl,
+      Value<String?>? postMusicPreciewUrl,
       Value<int>? rowid}) {
     return LocalUserPostsCompanion(
       uid: uid ?? this.uid,
@@ -1997,7 +2003,7 @@ typedef $$LocalUserPostsTableCreateCompanionBuilder = LocalUserPostsCompanion
   required String postMsg,
   required DateTime postTimestamp,
   required String postMusicSpotifyUrl,
-  Value<String> postMusicPreciewUrl,
+  Value<String?> postMusicPreciewUrl,
   Value<int> rowid,
 });
 typedef $$LocalUserPostsTableUpdateCompanionBuilder = LocalUserPostsCompanion
@@ -2010,7 +2016,7 @@ typedef $$LocalUserPostsTableUpdateCompanionBuilder = LocalUserPostsCompanion
   Value<String> postMsg,
   Value<DateTime> postTimestamp,
   Value<String> postMusicSpotifyUrl,
-  Value<String> postMusicPreciewUrl,
+  Value<String?> postMusicPreciewUrl,
   Value<int> rowid,
 });
 
@@ -2040,7 +2046,7 @@ class $$LocalUserPostsTableTableManager extends RootTableManager<
             Value<String> postMsg = const Value.absent(),
             Value<DateTime> postTimestamp = const Value.absent(),
             Value<String> postMusicSpotifyUrl = const Value.absent(),
-            Value<String> postMusicPreciewUrl = const Value.absent(),
+            Value<String?> postMusicPreciewUrl = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               LocalUserPostsCompanion(
@@ -2064,7 +2070,7 @@ class $$LocalUserPostsTableTableManager extends RootTableManager<
             required String postMsg,
             required DateTime postTimestamp,
             required String postMusicSpotifyUrl,
-            Value<String> postMusicPreciewUrl = const Value.absent(),
+            Value<String?> postMusicPreciewUrl = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               LocalUserPostsCompanion.insert(

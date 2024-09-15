@@ -63,6 +63,11 @@ class SignInPage extends StatelessWidget {
             //自分のプロフィール情報をFirestoreから取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
+            //UserProfileProviderに入っている情報をデータベースに入れる。
+            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
+            await localDatabaseViewModel.appDatabase!
+                .insertLocalUserProfile(profileViewModel.userProfile);
+            print('insertUserBaseProfileをしました');
             //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
@@ -73,22 +78,7 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserPost(userPost);
               }
             }
-            //UserProfileProviderに入っている情報をデータベースに入れる。
-            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
-            await localDatabaseViewModel.appDatabase!
-                .insertLocalUserProfile(profileViewModel.userProfile);
-            print('insertLocalUserProfileをしました');
-            //TODO Firestoreから秋に入りアーティスト情報を取得する
-            final userFavoriteArtists =
-                await artistFollowViewModel.getUserFavoriteArtists();
-            if (userFavoriteArtists != null) {
-              artistFollowViewModel.insertArtistsToList(userFavoriteArtists);
-              for (var userFavoriteArtist in userFavoriteArtists) {
-                await localDatabaseViewModel.appDatabase!
-                    .insertLocalUserFavoriteArtist(userFavoriteArtist);
-              }
-            }
-            await spotifyViewModel.fetchSpotifyAccessToken();
+
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
               toAfterSignInPage(context: context);

@@ -22,6 +22,7 @@ class PostModel {
           .collection('users')
           .doc(uid)
           .collection('posts')
+          .orderBy('postTimestamp', descending: false)
           .get();
       for (var docSnapshot in response.docs) {
         //docSnapshot.data()を一つずつproviderに格納していく
