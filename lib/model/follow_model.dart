@@ -134,9 +134,10 @@ class FollowModel {
         .delete();
   }
 
-  Future<dynamic> getFollowedUsers(String uid) async {
+  Future<dynamic> getFollowedUsers() async {
     try {
       final List<FollowedUser> followedUsers = [];
+      final uid = auth.currentUser!.uid;
       final response = await firestore
           .collection('users')
           .doc(uid)
@@ -156,6 +157,32 @@ class FollowModel {
     } catch (e) {
       print('Fail to get followed users');
       return 'Fail to get followed users';
+    }
+  }
+
+  Future<int> getFollowedNum() async {
+    try {
+      final List<FollowedUser> followedUsers = [];
+      final uid = auth.currentUser!.uid;
+      final response = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('followers')
+          .get();
+
+      if (response.docs.isEmpty) {
+        return 0;
+      } else {
+        //docsの中身を展開して、FollowingUser型に変換する
+        for (var doc in response.docs) {
+          final followedUser = FollowedUser.fromJson(doc.data());
+          followedUsers.add(followedUser);
+        }
+        return followedUsers.length;
+      }
+    } catch (e) {
+      print('Fail to get followed user number.');
+      return 0;
     }
   }
 }

@@ -235,7 +235,7 @@ class ProfilePage extends ConsumerWidget {
                               Align(
                                 alignment: const Alignment(-0.925, 0.75),
                                 child: FollowCount(
-                                  count: followViewModel.followerNum,
+                                  count: followViewModel.followedNum,
                                   label: followerCountLabel,
                                   onTap: () {
                                     print('Tapped follower button.');
