@@ -22,6 +22,7 @@ class PostModel {
           .collection('users')
           .doc(uid)
           .collection('posts')
+          .orderBy('postTimestamp', descending: false)
           .get();
       for (var docSnapshot in response.docs) {
         //docSnapshot.data()を一つずつproviderに格納していく
@@ -29,7 +30,6 @@ class PostModel {
         final userPost = Post.fromJson(docSnapshot.data());
         userPosts.add(userPost);
       }
-      userPosts.sort((a, b) => a.postTimestamp.compareTo(b.postTimestamp));
       return userPosts;
     } catch (e) {
       print('Error getting userPosts from Firestore: $e');

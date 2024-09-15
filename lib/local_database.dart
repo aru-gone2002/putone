@@ -203,7 +203,7 @@ class AppDatabase extends _$AppDatabase {
     return (select(localUserPosts)
           ..orderBy([
             (post) => OrderingTerm(
-                expression: post.postTimestamp, mode: OrderingMode.asc)
+                expression: post.postTimestamp, mode: OrderingMode.desc)
           ]))
         .watch();
   }
@@ -213,7 +213,7 @@ class AppDatabase extends _$AppDatabase {
     return (select(localUserPosts)
           ..orderBy([
             (post) => OrderingTerm(
-                expression: post.postTimestamp, mode: OrderingMode.asc)
+                expression: post.postTimestamp, mode: OrderingMode.desc)
           ]))
         .get();
   }
