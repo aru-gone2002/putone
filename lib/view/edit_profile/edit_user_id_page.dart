@@ -68,7 +68,8 @@ class EditUserIdPage extends ConsumerWidget {
             child: FormFieldItem(
               itemName: afterChangedUserIdLabel,
               textRestriction: userIdRestrictionText,
-              validator: (value) => userIdValidator(value),
+              validator: (value) => userIdValidator(
+                  value: value, profileViewModel: profileViewModel),
               onSaved: (value) async => uploadEdittedUserId(value),
               maxLength: userIdAndUserNameTextLength,
             ),

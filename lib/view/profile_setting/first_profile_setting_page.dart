@@ -49,7 +49,10 @@ class FirstProfileSettingPage extends StatelessWidget {
                     maxLength: userIdAndUserNameTextLength,
                     itemName: userIdLabel,
                     textRestriction: userIdRestrictionText,
-                    validator: (value) => userIdValidator(value),
+                    validator: (value) => userIdValidator(
+                      value: value,
+                      profileViewModel: profileViewModel,
+                    ),
                     onSaved: (value) {
                       profileViewModel.saveUserId(value as String);
                     },
@@ -79,7 +82,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -13,7 +13,7 @@ class FormFieldItem extends StatelessWidget {
 
   final String itemName;
   final String textRestriction;
-  final String? Function(String? text) validator;
+  final String? Function(String? text)? validator;
   final void Function(String? text)? onSaved;
   final int maxLength;
 
