@@ -145,6 +145,7 @@ class FollowModel {
           .get();
 
       if (response.docs.isEmpty) {
+        print('no followers');
         return 'no-followers';
       } else {
         //docsの中身を展開して、FollowingUser型に変換する

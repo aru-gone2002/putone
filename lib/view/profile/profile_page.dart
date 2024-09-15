@@ -239,6 +239,13 @@ class ProfilePage extends ConsumerWidget {
                                   label: followerCountLabel,
                                   onTap: () {
                                     print('Tapped follower button.');
+                                    toFollowListPage(
+                                      context: context,
+                                      followingUsers:
+                                          followViewModel.followingUsers,
+                                      followedUsers:
+                                          followViewModel.followedUsers,
+                                    );
                                   },
                                 ),
                               ),
@@ -250,6 +257,13 @@ class ProfilePage extends ConsumerWidget {
                                   label: followingCountLabel,
                                   onTap: () {
                                     print('Tapped following button.');
+                                    toFollowListPage(
+                                      context: context,
+                                      followingUsers:
+                                          followViewModel.followingUsers,
+                                      followedUsers:
+                                          followViewModel.followedUsers,
+                                    );
                                   },
                                 ),
                               ),

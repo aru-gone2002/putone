@@ -1,11 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/followed_user/followed_user.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/model/follow_model.dart';
+import 'package:putone/model/profile_model.dart';
 import 'package:putone/providers/follow_provider.dart';
 
 class FollowViewModel {
   final FollowModel _followModel = FollowModel();
+  final ProfileModel _profileModel = ProfileModel();
   late WidgetRef _ref;
 
   void setRef(WidgetRef ref) {
@@ -100,5 +103,10 @@ class FollowViewModel {
   Future<void> getFollowedNum() async {
     final followedNum = await _followModel.getFollowedNum();
     saveFollowedNum(followedNum);
+  }
+
+  Future<UserProfile> getUserProfile(String uid) async {
+    final userProfile = await _profileModel.getUserProfile(uid);
+    return userProfile!;
   }
 }
