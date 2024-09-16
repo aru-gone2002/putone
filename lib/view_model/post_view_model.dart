@@ -37,9 +37,6 @@ class PostViewModel {
   String get postMusicPreviewUrl =>
       _ref.watch(postProvider.select((value) => value.postMusicPreviewUrl));
 
-  // int get postLikeCount =>
-  //     _ref.watch(postProvider.select((value) => value.postLikeCount));
-
   Post get newPost => _ref.watch(postProvider);
 
   List<Post> get posts => _ref.watch(postsProvider);
@@ -89,11 +86,6 @@ class PostViewModel {
         _ref.read(postProvider).copyWith(postMusicPreviewUrl: value);
   }
 
-  // void savePostLikeCount(int value) {
-  //   _ref.read(postProvider.notifier).state =
-  //       _ref.read(postProvider).copyWith(postLikeCount: value);
-  // }
-
   void addNewPostToList() {
     _ref.read(postsProvider.notifier).state = [
       ..._ref.read(postsProvider.notifier).state,
@@ -134,7 +126,7 @@ class PostViewModel {
         postMsg: localUserPost.postMsg,
         postTimestamp: localUserPost.postTimestamp,
         postMusicSpotifyUrl: localUserPost.postMusicSpotifyUrl,
-        postMusicPreviewUrl: localUserPost.postMusicPreciewUrl,
+        postMusicPreviewUrl: localUserPost.postMusicPreciewUrl ?? '',
       );
       userPosts.add(post);
     }
