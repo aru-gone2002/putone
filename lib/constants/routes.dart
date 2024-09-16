@@ -200,6 +200,7 @@ void toFollowListPage({
   required BuildContext context,
   required List<FollowingUser> followingUsers,
   required List<FollowedUser> followedUsers,
+  required int initialTab,
 }) {
   Navigator.push(
     context,
@@ -207,6 +208,7 @@ void toFollowListPage({
       builder: ((context) => FollowListScreen(
             followingUsers: followingUsers,
             followedUsers: followedUsers,
+            initialTab: initialTab,
           )),
     ),
   );

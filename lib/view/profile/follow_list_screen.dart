@@ -21,10 +21,12 @@ class FollowListScreen extends ConsumerStatefulWidget {
     super.key,
     required this.followingUsers,
     required this.followedUsers,
+    required this.initialTab,
   });
 
   final List<FollowingUser> followingUsers;
   final List<FollowedUser> followedUsers;
+  final int initialTab;
 
   @override
   createState() {
@@ -63,12 +65,10 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
     print('Following: ${widget.followingUsers}');
     print('Followed by: ${widget.followedUsers}');
 
-    //final ProfileViewModel profileViewModel = ProfileViewModel();
-    //final UserSearchViewModel userSearchViewModel = UserSearchViewModel();
-
     profileViewModel.setRef(ref);
 
     return DefaultTabController(
+      initialIndex: widget.initialTab,
       length: 2,
       child: Scaffold(
         appBar: AppBar(

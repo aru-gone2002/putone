@@ -245,6 +245,7 @@ class ProfilePage extends ConsumerWidget {
                                           followViewModel.followingUsers,
                                       followedUsers:
                                           followViewModel.followedUsers,
+                                      initialTab: 0,
                                     );
                                   },
                                 ),
@@ -263,6 +264,7 @@ class ProfilePage extends ConsumerWidget {
                                           followViewModel.followingUsers,
                                       followedUsers:
                                           followViewModel.followedUsers,
+                                      initialTab: 1,
                                     );
                                   },
                                 ),
