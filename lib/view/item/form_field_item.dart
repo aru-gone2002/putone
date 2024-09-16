@@ -11,6 +11,7 @@ class FormFieldItem extends StatelessWidget {
     required this.maxLength,
     required this.controller,
     required this.autovalidateMode,
+    required this.onChanged,
   });
 
   final String itemName;
@@ -20,6 +21,7 @@ class FormFieldItem extends StatelessWidget {
   final int maxLength;
   final TextEditingController? controller;
   final AutovalidateMode? autovalidateMode;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class FormFieldItem extends StatelessWidget {
             controller: controller,
             validator: validator,
             autovalidateMode: autovalidateMode,
+            onChanged: onChanged,
             onSaved: onSaved,
             maxLines: 1,
             maxLength: maxLength,

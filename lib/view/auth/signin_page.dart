@@ -137,6 +137,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FormFieldItem(
+                  onChanged: null,
                   autovalidateMode: null,
                   controller: _emailController,
                   maxLength: maxEmailTextLength,
@@ -160,6 +161,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   },
                 ),
                 FormFieldItem(
+                  onChanged: null,
                   autovalidateMode: null,
                   controller: _passwordController,
                   maxLength: maxPasswordTextLength,

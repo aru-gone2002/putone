@@ -236,20 +236,20 @@ class EditProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: betweenTitleAndTextHeight),
             //ユーザーIDの編集
-            // Consumer(
-            //   builder: (context, ref, _) {
-            //     profileViewModel.setRef(ref);
-            //     return TitleAndTextButton(
-            //         inputDataLabel: userIdLabel,
-            //         beforeInputText: tapForSettingBtnText,
-            //         afterInputText: profileViewModel.userId,
-            //         //TODO ユーザーID編集ページに飛ばす
-            //         onTap: () => toEditUserIdPage(context: context),
-            //         //toThemeSongSettingPage(context: context),
-            //         separateCondition: profileViewModel.userId != '');
-            //   },
-            // ),
-            // const SizedBox(height: betweenTitleAndTextHeight),
+            Consumer(
+              builder: (context, ref, _) {
+                profileViewModel.setRef(ref);
+                return TitleAndTextButton(
+                    inputDataLabel: userIdLabel,
+                    beforeInputText: tapForSettingBtnText,
+                    afterInputText: profileViewModel.userId,
+                    //TODO ユーザーID編集ページに飛ばす
+                    onTap: () => toEditUserIdPage(context: context),
+                    //toThemeSongSettingPage(context: context),
+                    separateCondition: profileViewModel.userId != '');
+              },
+            ),
+            const SizedBox(height: betweenTitleAndTextHeight),
             //テーマソング設定
             Consumer(
               builder: (context, ref, _) {

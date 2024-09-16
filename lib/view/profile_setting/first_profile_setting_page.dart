@@ -21,14 +21,15 @@ class _FirstProfileSettingPageState
     extends ConsumerState<FirstProfileSettingPage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
   final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _userNameController = TextEditingController();
   dynamic _userIdValidationMsg;
 
   Future<void> setUserIdAndNameFunction(
       GlobalKey<FormState> formKey, BuildContext context) async {
-    final userIdIsAvailable = await _profileViewModel
-        .checkUserIdIdenticication(_userIdController.text);
-    if (userIdIsAvailable && formKey.currentState!.validate()) {
+    // final isUserIdAvailable = await _profileViewModel
+    //     .checkUserIdIdenticication(_userIdController.text);
+    _userIdValidationMsg =
+        await userIdValidator(_userIdController.text, _profileViewModel);
+    if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       Fluttertoast.showToast(msg: userIdAndNameCompleteToastText);
       if (context.mounted) {
@@ -46,7 +47,6 @@ class _FirstProfileSettingPageState
   @override
   void dispose() {
     _userIdController.dispose();
-    _userNameController.dispose();
     super.dispose();
   }
 
@@ -71,33 +71,29 @@ class _FirstProfileSettingPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Focus(
-                  child: FormFieldItem(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _userIdController,
-                    maxLength: userIdAndUserNameTextLength,
-                    itemName: userIdLabel,
-                    textRestriction: userIdRestrictionText,
-                    validator: (value) => _userIdValidationMsg,
-                    onSaved: (value) {
-                      _profileViewModel.saveUserId(value as String);
-                    },
-                  ),
-                  onFocusChange: (hasFocus) async {
-                    if (!hasFocus) {
-                      //TODO ここでvalidator的なことをして、validatorに返す値を取得する。
-                      final isUserIdAvailable = await _profileViewModel
-                          .checkUserIdIdenticication(_userIdController.text);
-                      setState(() {
-                        userIdValidator(
-                            _userIdController.text, isUserIdAvailable);
-                      });
-                    }
+                FormFieldItem(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _userIdController,
+                  maxLength: userIdAndUserNameTextLength,
+                  itemName: userIdLabel,
+                  textRestriction: userIdRestrictionText,
+                  validator: (value) => _userIdValidationMsg,
+                  onSaved: (value) {
+                    _profileViewModel.saveUserId(value as String);
+                  },
+                  onChanged: (value) async {
+                    //TODO ここでvalidator的なことをして、validatorに返す値を取得する。
+                    // final isUserIdAvailable = await _profileViewModel
+                    //     .checkUserIdIdenticication(_userIdController.text);
+                    _userIdValidationMsg = await userIdValidator(
+                        _userIdController.text, _profileViewModel);
+                    setState(() {});
                   },
                 ),
                 FormFieldItem(
                   autovalidateMode: null,
-                  controller: _userNameController,
+                  onChanged: null,
+                  controller: null,
                   maxLength: userIdAndUserNameTextLength,
                   itemName: userNameLabel,
                   textRestriction: '',
