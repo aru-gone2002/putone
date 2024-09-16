@@ -63,17 +63,17 @@ class EditUserIdPage extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Form(
-            key: formKey,
-            child: FormFieldItem(
-              itemName: afterChangedUserIdLabel,
-              textRestriction: userIdRestrictionText,
-              validator: (value) => userIdValidator(
-                  value: value, profileViewModel: profileViewModel),
-              onSaved: (value) async => uploadEdittedUserId(value),
-              maxLength: userIdAndUserNameTextLength,
-            ),
-          ),
+          // Form(
+          //   key: formKey,
+          //   child: FormFieldItem(
+          //     itemName: afterChangedUserIdLabel,
+          //     textRestriction: userIdRestrictionText,
+          //     validator: (value) => userIdValidator(
+          //         value: value, profileViewModel: profileViewModel),
+          //     onSaved: (value) async => uploadEdittedUserId(value),
+          //     maxLength: userIdAndUserNameTextLength,
+          //   ),
+          // ),
           const SizedBox(height: 80),
           DeepGrayButton(
             onPressed: () {

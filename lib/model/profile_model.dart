@@ -201,7 +201,7 @@ class ProfileModel {
         .collection('users')
         .where('userId', isEqualTo: userId)
         .get();
-    final isNotAvailableUserId = response.docs.isNotEmpty;
-    return isNotAvailableUserId;
+    final isUserIdAvailable = response.docs.isEmpty;
+    return isUserIdAvailable;
   }
 }

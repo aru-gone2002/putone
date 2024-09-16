@@ -29,9 +29,10 @@ String? passwordValidator(String? value) {
   return null;
 }
 
-Future<String?> userIdValidator(
-    {required String? value,
-    required ProfileViewModel profileViewModel}) async {
+String? userIdValidator(
+  String? value,
+  bool isUserIdAvailable,
+) {
   if (value == null || value.trim().isEmpty) {
     return notInputUserIdText;
   }
@@ -41,7 +42,7 @@ Future<String?> userIdValidator(
     return inputUserIdIsNotValidText;
   }
 
-  if (await profileViewModel.checkUserIdIdenticication(value)) {
+  if (isUserIdAvailable == false) {
     return userIdIsNotAvailableValidator;
   }
   return null;

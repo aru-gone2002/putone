@@ -66,6 +66,8 @@ class EditUserNamePage extends ConsumerWidget {
           Form(
             key: formKey,
             child: FormFieldItem(
+              autovalidateMode: null,
+              controller: null,
               itemName: afterChangedUserNameLabel,
               textRestriction: '',
               validator: (value) => userNameValidator(value),
