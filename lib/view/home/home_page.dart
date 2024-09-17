@@ -1,13 +1,8 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:putone/constants/height.dart';
+import 'package:putone/constants/enums.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
-import 'package:putone/constants/width.dart';
-import 'package:putone/data/post/post.dart';
-import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/quiz_item.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
@@ -25,6 +20,45 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     _postViewModel.setRef(ref);
+  }
+
+  Widget followingFriendsPostsList(AsyncSnapshot snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (snapshot.hasError) {
+      return const Center(
+        child: Text(failToGetFollowingUsersPostsErrorText),
+      );
+    }
+    if (_postViewModel.getFollowingUsersPostsCondition ==
+        GetFollowingUsersPostsCondition.error) {
+      return const Center(
+        child: Text(failToGetFollowingUsersPostsErrorText),
+      );
+    }
+    if (_postViewModel.getFollowingUsersPostsCondition ==
+        GetFollowingUsersPostsCondition.lackOfFriends) {
+      return const Center(
+        child: Text(lackOfFriendsText),
+      );
+    }
+    if (_postViewModel.getFollowingUsersPostsCondition ==
+        GetFollowingUsersPostsCondition.noPost) {
+      return const Center(
+        child: Text(noFriendsPostText),
+      );
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _postViewModel.followingUsersPosts.length,
+      itemBuilder: (context, index) {
+        final post = _postViewModel.followingUsersPosts[index];
+        return QuizItem(post: post);
+      },
+    );
   }
 
   @override
@@ -46,14 +80,11 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _postViewModel.followingUsersPosts.length,
-        itemBuilder: (context, index) {
-          final post = _postViewModel.followingUsersPosts[index];
-          return QuizItem(post: post);
-        },
-      ),
+      body: FutureBuilder(
+          future: _postViewModel.getFollowingUsersPosts(),
+          builder: (context, snapshot) {
+            return followingFriendsPostsList(snapshot);
+          }),
     );
   }
 }

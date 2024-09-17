@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:putone/constants/enums.dart';
 import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/post/post.dart';
 
@@ -70,8 +71,9 @@ class PostModel {
           .collection('followings')
           .get();
       //followingUsersQuerySnapがEmptyのことも考える
-      if (followingUsersQuerySnap.docs.isEmpty) {
-        return 'no_following_user';
+      if (followingUsersQuerySnap.docs.isEmpty &&
+          followingUsersQuerySnap.docs.length <= 2) {
+        return GetFollowingUsersPostsCondition.lackOfFriends;
       }
       //docsからuidを取得する
       for (var docSnap in followingUsersQuerySnap.docs) {
@@ -92,7 +94,7 @@ class PostModel {
             followingUsersPosts.add(followingUserPost);
           }
         } else {
-          return 'no_post';
+          return GetFollowingUsersPostsCondition.noPost;
         }
       }
       //followingUsersPostsをpostTimestampで並べ替え

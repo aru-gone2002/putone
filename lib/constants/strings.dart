@@ -111,6 +111,8 @@ const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
 const String askToSearchByArtistText = 'アーティスト名で検索してください';
+const String lackOfFriendsText = '友達を3人以上登録しよう！';
+const String noFriendsPostText = '友達の投稿がありません';
 
 //hint text
 const String writeArtistNameHintText = 'アーティスト名を入力';
@@ -134,6 +136,7 @@ const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？
 
 //error
 const String failToReadDataErrorText = 'データの読み込みに失敗しました';
+const String failToGetFollowingUsersPostsErrorText = '友達の投稿取得中に何らかのエラーが発生しました';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();
