@@ -67,7 +67,7 @@ class PostCard extends ConsumerWidget {
     final answersAsyncValue = ref
         .watch(postAnswersProvider({'uid': post.uid, 'postId': post.postId}));
     print('answersAsyncValue: $answersAsyncValue');
-    print('answersAsyncValueData: ${answersAsyncValue.asData?.value}');
+    print('answersAsyncValue: ${answersAsyncValue.asData?.value}');
     final percentageAsyncValue = ref.watch(correctAnswerPercentageProvider(
         {'uid': post.uid, 'postId': post.postId}));
 

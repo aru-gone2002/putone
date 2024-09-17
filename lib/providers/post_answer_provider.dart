@@ -12,6 +12,11 @@ final postAnswersProvider =
       final answers =
           await model.getPostAnswers(params['uid']!, params['postId']!);
       print("Answers fetched successfully: ${answers.length}"); // デバッグ出力
+      if (answers.isEmpty) {
+        print("No answers available"); // デバッグ出力
+        return [];
+      }
+      print("Answers fetched successfully: ${answers.length}"); // デバッグ出力
       return answers;
     } catch (e, stackTrace) {
       print("Error in postAnswersProvider: $e");
