@@ -11,27 +11,46 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class EditUserIdPage extends ConsumerWidget {
+class EditUserIdPage extends ConsumerStatefulWidget {
   const EditUserIdPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final ProfileViewModel profileViewModel = ProfileViewModel();
-    final LocalDatabaseViewModel localDatabaseViewModel =
-        LocalDatabaseViewModel();
-    profileViewModel.setRef(ref);
-    localDatabaseViewModel.setRef(ref);
-    final formKey = GlobalObjectKey<FormState>(context);
+  ConsumerState<EditUserIdPage> createState() => _EditUserIdPageState();
+}
 
-    Future<void> uploadEdittedUserId(String? value) async {
-      //providerのuserIdの変更
-      profileViewModel.saveUserId(value!);
-      //ローカルDBのuserIdの変更
-      await localDatabaseViewModel.appDatabase!
-          .updateLocalUserId(uid: profileViewModel.uid, newUserId: value);
-      //FirestoreのuserIdの変更
-      await profileViewModel.updateFirestoreUserId(newUserId: value);
-    }
+class _EditUserIdPageState extends ConsumerState<EditUserIdPage> {
+  final ProfileViewModel _profileViewModel = ProfileViewModel();
+  final LocalDatabaseViewModel _localDatabaseViewModel =
+      LocalDatabaseViewModel();
+  final TextEditingController _userIdController = TextEditingController();
+  dynamic _userIdValidationMsg;
+
+  Future<void> uploadEdittedUserId(String? value) async {
+    //providerのuserIdの変更
+    _profileViewModel.saveUserId(value!);
+    //ローカルDBのuserIdの変更
+    await _localDatabaseViewModel.appDatabase!
+        .updateLocalUserId(uid: _profileViewModel.uid, newUserId: value);
+    //FirestoreのuserIdの変更
+    await _profileViewModel.updateFirestoreUserId(newUserId: value);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _profileViewModel.setRef(ref);
+    _localDatabaseViewModel.setRef(ref);
+  }
+
+  @override
+  void dispose() {
+    _userIdController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final formKey = GlobalObjectKey<FormState>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +74,7 @@ class EditUserIdPage extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              profileViewModel.userId,
+              _profileViewModel.userId,
               style: Theme.of(context)
                   .textTheme
                   .labelSmall!
@@ -66,20 +85,31 @@ class EditUserIdPage extends ConsumerWidget {
           Form(
             key: formKey,
             child: FormFieldItem(
+              controller: _userIdController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               itemName: afterChangedUserIdLabel,
               textRestriction: userIdRestrictionText,
-              validator: (value) => userIdValidator(value),
+              validator: (value) => _userIdValidationMsg,
               onSaved: (value) async => uploadEdittedUserId(value),
               maxLength: userIdAndUserNameTextLength,
+              onChanged: (value) async {
+                _userIdValidationMsg = await userIdValidator(
+                    _userIdController.text, _profileViewModel);
+                setState(() {});
+              },
             ),
           ),
           const SizedBox(height: 80),
           DeepGrayButton(
-            onPressed: () {
+            onPressed: () async {
+              _userIdValidationMsg = await userIdValidator(
+                  _userIdController.text, _profileViewModel);
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                Navigator.pop(context);
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
               }
             },
             text: changeBtnText,

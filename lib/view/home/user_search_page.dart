@@ -242,16 +242,18 @@ class UserSearchPage extends StatelessWidget {
                         child: Consumer(builder: (context, ref, _) {
                           profileViewModel.setRef(ref);
                           return MainColorCirculalarTextField(
-                              itemName: userIdLabel,
-                              maxLength: userIdAndUserNameTextLength,
-                              onSaved: (value) => userSearchFunction(
-                                    context: context,
-                                    value: value,
-                                    uid: profileViewModel.uid,
-                                    userSearchViewModel: userSearchViewModel,
-                                    dialogWidth: deviceWidthWithPadding,
-                                  ),
-                              validator: (value) => userIdValidator(value));
+                            itemName: userIdLabel,
+                            maxLength: userIdAndUserNameTextLength,
+                            onSaved: (value) => userSearchFunction(
+                              context: context,
+                              value: value,
+                              uid: profileViewModel.uid,
+                              userSearchViewModel: userSearchViewModel,
+                              dialogWidth: deviceWidthWithPadding,
+                            ),
+                            // validator: (value) => userIdValidator(value),
+                            validator: (value) => null,
+                          );
                         }),
                       ),
                       const SizedBox(height: 40),

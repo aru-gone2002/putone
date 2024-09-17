@@ -134,6 +134,9 @@ class SignInPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FormFieldItem(
+                  autovalidateMode: null,
+                  controller: null,
+                  onChanged: null,
                   maxLength: maxEmailTextLength,
                   itemName: emailAddressLabel,
                   textRestriction: '',
@@ -157,6 +160,9 @@ class SignInPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   authViewModel.setRef(ref);
                   return FormFieldItem(
+                    autovalidateMode: null,
+                    controller: null,
+                    onChanged: null,
                     maxLength: maxPasswordTextLength,
                     itemName: passwordLabel,
                     textRestriction: '',
