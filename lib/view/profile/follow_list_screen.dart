@@ -19,11 +19,13 @@ import 'package:putone/view_model/user_search_view_model.dart';
 class FollowListScreen extends ConsumerStatefulWidget {
   const FollowListScreen({
     super.key,
+    required this.userProfile,
     required this.followingUsers,
     required this.followedUsers,
     required this.initialTab,
   });
 
+  final UserProfile userProfile;
   final List<FollowingUser> followingUsers;
   final List<FollowedUser> followedUsers;
   final int initialTab;
@@ -38,22 +40,22 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
   final FollowViewModel followViewModel = FollowViewModel();
   final ProfileViewModel profileViewModel = ProfileViewModel();
   final UserSearchViewModel userSearchViewModel = UserSearchViewModel();
-  UserProfile userProfile = UserProfile(
-    uid: '',
-    userId: '',
-    userName: '',
-    userImg: '',
-    themeMusicImg: '',
-    themeMusicArtistName: '',
-    themeMusicName: '',
-    themeMusicSpotifyUrl: '',
-    themeMusicPreviewUrl: '',
-    userProfileMsg: '',
-    userSpotifyConnected: false,
-    userSignUpTimestamp: DateTime.now(),
-    userLastLoginTimestamp: DateTime.now(),
-    communityId: '',
-  );
+  // UserProfile userProfile = UserProfile(
+  //   uid: '',
+  //   userId: '',
+  //   userName: '',
+  //   userImg: '',
+  //   themeMusicImg: '',
+  //   themeMusicArtistName: '',
+  //   themeMusicName: '',
+  //   themeMusicSpotifyUrl: '',
+  //   themeMusicPreviewUrl: '',
+  //   userProfileMsg: '',
+  //   userSpotifyConnected: false,
+  //   userSignUpTimestamp: DateTime.now(),
+  //   userLastLoginTimestamp: DateTime.now(),
+  //   communityId: '',
+  // );
 
   @override
   void initState() {
@@ -73,7 +75,7 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            profileViewModel.userName,
+            widget.userProfile.userName,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           bottom: TabBar(
@@ -111,10 +113,9 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
                         shrinkWrap: true,
                         itemCount: widget.followedUsers.length,
                         itemBuilder: (context, index) {
-                          final followedUid =
-                              widget.followedUsers[index].followedUid;
+                          final uid = widget.followedUsers[index].uid;
                           return FutureBuilder(
-                            future: followViewModel.getUserProfile(followedUid),
+                            future: followViewModel.getUserProfile(uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return UserListItem(

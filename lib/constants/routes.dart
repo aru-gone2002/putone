@@ -198,6 +198,7 @@ void toUserSearchPage({
 
 void toFollowListPage({
   required BuildContext context,
+  required UserProfile userProfile,
   required List<FollowingUser> followingUsers,
   required List<FollowedUser> followedUsers,
   required int initialTab,
@@ -206,6 +207,7 @@ void toFollowListPage({
     context,
     MaterialPageRoute(
       builder: ((context) => FollowListScreen(
+            userProfile: userProfile,
             followingUsers: followingUsers,
             followedUsers: followedUsers,
             initialTab: initialTab,

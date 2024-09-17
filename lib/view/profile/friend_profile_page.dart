@@ -4,23 +4,59 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/following_user/following_user.dart';
+import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_button.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:putone/view/item/follow_count.dart';
+import 'package:putone/constants/routes.dart';
 
-class FriendProfilePage extends StatelessWidget {
-  const FriendProfilePage({super.key, required this.userProfile});
+class FriendProfilePage extends ConsumerStatefulWidget {
+  const FriendProfilePage({
+    super.key,
+    required this.userProfile,
+  });
 
   final UserProfile userProfile;
 
   @override
-  Widget build(BuildContext context) {
-    final ProfileViewModel profileViewModel = ProfileViewModel();
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return FriendProfilePageState();
+  }
+}
 
+class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
+  late Future<int> _followingNumFuture;
+  late Future<int> _followedNumFuture;
+  late Future<List<FollowingUser>> _followingUsersFuture;
+  late Future<List<FollowedUser>> _followedUsersFuture;
+
+  final FollowViewModel followViewModel = FollowViewModel();
+  final ProfileViewModel profileViewModel = ProfileViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    _followingNumFuture =
+        followViewModel.getFriendFollowingNum(widget.userProfile.uid);
+    _followedNumFuture =
+        followViewModel.getFriendFollowedNum(widget.userProfile.uid);
+    _followingUsersFuture =
+        followViewModel.getFriendFollowingUsers(widget.userProfile.uid);
+    _followedUsersFuture =
+        followViewModel.getFriendFollowedUsers(widget.userProfile.uid);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
+
+    followViewModel.setRef(ref);
+    profileViewModel.setRef(ref);
 
     return Scaffold(
       body: Column(
@@ -49,7 +85,7 @@ class FriendProfilePage extends StatelessWidget {
                 Align(
                   alignment: const Alignment(0, 0.6),
                   child: Text(
-                    userProfile.userName,
+                    widget.userProfile.userName,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -90,9 +126,9 @@ class FriendProfilePage extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        (userProfile.themeMusicImg != '')
+                        (widget.userProfile.themeMusicImg != '')
                             ? ExtendedImage.network(
-                                userProfile.themeMusicImg,
+                                widget.userProfile.themeMusicImg,
                                 height: favoriteMusicImgHeight,
                                 width: favoriteMusicImgWidth,
                                 fit: BoxFit.cover,
@@ -113,8 +149,8 @@ class FriendProfilePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                (userProfile.themeMusicName != '')
-                                    ? userProfile.themeMusicName
+                                (widget.userProfile.themeMusicName != '')
+                                    ? widget.userProfile.themeMusicName
                                     : themeSongIsNotSelectedText,
                                 style: Theme.of(context)
                                     .textTheme
@@ -127,8 +163,8 @@ class FriendProfilePage extends StatelessWidget {
                                 maxLines: 1,
                               ),
                               Text(
-                                (userProfile.themeMusicArtistName != '')
-                                    ? userProfile.themeMusicArtistName
+                                (widget.userProfile.themeMusicArtistName != '')
+                                    ? widget.userProfile.themeMusicArtistName
                                     : askToSettingThemeSongText,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -152,7 +188,7 @@ class FriendProfilePage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          userProfile.userName,
+                          widget.userProfile.userName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
@@ -161,7 +197,7 @@ class FriendProfilePage extends StatelessWidget {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '@${userProfile.userId}',
+                          '@${widget.userProfile.userId}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -170,11 +206,91 @@ class FriendProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
+                //フォロワー数
+                FutureBuilder(
+                  future: Future.wait([
+                    _followedNumFuture,
+                    _followingUsersFuture,
+                    _followedUsersFuture,
+                  ]),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data is List) {
+                      final int followedNum = snapshot.data![0] as int? ?? 0;
+                      return Align(
+                        alignment: const Alignment(-0.925, 0.75),
+                        child: FollowCount(
+                          count: followedNum,
+                          label: followerCountLabel,
+                          onTap: () {
+                            print('Tapped follower button.');
+                            toFollowListPage(
+                              context: context,
+                              userProfile: widget.userProfile,
+                              followingUsers:
+                                  snapshot.data![1] as List<FollowingUser>? ??
+                                      [],
+                              followedUsers:
+                                  snapshot.data![2] as List<FollowedUser>? ??
+                                      [],
+                              initialTab: 0,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Align(
+                        alignment: Alignment(-0.925, 0.75),
+                        child: Text('null'),
+                      );
+                    }
+                  },
+                ),
+
+                //フォロー中数
+                FutureBuilder(
+                  future: Future.wait([
+                    _followingNumFuture,
+                    _followingUsersFuture,
+                    _followedUsersFuture,
+                  ]),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data is List) {
+                      final int followingNum = snapshot.data![0] as int? ?? 0;
+                      return Align(
+                        alignment: const Alignment(-0.525, 0.75),
+                        child: FollowCount(
+                          count: followingNum,
+                          label: followingCountLabel,
+                          onTap: () {
+                            print('Tapped following button.');
+                            toFollowListPage(
+                              context: context,
+                              userProfile: widget.userProfile,
+                              followingUsers:
+                                  snapshot.data![1] as List<FollowingUser>? ??
+                                      [],
+                              followedUsers:
+                                  snapshot.data![2] as List<FollowedUser>? ??
+                                      [],
+                              initialTab: 1,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Align(
+                        alignment: Alignment(-0.525, 0.75),
+                        child: Text('null'),
+                      );
+                    }
+                  },
+                ),
+
                 Align(
                   alignment: const Alignment(0, 0),
-                  child: (userProfile.userImg != '')
+                  child: (widget.userProfile.userImg != '')
                       ? ExtendedImage.network(
-                          userProfile.userImg,
+                          widget.userProfile.userImg,
                           width: profileImgSize,
                           height: profileImgSize,
                           fit: BoxFit.cover,
@@ -216,7 +332,7 @@ class FriendProfilePage extends StatelessWidget {
                     return FollowButton(
                       followingUser: FollowingUser(
                         uid: profileViewModel.uid,
-                        followingUid: userProfile.uid,
+                        followingUid: widget.userProfile.uid,
                       ),
                     );
                   }),
@@ -226,13 +342,25 @@ class FriendProfilePage extends StatelessWidget {
                   child: SizedBox(
                     width: sideProfileWidth,
                     child: Text(
-                      (userProfile.userProfileMsg != '')
-                          ? userProfile.userProfileMsg
+                      (widget.userProfile.userProfileMsg != '')
+                          ? widget.userProfile.userProfileMsg
                           : notRegisteredProfileMsgText,
                       overflow: TextOverflow.clip,
                       textAlign: TextAlign.center,
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: const Alignment(0.95, 0.75),
+                  child: SizedBox(
+                    width: sideProfileWidth,
+                    child: Text(
+                      '所属：${profileViewModel.communityMap[(widget.userProfile.communityId)]!.communityName}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),

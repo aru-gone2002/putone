@@ -53,10 +53,10 @@ class FollowModel {
     }
   }
 
-  Future<dynamic> getFollowingUsers() async {
+  Future<dynamic> getFollowingUsers(String uid) async {
     try {
       final List<FollowingUser> followingUsers = [];
-      final uid = auth.currentUser!.uid;
+      //final uid = auth.currentUser!.uid;
       final response = await firestore
           .collection('users')
           .doc(uid)
@@ -64,7 +64,8 @@ class FollowModel {
           .get();
 
       if (response.docs.isEmpty) {
-        return 'no-following-user';
+        print("followings empty");
+        return followingUsers;
       } else {
         //docsの中身を展開して、FollowingUser型に変換する
         for (var doc in response.docs) {
@@ -75,14 +76,14 @@ class FollowModel {
       }
     } catch (e) {
       print('Fail to get following users');
-      return 'Fail to get following users';
+      return [];
     }
   }
 
-  Future<int> getFollowingNum() async {
+  Future<int> getFollowingNum(String uid) async {
     try {
       final List<FollowingUser> followingUsers = [];
-      final uid = auth.currentUser!.uid;
+      //final uid = auth.currentUser!.uid;
       final response = await firestore
           .collection('users')
           .doc(uid)
@@ -134,10 +135,10 @@ class FollowModel {
         .delete();
   }
 
-  Future<dynamic> getFollowedUsers() async {
+  Future<dynamic> getFollowedUsers(String uid) async {
     try {
       final List<FollowedUser> followedUsers = [];
-      final uid = auth.currentUser!.uid;
+      //final uid = auth.currentUser!.uid;
       final response = await firestore
           .collection('users')
           .doc(uid)
@@ -146,7 +147,7 @@ class FollowModel {
 
       if (response.docs.isEmpty) {
         print('no followers');
-        return 'no-followers';
+        return [];
       } else {
         //docsの中身を展開して、FollowingUser型に変換する
         for (var doc in response.docs) {
@@ -157,14 +158,14 @@ class FollowModel {
       }
     } catch (e) {
       print('Fail to get followed users');
-      return 'Fail to get followed users';
+      return [];
     }
   }
 
-  Future<int> getFollowedNum() async {
+  Future<int> getFollowedNum(String uid) async {
     try {
       final List<FollowedUser> followedUsers = [];
-      final uid = auth.currentUser!.uid;
+      //final uid = auth.currentUser!.uid;
       final response = await firestore
           .collection('users')
           .doc(uid)

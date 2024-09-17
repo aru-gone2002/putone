@@ -241,6 +241,7 @@ class ProfilePage extends ConsumerWidget {
                                     print('Tapped follower button.');
                                     toFollowListPage(
                                       context: context,
+                                      userProfile: profileViewModel.userProfile,
                                       followingUsers:
                                           followViewModel.followingUsers,
                                       followedUsers:
@@ -260,6 +261,7 @@ class ProfilePage extends ConsumerWidget {
                                     print('Tapped following button.');
                                     toFollowListPage(
                                       context: context,
+                                      userProfile: profileViewModel.userProfile,
                                       followingUsers:
                                           followViewModel.followingUsers,
                                       followedUsers:
