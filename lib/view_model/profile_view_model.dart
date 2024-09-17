@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -251,5 +252,9 @@ class ProfileViewModel {
       uid: uid,
       newUserProfileMsg: newUserProfileMsg,
     );
+  }
+
+  Future<bool> checkUserIdIdenticication(String userId) async {
+    return _profileModel.checkUserIdIdentification(userId);
   }
 }

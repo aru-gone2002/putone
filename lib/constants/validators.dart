@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 String? emailValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
@@ -28,7 +29,10 @@ String? passwordValidator(String? value) {
   return null;
 }
 
-String? userIdValidator(String? value) {
+Future<String?> userIdValidator(
+  String? value,
+  ProfileViewModel profileViewModel,
+) async {
   if (value == null || value.trim().isEmpty) {
     return notInputUserIdText;
   }
@@ -36,6 +40,10 @@ String? userIdValidator(String? value) {
   //TODO 文字数制限をつける
   if (!RegExp(r'^[a-z0-9.]{4,16}$').hasMatch(value)) {
     return inputUserIdIsNotValidText;
+  }
+
+  if (await profileViewModel.checkUserIdIdenticication(value) == false) {
+    return userIdIsNotAvailableValidator;
   }
   return null;
 }

@@ -187,4 +187,21 @@ class ProfileModel {
       print('Error update userProfileMsg in Firestore: $e');
     }
   }
+
+  // Stream<QuerySnapshot> checkUserIdIdentification(String userId) {
+  //   //usersコレクションにあるドキュメントのうち、
+  //   return firestore
+  //       .collection('users')
+  //       .where('userId', isEqualTo: userId)
+  //       .snapshots();
+  // }
+
+  Future<bool> checkUserIdIdentification(String userId) async {
+    final response = await firestore
+        .collection('users')
+        .where('userId', isEqualTo: userId)
+        .get();
+    final isUserIdAvailable = response.docs.isEmpty;
+    return isUserIdAvailable;
+  }
 }
