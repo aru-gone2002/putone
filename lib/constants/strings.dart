@@ -14,6 +14,8 @@ const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
 const String editBtnText = '編集';
 const String changeBtnText = '変更';
+const String followBtnText = 'フォロー';
+const String followingBtnText = 'フォロー中';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -28,6 +30,8 @@ const String editThemeSongAppBarTitle = 'テーマソングの変更';
 const String editCommunityAppBarTitle = 'コミュニティの変更';
 const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 const String homePageAppbarTitle = 'PuTone';
+const String userSearchPageAppbarTitle = 'ユーザー検索';
+const String artistFollowPageAppbarTitle = 'アーティスト';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -51,12 +55,14 @@ const String currentCommunityLabel = '現在のコミュニティ';
 const String afterChangedCommunityLabel = '変更後のコミュニティ';
 const String currentProfileMsgLabel = '現在のプロフィール文';
 const String afterChangedProfileMsgLabel = '変更後のプロフィール文（80字以内)';
+const String resultOfSearchUserLabel = '検索の結果';
 
 //title
 const String signupTitle = '会員登録';
 const String cropperTitle = 'Cropper';
 const String profileTitle = 'プロフィール文';
 const String signInTitle = 'ログイン';
+const String userSearchTitle = 'ユーザー検索';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';
@@ -104,6 +110,10 @@ const String notRegisteredCommunityIdText = '所属：未所属';
 const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
+const String askToSearchByArtistText = 'アーティスト名で検索してください';
+
+//hint text
+const String writeArtistNameHintText = 'アーティスト名を入力';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';
@@ -111,12 +121,14 @@ const String askToEnterTrackOrArtistToastText = '楽曲名かアーティスト�
 const String saveProfileMsgToastText = 'プロフィール文が保存されました';
 const String newPostSavedToastText = '投稿が保存されました';
 const String changeProfileMsgToastText = 'プロフィール文が変更されました';
+const String failToGetArtistInfoToastText = 'アーティスト情報が取得できませんでした';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
 const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
 const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String userIdIsNotAvailableValidator = '既にこのuserIdは使用されています';
 
 //dialog title
 const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';

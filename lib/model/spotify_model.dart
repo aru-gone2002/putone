@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:putone/data/artist/artist.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 
 class SpotifyModel {
@@ -35,7 +36,7 @@ class SpotifyModel {
   Future<List<SpotifyTrack>> searchTracks({
     required String accessToken,
     required String searchTrackName,
-    required String seachArtistName,
+    required String searchArtistName,
   }) async {
     const String searchEndPoint = 'https://api.spotify.com/v1/search';
     const String searchType = 'type=track';
@@ -61,18 +62,18 @@ class SpotifyModel {
 
     //検索の際にアーティスト名が書かれているかでクエリの中身を変更
     //日本語でもqueryを反応できるようにencodeQueryComponentを行う
-    if (seachArtistName != '') {
-      String artistEncodedQuery = Uri.encodeQueryComponent(seachArtistName);
+    if (searchArtistName != '') {
+      String artistEncodedQuery = Uri.encodeQueryComponent(searchArtistName);
       artistFilter = 'artist%3A$artistEncodedQuery';
       //artistFilter = 'artist%3A$seachArtistName';
     }
 
     //書き込まれているかでクエリを分岐
-    if (seachArtistName == '' && searchTrackName != '') {
+    if (searchArtistName == '' && searchTrackName != '') {
       query = 'q=$trackFilter';
-    } else if (seachArtistName != '' && searchTrackName == '') {
+    } else if (searchArtistName != '' && searchTrackName == '') {
       query = 'q=$artistFilter';
-    } else if (seachArtistName != '' && searchTrackName != '') {
+    } else if (searchArtistName != '' && searchTrackName != '') {
       query = 'q=$trackFilter&$artistFilter';
     }
 
@@ -90,7 +91,7 @@ class SpotifyModel {
       final List<dynamic> tracks = trackData['tracks']['items'];
 
       for (int i = 0; i < tracks.length; i++) {
-        final String trackImg = tracks[i]['album']['images'][2]['url'];
+        final String trackImg = tracks[i]['album']['images'][1]['url'];
         final String artistName = tracks[i]['artists'][0]['name'];
         final String trackName = tracks[i]['name'];
         final String trackExternalUrl = tracks[i]['external_urls']['spotify'];
@@ -145,6 +146,64 @@ class SpotifyModel {
       print(artistData);
     } else {
       print('Error: ${response.statusCode}');
+    }
+  }
+
+  Future<List<Artist>?> searchArtists({
+    required String accessToken,
+    required String searchArtistName,
+  }) async {
+    const String searchEndPoint = 'https://api.spotify.com/v1/search';
+    const String searchType = 'type=artist';
+    const String limit = 'limit=30';
+    String query = '';
+
+    //返すアーティストのリスト
+    List<Artist> searchResponseArtistList = [];
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    query = 'q=$searchArtistName';
+
+    //final String endPointUrl = '$searchEndPoint?$query&$searchType&$limit';
+    final String endPointUrl = '$searchEndPoint?$query&$searchType&$limit';
+    Uri uri = Uri.parse(endPointUrl);
+
+    //http.getで楽曲を検索
+    final response = await http.get(
+      uri,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> artistData = jsonDecode(response.body);
+      final List<dynamic> artists = artistData['artists']['items'];
+
+      for (int i = 0; i < artists.length; i++) {
+        //アーティストの画像が入っていない人がいるためそのようなデータは弾く
+        if ((artists[i]['images'] as List).isNotEmpty) {
+          final String artistName = artists[i]['name'];
+          final String artistSpotifyId = artists[i]['id'];
+          final String artistImg = artists[i]['images'][1]['url'];
+          final String spotifyArtistUrl =
+              artists[i]['external_urls']['spotify'];
+          final Artist artist = Artist(
+            artistImg: artistImg,
+            artistName: artistName,
+            artistSpotifyId: artistSpotifyId,
+            spotifyArtistUrl: spotifyArtistUrl,
+          );
+          searchResponseArtistList.add(artist);
+          print(artist);
+        }
+      }
+
+      return searchResponseArtistList;
+    } else {
+      print('Spotify API Error: ${response.statusCode}');
+      return null;
     }
   }
 }

@@ -9,21 +9,49 @@ import 'package:putone/view/item/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
-class FirstProfileSettingPage extends StatelessWidget {
+class FirstProfileSettingPage extends ConsumerStatefulWidget {
   const FirstProfileSettingPage({super.key});
 
-  void setUserIdAndNameFunction(
-      GlobalKey<FormState> formKey, BuildContext context) {
+  @override
+  ConsumerState<FirstProfileSettingPage> createState() =>
+      _FirstProfileSettingPageState();
+}
+
+class _FirstProfileSettingPageState
+    extends ConsumerState<FirstProfileSettingPage> {
+  final ProfileViewModel _profileViewModel = ProfileViewModel();
+  final TextEditingController _userIdController = TextEditingController();
+  dynamic _userIdValidationMsg;
+
+  Future<void> setUserIdAndNameFunction(
+      GlobalKey<FormState> formKey, BuildContext context) async {
+    // final isUserIdAvailable = await _profileViewModel
+    //     .checkUserIdIdenticication(_userIdController.text);
+    _userIdValidationMsg =
+        await userIdValidator(_userIdController.text, _profileViewModel);
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       Fluttertoast.showToast(msg: userIdAndNameCompleteToastText);
-      toSecondProfileSettingPage(context: context);
+      if (context.mounted) {
+        toSecondProfileSettingPage(context: context);
+      }
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    _profileViewModel.setRef(ref);
+  }
+
+  @override
+  void dispose() {
+    _userIdController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     return Scaffold(
@@ -43,30 +71,37 @@ class FirstProfileSettingPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Consumer(builder: (context, ref, _) {
-                  profileViewModel.setRef(ref);
-                  return FormFieldItem(
-                    maxLength: userIdAndUserNameTextLength,
-                    itemName: userIdLabel,
-                    textRestriction: userIdRestrictionText,
-                    validator: (value) => userIdValidator(value),
-                    onSaved: (value) {
-                      profileViewModel.saveUserId(value as String);
-                    },
-                  );
-                }),
-                Consumer(builder: (context, ref, _) {
-                  profileViewModel.setRef(ref);
-                  return FormFieldItem(
-                    maxLength: userIdAndUserNameTextLength,
-                    itemName: userNameLabel,
-                    textRestriction: '',
-                    validator: (value) => userNameValidator(value),
-                    onSaved: (value) {
-                      profileViewModel.saveUserName(value as String);
-                    },
-                  );
-                }),
+                FormFieldItem(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: _userIdController,
+                  maxLength: userIdAndUserNameTextLength,
+                  itemName: userIdLabel,
+                  textRestriction: userIdRestrictionText,
+                  validator: (value) => _userIdValidationMsg,
+                  onSaved: (value) {
+                    _profileViewModel.saveUserId(value as String);
+                  },
+                  onChanged: (value) async {
+                    //TODO ここでvalidator的なことをして、validatorに返す値を取得する。
+                    // final isUserIdAvailable = await _profileViewModel
+                    //     .checkUserIdIdenticication(_userIdController.text);
+                    _userIdValidationMsg = await userIdValidator(
+                        _userIdController.text, _profileViewModel);
+                    setState(() {});
+                  },
+                ),
+                FormFieldItem(
+                  autovalidateMode: null,
+                  onChanged: null,
+                  controller: null,
+                  maxLength: userIdAndUserNameTextLength,
+                  itemName: userNameLabel,
+                  textRestriction: '',
+                  validator: (value) => userNameValidator(value),
+                  onSaved: (value) {
+                    _profileViewModel.saveUserName(value as String);
+                  },
+                ),
                 const SizedBox(height: 60),
                 AccentColorButton(
                   onPressed: () {
@@ -79,7 +114,7 @@ class FirstProfileSettingPage extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

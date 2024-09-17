@@ -9,3 +9,7 @@ const double postGridPaddingHeight = 12;
 const double favoriteMusicImgHeight = favoriteMusicImgWidth;
 const double betweenTitleAndTextHeight = 40;
 const double betweenUserImgAndOtherProfileInfoHeight = 56;
+const double colorButtonHeight = 48;
+const double userImgMediumHeight = userImgMediumWidth;
+const double userImgLargeHeight = userImgLargeWidth;
+const double spaceHeightForAppBarSearchItem = 12;

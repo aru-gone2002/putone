@@ -4,6 +4,8 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/view/item/post_grid_item.dart';
+import 'package:putone/view/module_page/post_detail_page.dart';
+import 'package:putone/view/posting/post_list_view.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class PostGridView extends ConsumerWidget {
@@ -20,6 +22,20 @@ class PostGridView extends ConsumerWidget {
 
     final PostViewModel postViewModel = PostViewModel();
     postViewModel.setRef(ref);
+    //final localUserPosts = snapshot.data! as List<LocalUserPost>;
+    //localUserPosts.sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
+
+    void onPostTap(LocalUserPost post) {
+      // 新しいviewへの遷移処理
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PostListView(
+            initialPostId: post.postId,
+            uid: post.uid,
+          ),
+        ),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -38,13 +54,11 @@ class PostGridView extends ConsumerWidget {
         ),
         itemCount: (snapshot.data as List<LocalUserPost>).length,
         itemBuilder: (context, index) {
-          final localUserPosts = snapshot.data! as List<LocalUserPost>;
-          localUserPosts
-              .sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
           final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
           return PostGridItem(
             //userPost: postViewModel.posts[index],
             localUserPost: localUserPost,
+            onTap: () => onPostTap(localUserPost),
           );
         },
       ),

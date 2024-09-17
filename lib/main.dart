@@ -15,6 +15,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: '.env');
+
   //-----AppCheckの初期化コード-----//
   // await FirebaseAppCheck.instance.activate(
   //   appleProvider:

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +7,10 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
 import 'package:putone/view_model/auth_view_model.dart';
@@ -230,7 +233,7 @@ class ProfilePage extends ConsumerWidget {
                                 child: SizedBox(
                                   width: sideProfileWidth,
                                   child: Text(
-                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                    '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]?.communityName ?? '未設定'}',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style:
@@ -374,16 +377,14 @@ class ProfilePage extends ConsumerWidget {
       endDrawer: ProfileDrawer(database: localDatabaseViewModel.appDatabase!),
       floatingActionButton: FloatingActionButton(
         //投稿ページに飛ぶようにする
-        onPressed: () async {
-          await spotifyViewModel.fetchSpotifyAccessToken();
-          if (context.mounted) {
-            toSelectSongPage(
-              context: context,
-              appBarTitle: postCreatePageAppbarTitle,
-              onTap: createPostFunction,
-              isVisibleCurrentMusicInfo: false,
-            );
-          }
+        onPressed: () {
+          // await spotifyViewModel.fetchSpotifyAccessToken();
+          toSelectSongPage(
+            context: context,
+            appBarTitle: postCreatePageAppbarTitle,
+            onTap: createPostFunction,
+            isVisibleCurrentMusicInfo: false,
+          );
         },
         backgroundColor: AppColorTheme.color().accentColor,
         child: const Icon(

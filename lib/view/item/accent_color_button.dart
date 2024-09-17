@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:putone/constants/height.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class AccentColorButton extends StatelessWidget {
@@ -16,7 +17,7 @@ class AccentColorButton extends StatelessWidget {
 
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: 48,
+        minHeight: colorButtonHeight,
         minWidth: deviceWidth * 0.9,
       ),
       child: ElevatedButton(

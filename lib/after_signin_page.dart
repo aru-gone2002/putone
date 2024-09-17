@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/artist/artist_follow_page.dart';
 import 'package:putone/view/home/home_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
@@ -22,6 +24,7 @@ class AfterSignInPage extends ConsumerWidget {
 
     const List<Widget> bottomNavigationWidgets = [
       HomePage(),
+      ArtistFollowPage(),
       ProfilePage(),
     ];
 
@@ -36,6 +39,8 @@ class AfterSignInPage extends ConsumerWidget {
             .saveBottomNavigationBarCurrentIndex(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+          BottomNavigationBarItem(
+              icon: Icon(LineIcons.guitar), label: 'artist'),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle,
