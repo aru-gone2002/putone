@@ -130,6 +130,7 @@ const String notInputTextValidator = '文字が入力されていません';
 const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
 const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String userIdIsNotAvailableValidator = '既にこのuserIdは使用されています';
 
 //dialog title
 const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';

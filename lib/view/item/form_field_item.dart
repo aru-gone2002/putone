@@ -9,13 +9,19 @@ class FormFieldItem extends StatelessWidget {
     required this.validator,
     required this.onSaved,
     required this.maxLength,
+    required this.controller,
+    required this.autovalidateMode,
+    required this.onChanged,
   });
 
   final String itemName;
   final String textRestriction;
-  final String? Function(String? text) validator;
+  final String? Function(String? text)? validator;
   final void Function(String? text)? onSaved;
   final int maxLength;
+  final TextEditingController? controller;
+  final AutovalidateMode? autovalidateMode;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,10 @@ class FormFieldItem extends StatelessWidget {
             height: 4,
           ),
           TextFormField(
+            controller: controller,
             validator: validator,
+            autovalidateMode: autovalidateMode,
+            onChanged: onChanged,
             onSaved: onSaved,
             maxLines: 1,
             maxLength: maxLength,
