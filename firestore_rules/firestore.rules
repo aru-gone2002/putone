@@ -21,20 +21,7 @@ service cloud.firestore {
       function isUidOfDataSameToDocUid(uid) {
         return uid == request.resource.data.uid;
       }
-      // function isValidUser(user) {
-      //   return user.size() == 5
-      //   && 'username' in user && user.username is string
-      //   && 'userId' in user && user.userId is string
-      //   && 'email' in user && user.email is string
-      //   && 'createdAt' in user && user.createdAt is timestamp
-      //   && 'userCredential' in user && user.userCredential is string;
-      // }
-      // match /users/{userId} {
-      //     allow read: if isAuthenticated();
-      //     allow create: if isUserAuthenticated(userId)
-      //     && isValidUser(request.resource.data)
-      //     && request.auth.uid == request.resource.data.userCredential;
-      // }
+      
       match /users/{uid} {
           allow read: if isAuthenticated();
           allow create, update: if isUserAuthenticated(uid);
@@ -43,26 +30,25 @@ service cloud.firestore {
             allow create: if isUserAuthenticated(uid);
             allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
           }
-          // match /followers/{followerUid} {
-          //   // 相手が自分のコレクションにドキュメントを追加・削除することを許可する
-          //   // followerUidには相手のUidが入っている
-          //   allow read: if isAuthenticated();
-          //   allow create: if isAuthenticated() && isLoginUidSameToDocUid(followerUid) && uid == request.resource.data.followedUid;
-          //   allow delete: if isAuthenticated() && isLoginUidSameToDocUid(followerUid);
-          // }
 
           match /favoriteArtists/{artistId} {
             allow read: if isAuthenticated();
             allow create, delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
           }
+          
           match /posts/{postId} {
             allow read: if isAuthenticated();
             allow create: if isUserAuthenticated(uid);
             allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+
             match /postlikes/{uid} {
               allow read: if isAuthenticated();
               allow create: if isUserAuthenticated(uid);
               allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+            }
+
+            match /postAnswers/{replyUid} {
+              allow read: if isAuthenticated();
             }
           }
       }
