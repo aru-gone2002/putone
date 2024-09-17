@@ -5,6 +5,7 @@ import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/artist/artist_follow_page.dart';
 import 'package:putone/view/home/home_page.dart';
+import 'package:putone/view/home/my_quiz_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
 
@@ -24,6 +25,7 @@ class AfterSignInPage extends ConsumerWidget {
 
     const List<Widget> bottomNavigationWidgets = [
       HomePage(),
+      MyQuizPage(),
       ArtistFollowPage(),
       ProfilePage(),
     ];
@@ -32,6 +34,9 @@ class AfterSignInPage extends ConsumerWidget {
       body: bottomNavigationWidgets[
           bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         selectedItemColor: AppColorTheme.color().mainColor,
         currentIndex:
             bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex,
@@ -39,6 +44,7 @@ class AfterSignInPage extends ConsumerWidget {
             .saveBottomNavigationBarCurrentIndex(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+          BottomNavigationBarItem(icon: Icon(Icons.hail), label: 'myquiz'),
           BottomNavigationBarItem(
               icon: Icon(LineIcons.guitar), label: 'artist'),
           BottomNavigationBarItem(

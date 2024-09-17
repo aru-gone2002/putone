@@ -14,6 +14,8 @@ class PostAnswerModel {
           .collection('postAnswers')
           .get();
 
+      print("Snapshot size: ${snapshot.docs.length}");
+
       return snapshot.docs
           .map((doc) => PostAnswer.fromJson(doc.data()))
           .toList();

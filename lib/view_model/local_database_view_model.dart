@@ -14,4 +14,10 @@ class LocalDatabaseViewModel {
   void saveAppDatabase(AppDatabase value) {
     _ref.read(appDataBaseProvider.notifier).state = value;
   }
+
+  // 追加: プロバイダーからuidを取得するメソッド
+  String? getUidFromProvider() {
+    final userProfile = _ref.read(userProfileProvider);
+    return userProfile?.uid;
+  }
 }
