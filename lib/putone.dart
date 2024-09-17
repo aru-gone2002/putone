@@ -80,10 +80,10 @@ class PuTone extends ConsumerWidget {
                 print('snapshot.hasDataが実行されています');
 
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  await postViewModel.getFollowingUsersPosts();
                   //AppDataBaseのインスタンスをproviderに格納
                   localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
-                  // await postViewModel.getFollowingUsersPosts();
                   //ローカルDBからUserProfileデータを取得
                   final localUserProfiles =
                       await database.getLocalUserProfiles();

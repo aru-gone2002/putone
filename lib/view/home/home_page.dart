@@ -46,48 +46,14 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
-      body: FutureBuilder(
-          future: _postViewModel.getFollowingUsersPosts(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text('友達の投稿を取得する際にエラーが出ました。'),
-              );
-            }
-
-            final result = snapshot.data;
-
-            if (result == 'no_following_user') {
-              return const Center(
-                child: Text('フォローしているユーザーがいません。'),
-              );
-            }
-            if (result == 'no_post') {
-              return const Center(
-                child: Text('友達の投稿がありません'),
-              );
-            }
-            if (result == null) {
-              return const Center(
-                child: Text('友達の投稿を取得する際に何らかのエラーが出ました。'),
-              );
-            }
-
-            //_postViewModel.saveFollowingUsersPosts(result);
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: _postViewModel.followingUsersPosts.length,
-                itemBuilder: (context, index) {
-                  final post = _postViewModel.followingUsersPosts[index];
-                  return QuizItem(post: post);
-                });
-          }),
+      body: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _postViewModel.followingUsersPosts.length,
+        itemBuilder: (context, index) {
+          final post = _postViewModel.followingUsersPosts[index];
+          return QuizItem(post: post);
+        },
+      ),
     );
   }
 }

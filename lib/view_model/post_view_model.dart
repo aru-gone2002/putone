@@ -121,25 +121,25 @@ class PostViewModel {
     }
   }
 
-  Future<dynamic> getFollowingUsersPosts() async {
+  Future<void> getFollowingUsersPosts() async {
     final result = await _postModel.getFollowingUsersPosts();
     if (result is List<Post>) {
       saveFollowingUsersPosts(result);
     }
 
-    // if (result is List<Post> && result.isNotEmpty) {
-    //   saveFollowingUsersPosts(result);
-    // }
-    // if (result == 'no_following_user') {
-    //   Fluttertoast.showToast(msg: 'フォローしているユーザーがいません。');
-    // }
-    // if (result == 'no_post') {
-    //   Fluttertoast.showToast(msg: '友達の投稿がありません');
-    // }
-    // if (result == null) {
-    //   Fluttertoast.showToast(msg: '友達の投稿を取得する際にエラーが出ました。');
-    // }
-    return result;
+    if (result is List<Post> && result.isNotEmpty) {
+      saveFollowingUsersPosts(result);
+    }
+    if (result == 'no_following_user') {
+      Fluttertoast.showToast(msg: 'フォローしているユーザーがいません。');
+    }
+    if (result == 'no_post') {
+      Fluttertoast.showToast(msg: '友達の投稿がありません');
+    }
+    if (result == null) {
+      Fluttertoast.showToast(msg: '友達の投稿を取得する際にエラーが出ました。');
+    }
+    //return result;
   }
 
   List<Post> changeLocalUserPoststoPosts(List<LocalUserPost> localUserPosts) {

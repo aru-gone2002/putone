@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +61,7 @@ class SignInPage extends StatelessWidget {
           await authViewModel.checkUserEmailVerified();
           //----メールアドレスが認証されているかで遷移先を変更----
           if (authViewModel.userEmailVerified) {
+            await postViewModel.getFollowingUsersPosts();
             //自分のプロフィール情報をFirestoreから取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
