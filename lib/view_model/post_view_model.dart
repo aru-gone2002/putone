@@ -114,6 +114,11 @@ class PostViewModel {
     }
   }
 
+  Future<List<Post>?> getFollowingUsersPosts() async {
+    final result = await _postModel.getFollowingUsersPosts();
+    return result;
+  }
+
   List<Post> changeLocalUserPoststoPosts(List<LocalUserPost> localUserPosts) {
     final List<Post> userPosts = [];
     for (var localUserPost in localUserPosts) {
