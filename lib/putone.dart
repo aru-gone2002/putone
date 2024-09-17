@@ -83,6 +83,7 @@ class PuTone extends ConsumerWidget {
                   //AppDataBaseのインスタンスをproviderに格納
                   localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
+                  // await postViewModel.getFollowingUsersPosts();
                   //ローカルDBからUserProfileデータを取得
                   final localUserProfiles =
                       await database.getLocalUserProfiles();

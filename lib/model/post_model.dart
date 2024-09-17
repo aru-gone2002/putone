@@ -58,7 +58,7 @@ class PostModel {
     }
   }
 
-  Future<List<Post>?> getFollowingUsersPosts() async {
+  Future<dynamic> getFollowingUsersPosts() async {
     final uid = auth.currentUser!.uid;
     final List<String> followingUids = [];
     final List<Post> followingUsersPosts = [];
@@ -69,11 +69,11 @@ class PostModel {
           .doc(uid)
           .collection('followings')
           .get();
-      //docsからuidを取得する
-      //TODO followingUsersQuerySnapがEmptyのことも考える
+      //followingUsersQuerySnapがEmptyのことも考える
       if (followingUsersQuerySnap.docs.isEmpty) {
-        return [];
+        return 'no_following_user';
       }
+      //docsからuidを取得する
       for (var docSnap in followingUsersQuerySnap.docs) {
         final followingUser = FollowingUser.fromJson(docSnap.data());
         followingUids.add(followingUser.followingUid);
@@ -91,12 +91,13 @@ class PostModel {
             final followingUserPost = Post.fromJson(docSnap.data());
             followingUsersPosts.add(followingUserPost);
           }
+        } else {
+          return 'no_post';
         }
       }
-      //TODO followingUsersPostsをpostTimestampで並べ替えして、printで取得できているか確認する
+      //followingUsersPostsをpostTimestampで並べ替え
       followingUsersPosts
-          .sort((a, b) => a.postTimestamp.compareTo(b.postTimestamp));
-      print(followingUsersPosts);
+          .sort((a, b) => b.postTimestamp.compareTo(a.postTimestamp));
       return followingUsersPosts;
     } catch (e) {
       print('Error getting following user posts from Firestore: $e');

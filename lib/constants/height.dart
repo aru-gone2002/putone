@@ -13,3 +13,4 @@ const double colorButtonHeight = 48;
 const double userImgMediumHeight = userImgMediumWidth;
 const double userImgLargeHeight = userImgLargeWidth;
 const double spaceHeightForAppBarSearchItem = 12;
+const double friendsPostMusicImgHegiht = friendsPostMusicImgWidth;

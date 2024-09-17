@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/model/post_model.dart';
@@ -40,6 +41,8 @@ class PostViewModel {
   Post get newPost => _ref.watch(postProvider);
 
   List<Post> get posts => _ref.watch(postsProvider);
+
+  List<Post> get followingUsersPosts => _ref.watch(followingUsersPostsProvider);
 
   void saveUid(String value) {
     _ref.read(postProvider.notifier).state =
@@ -86,6 +89,10 @@ class PostViewModel {
         _ref.read(postProvider).copyWith(postMusicPreviewUrl: value);
   }
 
+  void saveFollowingUsersPosts(List<Post> value) {
+    _ref.read(followingUsersPostsProvider.notifier).state = value;
+  }
+
   void addNewPostToList() {
     _ref.read(postsProvider.notifier).state = [
       ..._ref.read(postsProvider.notifier).state,
@@ -114,8 +121,24 @@ class PostViewModel {
     }
   }
 
-  Future<List<Post>?> getFollowingUsersPosts() async {
+  Future<dynamic> getFollowingUsersPosts() async {
     final result = await _postModel.getFollowingUsersPosts();
+    if (result is List<Post>) {
+      saveFollowingUsersPosts(result);
+    }
+
+    // if (result is List<Post> && result.isNotEmpty) {
+    //   saveFollowingUsersPosts(result);
+    // }
+    // if (result == 'no_following_user') {
+    //   Fluttertoast.showToast(msg: 'フォローしているユーザーがいません。');
+    // }
+    // if (result == 'no_post') {
+    //   Fluttertoast.showToast(msg: '友達の投稿がありません');
+    // }
+    // if (result == null) {
+    //   Fluttertoast.showToast(msg: '友達の投稿を取得する際にエラーが出ました。');
+    // }
     return result;
   }
 
