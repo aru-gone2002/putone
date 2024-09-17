@@ -38,7 +38,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
 
   @override
   Widget build(BuildContext context) {
-    final followingUser = widget.followingUser;
+    //final followingUser = widget.followingUser;
 
     return ElevatedButton(
       onPressed: () async {
@@ -46,7 +46,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
         if (isFollowing == false) {
           //providerにフォローしたユーザーを新たに加える
           //Firestoreにフォローするユーザーのドキュメントを追加する
-          await followViewModel.followUser(followingUser: followingUser);
+          await followViewModel.followUser(followingUser: widget.followingUser);
           setState(() {
             isFollowing = followViewModel.followingUsers
                 .where(
@@ -62,7 +62,7 @@ class _FollowButtonState extends ConsumerState<FollowButton> {
           //providerからアンフォローするユーザーを削除する
           //Firestoreからアンフォローするユーザーのドキュメントを削除する
           await followViewModel.unfollowUser(
-              followingUid: followingUser.followingUid);
+              followingUid: widget.followingUser.followingUid);
           setState(() {
             isFollowing = followViewModel.followingUsers
                 .where(

@@ -57,11 +57,12 @@ class FollowViewModel {
   Future<void> followUser({required FollowingUser followingUser}) async {
     addFollowingUser(followingUser);
 
+    //自分のフォロー中に友達を追加する
+    await _followModel.addUserToFollowings(followingUser: followingUser);
+
     //友達のフォロワーに自分自身を追加する
     await _followModel.addSelfToFriendsFollowers(
         friendsUid: followingUser.followingUid);
-    //自分のフォロー中に友達を追加する
-    await _followModel.addUserToFollowings(followingUser: followingUser);
   }
 
   Future<void> unfollowUser({required String followingUid}) async {

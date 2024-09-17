@@ -110,8 +110,8 @@ class FollowModel {
   }) async {
     final myUid = auth.currentUser!.uid;
     FollowedUser followedUser = FollowedUser(
-      uid: friendsUid,
-      followedUid: myUid,
+      uid: myUid,
+      followedUid: friendsUid,
     );
     final Map<String, dynamic> followedUserMap = followedUser.toJson();
     await firestore
