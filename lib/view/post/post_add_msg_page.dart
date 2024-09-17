@@ -39,6 +39,7 @@ class PostAddMsgPage extends StatelessWidget {
         postViewModel.savePostMusicImg(selectedTrack.trackImg);
         postViewModel.savePostMusicArtistName(selectedTrack.artistName);
         postViewModel.savePostMusicName(selectedTrack.trackName);
+        postViewModel.savePostTimestamp(DateTime.now());
         postViewModel.savePostMusicSpotifyUrl(selectedTrack.trackExternalUrl);
         postViewModel.savePostMusicPreviewUrl(selectedTrack.previewUrl ?? '');
         //TODO Firestoreに入れる
