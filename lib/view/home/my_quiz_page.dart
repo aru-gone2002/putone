@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:putone/constants/routes.dart';
-import 'package:putone/constants/strings.dart';
-
 import 'package:putone/data/post/post.dart';
 import 'package:putone/data/post_answer/post_answer.dart';
+import 'package:putone/model/post_answer_model.dart';
 import 'package:putone/model/post_model.dart';
-import 'package:putone/providers/post_answer_provider.dart';
-import 'package:putone/providers/user_auth_provider.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
-import 'package:putone/view_model/spotify_view_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class MyQuizPage extends ConsumerWidget {
@@ -25,8 +20,9 @@ class MyQuizPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('myquiz'),
       ),
-      body: FutureBuilder<List<Post>>(
-        future: postModel.getPosterPostsByTime(uid?.toString() ?? ''),
+      body: StreamBuilder<List<Post>>(
+        stream: Stream.fromFuture(
+            postModel.getPosterPostsByTime(uid?.toString() ?? '')),
         builder: (context, snapshot) {
           // デバッグ情報を追加
           print("currentUser.uid: ${uid}");
@@ -48,7 +44,7 @@ class MyQuizPage extends ConsumerWidget {
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
-              return PostCard(post: post);
+              return PostCard(post: post, uid: uid ?? '');
             },
           );
         },
@@ -59,17 +55,20 @@ class MyQuizPage extends ConsumerWidget {
 
 class PostCard extends ConsumerWidget {
   final Post post;
+  final String uid;
 
-  const PostCard({Key? key, required this.post}) : super(key: key);
+  const PostCard({Key? key, required this.post, required this.uid})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final answersAsyncValue = ref
-        .watch(postAnswersProvider({'uid': post.uid, 'postId': post.postId}));
-    print('answersAsyncValue: $answersAsyncValue');
-    print('answersAsyncValue: ${answersAsyncValue.asData?.value}');
-    final percentageAsyncValue = ref.watch(correctAnswerPercentageProvider(
-        {'uid': post.uid, 'postId': post.postId}));
+    // final answersAsyncValue = ref
+    //     .watch(postAnswersProvider({'uid': post.uid, 'postId': post.postId}));
+    // print('answersAsyncValue: $answersAsyncValue');
+    // print('answersAsyncValue: ${answersAsyncValue.asData?.value}');
+    // final percentageAsyncValue = ref.watch(correctAnswerPercentageProvider(
+    //     {'uid': post.uid, 'postId': post.postId}));
+    final postAnswerModel = PostAnswerModel();
 
     return Card(
       margin: EdgeInsets.all(8),
@@ -84,37 +83,42 @@ class PostCard extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 16),
             Text('投稿日時: ${post.postTimestamp.toString()}'),
-            answersAsyncValue.when(
-              data: (answers) {
-                if (answers.isEmpty) {
-                  return Text('まだ回答がありません');
-                }
-                return percentageAsyncValue.when(
-                  data: (percentage) => AnswerPieChart(percentage: percentage),
-                  loading: () => CircularProgressIndicator(),
-                  error: (error, __) => Text('正答率の取得に失敗しました'),
-                );
-              },
-              loading: () => CircularProgressIndicator(),
-              error: (error, __) {
-                if (error.toString().contains('permission-denied')) {
-                  return Text('回答の取得に失敗しました: 権限がありません');
-                }
-                return Text('回答の取得に失敗しました');
-              },
-            ),
             SizedBox(height: 16),
-            answersAsyncValue.when(
-              data: (answers) {
-                if (answers.isEmpty) {
-                  return SizedBox.shrink(); // 回答がない場合は何も表示しない
-                }
-                return AnswersList(answers: answers);
-              },
-              loading: () => CircularProgressIndicator(),
-              error: (_, __) =>
-                  SizedBox.shrink(), // エラー時は何も表示しない（上のエラーメッセージで十分）
-            ),
+            StreamBuilder<List<PostAnswer>>(
+                stream: postAnswerModel.getPostAnswersStream(uid, post.postId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('回答の取得に失敗しました: ${snapshot.error}');
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Text('まだ回答がありません');
+                  }
+
+                  final answers = snapshot.data!;
+                  return Column(
+                    children: [
+                      StreamBuilder<double>(
+                        stream: postAnswerModel
+                            .calculateCorrectAnswerPercentageStream(
+                                uid, post.postId),
+                        builder: (context, percentageSnapshot) {
+                          if (percentageSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (percentageSnapshot.hasError) {
+                            return Text('正答率の取得に失敗しました');
+                          }
+
+                          final percentage = percentageSnapshot.data ?? 0.0;
+                          return AnswerPieChart(percentage: percentage);
+                        },
+                      ),
+                      SizedBox(height: 16),
+                      AnswersList(answers: answers),
+                    ],
+                  );
+                })
           ],
         ),
       ),
