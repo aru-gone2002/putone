@@ -69,8 +69,10 @@ class PostModel {
           .collection('users')
           .doc(uid)
           .collection('followings')
+          .where('followingUid', isNotEqualTo: uid)
           .get();
       //followingUsersQuerySnapがEmptyのことも考える
+      //ここの処理を書く
       if (followingUsersQuerySnap.docs.isEmpty &&
           followingUsersQuerySnap.docs.length <= 2) {
         return GetFollowingUsersPostsCondition.lackOfFriends;

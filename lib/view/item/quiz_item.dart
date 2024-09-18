@@ -4,6 +4,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/three_users_choices.dart';
 
 class QuizItem extends StatelessWidget {
   const QuizItem({super.key, required this.post});
@@ -75,46 +76,7 @@ class QuizItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            Material(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  //TODO 3択
-                  ListTile(
-                    tileColor: AppColorTheme.color().gray3,
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 20,
-                    ),
-                    title: const Text('aru_gone2002'),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
-                  const SizedBox(height: 6),
-                  ListTile(
-                    tileColor: AppColorTheme.color().gray3,
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 20,
-                    ),
-                    title: const Text('tanabun'),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
-                  const SizedBox(height: 6),
-                  ListTile(
-                    tileColor: AppColorTheme.color().gray3,
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 20,
-                    ),
-                    title: const Text('nunupy'),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
-                ],
-              ),
-            )
+            ThreeUsersChoices(post: post),
           ],
         ),
       ),

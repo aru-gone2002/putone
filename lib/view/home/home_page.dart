@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/enums.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/view/item/quiz_item.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -15,11 +18,13 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final PostViewModel _postViewModel = PostViewModel();
+  final FollowViewModel _followViewModel = FollowViewModel();
 
   @override
   void initState() {
     super.initState();
     _postViewModel.setRef(ref);
+    _followViewModel.setRef(ref);
   }
 
   Widget followingFriendsPostsList(AsyncSnapshot snapshot) {
@@ -81,10 +86,14 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
       body: FutureBuilder(
-          future: _postViewModel.getFollowingUsersPosts(),
-          builder: (context, snapshot) {
-            return followingFriendsPostsList(snapshot);
-          }),
+        future: Future.wait([
+          _postViewModel.getFollowingUsersPosts(),
+          _followViewModel.getFollowingUsers(),
+        ]),
+        builder: (context, snapshot) {
+          return followingFriendsPostsList(snapshot);
+        },
+      ),
     );
   }
 }
