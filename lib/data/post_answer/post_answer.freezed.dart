@@ -22,11 +22,15 @@ PostAnswer _$PostAnswerFromJson(Map<String, dynamic> json) {
 mixin _$PostAnswer {
   String get replyUid => throw _privateConstructorUsedError;
   String get replyUserId => throw _privateConstructorUsedError;
+  String get replyUserName => throw _privateConstructorUsedError;
+  String get replyUserImg => throw _privateConstructorUsedError;
   String get answerUid => throw _privateConstructorUsedError;
   String get quizChoice1Uid => throw _privateConstructorUsedError;
   String get quizChoice1UserName => throw _privateConstructorUsedError;
+  String get quizChoice1UserImg => throw _privateConstructorUsedError;
   String get quizChoice2Uid => throw _privateConstructorUsedError;
   String get quizChoice2UserName => throw _privateConstructorUsedError;
+  String get quizChoice2UserImg => throw _privateConstructorUsedError;
   DateTime get answerTimeStamp => throw _privateConstructorUsedError;
 
   /// Serializes this PostAnswer to a JSON map.
@@ -48,11 +52,15 @@ abstract class $PostAnswerCopyWith<$Res> {
   $Res call(
       {String replyUid,
       String replyUserId,
+      String replyUserName,
+      String replyUserImg,
       String answerUid,
       String quizChoice1Uid,
       String quizChoice1UserName,
+      String quizChoice1UserImg,
       String quizChoice2Uid,
       String quizChoice2UserName,
+      String quizChoice2UserImg,
       DateTime answerTimeStamp});
 }
 
@@ -73,11 +81,15 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
   $Res call({
     Object? replyUid = null,
     Object? replyUserId = null,
+    Object? replyUserName = null,
+    Object? replyUserImg = null,
     Object? answerUid = null,
     Object? quizChoice1Uid = null,
     Object? quizChoice1UserName = null,
+    Object? quizChoice1UserImg = null,
     Object? quizChoice2Uid = null,
     Object? quizChoice2UserName = null,
+    Object? quizChoice2UserImg = null,
     Object? answerTimeStamp = null,
   }) {
     return _then(_value.copyWith(
@@ -88,6 +100,14 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
       replyUserId: null == replyUserId
           ? _value.replyUserId
           : replyUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      replyUserName: null == replyUserName
+          ? _value.replyUserName
+          : replyUserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      replyUserImg: null == replyUserImg
+          ? _value.replyUserImg
+          : replyUserImg // ignore: cast_nullable_to_non_nullable
               as String,
       answerUid: null == answerUid
           ? _value.answerUid
@@ -101,6 +121,10 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
           ? _value.quizChoice1UserName
           : quizChoice1UserName // ignore: cast_nullable_to_non_nullable
               as String,
+      quizChoice1UserImg: null == quizChoice1UserImg
+          ? _value.quizChoice1UserImg
+          : quizChoice1UserImg // ignore: cast_nullable_to_non_nullable
+              as String,
       quizChoice2Uid: null == quizChoice2Uid
           ? _value.quizChoice2Uid
           : quizChoice2Uid // ignore: cast_nullable_to_non_nullable
@@ -108,6 +132,10 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
       quizChoice2UserName: null == quizChoice2UserName
           ? _value.quizChoice2UserName
           : quizChoice2UserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      quizChoice2UserImg: null == quizChoice2UserImg
+          ? _value.quizChoice2UserImg
+          : quizChoice2UserImg // ignore: cast_nullable_to_non_nullable
               as String,
       answerTimeStamp: null == answerTimeStamp
           ? _value.answerTimeStamp
@@ -128,11 +156,15 @@ abstract class _$$PostAnswerImplCopyWith<$Res>
   $Res call(
       {String replyUid,
       String replyUserId,
+      String replyUserName,
+      String replyUserImg,
       String answerUid,
       String quizChoice1Uid,
       String quizChoice1UserName,
+      String quizChoice1UserImg,
       String quizChoice2Uid,
       String quizChoice2UserName,
+      String quizChoice2UserImg,
       DateTime answerTimeStamp});
 }
 
@@ -151,11 +183,15 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
   $Res call({
     Object? replyUid = null,
     Object? replyUserId = null,
+    Object? replyUserName = null,
+    Object? replyUserImg = null,
     Object? answerUid = null,
     Object? quizChoice1Uid = null,
     Object? quizChoice1UserName = null,
+    Object? quizChoice1UserImg = null,
     Object? quizChoice2Uid = null,
     Object? quizChoice2UserName = null,
+    Object? quizChoice2UserImg = null,
     Object? answerTimeStamp = null,
   }) {
     return _then(_$PostAnswerImpl(
@@ -166,6 +202,14 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
       replyUserId: null == replyUserId
           ? _value.replyUserId
           : replyUserId // ignore: cast_nullable_to_non_nullable
+              as String,
+      replyUserName: null == replyUserName
+          ? _value.replyUserName
+          : replyUserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      replyUserImg: null == replyUserImg
+          ? _value.replyUserImg
+          : replyUserImg // ignore: cast_nullable_to_non_nullable
               as String,
       answerUid: null == answerUid
           ? _value.answerUid
@@ -179,6 +223,10 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
           ? _value.quizChoice1UserName
           : quizChoice1UserName // ignore: cast_nullable_to_non_nullable
               as String,
+      quizChoice1UserImg: null == quizChoice1UserImg
+          ? _value.quizChoice1UserImg
+          : quizChoice1UserImg // ignore: cast_nullable_to_non_nullable
+              as String,
       quizChoice2Uid: null == quizChoice2Uid
           ? _value.quizChoice2Uid
           : quizChoice2Uid // ignore: cast_nullable_to_non_nullable
@@ -186,6 +234,10 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
       quizChoice2UserName: null == quizChoice2UserName
           ? _value.quizChoice2UserName
           : quizChoice2UserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      quizChoice2UserImg: null == quizChoice2UserImg
+          ? _value.quizChoice2UserImg
+          : quizChoice2UserImg // ignore: cast_nullable_to_non_nullable
               as String,
       answerTimeStamp: null == answerTimeStamp
           ? _value.answerTimeStamp
@@ -201,11 +253,15 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   const _$PostAnswerImpl(
       {required this.replyUid,
       required this.replyUserId,
+      required this.replyUserName,
+      required this.replyUserImg,
       required this.answerUid,
       required this.quizChoice1Uid,
       required this.quizChoice1UserName,
+      required this.quizChoice1UserImg,
       required this.quizChoice2Uid,
       required this.quizChoice2UserName,
+      required this.quizChoice2UserImg,
       required this.answerTimeStamp});
 
   factory _$PostAnswerImpl.fromJson(Map<String, dynamic> json) =>
@@ -216,21 +272,29 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   @override
   final String replyUserId;
   @override
+  final String replyUserName;
+  @override
+  final String replyUserImg;
+  @override
   final String answerUid;
   @override
   final String quizChoice1Uid;
   @override
   final String quizChoice1UserName;
   @override
+  final String quizChoice1UserImg;
+  @override
   final String quizChoice2Uid;
   @override
   final String quizChoice2UserName;
+  @override
+  final String quizChoice2UserImg;
   @override
   final DateTime answerTimeStamp;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostAnswer(replyUid: $replyUid, replyUserId: $replyUserId, answerUid: $answerUid, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, answerTimeStamp: $answerTimeStamp)';
+    return 'PostAnswer(replyUid: $replyUid, replyUserId: $replyUserId, replyUserName: $replyUserName, replyUserImg: $replyUserImg, answerUid: $answerUid, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice1UserImg: $quizChoice1UserImg, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, quizChoice2UserImg: $quizChoice2UserImg, answerTimeStamp: $answerTimeStamp)';
   }
 
   @override
@@ -240,11 +304,15 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       ..add(DiagnosticsProperty('type', 'PostAnswer'))
       ..add(DiagnosticsProperty('replyUid', replyUid))
       ..add(DiagnosticsProperty('replyUserId', replyUserId))
+      ..add(DiagnosticsProperty('replyUserName', replyUserName))
+      ..add(DiagnosticsProperty('replyUserImg', replyUserImg))
       ..add(DiagnosticsProperty('answerUid', answerUid))
       ..add(DiagnosticsProperty('quizChoice1Uid', quizChoice1Uid))
       ..add(DiagnosticsProperty('quizChoice1UserName', quizChoice1UserName))
+      ..add(DiagnosticsProperty('quizChoice1UserImg', quizChoice1UserImg))
       ..add(DiagnosticsProperty('quizChoice2Uid', quizChoice2Uid))
       ..add(DiagnosticsProperty('quizChoice2UserName', quizChoice2UserName))
+      ..add(DiagnosticsProperty('quizChoice2UserImg', quizChoice2UserImg))
       ..add(DiagnosticsProperty('answerTimeStamp', answerTimeStamp));
   }
 
@@ -257,16 +325,24 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
                 other.replyUid == replyUid) &&
             (identical(other.replyUserId, replyUserId) ||
                 other.replyUserId == replyUserId) &&
+            (identical(other.replyUserName, replyUserName) ||
+                other.replyUserName == replyUserName) &&
+            (identical(other.replyUserImg, replyUserImg) ||
+                other.replyUserImg == replyUserImg) &&
             (identical(other.answerUid, answerUid) ||
                 other.answerUid == answerUid) &&
             (identical(other.quizChoice1Uid, quizChoice1Uid) ||
                 other.quizChoice1Uid == quizChoice1Uid) &&
             (identical(other.quizChoice1UserName, quizChoice1UserName) ||
                 other.quizChoice1UserName == quizChoice1UserName) &&
+            (identical(other.quizChoice1UserImg, quizChoice1UserImg) ||
+                other.quizChoice1UserImg == quizChoice1UserImg) &&
             (identical(other.quizChoice2Uid, quizChoice2Uid) ||
                 other.quizChoice2Uid == quizChoice2Uid) &&
             (identical(other.quizChoice2UserName, quizChoice2UserName) ||
                 other.quizChoice2UserName == quizChoice2UserName) &&
+            (identical(other.quizChoice2UserImg, quizChoice2UserImg) ||
+                other.quizChoice2UserImg == quizChoice2UserImg) &&
             (identical(other.answerTimeStamp, answerTimeStamp) ||
                 other.answerTimeStamp == answerTimeStamp));
   }
@@ -277,11 +353,15 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       runtimeType,
       replyUid,
       replyUserId,
+      replyUserName,
+      replyUserImg,
       answerUid,
       quizChoice1Uid,
       quizChoice1UserName,
+      quizChoice1UserImg,
       quizChoice2Uid,
       quizChoice2UserName,
+      quizChoice2UserImg,
       answerTimeStamp);
 
   /// Create a copy of PostAnswer
@@ -304,11 +384,15 @@ abstract class _PostAnswer implements PostAnswer {
   const factory _PostAnswer(
       {required final String replyUid,
       required final String replyUserId,
+      required final String replyUserName,
+      required final String replyUserImg,
       required final String answerUid,
       required final String quizChoice1Uid,
       required final String quizChoice1UserName,
+      required final String quizChoice1UserImg,
       required final String quizChoice2Uid,
       required final String quizChoice2UserName,
+      required final String quizChoice2UserImg,
       required final DateTime answerTimeStamp}) = _$PostAnswerImpl;
 
   factory _PostAnswer.fromJson(Map<String, dynamic> json) =
@@ -319,15 +403,23 @@ abstract class _PostAnswer implements PostAnswer {
   @override
   String get replyUserId;
   @override
+  String get replyUserName;
+  @override
+  String get replyUserImg;
+  @override
   String get answerUid;
   @override
   String get quizChoice1Uid;
   @override
   String get quizChoice1UserName;
   @override
+  String get quizChoice1UserImg;
+  @override
   String get quizChoice2Uid;
   @override
   String get quizChoice2UserName;
+  @override
+  String get quizChoice2UserImg;
   @override
   DateTime get answerTimeStamp;
 

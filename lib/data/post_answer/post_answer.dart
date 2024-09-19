@@ -11,11 +11,15 @@ class PostAnswer with _$PostAnswer {
   const factory PostAnswer({
     required String replyUid,
     required String replyUserId,
+    required String replyUserName,
+    required String replyUserImg,
     required String answerUid,
     required String quizChoice1Uid,
     required String quizChoice1UserName,
+    required String quizChoice1UserImg,
     required String quizChoice2Uid,
     required String quizChoice2UserName,
+    required String quizChoice2UserImg,
     required DateTime answerTimeStamp,
   }) = _PostAnswer;
   factory PostAnswer.fromJson(Map<String, dynamic> json) =>
