@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/data/post_answer/post_answer.dart';
 import 'package:putone/model/post_answer_model.dart';
-import 'package:putone/view/module_page/answer_list.dart';
-import 'package:putone/view/module_page/answer_pie_chart.dart';
+import 'package:putone/view/item/answer_list.dart';
+import 'package:putone/view/item/answer_pie_chart.dart';
 
 class PostCard extends ConsumerWidget {
   final Post post;
@@ -25,17 +25,33 @@ class PostCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              flex: 3,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: ExtendedImage.network(post.postMusicImg, cache: true),
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  child: ExtendedImage.network(
+                    post.postMusicImg,
+                    cache: true,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(post.postMusicName,
+                          style: Theme.of(context).textTheme.titleLarge),
+                      SizedBox(height: 4),
+                      Text(post.postMusicArtistName,
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Text(post.postMusicName,
-                style: Theme.of(context).textTheme.titleLarge),
-            Text(post.postMusicArtistName,
-                style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 16),
             StreamBuilder<List<PostAnswer>>(
                 stream: postAnswerModel.getPostAnswersStream(uid, post.postId),
