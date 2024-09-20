@@ -15,6 +15,8 @@ class PostAnswer with _$PostAnswer {
     required String replyUserImg,
     required String answerUid,
     required String posterUid,
+    required String posterUserName,
+    required String posterUserImg,
     required String quizChoice1Uid,
     required String quizChoice1UserName,
     required String quizChoice1UserImg,
