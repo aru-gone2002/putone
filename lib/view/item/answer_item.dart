@@ -8,8 +8,15 @@ import 'package:putone/view/item/choice_item.dart';
 class AnswerItem extends StatefulWidget {
   final PostAnswer answer;
   final String correctUid;
+  final String correctUserName;
+  final String correctUserImg;
 
-  const AnswerItem({Key? key, required this.answer, required this.correctUid})
+  const AnswerItem(
+      {Key? key,
+      required this.answer,
+      required this.correctUid,
+      required this.correctUserName,
+      required this.correctUserImg})
       : super(key: key);
 
   @override
@@ -40,13 +47,18 @@ class _AnswerItemState extends State<AnswerItem> {
           ),
           title: Text(widget.answer.replyUserName),
           subtitle: Text(widget.answer.replyUserId),
-          trailing: Icon(
-            widget.answer.answerUid == widget.correctUid
-                ? Icons.radio_button_unchecked
-                : Icons.close,
-            color: widget.answer.answerUid == widget.correctUid
-                ? Colors.green
-                : Colors.grey,
+          trailing: Container(
+            width: 50,
+            alignment: Alignment.centerRight,
+            child: Icon(
+              widget.answer.answerUid == widget.correctUid
+                  ? Icons.radio_button_unchecked
+                  : Icons.close,
+              color: widget.answer.answerUid == widget.correctUid
+                  ? Colors.green
+                  : Colors.grey,
+              size: 24,
+            ),
           ),
           onTap: () {
             setState(() {
@@ -75,10 +87,11 @@ class _AnswerItemState extends State<AnswerItem> {
                       widget.answer.answerUid == widget.answer.quizChoice2Uid,
                 ),
                 ChoiceItem(
-                  uid: widget.answer.answerUid,
-                  userName: widget.answer.replyUserName,
+                  uid: widget.correctUid,
+                  userName: widget.correctUserName,
                   userImg: widget.answer.replyUserImg,
-                  isSelected: true,
+                  isSelected:
+                      widget.answer.answerUid == widget.answer.posterUid,
                 ),
               ],
             ),

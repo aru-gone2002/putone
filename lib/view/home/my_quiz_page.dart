@@ -13,6 +13,8 @@ class MyQuizPage extends ConsumerWidget {
     final localDatabaseViewModel = LocalDatabaseViewModel()..setRef(ref);
     final postModel = PostModel();
     final uid = localDatabaseViewModel.getUidFromProvider();
+    final userImg = localDatabaseViewModel.getUserImgFromProvider();
+    final userName = localDatabaseViewModel.getUserNameFromProvider();
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +44,11 @@ class MyQuizPage extends ConsumerWidget {
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
-              return PostCard(post: post, uid: uid ?? '');
+              return PostCard(
+                  post: post,
+                  uid: uid!,
+                  userImg: userImg!,
+                  userName: userName!);
             },
           );
         },
