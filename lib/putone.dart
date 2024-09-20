@@ -111,10 +111,6 @@ class PuTone extends ConsumerWidget {
                   await followViewModel.getFollowingUsers(profileViewModel.uid);
                   //フォロワーを取得し、providerに追加。
                   await followViewModel.getFollowedUsers(profileViewModel.uid);
-                  //フォロー中のユーザー数を取得し、providerに追加。
-                  await followViewModel.getFollowingNum(profileViewModel.uid);
-                  //フォロワー数を取得し、providerに追加。
-                  await followViewModel.getFollowedNum(profileViewModel.uid);
                   await spotifyViewModel.fetchSpotifyAccessToken();
                 });
 

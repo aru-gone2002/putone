@@ -61,8 +61,8 @@ class FollowViewModel {
 
   void addFollowingUser(FollowingUser value) {
     List<FollowingUser> newFollowingUsers = [...followingUsers, value];
-    _ref.read(followingUsersProvider.notifier).state = newFollowingUsers;
-    _ref.read(followingNumProvider.notifier).state = newFollowingUsers.length;
+    saveFollowingUsers(newFollowingUsers);
+    saveFollowingNum(newFollowingUsers.length);
     print('Followings: ${newFollowingUsers.length}');
   }
 
@@ -72,8 +72,8 @@ class FollowViewModel {
           .where((followingUser) => followingUser.followingUid != value)
           .toList(),
     ];
-    _ref.read(followingUsersProvider.notifier).state = newFollowingUsers;
-    _ref.read(followingNumProvider.notifier).state = newFollowingUsers.length;
+    saveFollowingUsers(newFollowingUsers);
+    saveFollowingNum(newFollowingUsers.length);
     print('Followings: ${newFollowingUsers.length}');
   }
 
@@ -105,6 +105,7 @@ class FollowViewModel {
     final result = await _followModel.getFollowingUsers(uid);
     if (result is List<FollowingUser>) {
       saveFollowingUsers(result);
+      saveFollowingNum(result.length);
     } else {
       print(result);
     }
@@ -119,6 +120,7 @@ class FollowViewModel {
     final result = await _followModel.getFollowedUsers(uid);
     if (result is List<FollowedUser>) {
       saveFollowedUsers(result);
+      saveFollowedNum(result.length);
     } else {
       print(result);
     }

@@ -60,14 +60,15 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
   @override
   void initState() {
     super.initState();
+    followViewModel.setRef(ref);
+    profileViewModel.setRef(ref);
+    userSearchViewModel.setRef(ref);
   }
 
   @override
   Widget build(BuildContext context) {
     print('Following: ${widget.followingUsers}');
     print('Followed by: ${widget.followedUsers}');
-
-    profileViewModel.setRef(ref);
 
     return DefaultTabController(
       initialIndex: widget.initialTab,
@@ -104,89 +105,65 @@ class FollowListScreenState extends ConsumerState<FollowListScreen> {
         ),
         body: TabBarView(
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: widget.followedUsers.length,
-                        itemBuilder: (context, index) {
-                          final uid = widget.followedUsers[index].uid;
-                          return FutureBuilder(
-                            future: followViewModel.getUserProfile(uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return UserListItem(
-                                    userProfile: snapshot
-                                        .data!); // Use the fetched user profile
-                              } else {
-                                return Container(
-                                  width: double.infinity,
-                                  height: 20,
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 20,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 10,
-                                  ),
-                                );
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: widget.followingUsers.length,
-                          itemBuilder: (context, index) {
-                            final followingUid =
-                                widget.followingUsers[index].followingUid;
-                            return FutureBuilder(
-                              future:
-                                  followViewModel.getUserProfile(followingUid),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return UserListItem(
-                                      userProfile: snapshot
-                                          .data!); // Use the fetched user profile
-                                } else {
-                                  return Container(
-                                    width: double.infinity,
-                                    height: 20,
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                      horizontal: 20,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 5,
-                                      horizontal: 10,
-                                    ),
-                                  );
-                                }
-                              },
-                            );
-                          },
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.followedUsers.length,
+              itemBuilder: (context, index) {
+                final uid = widget.followedUsers[index].uid;
+                return FutureBuilder(
+                  future: followViewModel.getUserProfile(uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return UserListItem(
+                          userProfile:
+                              snapshot.data!); // Use the fetched user profile
+                    } else {
+                      return Container(
+                        width: double.infinity,
+                        height: 20,
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.followingUsers.length,
+              itemBuilder: (context, index) {
+                final followingUid = widget.followingUsers[index].followingUid;
+                return FutureBuilder(
+                  future: followViewModel.getUserProfile(followingUid),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return UserListItem(
+                          userProfile:
+                              snapshot.data!); // Use the fetched user profile
+                    } else {
+                      return Container(
+                        width: double.infinity,
+                        height: 20,
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
             ),
           ],
         ),

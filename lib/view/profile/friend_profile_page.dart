@@ -29,8 +29,6 @@ class FriendProfilePage extends ConsumerStatefulWidget {
 }
 
 class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
-  late Future<int> _followingNumFuture;
-  late Future<int> _followedNumFuture;
   late Future<List<FollowingUser>> _followingUsersFuture;
   late Future<List<FollowedUser>> _followedUsersFuture;
 
@@ -40,10 +38,9 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
   @override
   void initState() {
     super.initState();
-    _followingNumFuture =
-        followViewModel.getFriendFollowingNum(widget.userProfile.uid);
-    _followedNumFuture =
-        followViewModel.getFriendFollowedNum(widget.userProfile.uid);
+    followViewModel.setRef(ref);
+    profileViewModel.setRef(ref);
+
     _followingUsersFuture =
         followViewModel.getFriendFollowingUsers(widget.userProfile.uid);
     _followedUsersFuture =
@@ -54,9 +51,6 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
   Widget build(BuildContext context) {
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
-
-    followViewModel.setRef(ref);
-    profileViewModel.setRef(ref);
 
     return Scaffold(
       body: Column(
@@ -209,13 +203,13 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 //フォロワー数
                 FutureBuilder(
                   future: Future.wait([
-                    _followedNumFuture,
                     _followingUsersFuture,
                     _followedUsersFuture,
                   ]),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data is List) {
-                      final int followedNum = snapshot.data![0] as int? ?? 0;
+                      final int followedNum =
+                          snapshot.data![1].length as int? ?? 0;
                       return Align(
                         alignment: const Alignment(-0.925, 0.75),
                         child: FollowCount(
@@ -227,10 +221,10 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                               context: context,
                               userProfile: widget.userProfile,
                               followingUsers:
-                                  snapshot.data![1] as List<FollowingUser>? ??
+                                  snapshot.data![0] as List<FollowingUser>? ??
                                       [],
                               followedUsers:
-                                  snapshot.data![2] as List<FollowedUser>? ??
+                                  snapshot.data![1] as List<FollowedUser>? ??
                                       [],
                               initialTab: 0,
                             );
@@ -240,7 +234,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                     } else {
                       return const Align(
                         alignment: Alignment(-0.925, 0.75),
-                        child: Text('null'),
+                        child: Text('0'),
                       );
                     }
                   },
@@ -249,13 +243,13 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 //フォロー中数
                 FutureBuilder(
                   future: Future.wait([
-                    _followingNumFuture,
                     _followingUsersFuture,
                     _followedUsersFuture,
                   ]),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data is List) {
-                      final int followingNum = snapshot.data![0] as int? ?? 0;
+                      final int followingNum =
+                          snapshot.data![0].length as int? ?? 0;
                       return Align(
                         alignment: const Alignment(-0.525, 0.75),
                         child: FollowCount(
@@ -267,10 +261,10 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                               context: context,
                               userProfile: widget.userProfile,
                               followingUsers:
-                                  snapshot.data![1] as List<FollowingUser>? ??
+                                  snapshot.data![0] as List<FollowingUser>? ??
                                       [],
                               followedUsers:
-                                  snapshot.data![2] as List<FollowedUser>? ??
+                                  snapshot.data![1] as List<FollowedUser>? ??
                                       [],
                               initialTab: 1,
                             );
@@ -280,7 +274,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                     } else {
                       return const Align(
                         alignment: Alignment(-0.525, 0.75),
-                        child: Text('null'),
+                        child: Text('0'),
                       );
                     }
                   },

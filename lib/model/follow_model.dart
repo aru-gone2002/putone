@@ -76,7 +76,7 @@ class FollowModel {
       }
     } catch (e) {
       print('Fail to get following users');
-      return [];
+      return null;
     }
   }
 
@@ -158,7 +158,7 @@ class FollowModel {
       }
     } catch (e) {
       print('Fail to get followed users');
-      return [];
+      return null;
     }
   }
 
