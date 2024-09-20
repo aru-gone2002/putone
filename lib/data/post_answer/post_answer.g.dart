@@ -22,7 +22,7 @@ _$PostAnswerImpl _$$PostAnswerImplFromJson(Map<String, dynamic> json) =>
       quizChoice2Uid: json['quizChoice2Uid'] as String,
       quizChoice2UserName: json['quizChoice2UserName'] as String,
       quizChoice2UserImg: json['quizChoice2UserImg'] as String,
-      answerTimeStamp: DateTime.parse(json['answerTimeStamp'] as String),
+      answerTimestamp: DateTime.parse(json['answerTimestamp'] as String),
     );
 
 Map<String, dynamic> _$$PostAnswerImplToJson(_$PostAnswerImpl instance) =>
@@ -41,5 +41,5 @@ Map<String, dynamic> _$$PostAnswerImplToJson(_$PostAnswerImpl instance) =>
       'quizChoice2Uid': instance.quizChoice2Uid,
       'quizChoice2UserName': instance.quizChoice2UserName,
       'quizChoice2UserImg': instance.quizChoice2UserImg,
-      'answerTimeStamp': instance.answerTimeStamp.toIso8601String(),
+      'answerTimestamp': instance.answerTimestamp.toIso8601String(),
     };

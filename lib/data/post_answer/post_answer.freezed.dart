@@ -34,7 +34,7 @@ mixin _$PostAnswer {
   String get quizChoice2Uid => throw _privateConstructorUsedError;
   String get quizChoice2UserName => throw _privateConstructorUsedError;
   String get quizChoice2UserImg => throw _privateConstructorUsedError;
-  DateTime get answerTimeStamp => throw _privateConstructorUsedError;
+  DateTime get answerTimestamp => throw _privateConstructorUsedError;
 
   /// Serializes this PostAnswer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,7 +67,7 @@ abstract class $PostAnswerCopyWith<$Res> {
       String quizChoice2Uid,
       String quizChoice2UserName,
       String quizChoice2UserImg,
-      DateTime answerTimeStamp});
+      DateTime answerTimestamp});
 }
 
 /// @nodoc
@@ -99,7 +99,7 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
     Object? quizChoice2Uid = null,
     Object? quizChoice2UserName = null,
     Object? quizChoice2UserImg = null,
-    Object? answerTimeStamp = null,
+    Object? answerTimestamp = null,
   }) {
     return _then(_value.copyWith(
       replyUid: null == replyUid
@@ -158,9 +158,9 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
           ? _value.quizChoice2UserImg
           : quizChoice2UserImg // ignore: cast_nullable_to_non_nullable
               as String,
-      answerTimeStamp: null == answerTimeStamp
-          ? _value.answerTimeStamp
-          : answerTimeStamp // ignore: cast_nullable_to_non_nullable
+      answerTimestamp: null == answerTimestamp
+          ? _value.answerTimestamp
+          : answerTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
   }
@@ -189,7 +189,7 @@ abstract class _$$PostAnswerImplCopyWith<$Res>
       String quizChoice2Uid,
       String quizChoice2UserName,
       String quizChoice2UserImg,
-      DateTime answerTimeStamp});
+      DateTime answerTimestamp});
 }
 
 /// @nodoc
@@ -219,7 +219,7 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
     Object? quizChoice2Uid = null,
     Object? quizChoice2UserName = null,
     Object? quizChoice2UserImg = null,
-    Object? answerTimeStamp = null,
+    Object? answerTimestamp = null,
   }) {
     return _then(_$PostAnswerImpl(
       replyUid: null == replyUid
@@ -278,9 +278,9 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
           ? _value.quizChoice2UserImg
           : quizChoice2UserImg // ignore: cast_nullable_to_non_nullable
               as String,
-      answerTimeStamp: null == answerTimeStamp
-          ? _value.answerTimeStamp
-          : answerTimeStamp // ignore: cast_nullable_to_non_nullable
+      answerTimestamp: null == answerTimestamp
+          ? _value.answerTimestamp
+          : answerTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -304,7 +304,7 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       required this.quizChoice2Uid,
       required this.quizChoice2UserName,
       required this.quizChoice2UserImg,
-      required this.answerTimeStamp});
+      required this.answerTimestamp});
 
   factory _$PostAnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostAnswerImplFromJson(json);
@@ -338,11 +338,11 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   @override
   final String quizChoice2UserImg;
   @override
-  final DateTime answerTimeStamp;
+  final DateTime answerTimestamp;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostAnswer(replyUid: $replyUid, replyUserId: $replyUserId, replyUserName: $replyUserName, replyUserImg: $replyUserImg, answerUid: $answerUid, posterUid: $posterUid, posterUserName: $posterUserName, posterUserImg: $posterUserImg, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice1UserImg: $quizChoice1UserImg, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, quizChoice2UserImg: $quizChoice2UserImg, answerTimeStamp: $answerTimeStamp)';
+    return 'PostAnswer(replyUid: $replyUid, replyUserId: $replyUserId, replyUserName: $replyUserName, replyUserImg: $replyUserImg, answerUid: $answerUid, posterUid: $posterUid, posterUserName: $posterUserName, posterUserImg: $posterUserImg, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice1UserImg: $quizChoice1UserImg, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, quizChoice2UserImg: $quizChoice2UserImg, answerTimestamp: $answerTimestamp)';
   }
 
   @override
@@ -364,7 +364,7 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       ..add(DiagnosticsProperty('quizChoice2Uid', quizChoice2Uid))
       ..add(DiagnosticsProperty('quizChoice2UserName', quizChoice2UserName))
       ..add(DiagnosticsProperty('quizChoice2UserImg', quizChoice2UserImg))
-      ..add(DiagnosticsProperty('answerTimeStamp', answerTimeStamp));
+      ..add(DiagnosticsProperty('answerTimestamp', answerTimestamp));
   }
 
   @override
@@ -400,8 +400,8 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
                 other.quizChoice2UserName == quizChoice2UserName) &&
             (identical(other.quizChoice2UserImg, quizChoice2UserImg) ||
                 other.quizChoice2UserImg == quizChoice2UserImg) &&
-            (identical(other.answerTimeStamp, answerTimeStamp) ||
-                other.answerTimeStamp == answerTimeStamp));
+            (identical(other.answerTimestamp, answerTimestamp) ||
+                other.answerTimestamp == answerTimestamp));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -422,7 +422,7 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       quizChoice2Uid,
       quizChoice2UserName,
       quizChoice2UserImg,
-      answerTimeStamp);
+      answerTimestamp);
 
   /// Create a copy of PostAnswer
   /// with the given fields replaced by the non-null parameter values.
@@ -456,7 +456,7 @@ abstract class _PostAnswer implements PostAnswer {
       required final String quizChoice2Uid,
       required final String quizChoice2UserName,
       required final String quizChoice2UserImg,
-      required final DateTime answerTimeStamp}) = _$PostAnswerImpl;
+      required final DateTime answerTimestamp}) = _$PostAnswerImpl;
 
   factory _PostAnswer.fromJson(Map<String, dynamic> json) =
       _$PostAnswerImpl.fromJson;
@@ -490,7 +490,7 @@ abstract class _PostAnswer implements PostAnswer {
   @override
   String get quizChoice2UserImg;
   @override
-  DateTime get answerTimeStamp;
+  DateTime get answerTimestamp;
 
   /// Create a copy of PostAnswer
   /// with the given fields replaced by the non-null parameter values.

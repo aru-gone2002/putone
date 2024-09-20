@@ -63,11 +63,56 @@ class _PostCardState extends ConsumerState<PostCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.post.postMusicName,
-                            style: Theme.of(context).textTheme.titleLarge),
-                        SizedBox(height: 4),
-                        Text(widget.post.postMusicArtistName,
-                            style: Theme.of(context).textTheme.titleSmall),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.post.postMusicName,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    softWrap: true,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    widget.post.postMusicArtistName,
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                    softWrap: true,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            StreamBuilder<double>(
+                              stream: postAnswerModel
+                                  .calculateCorrectAnswerPercentageStream(
+                                      widget.uid, widget.post.postId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator(
+                                      strokeWidth: 2);
+                                } else if (snapshot.hasError) {
+                                  return Text('エラー');
+                                }
+                                final percentage = snapshot.data ?? 0.0;
+                                return Text(
+                                  '${percentage.toStringAsFixed(0)}%',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

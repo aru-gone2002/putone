@@ -23,7 +23,7 @@ class PostAnswer with _$PostAnswer {
     required String quizChoice2Uid,
     required String quizChoice2UserName,
     required String quizChoice2UserImg,
-    required DateTime answerTimeStamp,
+    required DateTime answerTimestamp,
   }) = _PostAnswer;
   factory PostAnswer.fromJson(Map<String, dynamic> json) =>
       _$PostAnswerFromJson(json);

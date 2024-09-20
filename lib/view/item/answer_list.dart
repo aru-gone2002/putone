@@ -8,13 +8,15 @@ class AnswersList extends StatelessWidget {
   final String correctUid;
   final String correctUserImg;
   final String correctUserName;
+  final bool showPercentage;
 
   const AnswersList(
       {Key? key,
       required this.answers,
       required this.correctUid,
       required this.correctUserImg,
-      required this.correctUserName})
+      required this.correctUserName,
+      this.showPercentage = true})
       : super(key: key);
 
   @override
