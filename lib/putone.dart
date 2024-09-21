@@ -11,6 +11,7 @@ import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
+import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -29,6 +30,7 @@ class PuTone extends ConsumerWidget {
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     final FollowViewModel followViewModel = FollowViewModel();
+    final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     authViewModel.setRef(ref);
@@ -36,6 +38,7 @@ class PuTone extends ConsumerWidget {
     postViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
     followViewModel.setRef(ref);
+    friendsQuizViewModel.setRef(ref);
     artistFollowViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
 
@@ -91,6 +94,20 @@ class PuTone extends ConsumerWidget {
                   //localUserProfileの内容をproviderに入れる
                   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
                   print('saveUserProfileLocalDBDataを実施');
+                  //フォロー中のユーザーを取得し、providerに追加。
+                  await followViewModel.getFollowingUsers();
+                  //ローカルDBから友達のクイズへの回答状況を取得する
+                  //TODO ここでエラーが出ている
+                  final localUserPostAnswers =
+                      await database.getAllLocalUserPostAnswers();
+                  print('getAllLocalUserPostAnswersを実行');
+                  print('localUserPostAnswers: $localUserPostAnswers');
+                  //providerに友達のクイズへの回答状況を保存
+                  if (localUserPostAnswers.isNotEmpty) {
+                    friendsQuizViewModel.savePostAnswers(friendsQuizViewModel
+                        .changeLocalUserPostAnswerstoPostAnswers(
+                            localUserPostAnswers));
+                  }
                   final localUserPosts = await database.getAllLocalUserPosts();
                   print('ローカルDBからUserPostsデータを取得');
                   //localUserPostsの内容をproviderに入れる
@@ -100,14 +117,13 @@ class PuTone extends ConsumerWidget {
                   //ローカルDBからUserFavoriteArtistsのデータを取得
                   final localUserFavoriteArtists =
                       await database.getAllLocalUserFavoriteArtists();
+                  print('DBからお気に入りアーティストを取得');
                   //localUserFavoriteArtistsの内容をproviderに入れる
                   artistFollowViewModel.insertArtistsToList(
                     artistFollowViewModel
                         .changeLocalUserFavoriteArtiststoFavoriteArtists(
                             localUserFavoriteArtists),
                   );
-                  //フォロー中のユーザーを取得し、providerに追加。
-                  await followViewModel.getFollowingUsers();
                   await spotifyViewModel.fetchSpotifyAccessToken();
                 });
 

@@ -4,7 +4,7 @@ import 'package:putone/constants/enums.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/model/post_model.dart';
-import 'package:putone/providers/get_following_users_post_condition.dart';
+import 'package:putone/providers/friends_quiz_provider.dart';
 import 'package:putone/providers/post_provider.dart';
 
 class PostViewModel {

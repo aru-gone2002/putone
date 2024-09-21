@@ -11,6 +11,7 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -28,6 +29,7 @@ class SignInPage extends StatelessWidget {
         LocalDatabaseViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
+    final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signInFunction(
@@ -69,6 +71,17 @@ class SignInPage extends StatelessWidget {
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
+            //友達の投稿への回答情報をFirestoreから取得する。providerに入れる
+            //TODO ここのfirestoreでもエラーが出ている
+            await friendsQuizViewModel.getAllPostAnswersFromFirestore();
+            //友達の投稿への回答情報をローカルDBに入れる。
+            if (friendsQuizViewModel.postAnswers.isNotEmpty) {
+              for (var userPostAnswer in friendsQuizViewModel.postAnswers) {
+                await localDatabaseViewModel.appDatabase!
+                    .insertLocalUserPostAnswer(userPostAnswer);
+              }
+            }
+            print('友達の投稿への処理を実行');
             //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
@@ -192,6 +205,7 @@ class SignInPage extends StatelessWidget {
                     profileViewModel.setRef(ref);
                     postViewModel.setRef(ref);
                     localDatabaseViewModel.setRef(ref);
+                    friendsQuizViewModel.setRef(ref);
                     artistFollowViewModel.setRef(ref);
                     spotifyViewModel.setRef(ref);
                     return Visibility(
