@@ -28,6 +28,28 @@ class PostCard extends ConsumerStatefulWidget {
 
 class _PostCardState extends ConsumerState<PostCard> {
   bool _isExpanded = false;
+  double _cachedPercentage = 0.0;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialData();
+  }
+
+  Future<void> _loadInitialData() async {
+    final postAnswerModel = PostAnswerModel();
+    final stream = postAnswerModel.calculateCorrectAnswerPercentageStream(
+        widget.uid, widget.post.postId);
+
+    await for (final percentage in stream) {
+      setState(() {
+        _cachedPercentage = percentage;
+        _isLoading = false;
+      });
+      break; // 最初の値を取得したらループを抜ける
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,31 +108,19 @@ class _PostCardState extends ConsumerState<PostCard> {
                                 ],
                               ),
                             ),
-                            StreamBuilder<double>(
-                              stream: postAnswerModel
-                                  .calculateCorrectAnswerPercentageStream(
-                                      widget.uid, widget.post.postId),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator(
-                                      strokeWidth: 2);
-                                } else if (snapshot.hasError) {
-                                  return Text('エラー');
-                                }
-                                final percentage = snapshot.data ?? 0.0;
-                                return Text(
-                                  '${percentage.toStringAsFixed(0)}%',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                );
-                              },
-                            ),
+                            if (_isLoading)
+                              CircularProgressIndicator(strokeWidth: 2)
+                            else
+                              Text(
+                                '${_cachedPercentage.toStringAsFixed(0)}%',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                              ),
                           ],
                         ),
                       ],
