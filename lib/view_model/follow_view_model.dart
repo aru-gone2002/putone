@@ -59,6 +59,17 @@ class FollowViewModel {
     _ref.read(friendFollowedNumProvider.notifier).state = value;
   }
 
+  void resetAllFollowProviders() {
+    saveFollowedNum(0);
+    saveFollowedUsers([]);
+    saveFollowingNum(0);
+    saveFollowingUsers([]);
+    saveFriendFollowedNum(0);
+    saveFriendFollowedUsers([]);
+    saveFriendFollowingNum(0);
+    saveFriendFollowingUsers([]);
+  }
+
   void addFollowingUser(FollowingUser value) {
     List<FollowingUser> newFollowingUsers = [...followingUsers, value];
     saveFollowingUsers(newFollowingUsers);
