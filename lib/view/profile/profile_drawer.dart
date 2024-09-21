@@ -67,6 +67,7 @@ class ProfileDrawer extends ConsumerWidget {
                           profileViewModel.resetUserProfileProvider();
                           postViewModel.resetPostProvider();
                           postViewModel.resetPostsProvider();
+                          postViewModel.resetFollowingUsersPostsCondition();
                           artistFollowViewModel.resetFollowingArtistsProvider();
                           friendsQuizViewModel.resetPostAnswers();
                           await database.deleteLocalUserProfile();

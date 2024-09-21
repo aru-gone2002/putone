@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
@@ -18,8 +17,6 @@ import 'package:putone/view/module_page/write_profile_msg_page.dart';
 import 'package:putone/view/profile_setting/second_profile_setting_page.dart';
 import 'package:putone/view/auth/signup_page.dart';
 import 'package:putone/view/module_page/select_song_page.dart';
-import 'package:putone/view_model/local_database_view_model.dart';
-import 'package:putone/view_model/profile_view_model.dart';
 
 void toEmailAuthPage({required BuildContext context}) => Navigator.push(
       context,

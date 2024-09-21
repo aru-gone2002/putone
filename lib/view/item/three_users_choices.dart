@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/height.dart';
+import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/data/post_answer/post_answer.dart';
 import 'package:putone/data/quiz_choice/quiz_choice.dart';
@@ -18,58 +20,49 @@ class ThreeUsersChoices extends ConsumerWidget {
 
   final Post post;
 
-  // final FollowViewModel followViewModel = FollowViewModel();
-  // final ProfileViewModel profileViewModel = ProfileViewModel();
-  // final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
-  // final LocalDatabaseViewModel localDatabaseViewModel =
-  //     LocalDatabaseViewModel();
-  // UserProfile? quizChoice1Profile;
-  // UserProfile? quizChoice2Profile;
-  // UserProfile? posterProfile;
-  // late String quizChoice1Uid;
-  // late String quizChoice2Uid;
+  Future<void> answerOnPressed({
+    required ProfileViewModel profileViewModel,
+    required FriendsQuizViewModel friendsQuizViewModel,
+    required LocalDatabaseViewModel localDatabaseViewModel,
+    required UserProfile posterProfile,
+    required QuizChoice quizChoice,
+    required String quizChoice1Uid,
+    required UserProfile quizChoice1Profile,
+    required UserProfile quizChoice2Profile,
+    required String quizChoice2Uid,
+  }) async {
+    // 選択したユーザーを取得する
+    // FirestoreにpostAnswersを追加する
+    final postAnswer = PostAnswer(
+      postId: post.postId,
+      replyUid: profileViewModel.uid,
+      posterUid: post.uid,
+      posterUserName: posterProfile!.userName,
+      posterUserImg: posterProfile!.userImg,
+      replyUserId: profileViewModel.userId,
+      replyUserName: profileViewModel.userName,
+      replyUserImg: profileViewModel.userImg,
+      answerUid: quizChoice.quizChoiceUid,
+      quizChoice1Uid: quizChoice1Uid,
+      quizChoice1UserName: quizChoice1Profile!.userName,
+      quizChoice1UserImg: quizChoice1Profile!.userImg,
+      quizChoice2Uid: quizChoice2Uid,
+      quizChoice2UserName: quizChoice2Profile!.userName,
+      quizChoice2UserImg: quizChoice2Profile!.userImg,
+      answerTimestamp: DateTime.now(),
+    );
 
-  // void initialFunction() {
-  //   //TODO ここでfollowingUsersは取得できていない
-  //   final followingUsers = followViewModel.followingUsers;
-  //   //やりたい処理としては、followingUsersから自分と投稿主以外のフォローユーザーを取得する
-  //   // print('followingUsers: $followingUsers');
+    await friendsQuizViewModel.sendPostAnswerToFirestore(
+      postAnswer: postAnswer,
+    );
 
-  //   final exceptMeAndPosterFollowingUsers = followingUsers
-  //       .where(
-  //         (followingUser) =>
-  //             //自分じゃないことを検証
-  //             //投稿主じゃないことを検証
-  //             followingUser.followingUid != profileViewModel.uid &&
-  //             followingUser.followingUid != post.uid,
-  //       )
-  //       .toList();
-  //   // print('exceptMeAndPosterFollowingUsers: $exceptMeAndPosterFollowingUsers');
+    // ローカルDBに格納する
+    await localDatabaseViewModel.appDatabase!
+        .insertLocalUserPostAnswer(postAnswer);
 
-  //   //TODO 自分と投稿主以外のフォローユーザーから任意で2人を取得する
-  //   Random random = Random();
-  //   int index1 = random.nextInt(exceptMeAndPosterFollowingUsers.length);
-  //   int index2 = random.nextInt(exceptMeAndPosterFollowingUsers.length);
-
-  //   // 重複を避けるために、異なるインデックスになるまで再生成
-  //   while (index1 == index2) {
-  //     index2 = random.nextInt(exceptMeAndPosterFollowingUsers.length);
-  //   }
-
-  //   quizChoice1Uid = exceptMeAndPosterFollowingUsers[index1].followingUid;
-  //   quizChoice2Uid = exceptMeAndPosterFollowingUsers[index2].followingUid;
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   followViewModel.setRef(ref);
-  //   profileViewModel.setRef(ref);
-  //   friendsQuizViewModel.setRef(ref);
-  //   localDatabaseViewModel.setRef(ref);
-  //   initialFunction();
-  // }
+    // providerに格納
+    friendsQuizViewModel.addPostAnswers(postAnswer);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,11 +78,10 @@ class ThreeUsersChoices extends ConsumerWidget {
     UserProfile? quizChoice1Profile;
     UserProfile? quizChoice2Profile;
     UserProfile? posterProfile;
-    //TODO ここでfollowingUsersは取得できていない
-    final followingUsers = followViewModel.followingUsers;
-    //やりたい処理としては、followingUsersから自分と投稿主以外のフォローユーザーを取得する
-    // print('followingUsers: $followingUsers');
 
+    final followingUsers = followViewModel.followingUsers;
+
+    //自分と投稿者以外のフォロー中ユーザーのuidを取得する
     final exceptMeAndPosterFollowingUsers = followingUsers
         .where(
           (followingUser) =>
@@ -99,9 +91,8 @@ class ThreeUsersChoices extends ConsumerWidget {
               followingUser.followingUid != post.uid,
         )
         .toList();
-    // print('exceptMeAndPosterFollowingUsers: $exceptMeAndPosterFollowingUsers');
 
-    //TODO 自分と投稿主以外のフォローユーザーから任意で2人を取得する
+    //自分と投稿主以外のフォローユーザーから任意で2人を取得する
     Random random = Random();
     int index1 = random.nextInt(exceptMeAndPosterFollowingUsers.length);
     int index2 = random.nextInt(exceptMeAndPosterFollowingUsers.length);
@@ -148,6 +139,107 @@ class ThreeUsersChoices extends ConsumerWidget {
       return quizChoices;
     }
 
+    List<Widget> threeChoiceWidget({required List<QuizChoice> choices}) {
+      List<Widget> widgets = [];
+      for (var choice in choices) {
+        final quizListTile = ListTile(
+          tileColor: AppColorTheme.color().gray3,
+          leading: choice.quizChoiceUserImg != ''
+              ? ExtendedImage.network(
+                  choice.quizChoiceUserImg,
+                  fit: BoxFit.cover,
+                  width: 40,
+                  height: 40,
+                  shape: BoxShape.circle,
+                  cache: true,
+                )
+              : ExtendedImage.asset(
+                  'assets/images/user_gray_icon.png',
+                  width: 40,
+                  height: 40,
+                  shape: BoxShape.circle,
+                  fit: BoxFit.cover,
+                ),
+          title: Text(choice.quizChoiceUserName),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          onTap: () async {
+            // 選択したユーザーを元にダイアログを表示する
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SimpleDialog(
+                  backgroundColor: Colors.deepPurple,
+                  title: const Text('Final Answer?'),
+                  children: [
+                    const Text('このユーザーが投稿者だと思う'),
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          choice.quizChoiceUserImg != ''
+                              ? ExtendedImage.network(
+                                  choice.quizChoiceUserImg,
+                                  width: userImgLargeWidth,
+                                  height: userImgLargeHeight,
+                                  fit: BoxFit.cover,
+                                  cache: true,
+                                  shape: BoxShape.circle,
+                                )
+                              : ExtendedImage.asset(
+                                  'assets/images/user_gray_icon.png',
+                                  width: userImgLargeWidth,
+                                  height: userImgLargeHeight,
+                                  shape: BoxShape.circle,
+                                  fit: BoxFit.cover,
+                                ),
+                          const SizedBox(height: 32),
+                          Text(
+                            choice.quizChoiceUserName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(fontWeight: FontWeight.normal),
+                          ),
+                          const SizedBox(height: 16),
+                          SimpleDialogOption(
+                            onPressed: () async {
+                              await answerOnPressed(
+                                profileViewModel: profileViewModel,
+                                friendsQuizViewModel: friendsQuizViewModel,
+                                localDatabaseViewModel: localDatabaseViewModel,
+                                posterProfile: posterProfile!,
+                                quizChoice: choice,
+                                quizChoice1Uid: quizChoice1Uid,
+                                quizChoice1Profile: quizChoice1Profile!,
+                                quizChoice2Profile: quizChoice2Profile!,
+                                quizChoice2Uid: quizChoice2Uid,
+                              );
+                            },
+                            child: const Text('君に決めた！'),
+                          ),
+                          const SizedBox(height: 16),
+                          SimpleDialogOption(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('考え直す'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+        widgets.add(quizListTile);
+      }
+      widgets.insert(1, const SizedBox(height: 6));
+      widgets.insert(4, const SizedBox(height: 6));
+      return widgets;
+    }
+
     return FutureBuilder(
         future: getThreeUsersChoices(),
         builder: (context, snapshot) {
@@ -162,210 +254,12 @@ class ThreeUsersChoices extends ConsumerWidget {
               child: Text('何らかのエラーが発生しました'),
             );
           }
+
           return Material(
             color: Colors.white,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  tileColor: AppColorTheme.color().gray3,
-                  leading: snapshot.data![0].quizChoiceUserImg != ''
-                      ? ExtendedImage.network(
-                          snapshot.data![0].quizChoiceUserImg,
-                          fit: BoxFit.cover,
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          cache: true,
-                        )
-                      : ExtendedImage.asset(
-                          'assets/images/user_gray_icon.png',
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          fit: BoxFit.cover,
-                        ),
-                  title: Text(snapshot.data![0].quizChoiceUserName),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  onTap: () async {
-                    // TODO
-                    // 選択したユーザーを取得する
-                    // FirestoreにpostAnswersを追加する
-                    final postAnswer = PostAnswer(
-                      postId: post.postId,
-                      replyUid: profileViewModel.uid,
-                      posterUid: post.uid,
-                      posterUserName: posterProfile!.userName,
-                      posterUserImg: posterProfile!.userImg,
-                      replyUserId: profileViewModel.userId,
-                      replyUserName: profileViewModel.userName,
-                      replyUserImg: profileViewModel.userImg,
-                      answerUid: snapshot.data![0].quizChoiceUid,
-                      quizChoice1Uid: quizChoice1Uid,
-                      quizChoice1UserName: quizChoice1Profile!.userName,
-                      quizChoice1UserImg: quizChoice1Profile!.userImg,
-                      quizChoice2Uid: quizChoice2Uid,
-                      quizChoice2UserName: quizChoice2Profile!.userName,
-                      quizChoice2UserImg: quizChoice2Profile!.userImg,
-                      answerTimestamp: DateTime.now(),
-                    );
-
-                    await friendsQuizViewModel.sendPostAnswerToFirestore(
-                      postAnswer: postAnswer,
-                    );
-
-                    // TODO ローカルDBに格納する
-                    await localDatabaseViewModel.appDatabase!
-                        .insertLocalUserPostAnswer(postAnswer);
-
-                    friendsQuizViewModel.addPostAnswers(postAnswer);
-                    // final localPostAnswers = await localDatabaseViewModel
-                    //     .appDatabase!
-                    //     .getAllLocalUserPostAnswers();
-                    // print('localPostAnswers: $localPostAnswers');
-
-                    // 回答結果のuidが投稿主のuidと一致するかを検証する
-                    // isAnswerCorrect =
-                    //     post.uid == snapshot.data![0].quizChoiceUid;
-                  },
-                ),
-                const SizedBox(height: 6),
-                ListTile(
-                  tileColor: AppColorTheme.color().gray3,
-                  leading: snapshot.data![1].quizChoiceUserImg != ''
-                      ? ExtendedImage.network(
-                          snapshot.data![1].quizChoiceUserImg,
-                          fit: BoxFit.cover,
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          cache: true,
-                        )
-                      : ExtendedImage.asset(
-                          'assets/images/user_gray_icon.png',
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          fit: BoxFit.cover,
-                        ),
-                  title: Text(snapshot.data![1].quizChoiceUserName),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  onTap: () async {
-                    // TODO
-                    // 選択したユーザーを取得する
-                    // providerにpostAnswerを格納
-                    // FirestoreにpostAnswersを追加する
-                    final postAnswer = PostAnswer(
-                      postId: post.postId,
-                      posterUid: post.uid,
-                      posterUserName: posterProfile!.userName,
-                      posterUserImg: posterProfile!.userImg,
-                      replyUid: profileViewModel.uid,
-                      replyUserId: profileViewModel.userId,
-                      replyUserName: profileViewModel.userName,
-                      replyUserImg: profileViewModel.userImg,
-                      answerUid: snapshot.data![1].quizChoiceUid,
-                      quizChoice1Uid: quizChoice1Uid,
-                      quizChoice1UserName: quizChoice1Profile!.userName,
-                      quizChoice1UserImg: quizChoice1Profile!.userImg,
-                      quizChoice2Uid: quizChoice2Uid,
-                      quizChoice2UserName: quizChoice2Profile!.userName,
-                      quizChoice2UserImg: quizChoice2Profile!.userImg,
-                      answerTimestamp: DateTime.now(),
-                    );
-
-                    await friendsQuizViewModel.sendPostAnswerToFirestore(
-                      postAnswer: postAnswer,
-                    );
-
-                    // TODO ローカルDBに格納する
-                    await localDatabaseViewModel.appDatabase!
-                        .insertLocalUserPostAnswer(postAnswer);
-
-                    // final localPostAnswers = await localDatabaseViewModel
-                    //     .appDatabase!
-                    //     .getAllLocalUserPostAnswers();
-                    // print('localPostAnswers: $localPostAnswers');
-
-                    friendsQuizViewModel.addPostAnswers(postAnswer);
-
-                    // 回答結果のuidが投稿主のuidと一致するかを検証する
-                    // isAnswerCorrect =
-                    //     post.uid == snapshot.data![1].quizChoiceUid;
-                  },
-                ),
-                const SizedBox(height: 6),
-                ListTile(
-                  tileColor: AppColorTheme.color().gray3,
-                  leading: snapshot.data![2].quizChoiceUserImg != ''
-                      ? ExtendedImage.network(
-                          snapshot.data![2].quizChoiceUserImg,
-                          fit: BoxFit.cover,
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          cache: true,
-                        )
-                      : ExtendedImage.asset(
-                          'assets/images/user_gray_icon.png',
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          fit: BoxFit.cover,
-                        ),
-                  title: Text(snapshot.data![2].quizChoiceUserName),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  onTap: () async {
-                    // TODO
-                    // 選択したユーザーを取得する
-                    // FirestoreにpostAnswersを追加する
-
-                    final postAnswer = PostAnswer(
-                      postId: post.postId,
-                      posterUid: post.uid,
-                      posterUserName: posterProfile!.userName,
-                      posterUserImg: posterProfile!.userImg,
-                      replyUid: profileViewModel.uid,
-                      replyUserId: profileViewModel.userId,
-                      replyUserName: profileViewModel.userName,
-                      replyUserImg: profileViewModel.userImg,
-                      answerUid: snapshot.data![2].quizChoiceUid,
-                      quizChoice1Uid: quizChoice1Uid,
-                      quizChoice1UserName: quizChoice1Profile!.userName,
-                      quizChoice1UserImg: quizChoice1Profile!.userImg,
-                      quizChoice2Uid: quizChoice2Uid,
-                      quizChoice2UserName: quizChoice2Profile!.userName,
-                      quizChoice2UserImg: quizChoice2Profile!.userImg,
-                      answerTimestamp: DateTime.now(),
-                    );
-
-                    await friendsQuizViewModel.sendPostAnswerToFirestore(
-                      postAnswer: postAnswer,
-                    );
-
-                    //TODO ここでエラーが出てる
-                    // TODO ローカルDBに格納する
-                    await localDatabaseViewModel.appDatabase!
-                        .insertLocalUserPostAnswer(postAnswer);
-
-                    // print('insertLocalUserPostAnswers');
-
-                    // final localPostAnswers = await localDatabaseViewModel
-                    //     .appDatabase!
-                    //     .getAllLocalUserPostAnswers();
-                    // print('localPostAnswers: $localPostAnswers');
-
-                    friendsQuizViewModel.addPostAnswers(postAnswer);
-
-                    // 回答結果のuidが投稿主のuidと一致するかを検証する
-                    // isAnswerCorrect =
-                    //     post.uid == snapshot.data![2].quizChoiceUid;
-                  },
-                ),
-              ],
+              children: [...threeChoiceWidget(choices: snapshot.data!)],
             ),
           );
         });

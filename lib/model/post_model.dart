@@ -71,6 +71,7 @@ class PostModel {
           .collection('followings')
           .where('followingUid', isNotEqualTo: uid)
           .get();
+
       //followingUsersQuerySnapがEmptyのことも考える
       //ここの処理を書く
       if (followingUsersQuerySnap.docs.isEmpty &&
@@ -102,6 +103,7 @@ class PostModel {
       //followingUsersPostsをpostTimestampで並べ替え
       followingUsersPosts
           .sort((a, b) => b.postTimestamp.compareTo(a.postTimestamp));
+      print('followingUsersPost: $followingUsersPosts');
       return followingUsersPosts;
     } catch (e) {
       print('Error getting following user posts from Firestore: $e');

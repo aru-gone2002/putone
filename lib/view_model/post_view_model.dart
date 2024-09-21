@@ -187,4 +187,9 @@ class PostViewModel {
   void resetPostsProvider() {
     _ref.read(postsProvider.notifier).state = [];
   }
+
+  void resetFollowingUsersPostsCondition() {
+    _ref.read(getFollowingUsersPostConditionProvider.notifier).state =
+        GetFollowingUsersPostsCondition.lackOfFriends;
+  }
 }
