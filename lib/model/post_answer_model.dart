@@ -14,6 +14,7 @@ class PostAnswerModel {
         .collection('posts')
         .doc(postId)
         .collection('postAnswers')
+        .orderBy('answerTimestamp', descending: true)
         .snapshots()
         .map((snapshot) {
       if (snapshot.docs.isEmpty) {
