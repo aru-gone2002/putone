@@ -28,14 +28,41 @@ class PostAnswerModel {
     });
   }
 
+  // Stream<double> calculateCorrectAnswerPercentageStream(
+  //     String uid, String postId) {
+  //   return getPostAnswersStream(uid, postId).map((answers) {
+  //     if (answers.isEmpty) return 0.0;
+
+  //     final correctAnswers =
+  //         answers.where((answer) => answer.answerUid == uid).length;
+  //     return (correctAnswers / answers.length) * 100;
+  //   });
+  // }
   Stream<double> calculateCorrectAnswerPercentageStream(
       String uid, String postId) {
-    return getPostAnswersStream(uid, postId).map((answers) {
-      if (answers.isEmpty) return 0.0;
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('postAnswers')
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        print("No post answers found for percentage calculation.");
+        return 0.0;
+      }
 
-      final correctAnswers =
-          answers.where((answer) => answer.answerUid == uid).length;
-      return (correctAnswers / answers.length) * 100;
+      final totalAnswers = snapshot.docs.length;
+      final correctAnswers = snapshot.docs.where((doc) {
+        final answerUid = doc.data()['answerUid'];
+        print("Answer UID: $answerUid, Correct UID: $uid");
+        return answerUid == uid;
+      }).length;
+
+      final percentage = (correctAnswers / totalAnswers) * 100;
+      print("Calculated percentage: $percentage");
+      return percentage;
     });
   }
 }
