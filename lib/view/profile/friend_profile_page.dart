@@ -232,9 +232,13 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                         ),
                       );
                     } else {
-                      return const Align(
-                        alignment: Alignment(-0.925, 0.75),
-                        child: Text('0'),
+                      return Align(
+                        alignment: const Alignment(-0.925, 0.75),
+                        child: FollowCount(
+                          count: 0,
+                          label: followerCountLabel,
+                          onTap: () {},
+                        ),
                       );
                     }
                   },
@@ -272,9 +276,13 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                         ),
                       );
                     } else {
-                      return const Align(
-                        alignment: Alignment(-0.525, 0.75),
-                        child: Text('0'),
+                      return Align(
+                        alignment: const Alignment(-0.525, 0.75),
+                        child: FollowCount(
+                          count: 0,
+                          label: followingCountLabel,
+                          onTap: () {},
+                        ),
                       );
                     }
                   },
