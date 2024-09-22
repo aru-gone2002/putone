@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,6 +36,7 @@ class ProfileCardPage extends ConsumerWidget {
 
           return Stack(
             fit: StackFit.expand,
+            clipBehavior: Clip.hardEdge,
             children: [
               // 背景画像（ぼかし処理）
               if (userProfile.themeMusicImg.isNotEmpty)
@@ -64,71 +65,145 @@ class ProfileCardPage extends ConsumerWidget {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 40),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     Text(
                       'PuTone',
                       style: AppFontTheme.font(context)
                           .logoFont
-                          .copyWith(fontSize: 30),
+                          .copyWith(fontSize: 15),
                       selectionColor: Colors.black,
                     ),
-                    const SizedBox(height: 5),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005),
                     // プロフィール画像と名前
                     CircleAvatar(
                       radius: 40,
                       backgroundImage: NetworkImage(userProfile.userImg),
                     ),
-                    const SizedBox(height: 3),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005),
                     Text(
                       userProfile.userName,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      userProfile.userId,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Text(
                       'THEME SONG',
                       style: GoogleFonts.emblemaOne(
-                        textStyle: TextStyle(fontSize: 24, color: Colors.black),
+                        textStyle: TextStyle(
+                            fontSize: 24, color: AppColorTheme.color().gray1),
                       ),
                     ),
                     // テーマソング表示
-                    Card(
-                      margin: const EdgeInsets.all(16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            if (userProfile.themeMusicImg.isNotEmpty)
-                              Image.network(
-                                userProfile.themeMusicImg,
-                                height: 50,
-                                width: 200,
-                                fit: BoxFit.cover,
-                              )
-                            else
-                              Container(
-                                height: 50,
-                                width: 200,
-                                color: AppColorTheme.color().gray3,
-                                child: Icon(
-                                  Icons.music_note,
-                                  size: 100,
-                                  color: AppColorTheme.color().gray1,
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height:
+                          MediaQuery.of(context).size.height * 0.1, // カードの高さを固定
+                      clipBehavior: Clip.hardEdge, //要素をくっつける
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12), // カードの角を丸くする
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          ExtendedImage.asset(
+                            'assets/images/disk.png',
+                            width: 35,
+                            height: 70,
+                            fit: BoxFit.contain,
+                            color: AppColorTheme.color().gray2,
+                          ),
+                          Flexible(
+                            child: Card(
+                              margin: EdgeInsets.zero,
+                              color: AppColorTheme.color().gray2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  topRight: Radius.circular(12),
+                                  bottomRight: Radius.circular(12),
+                                  bottomLeft: Radius.circular(5),
                                 ),
                               ),
-                            const SizedBox(height: 10),
-                            Text(
-                              userProfile.themeMusicName,
-                              style: Theme.of(context).textTheme.titleLarge,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                child: Row(
+                                  children: [
+                                    if (userProfile.themeMusicImg.isNotEmpty)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          userProfile.themeMusicImg,
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    else
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          color: AppColorTheme.color().gray3,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Icon(
+                                          Icons.music_note,
+                                          size: 40,
+                                          color: AppColorTheme.color().gray1,
+                                        ),
+                                      ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      // テキスト部分も Expanded で囲む
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            userProfile
+                                                    .themeMusicName.isNotEmpty
+                                                ? userProfile.themeMusicName
+                                                : 'No theme song set',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          if (userProfile
+                                              .themeMusicArtistName.isNotEmpty)
+                                            Text(
+                                              userProfile.themeMusicArtistName,
+                                              style: TextStyle(
+                                                  color: Colors.white70,
+                                                  fontSize: 14),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            Text(
-                              userProfile.themeMusicArtistName,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     // お気に入りアーティスト表示
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -140,7 +215,8 @@ class ProfileCardPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005),
                     StreamBuilder<List<LocalUserFavoriteArtist>>(
                       stream: appDatabase?.watchAllLocalUserFavoriteArtists(),
                       builder: (context, artistsSnapshot) {
@@ -154,13 +230,13 @@ class ProfileCardPage extends ConsumerWidget {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 2), // ここでパディングを小さく設定
+                              horizontal: 1), // ここでパディングを小さく設定
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.75,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
+                            childAspectRatio: 0.9,
+                            crossAxisSpacing: 2,
+                            mainAxisSpacing: 2,
                           ),
                           itemCount: artists.length,
                           itemBuilder: (context, index) {
@@ -179,8 +255,9 @@ class ProfileCardPage extends ConsumerWidget {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                const SizedBox(height: 5),
+                                const SizedBox(height: 2),
                                 Flexible(
+                                  // パディングを小さく設定
                                   child: Text(
                                     artist.userFavoriteArtistName,
                                     textAlign: TextAlign.center,
