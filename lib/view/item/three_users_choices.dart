@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
@@ -169,60 +170,108 @@ class ThreeUsersChoices extends ConsumerWidget {
               builder: (context) {
                 return SimpleDialog(
                   backgroundColor: Colors.deepPurple,
-                  title: const Text('Final Answer?'),
+                  title: Center(
+                    child: Text(
+                      'Final Answer?',
+                      style: GoogleFonts.permanentMarker(
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                        ),
+                      ),
+                    ),
+                  ),
                   children: [
-                    const Text('このユーザーが投稿者だと思う'),
-                    Center(
+                    SizedBox(
+                      width: 320,
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          choice.quizChoiceUserImg != ''
-                              ? ExtendedImage.network(
-                                  choice.quizChoiceUserImg,
-                                  width: userImgLargeWidth,
-                                  height: userImgLargeHeight,
-                                  fit: BoxFit.cover,
-                                  cache: true,
-                                  shape: BoxShape.circle,
-                                )
-                              : ExtendedImage.asset(
-                                  'assets/images/user_gray_icon.png',
-                                  width: userImgLargeWidth,
-                                  height: userImgLargeHeight,
-                                  shape: BoxShape.circle,
-                                  fit: BoxFit.cover,
+                          const SizedBox(height: 12),
+                          const Text(
+                            'このユーザーが投稿者だと思う',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                choice.quizChoiceUserImg != ''
+                                    ? ExtendedImage.network(
+                                        choice.quizChoiceUserImg,
+                                        width: userImgLargeWidth,
+                                        height: userImgLargeHeight,
+                                        fit: BoxFit.cover,
+                                        cache: true,
+                                        shape: BoxShape.circle,
+                                      )
+                                    : ExtendedImage.asset(
+                                        'assets/images/user_gray_icon.png',
+                                        width: userImgLargeWidth,
+                                        height: userImgLargeHeight,
+                                        shape: BoxShape.circle,
+                                        fit: BoxFit.cover,
+                                      ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  choice.quizChoiceUserName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.white,
+                                      ),
                                 ),
-                          const SizedBox(height: 32),
-                          Text(
-                            choice.quizChoiceUserName,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(fontWeight: FontWeight.normal),
-                          ),
-                          const SizedBox(height: 16),
-                          SimpleDialogOption(
-                            onPressed: () async {
-                              await answerOnPressed(
-                                profileViewModel: profileViewModel,
-                                friendsQuizViewModel: friendsQuizViewModel,
-                                localDatabaseViewModel: localDatabaseViewModel,
-                                posterProfile: posterProfile!,
-                                quizChoice: choice,
-                                quizChoice1Uid: quizChoice1Uid,
-                                quizChoice1Profile: quizChoice1Profile!,
-                                quizChoice2Profile: quizChoice2Profile!,
-                                quizChoice2Uid: quizChoice2Uid,
-                              );
-                            },
-                            child: const Text('君に決めた！'),
-                          ),
-                          const SizedBox(height: 16),
-                          SimpleDialogOption(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('考え直す'),
+                                const SizedBox(height: 32),
+                                SizedBox(
+                                  height: 48,
+                                  width: 200,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await answerOnPressed(
+                                        profileViewModel: profileViewModel,
+                                        friendsQuizViewModel:
+                                            friendsQuizViewModel,
+                                        localDatabaseViewModel:
+                                            localDatabaseViewModel,
+                                        posterProfile: posterProfile!,
+                                        quizChoice: choice,
+                                        quizChoice1Uid: quizChoice1Uid,
+                                        quizChoice1Profile: quizChoice1Profile!,
+                                        quizChoice2Profile: quizChoice2Profile!,
+                                        quizChoice2Uid: quizChoice2Uid,
+                                      );
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                    ),
+                                    child: const Text('君に決めた！'),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                SimpleDialogOption(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text(
+                                    '考え直す...',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -236,7 +285,7 @@ class ThreeUsersChoices extends ConsumerWidget {
         widgets.add(quizListTile);
       }
       widgets.insert(1, const SizedBox(height: 6));
-      widgets.insert(4, const SizedBox(height: 6));
+      widgets.insert(3, const SizedBox(height: 6));
       return widgets;
     }
 

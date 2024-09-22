@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:putone/constants/enums.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
@@ -73,7 +74,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         automaticallyImplyLeading: false,
         title: Text(
           homePageAppbarTitle,
-          style: Theme.of(context).textTheme.headlineMedium,
+          //style: Theme.of(context).textTheme.headlineMedium,
+          style: GoogleFonts.carterOne(
+            textStyle: Theme.of(context).textTheme.headlineMedium,
+          ),
         ),
         actions: [
           IconButton(
