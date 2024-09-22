@@ -301,7 +301,7 @@ class ThreeUsersChoices extends ConsumerWidget {
           if (snapshot.hasError) {
             print(snapshot.error);
             return const Center(
-              child: Text('何らかのエラーが発生しました'),
+              child: Text(somethingErrorText),
             );
           }
 
