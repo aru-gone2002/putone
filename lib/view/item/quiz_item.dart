@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/theme/app_color_theme.dart';
@@ -24,7 +25,7 @@ class QuizItem extends ConsumerWidget {
     if (await canLaunchUrl(spotifyUri)) {
       await launchUrl(spotifyUri);
     } else {
-      Fluttertoast.showToast(msg: 'Could not open Spotify link');
+      Fluttertoast.showToast(msg: failToOpenSpotifyLinkToastText);
     }
   }
 
@@ -203,7 +204,7 @@ class QuizItem extends ConsumerWidget {
                         await openSpotify(post);
                       },
                       label: const Text(
-                        'Spotifyで聴く',
+                        listenInSpotifyBtnText,
                         style: TextStyle(color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(

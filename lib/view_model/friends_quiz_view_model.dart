@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:putone/constants/strings.dart';
 import 'package:putone/data/post_answer/post_answer.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
@@ -44,7 +45,7 @@ class FriendsQuizViewModel {
     if (result != null) {
       savePostAnswers(result);
     } else {
-      Fluttertoast.showToast(msg: '投稿への回答を取得中にエラーが発生しました');
+      Fluttertoast.showToast(msg: failToGetPostAnswersToastText);
     }
   }
 

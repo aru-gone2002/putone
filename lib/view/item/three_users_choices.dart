@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/data/post_answer/post_answer.dart';
@@ -172,12 +173,12 @@ class ThreeUsersChoices extends ConsumerWidget {
                   backgroundColor: Colors.deepPurple,
                   title: Center(
                     child: Text(
-                      'Final Answer?',
-                      style: GoogleFonts.permanentMarker(
+                      finalAnswerTitle,
+                      style: GoogleFonts.oleoScript(
                         textStyle: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 36,
+                          fontSize: 40,
                         ),
                       ),
                     ),
@@ -189,7 +190,7 @@ class ThreeUsersChoices extends ConsumerWidget {
                         children: [
                           const SizedBox(height: 12),
                           const Text(
-                            'このユーザーが投稿者だと思う',
+                            answerPosterText,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -256,14 +257,14 @@ class ThreeUsersChoices extends ConsumerWidget {
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                     ),
-                                    child: const Text('君に決めた！'),
+                                    child: const Text(decideToYouBtnText),
                                   ),
                                 ),
                                 const SizedBox(height: 16),
                                 SimpleDialogOption(
                                   onPressed: () => Navigator.pop(context),
                                   child: const Text(
-                                    '考え直す...',
+                                    reconsiderBtnText,
                                     style: TextStyle(
                                       color: Colors.white,
                                     ),
