@@ -7,19 +7,22 @@ import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
 import 'package:putone/view/item/circular_button.dart';
-import 'package:putone/view/item/small_color_button.dart';
 import 'package:putone/view/profile/friend_profile_page.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
 
 class UserSearchPage extends StatelessWidget {
   const UserSearchPage({super.key});
 
   Widget searchUserDisplay({
+    required String uid,
     required UserProfile userProfile,
     required BuildContext context,
     required double dialogWidth,
@@ -111,10 +114,9 @@ class UserSearchPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  SmallColorButton(
-                    btntext: followBtnText,
-                    onPressed: () {},
-                    backgroundColor: AppColorTheme.color().accentColor,
+                  FollowButton(
+                    followingUser:
+                        FollowingUser(uid: uid, followingUid: userProfile.uid),
                   ),
                 ],
               ),
@@ -127,6 +129,7 @@ class UserSearchPage extends StatelessWidget {
 
   Future<void> userSearchFunction({
     required String? value,
+    required String uid,
     required UserSearchViewModel userSearchViewModel,
     required BuildContext context,
     required double dialogWidth,
@@ -147,6 +150,7 @@ class UserSearchPage extends StatelessWidget {
             return SimpleDialog(
               children: [
                 searchUserDisplay(
+                  uid: uid,
                   userProfile: result,
                   context: context,
                   dialogWidth: dialogWidth,
@@ -173,6 +177,7 @@ class UserSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserSearchViewModel userSearchViewModel = UserSearchViewModel();
+    final ProfileViewModel profileViewModel = ProfileViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceWidthWithPadding = deviceWidth - paddingForDeviceWidth;
@@ -234,16 +239,22 @@ class UserSearchPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       Form(
                         key: formKey,
-                        child: MainColorCirculalarTextField(
+                        child: Consumer(builder: (context, ref, _) {
+                          profileViewModel.setRef(ref);
+                          return MainColorCirculalarTextField(
                             itemName: userIdLabel,
                             maxLength: userIdAndUserNameTextLength,
                             onSaved: (value) => userSearchFunction(
-                                  context: context,
-                                  value: value,
-                                  userSearchViewModel: userSearchViewModel,
-                                  dialogWidth: deviceWidthWithPadding,
-                                ),
-                            validator: (value) => userIdValidator(value)),
+                              context: context,
+                              value: value,
+                              uid: profileViewModel.uid,
+                              userSearchViewModel: userSearchViewModel,
+                              dialogWidth: deviceWidthWithPadding,
+                            ),
+                            // validator: (value) => userIdValidator(value),
+                            validator: (value) => null,
+                          );
+                        }),
                       ),
                       const SizedBox(height: 40),
                       //メインカラーのボタンを入れる

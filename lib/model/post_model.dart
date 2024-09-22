@@ -22,6 +22,7 @@ class PostModel {
           .collection('users')
           .doc(uid)
           .collection('posts')
+          .orderBy('postTimestamp', descending: false)
           .get();
       for (var docSnapshot in response.docs) {
         //docSnapshot.data()を一つずつproviderに格納していく
@@ -32,6 +33,26 @@ class PostModel {
       return userPosts;
     } catch (e) {
       print('Error getting userPosts from Firestore: $e');
+    }
+  }
+
+  Future<List<Post>> getPosterPostsByTime(String uid) async {
+    final List<Post> posterPosts = [];
+    try {
+      final response = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('posts')
+          .orderBy('postTimestamp', descending: true) // 降順でソート
+          .get();
+      for (var docSnapshot in response.docs) {
+        final posterPost = Post.fromJson(docSnapshot.data());
+        posterPosts.add(posterPost);
+      }
+      return posterPosts;
+    } catch (e) {
+      print('Error getting userPosts from Firestore: $e');
+      return [];
     }
   }
 }

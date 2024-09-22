@@ -3,66 +3,56 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/following_user/following_user.dart';
+import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
-import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:putone/view/item/follow_count.dart';
+import 'package:putone/constants/routes.dart';
 
 class FriendProfilePage extends ConsumerStatefulWidget {
-  const FriendProfilePage({super.key, required this.userProfile});
+  const FriendProfilePage({
+    super.key,
+    required this.userProfile,
+  });
 
   final UserProfile userProfile;
 
   @override
-  ConsumerState<FriendProfilePage> createState() {
+  ConsumerState<ConsumerStatefulWidget> createState() {
     return FriendProfilePageState();
   }
 }
 
 class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
-  // フォローボタン変化の仮実装用
-  bool isFollowing = false;
+  late Future<List<FollowingUser>> _followingUsersFuture;
+  late Future<List<FollowedUser>> _followedUsersFuture;
+
+  final FollowViewModel followViewModel = FollowViewModel();
+  final ProfileViewModel profileViewModel = ProfileViewModel();
 
   @override
   void initState() {
     super.initState();
+    followViewModel.setRef(ref);
+    profileViewModel.setRef(ref);
+
+    _followingUsersFuture =
+        followViewModel.getFriendFollowingUsers(widget.userProfile.uid);
+    _followedUsersFuture =
+        followViewModel.getFriendFollowedUsers(widget.userProfile.uid);
   }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalObjectKey<ScaffoldState> scaffoldKey = GlobalObjectKey(context);
-    final FollowViewModel followViewModel = FollowViewModel();
-
-    followViewModel.isFollowing(uid: widget.userProfile.uid).then((value) {
-      setState() {
-        isFollowing = value;
-      }
-    });
-
     const double sideProfileWidth = 132;
     const double profileImgSize = 112;
 
-    void pressedFollowButton() {
-      final String uid = widget.userProfile.uid;
-      if (isFollowing) {
-        followViewModel.unfollowUser(uid: uid);
-        print('Unfollow: $uid');
-        setState(() {
-          isFollowing = false;
-        });
-      } else {
-        followViewModel.followUser(uid: uid);
-        print('Follow: $uid');
-        setState(() {
-          isFollowing = true;
-        });
-      }
-    }
-
     return Scaffold(
-      key: scaffoldKey,
       body: Column(
         children: [
           // ヘッダー
@@ -210,6 +200,94 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                     ),
                   ),
                 ),
+                //フォロワー数
+                FutureBuilder(
+                  future: Future.wait([
+                    _followingUsersFuture,
+                    _followedUsersFuture,
+                  ]),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data is List) {
+                      final int followedNum =
+                          snapshot.data![1].length as int? ?? 0;
+                      return Align(
+                        alignment: const Alignment(-0.925, 0.75),
+                        child: FollowCount(
+                          count: followedNum,
+                          label: followerCountLabel,
+                          onTap: () {
+                            print('Tapped follower button.');
+                            toFollowListPage(
+                              context: context,
+                              userProfile: widget.userProfile,
+                              followingUsers:
+                                  snapshot.data![0] as List<FollowingUser>? ??
+                                      [],
+                              followedUsers:
+                                  snapshot.data![1] as List<FollowedUser>? ??
+                                      [],
+                              initialTab: 0,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Align(
+                        alignment: const Alignment(-0.925, 0.75),
+                        child: FollowCount(
+                          count: 0,
+                          label: followerCountLabel,
+                          onTap: () {},
+                        ),
+                      );
+                    }
+                  },
+                ),
+
+                //フォロー中数
+                FutureBuilder(
+                  future: Future.wait([
+                    _followingUsersFuture,
+                    _followedUsersFuture,
+                  ]),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data is List) {
+                      final int followingNum =
+                          snapshot.data![0].length as int? ?? 0;
+                      return Align(
+                        alignment: const Alignment(-0.525, 0.75),
+                        child: FollowCount(
+                          count: followingNum,
+                          label: followingCountLabel,
+                          onTap: () {
+                            print('Tapped following button.');
+                            toFollowListPage(
+                              context: context,
+                              userProfile: widget.userProfile,
+                              followingUsers:
+                                  snapshot.data![0] as List<FollowingUser>? ??
+                                      [],
+                              followedUsers:
+                                  snapshot.data![1] as List<FollowedUser>? ??
+                                      [],
+                              initialTab: 1,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Align(
+                        alignment: const Alignment(-0.525, 0.75),
+                        child: FollowCount(
+                          count: 0,
+                          label: followingCountLabel,
+                          onTap: () {},
+                        ),
+                      );
+                    }
+                  },
+                ),
+
                 Align(
                   alignment: const Alignment(0, 0),
                   child: (widget.userProfile.userImg != '')
@@ -251,30 +329,15 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                 // フォローボタン
                 Align(
                   alignment: const Alignment(0.9, -0.9),
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      pressedFollowButton();
-                    },
-                    label: Text((!isFollowing) ? 'フォロー' : 'フォロー中'),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(100, 6),
-                      backgroundColor: (!isFollowing)
-                          ? AppColorTheme.color().accentColor
-                          : AppColorTheme.color().gray1,
-                      foregroundColor: Colors.white,
-                      textStyle:
-                          Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  child: Consumer(builder: (context, ref, _) {
+                    profileViewModel.setRef(ref);
+                    return FollowButton(
+                      followingUser: FollowingUser(
+                        uid: profileViewModel.uid,
+                        followingUid: widget.userProfile.uid,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 2,
-                      ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
                 Align(
                   alignment: const Alignment(0.95, 0),
@@ -288,6 +351,18 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                       textAlign: TextAlign.center,
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: const Alignment(0.95, 0.75),
+                  child: SizedBox(
+                    width: sideProfileWidth,
+                    child: Text(
+                      '所属：${profileViewModel.communityMap[(widget.userProfile.communityId)]!.communityName}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),

@@ -23,8 +23,12 @@ mixin _$Community {
   String get communityId => throw _privateConstructorUsedError;
   String get communityName => throw _privateConstructorUsedError;
 
+  /// Serializes this Community to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Community
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CommunityCopyWith<Community> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$CommunityCopyWithImpl<$Res, $Val extends Community>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Community
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,6 +91,8 @@ class __$$CommunityImplCopyWithImpl<$Res>
       _$CommunityImpl _value, $Res Function(_$CommunityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Community
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -143,11 +151,13 @@ class _$CommunityImpl with DiagnosticableTreeMixin implements _Community {
                 other.communityName == communityName));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, communityId, communityName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Community
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CommunityImplCopyWith<_$CommunityImpl> get copyWith =>
@@ -173,8 +183,11 @@ abstract class _Community implements Community {
   String get communityId;
   @override
   String get communityName;
+
+  /// Create a copy of Community
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CommunityImplCopyWith<_$CommunityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

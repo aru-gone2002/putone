@@ -89,8 +89,9 @@ class EmailAuthPage extends StatelessWidget {
                             .insertLocalUserProfile(
                                 profileViewModel.userProfile);
                         //Firestoreに入れるのもこのタイミングでいいんじゃない？
-                        if (context.mounted)
+                        if (context.mounted) {
                           toFirstProfileSettingPage(context: context);
+                        }
                         authViewModel.completedEmailAuth();
                         await spotifyViewModel.fetchSpotifyAccessToken();
                       }

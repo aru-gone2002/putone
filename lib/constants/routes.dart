@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
+import 'package:putone/data/followed_user/followed_user.dart';
+import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
@@ -10,6 +12,8 @@ import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/home/user_search_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
+import 'package:putone/view/profile/follow_list_screen.dart';
+import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/module_page/select_community_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
@@ -20,6 +24,7 @@ import 'package:putone/view/auth/signup_page.dart';
 import 'package:putone/view/module_page/select_song_page.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
+import 'package:putone/data/user_profile/user_profile.dart';
 
 void toEmailAuthPage({required BuildContext context}) => Navigator.push(
       context,
@@ -187,6 +192,38 @@ void toUserSearchPage({
     context,
     MaterialPageRoute(
       builder: ((context) => const UserSearchPage()),
+    ),
+  );
+}
+
+void toFollowListPage({
+  required BuildContext context,
+  required UserProfile userProfile,
+  required List<FollowingUser> followingUsers,
+  required List<FollowedUser> followedUsers,
+  required int initialTab,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => FollowListScreen(
+            userProfile: userProfile,
+            followingUsers: followingUsers,
+            followedUsers: followedUsers,
+            initialTab: initialTab,
+          )),
+    ),
+  );
+}
+
+void toFriendProfilePage({
+  required BuildContext context,
+  required UserProfile userProfile,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => FriendProfilePage(userProfile: userProfile)),
     ),
   );
 }

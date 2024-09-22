@@ -8,10 +8,12 @@ class PostGridItem extends StatelessWidget {
     super.key,
     //required this.userPost,
     required this.localUserPost,
+    required this.onTap,
   });
 
   //final Post userPost;
   final LocalUserPost localUserPost;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,128 +24,131 @@ class PostGridItem extends StatelessWidget {
         (size.width - postGridViewCrossAxisSpacing - postGridPaddingWidth * 2) /
             2;
 
-    return Container(
-      width: postGridItemWidth,
-      //height: postGridItemWidth + postGridItemTitleSpaceHeight,
-      height: postGridItemWidth,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            offset: Offset(2, 4),
-            color: Color.fromARGB(50, 0, 0, 0),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: postGridItemWidth,
-            height: postGridItemWidth,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Align(
-                  alignment: const Alignment(0, 0),
-                  child: ExtendedImage.network(
-                    localUserPost.postMusicImg,
-                    width: postGridItemWidth,
-                    height: postGridItemWidth,
-                    fit: BoxFit.cover,
-                    cache: true,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                Align(
-                  alignment: const Alignment(0, 0),
-                  child: Container(
-                    width: postGridItemWidth,
-                    height: postGridItemWidth,
-                    decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: postGridItemWidth,
+        //height: postGridItemWidth + postGridItemTitleSpaceHeight,
+        height: postGridItemWidth,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 4,
+              offset: Offset(2, 4),
+              color: Color.fromARGB(50, 0, 0, 0),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: postGridItemWidth,
+              height: postGridItemWidth,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Align(
+                    alignment: const Alignment(0, 0),
+                    child: ExtendedImage.network(
+                      localUserPost.postMusicImg,
+                      width: postGridItemWidth,
+                      height: postGridItemWidth,
+                      fit: BoxFit.cover,
+                      cache: true,
+                      shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(8),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.2),
-                          Colors.black.withOpacity(0),
-                          Colors.black.withOpacity(0.8),
-                        ],
-                        stops: const [0.1, 0.6, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: const Alignment(-0.95, 0.85),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.music_note_outlined,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 4),
-                      SizedBox(
-                        width: postGridItemWidth * 0.65,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              localUserPost.postMusicName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              localUserPost.postMusicArtistName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.white),
-                            ),
+                  Align(
+                    alignment: const Alignment(0, 0),
+                    child: Container(
+                      width: postGridItemWidth,
+                      height: postGridItemWidth,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.2),
+                            Colors.black.withOpacity(0),
+                            Colors.black.withOpacity(0.8),
                           ],
+                          stops: const [0.1, 0.6, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                //TODO ボタンが押されたら赤くする
-                Align(
-                  alignment: const Alignment(1.05, 0.95),
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.favorite_border_outlined,
-                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: const Alignment(-0.95, 0.85),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.music_note_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 4),
+                        SizedBox(
+                          width: postGridItemWidth * 0.65,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                localUserPost.postMusicName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                localUserPost.postMusicArtistName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //TODO ボタンが押されたら赤くする
+                  Align(
+                    alignment: const Alignment(1.05, 0.95),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.favorite_border_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Expanded(
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(
-          //       horizontal: postGridItemTitlePaddingWidth,
-          //       vertical: postGridItemTitlePaddingHeight,
-          //     ),
-          //     child: Text(
-          //       localUserPost.postMsg,
-          //       maxLines: 2,
-          //       overflow: TextOverflow.ellipsis,
-          //       textAlign: TextAlign.start,
-          //     ),
-          //   ),
-          // ),
-        ],
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: postGridItemTitlePaddingWidth,
+            //       vertical: postGridItemTitlePaddingHeight,
+            //     ),
+            //     child: Text(
+            //       localUserPost.postMsg,
+            //       maxLines: 2,
+            //       overflow: TextOverflow.ellipsis,
+            //       textAlign: TextAlign.start,
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }
