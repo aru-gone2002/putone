@@ -40,13 +40,21 @@ class ProfileCardPage extends ConsumerWidget {
             children: [
               // 背景画像（ぼかし処理）
               if (userProfile.themeMusicImg.isNotEmpty)
-                ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Image.network(
-                    userProfile.themeMusicImg,
-                    fit: BoxFit.cover,
-                    color: Colors.black.withOpacity(0.3),
-                  ),
+                Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                      child: ExtendedImage.network(
+                        userProfile.themeMusicImg,
+                        fit: BoxFit.cover,
+                        cache: true,
+                      ),
+                    ),
+                    Container(
+                      color: Colors.black.withOpacity(0.5), // 黒いフィルター（透明度50%）
+                    ),
+                  ],
                 )
               else
                 Container(
@@ -55,8 +63,8 @@ class ProfileCardPage extends ConsumerWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppColorTheme.color().mainColor,
                         Colors.white,
+                        AppColorTheme.color().mainColor,
                       ],
                     ),
                   ),
@@ -75,27 +83,38 @@ class ProfileCardPage extends ConsumerWidget {
                               : Colors.black)),
                       selectionColor: Colors.black,
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.005),
+
                     // プロフィール画像と名前
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(userProfile.userImg),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColorTheme.color().mainColor,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: MediaQuery.of(context).size.height * 0.06,
+                        backgroundImage: NetworkImage(userProfile.userImg),
+                      ),
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.005),
+
                     Text(
                       userProfile.userName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: userProfile.themeMusicName.isNotEmpty
+                              ? Colors.white
+                              : AppColorTheme.color().gray1),
                     ),
                     Text(
                       userProfile.userId,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: userProfile.themeMusicName.isNotEmpty
+                              ? Colors.white
+                              : AppColorTheme.color().gray1),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+
                     Stack(children: [
                       Container(
                         width: double.infinity,
