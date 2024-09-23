@@ -206,7 +206,8 @@ class ProfileCardPage extends ConsumerWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     // お気に入りアーティスト表示
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 0),
                       child: Text(
                         'ARTIST',
                         style: GoogleFonts.emblemaOne(
@@ -215,8 +216,6 @@ class ProfileCardPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.005),
                     StreamBuilder<List<LocalUserFavoriteArtist>>(
                       stream: appDatabase?.watchAllLocalUserFavoriteArtists(),
                       builder: (context, artistsSnapshot) {
@@ -226,55 +225,62 @@ class ProfileCardPage extends ConsumerWidget {
 
                         final artists = artistsSnapshot.data!.take(9).toList();
 
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 1), // ここでパディングを小さく設定
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.9,
-                            crossAxisSpacing: 2,
-                            mainAxisSpacing: 2,
-                          ),
-                          itemCount: artists.length,
-                          itemBuilder: (context, index) {
-                            final artist = artists[index];
-                            return Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(10), // 角を丸くする
-                                  child: Image.network(
-                                    artist.userFavoriteArtistImg,
-                                    width: MediaQuery.of(context).size.width /
-                                        5.0, // Responsive width
-                                    height:
-                                        MediaQuery.of(context).size.width / 5.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Flexible(
-                                  // パディングを小さく設定
-                                  child: Text(
-                                    artist.userFavoriteArtistName,
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.visible,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color:
-                                          userProfile.themeMusicName.isNotEmpty
+                        return Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.1,
+                                vertical: 0),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: GridView.builder(
+                              padding: EdgeInsets.only(top: 0),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.8,
+                                crossAxisSpacing: 4,
+                                mainAxisSpacing: 1,
+                              ),
+                              itemCount: artists.length,
+                              itemBuilder: (context, index) {
+                                final artist = artists[index];
+                                return Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(10), // 角を丸くする
+                                      child: Image.network(
+                                        artist.userFavoriteArtistImg,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                5.0, // Responsive width
+                                        height:
+                                            MediaQuery.of(context).size.width /
+                                                5.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Flexible(
+                                      // パディングを小さく設定
+                                      child: Text(
+                                        artist.userFavoriteArtistName,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.visible,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: userProfile
+                                                  .themeMusicName.isNotEmpty
                                               ? Colors.white
                                               : Colors.black,
-                                    ), // フォントサイズを調整
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                                        ), // フォントサイズを調整
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ));
                       },
                     ),
                   ],
