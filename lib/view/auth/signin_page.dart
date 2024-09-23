@@ -11,6 +11,7 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -27,6 +28,7 @@ class SignInPage extends StatelessWidget {
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
+    final FollowViewModel followViewModel = FollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
@@ -78,6 +80,24 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserPost(userPost);
               }
             }
+            //UserProfileProviderに入っている情報をデータベースに入れる。
+            //appDatabaseにAppDatabaseのインスタンスが現状入っていないため、事前に入れる → AuthPageが表示されたときに格納している
+            await localDatabaseViewModel.appDatabase!
+                .insertLocalUserProfile(profileViewModel.userProfile);
+            print('insertLocalUserProfileをしました');
+            //TODO Firestoreからお気に入りアーティスト情報を取得する
+            final userFavoriteArtists =
+                await artistFollowViewModel.getUserFavoriteArtists();
+            if (userFavoriteArtists != null) {
+              artistFollowViewModel.insertArtistsToList(userFavoriteArtists);
+              for (var userFavoriteArtist in userFavoriteArtists) {
+                await localDatabaseViewModel.appDatabase!
+                    .insertLocalUserFavoriteArtist(userFavoriteArtist);
+              }
+            }
+            await followViewModel.getFollowedUsers(profileViewModel.uid);
+            await followViewModel.getFollowingUsers(profileViewModel.uid);
+            await spotifyViewModel.fetchSpotifyAccessToken();
 
             if (context.mounted) {
               //この段階では既にAppDatabaseのインスタンスはproviderに格納されている。
@@ -118,6 +138,9 @@ class SignInPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FormFieldItem(
+                  autovalidateMode: null,
+                  controller: null,
+                  onChanged: null,
                   maxLength: maxEmailTextLength,
                   itemName: emailAddressLabel,
                   textRestriction: '',
@@ -141,6 +164,9 @@ class SignInPage extends StatelessWidget {
                 Consumer(builder: (context, ref, _) {
                   authViewModel.setRef(ref);
                   return FormFieldItem(
+                    autovalidateMode: null,
+                    controller: null,
+                    onChanged: null,
                     maxLength: maxPasswordTextLength,
                     itemName: passwordLabel,
                     textRestriction: '',
@@ -170,6 +196,7 @@ class SignInPage extends StatelessWidget {
                     postViewModel.setRef(ref);
                     localDatabaseViewModel.setRef(ref);
                     artistFollowViewModel.setRef(ref);
+                    followViewModel.setRef(ref);
                     spotifyViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,

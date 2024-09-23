@@ -11,8 +11,8 @@ part 'following_user.g.dart';
 @freezed
 class FollowingUser with _$FollowingUser {
   const factory FollowingUser({
-    required String uid,
-    required String followingUid,
+    required String uid, //フォローされる人のuid
+    required String followingUid, //フォローする人のuid
   }) = _FollowingUser;
 
   factory FollowingUser.fromJson(Map<String, Object?> json) =>

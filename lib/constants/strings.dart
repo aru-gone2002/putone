@@ -56,6 +56,8 @@ const String afterChangedCommunityLabel = '変更後のコミュニティ';
 const String currentProfileMsgLabel = '現在のプロフィール文';
 const String afterChangedProfileMsgLabel = '変更後のプロフィール文（80字以内)';
 const String resultOfSearchUserLabel = '検索の結果';
+const String followerCountLabel = 'フォロワー';
+const String followingCountLabel = 'フォロー中';
 
 //title
 const String signupTitle = '会員登録';
@@ -128,6 +130,7 @@ const String notInputTextValidator = '文字が入力されていません';
 const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
 const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String userIdIsNotAvailableValidator = '既にこのuserIdは使用されています';
 
 //dialog title
 const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';

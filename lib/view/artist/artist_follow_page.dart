@@ -41,6 +41,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           artistFollowPageAppbarTitle,
           style: Theme.of(context).textTheme.headlineMedium,
