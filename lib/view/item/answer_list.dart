@@ -19,7 +19,7 @@ class AnswersList extends StatefulWidget {
     this.showPercentage = true,
   }) : super(key: key);
   @override
-  _AnswersListState createState() => _AnswersListState();
+  State<AnswersList> createState() => _AnswersListState();
 }
 
 class _AnswersListState extends State<AnswersList> {

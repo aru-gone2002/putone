@@ -19,6 +19,7 @@ class MyQuizPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('myquiz'),
+        automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<List<Post>>(
         stream: Stream.fromFuture(

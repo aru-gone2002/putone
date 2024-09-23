@@ -23,38 +23,30 @@ class PostCard extends ConsumerStatefulWidget {
       : super(key: key);
 
   @override
-  _PostCardState createState() => _PostCardState();
+  ConsumerState<PostCard> createState() => _PostCardState();
 }
 
 class _PostCardState extends ConsumerState<PostCard> {
   bool _isExpanded = false;
   double _cachedPercentage = 0.0;
-  bool _isLoading = true;
+  final postAnswerModel = PostAnswerModel();
 
   @override
   void initState() {
     super.initState();
-    _loadInitialData();
   }
 
   Future<void> _loadInitialData() async {
-    final postAnswerModel = PostAnswerModel();
-    final stream = postAnswerModel.calculateCorrectAnswerPercentageStream(
+    final stream = await postAnswerModel.calculateCorrectAnswerPercentageStream(
         widget.uid, widget.post.postId);
 
-    await for (final percentage in stream) {
-      setState(() {
-        _cachedPercentage = percentage;
-        _isLoading = false;
-      });
-      break; // 最初の値を取得したらループを抜ける
-    }
+    stream.listen((value) {
+      _cachedPercentage = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final postAnswerModel = PostAnswerModel();
-
     return Card(
       margin: EdgeInsets.all(8),
       child: InkWell(
@@ -108,19 +100,26 @@ class _PostCardState extends ConsumerState<PostCard> {
                                 ],
                               ),
                             ),
-                            if (_isLoading)
-                              CircularProgressIndicator(strokeWidth: 2)
-                            else
-                              Text(
-                                '${_cachedPercentage.toStringAsFixed(0)}%',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                              ),
+                            FutureBuilder(
+                              future: _loadInitialData(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator(
+                                      strokeWidth: 2);
+                                }
+                                return Text(
+                                  '${_cachedPercentage.toStringAsFixed(0)}%',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                );
+                              },
+                            )
                           ],
                         ),
                       ],
