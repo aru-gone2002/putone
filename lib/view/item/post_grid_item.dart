@@ -1,18 +1,19 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:putone/constants/width.dart';
+import 'package:putone/data/post/post.dart';
 import 'package:putone/local_database.dart';
 
 class PostGridItem extends StatelessWidget {
   const PostGridItem({
     super.key,
-    //required this.userPost,
-    required this.localUserPost,
     required this.onTap,
+    this.userPost,
+    this.localUserPost,
   });
 
-  //final Post userPost;
-  final LocalUserPost localUserPost;
+  final Post? userPost;
+  final LocalUserPost? localUserPost;
   final VoidCallback onTap;
 
   @override
@@ -53,7 +54,9 @@ class PostGridItem extends StatelessWidget {
                   Align(
                     alignment: const Alignment(0, 0),
                     child: ExtendedImage.network(
-                      localUserPost.postMusicImg,
+                      (userPost == null)
+                          ? localUserPost!.postMusicImg
+                          : userPost!.postMusicImg,
                       width: postGridItemWidth,
                       height: postGridItemWidth,
                       fit: BoxFit.cover,
@@ -100,13 +103,17 @@ class PostGridItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                localUserPost.postMusicName,
+                                (userPost == null)
+                                    ? localUserPost!.postMusicName
+                                    : userPost!.postMusicName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(color: Colors.white),
                               ),
                               Text(
-                                localUserPost.postMusicArtistName,
+                                (userPost == null)
+                                    ? localUserPost!.postMusicArtistName
+                                    : userPost!.postMusicArtistName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(color: Colors.white),
