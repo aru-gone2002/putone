@@ -44,8 +44,8 @@ class _PostCardState extends ConsumerState<PostCard> {
     _loadInitialData();
   }
 
-  Future<void> _loadInitialData() async {
-    final stream = await postAnswerModel.calculateCorrectAnswerPercentageStream(
+  Stream<void> _loadInitialData() {
+    final stream = postAnswerModel.calculateCorrectAnswerPercentageStream(
         widget.uid, widget.post.postId);
 
     _percentageSubscription = stream.listen((percentage) {
@@ -58,6 +58,7 @@ class _PostCardState extends ConsumerState<PostCard> {
     }, onError: (error) {
       print('Percentage stream error: $error');
     }, cancelOnError: false);
+    return stream;
   }
 
   @override
