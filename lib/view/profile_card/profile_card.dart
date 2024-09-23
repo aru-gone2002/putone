@@ -48,7 +48,7 @@ class ProfileCardPage extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      color: Colors.white.withOpacity(0.4), // 黒いフィルター
+                      color: Colors.black.withOpacity(0.45), // 黒いフィルター
                     ),
                   ],
                 )
@@ -69,45 +69,42 @@ class ProfileCardPage extends ConsumerWidget {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                     Text(
                       'PuTone',
                       style: (AppFontTheme.font(context)
                           .logoFont
-                          .copyWith(fontSize: 15, color: Colors.black)),
-                      selectionColor: Colors.black,
+                          .copyWith(fontSize: 15, color: Colors.white)),
+                      selectionColor: Colors.white,
                     ),
-
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     // プロフィール画像と名前
                     Container(
-                      decoration: BoxDecoration(
+                      child: ExtendedImage.network(
+                        userProfile.userImg,
+                        fit: BoxFit.cover,
+                        cache: true,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: userProfile.themeMusicName.isNotEmpty
-                              ? AppColorTheme.color().gray2
-                              : AppColorTheme.color().mainColor,
-                          width: 2.0,
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius: MediaQuery.of(context).size.height * 0.06,
-                        backgroundImage: NetworkImage(userProfile.userImg),
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.height * 0.12,
+                        border: Border.all(color: Colors.white, width: 2.0),
                       ),
                     ),
-
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.005),
                     Text(
                       userProfile.userName,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: userProfile.themeMusicName.isNotEmpty
-                              ? Colors.black
+                              ? Colors.white
                               : AppColorTheme.color().gray1),
                     ),
                     Text(
                       userProfile.userId,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: userProfile.themeMusicName.isNotEmpty
-                              ? Colors.black
+                              ? Colors.white
                               : AppColorTheme.color().gray1),
                     ),
 
@@ -145,11 +142,11 @@ class ProfileCardPage extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             ExtendedImage.asset(
-                              'assets/images/disk.png',
+                              'assets/images/disk_gray1.png',
                               width: MediaQuery.of(context).size.height * 0.06,
                               height: MediaQuery.of(context).size.height * 0.12,
                               fit: BoxFit.contain,
-                              color: AppColorTheme.color().gray2,
+                              color: AppColorTheme.color().gray1,
                             ),
                             Flexible(
                               child: Card(
@@ -329,10 +326,14 @@ class ProfileCardPage extends ConsumerWidget {
                                               textAlign: TextAlign.center,
                                               overflow: TextOverflow.visible,
                                               style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ), // フォントサイズを調整
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: userProfile
+                                                          .themeMusicName
+                                                          .isNotEmpty
+                                                      ? Colors.white
+                                                      : Colors
+                                                          .black), // フォントサイズを調整
                                             ),
                                           ),
                                         ],

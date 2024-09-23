@@ -98,6 +98,7 @@ flutter:
     - assets/images/favorite_song_is_not_selected.png
     - assets/images/user_gray_icon.png
     - assets/images/disk.png
+    - assets/images/disk_gray1.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

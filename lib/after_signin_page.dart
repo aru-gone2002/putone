@@ -34,6 +34,9 @@ class AfterSignInPage extends ConsumerWidget {
       body: bottomNavigationWidgets[
           bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         selectedItemColor: AppColorTheme.color().mainColor,
         currentIndex:
             bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex,
