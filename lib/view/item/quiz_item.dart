@@ -48,7 +48,9 @@ class QuizItem extends ConsumerWidget {
         decoration: BoxDecoration(
           color: postAnswer.isEmpty
               ? Colors.white
-              : AppColorTheme.color().answerColor,
+              : postAnswer.first.answerUid == post.uid
+                  ? AppColorTheme.color().correctColor
+                  : AppColorTheme.color().wrongColor,
           boxShadow: const [
             BoxShadow(
               blurRadius: 8,
@@ -113,9 +115,16 @@ class QuizItem extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: 16),
-                  Text('正解は？', style: Theme.of(context).textTheme.labelSmall!
-                      // .copyWith(color: Colors.white),
-                      ),
+                  //TODO 正解だったら
+                  postAnswer.first.answerUid == post.uid
+                      ? Text('正解！',
+                          style: Theme.of(context).textTheme.labelSmall!)
+                      : Text('不正解...',
+                          style: Theme.of(context).textTheme.labelSmall!),
+
+                  // Text('正解は？', style: Theme.of(context).textTheme.labelSmall!
+                  //     // .copyWith(color: Colors.white),
+                  //     ),
                   const SizedBox(height: 24),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
