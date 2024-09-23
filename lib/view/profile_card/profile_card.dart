@@ -3,21 +3,17 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:putone/constants/routes.dart';
-import 'package:putone/constants/strings.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/providers/user_profile_provider.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/theme/app_font_theme.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
-import 'package:putone/view_model/spotify_view_model.dart';
 
 class ProfileCardPage extends ConsumerWidget {
   const ProfileCardPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     localDatabaseViewModel.setRef(ref);
@@ -52,7 +48,7 @@ class ProfileCardPage extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      color: Colors.black.withOpacity(0.5), // 黒いフィルター（透明度50%）
+                      color: Colors.black.withOpacity(0.4), // 黒いフィルター
                     ),
                   ],
                 )
@@ -221,14 +217,17 @@ class ProfileCardPage extends ConsumerWidget {
                                           children: [
                                             Flexible(
                                               child: Text(
-                                                userProfile.themeMusicName
-                                                        .isNotEmpty
-                                                    ? userProfile.themeMusicName
-                                                    : 'No theme song set',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
+                                                  userProfile.themeMusicName
+                                                          .isNotEmpty
+                                                      ? userProfile
+                                                          .themeMusicName
+                                                      : 'No theme song set',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3),
                                             ),
                                             if (userProfile.themeMusicArtistName
                                                 .isNotEmpty)
