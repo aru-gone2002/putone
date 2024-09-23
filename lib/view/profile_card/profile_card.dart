@@ -48,7 +48,7 @@ class ProfileCardPage extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      color: Colors.black.withOpacity(0.4), // 黒いフィルター
+                      color: Colors.white.withOpacity(0.4), // 黒いフィルター
                     ),
                   ],
                 )
@@ -72,11 +72,9 @@ class ProfileCardPage extends ConsumerWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     Text(
                       'PuTone',
-                      style: (AppFontTheme.font(context).logoFont.copyWith(
-                          fontSize: 15,
-                          color: userProfile.themeMusicName.isNotEmpty
-                              ? Colors.white
-                              : Colors.black)),
+                      style: (AppFontTheme.font(context)
+                          .logoFont
+                          .copyWith(fontSize: 15, color: Colors.black)),
                       selectionColor: Colors.black,
                     ),
 
@@ -85,7 +83,9 @@ class ProfileCardPage extends ConsumerWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColorTheme.color().mainColor,
+                          color: userProfile.themeMusicName.isNotEmpty
+                              ? AppColorTheme.color().gray2
+                              : AppColorTheme.color().mainColor,
                           width: 2.0,
                         ),
                       ),
@@ -100,14 +100,14 @@ class ProfileCardPage extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: userProfile.themeMusicName.isNotEmpty
-                              ? Colors.white
+                              ? Colors.black
                               : AppColorTheme.color().gray1),
                     ),
                     Text(
                       userProfile.userId,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: userProfile.themeMusicName.isNotEmpty
-                              ? Colors.white
+                              ? Colors.black
                               : AppColorTheme.color().gray1),
                     ),
 
@@ -227,7 +227,7 @@ class ProfileCardPage extends ConsumerWidget {
                                                       fontSize: 16),
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  maxLines: 3),
+                                                  maxLines: 2),
                                             ),
                                             if (userProfile.themeMusicArtistName
                                                 .isNotEmpty)
@@ -331,11 +331,7 @@ class ProfileCardPage extends ConsumerWidget {
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
-                                                color: userProfile
-                                                        .themeMusicName
-                                                        .isNotEmpty
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                                color: Colors.black,
                                               ), // フォントサイズを調整
                                             ),
                                           ),
