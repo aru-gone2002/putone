@@ -74,7 +74,7 @@ class PostModel {
 
       //followingUsersQuerySnapがEmptyのことも考える
       //ここの処理を書く
-      if (followingUsersQuerySnap.docs.isEmpty &&
+      if (followingUsersQuerySnap.docs.isEmpty ||
           followingUsersQuerySnap.docs.length <= 2) {
         return GetFollowingUsersPostsCondition.lackOfFriends;
       }
