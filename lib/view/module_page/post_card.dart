@@ -1,4 +1,7 @@
 // lib/view/module_page/post_card.dart
+import 'dart:async';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/data/post/post.dart';
@@ -29,20 +32,40 @@ class PostCard extends ConsumerStatefulWidget {
 class _PostCardState extends ConsumerState<PostCard> {
   bool _isExpanded = false;
   double _cachedPercentage = 0.0;
+  bool _isLoading = true;
   final postAnswerModel = PostAnswerModel();
+
+  // stream subscriptionで明示的にdisposeする
+  StreamSubscription? _percentageSubscription;
+  StreamSubscription? _answersSubscription;
 
   @override
   void initState() {
     super.initState();
+    _loadInitialData();
   }
 
   Future<void> _loadInitialData() async {
     final stream = await postAnswerModel.calculateCorrectAnswerPercentageStream(
         widget.uid, widget.post.postId);
 
-    stream.listen((value) {
-      _cachedPercentage = value;
-    });
+    _percentageSubscription = stream.listen((percentage) {
+      if (mounted) {
+        setState(() {
+          _cachedPercentage = percentage;
+          _isLoading = false;
+        });
+      }
+    }, onError: (error) {
+      print('Percentage stream error: $error');
+    }, cancelOnError: false);
+  }
+
+  @override
+  void dispose() {
+    _percentageSubscription?.cancel();
+    _answersSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -100,26 +123,19 @@ class _PostCardState extends ConsumerState<PostCard> {
                                 ],
                               ),
                             ),
-                            FutureBuilder(
-                              future: _loadInitialData(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const CircularProgressIndicator(
-                                      strokeWidth: 2);
-                                }
-                                return Text(
-                                  '${_cachedPercentage.toStringAsFixed(0)}%',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                );
-                              },
-                            )
+                            if (_isLoading)
+                              CircularProgressIndicator(strokeWidth: 2)
+                            else
+                              Text(
+                                '${_cachedPercentage.toStringAsFixed(0)}%',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                              ),
                           ],
                         ),
                       ],
