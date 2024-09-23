@@ -37,7 +37,6 @@ class _PostCardState extends ConsumerState<PostCard> {
 
   // stream subscriptionで明示的にdisposeする
   StreamSubscription? _percentageSubscription;
-  StreamSubscription? _answersSubscription;
 
   @override
   void initState() {
@@ -64,7 +63,6 @@ class _PostCardState extends ConsumerState<PostCard> {
   @override
   void dispose() {
     _percentageSubscription?.cancel();
-    _answersSubscription?.cancel();
     super.dispose();
   }
 
