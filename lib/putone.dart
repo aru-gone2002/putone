@@ -95,7 +95,7 @@ class PuTone extends ConsumerWidget {
                   profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
                   print('saveUserProfileLocalDBDataを実施');
                   //フォロー中のユーザーを取得し、providerに追加。
-                  await followViewModel.getFollowingUsers();
+                  await followViewModel.getFollowingUsers(profileViewModel.uid);
                   //ローカルDBから友達のクイズへの回答状況を取得する
                   //TODO ここでエラーが出ている
                   final localUserPostAnswers =
@@ -124,6 +124,10 @@ class PuTone extends ConsumerWidget {
                         .changeLocalUserFavoriteArtiststoFavoriteArtists(
                             localUserFavoriteArtists),
                   );
+                  //フォロー中のユーザーを取得し、providerに追加。
+                  await followViewModel.getFollowingUsers(profileViewModel.uid);
+                  //フォロワーを取得し、providerに追加。
+                  await followViewModel.getFollowedUsers(profileViewModel.uid);
                   await spotifyViewModel.fetchSpotifyAccessToken();
                 });
 

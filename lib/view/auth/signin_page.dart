@@ -12,6 +12,7 @@ import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/friends_quiz_view_model.dart';
+import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -28,6 +29,7 @@ class SignInPage extends StatelessWidget {
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
+    final FollowViewModel followViewModel = FollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
@@ -107,6 +109,8 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserFavoriteArtist(userFavoriteArtist);
               }
             }
+            await followViewModel.getFollowedUsers(profileViewModel.uid);
+            await followViewModel.getFollowingUsers(profileViewModel.uid);
             await spotifyViewModel.fetchSpotifyAccessToken();
 
             if (context.mounted) {
@@ -207,6 +211,7 @@ class SignInPage extends StatelessWidget {
                     localDatabaseViewModel.setRef(ref);
                     friendsQuizViewModel.setRef(ref);
                     artistFollowViewModel.setRef(ref);
+                    followViewModel.setRef(ref);
                     spotifyViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,

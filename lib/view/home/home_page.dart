@@ -9,6 +9,7 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/view/item/quiz_item.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -20,12 +21,14 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final PostViewModel _postViewModel = PostViewModel();
   final FollowViewModel _followViewModel = FollowViewModel();
+  final ProfileViewModel _profileViewModel = ProfileViewModel();
 
   @override
   void initState() {
     super.initState();
     _postViewModel.setRef(ref);
     _followViewModel.setRef(ref);
+    _profileViewModel.setRef(ref);
   }
 
   Widget followingFriendsPostsList(AsyncSnapshot snapshot) {
@@ -92,7 +95,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: FutureBuilder(
         future: Future.wait([
           _postViewModel.getFollowingUsersPosts(),
-          _followViewModel.getFollowingUsers(),
+          _followViewModel.getFollowingUsers(_postViewModel.uid),
         ]),
         builder: (context, snapshot) {
           return followingFriendsPostsList(snapshot);
