@@ -58,42 +58,17 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
     const double profileImgSize = 112;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.userProfile.userName,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ),
       body: Column(
         children: [
-          // ヘッダー
-          Container(
-            decoration: BoxDecoration(
-              color: AppColorTheme.color().mainColor,
-            ),
-            height: 100,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Align(
-                  alignment: const Alignment(-0.93, 0.9),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      print('Navigating back to profile page.');
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                    color: Colors.white,
-                    iconSize: 32,
-                  ),
-                ),
-                Align(
-                  alignment: const Alignment(0, 0.6),
-                  child: Text(
-                    widget.userProfile.userName,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
