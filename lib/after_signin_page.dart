@@ -6,6 +6,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/artist/artist_follow_page.dart';
 import 'package:putone/view/home/home_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
+import 'package:putone/view/profile_card/profile_card.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
 
 class AfterSignInPage extends ConsumerWidget {
@@ -26,12 +27,16 @@ class AfterSignInPage extends ConsumerWidget {
       HomePage(),
       ArtistFollowPage(),
       ProfilePage(),
+      ProfileCardPage(),
     ];
 
     return Scaffold(
       body: bottomNavigationWidgets[
           bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         selectedItemColor: AppColorTheme.color().mainColor,
         currentIndex:
             bottomNavigationBarViewModel.bottomNavigationBarCurrentIndex,
@@ -46,6 +51,12 @@ class AfterSignInPage extends ConsumerWidget {
               Icons.account_circle,
             ),
             label: 'profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.style,
+            ),
+            label: 'profilecard',
           ),
         ],
       ),
