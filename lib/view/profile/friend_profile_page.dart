@@ -8,11 +8,15 @@ import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_button.dart';
+import 'package:putone/view/profile/friend_post_grid_view.dart';
+import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view_model/follow_view_model.dart';
+import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:putone/view/item/follow_count.dart';
 import 'package:putone/constants/routes.dart';
+import 'package:putone/data/post/post.dart';
 
 class FriendProfilePage extends ConsumerStatefulWidget {
   const FriendProfilePage({
@@ -34,6 +38,7 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
 
   final FollowViewModel followViewModel = FollowViewModel();
   final ProfileViewModel profileViewModel = ProfileViewModel();
+  final PostViewModel postViewModel = PostViewModel();
 
   @override
   void initState() {
@@ -53,42 +58,17 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
     const double profileImgSize = 112;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.userProfile.userName,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ),
       body: Column(
         children: [
-          // ヘッダー
-          Container(
-            decoration: BoxDecoration(
-              color: AppColorTheme.color().mainColor,
-            ),
-            height: 100,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Align(
-                  alignment: const Alignment(-0.93, 0.9),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      print('Navigating back to profile page.');
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                    color: Colors.white,
-                    iconSize: 32,
-                  ),
-                ),
-                Align(
-                  alignment: const Alignment(0, 0.6),
-                  child: Text(
-                    widget.userProfile.userName,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -367,6 +347,31 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          //投稿表示画面
+          Expanded(
+            child: FutureBuilder<List<Post>?>(
+              future: postViewModel.getUserPosts(widget.userProfile.uid),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(failToReadDataErrorText),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text(noPostText),
+                  );
+                }
+                // 自分以外ように作る必要がある。
+                return FriendPostGridView(snapshot: snapshot);
+              },
             ),
           ),
         ],
