@@ -66,6 +66,7 @@ dependencies:
   url_launcher: ^6.3.0
   line_icons: ^2.0.3
   just_audio_cache: ^0.1.2
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:
