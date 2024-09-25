@@ -73,6 +73,7 @@ class SignInPage extends StatelessWidget {
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
+
             //友達の投稿への回答情報をFirestoreから取得する。providerに入れる
             //TODO ここのfirestoreでもエラーが出ている
             await friendsQuizViewModel.getAllPostAnswersFromFirestore();
@@ -84,7 +85,8 @@ class SignInPage extends StatelessWidget {
               }
             }
             print('友達の投稿への処理を実行');
-            //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
+
+            //自分の投稿をFirestoreから取得し、post_providerに格納する
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
             if (userPosts != null) {
@@ -99,7 +101,13 @@ class SignInPage extends StatelessWidget {
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertLocalUserProfileをしました');
-            //TODO Firestoreからお気に入りアーティスト情報を取得する
+
+            //TODO フォロー中のユーザーとフォロワーのユーザーを取得
+            await followViewModel.getFollowingUsers(authViewModel.uid);
+            print('getFollowingUsers in signin');
+            await followViewModel.getFollowedUsers(authViewModel.uid);
+
+            //Firestoreからお気に入りアーティスト情報を取得する
             final userFavoriteArtists =
                 await artistFollowViewModel.getUserFavoriteArtists();
             if (userFavoriteArtists != null) {
@@ -109,8 +117,7 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserFavoriteArtist(userFavoriteArtist);
               }
             }
-            await followViewModel.getFollowedUsers(profileViewModel.uid);
-            await followViewModel.getFollowingUsers(profileViewModel.uid);
+
             await spotifyViewModel.fetchSpotifyAccessToken();
 
             if (context.mounted) {

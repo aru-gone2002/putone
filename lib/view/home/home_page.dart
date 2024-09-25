@@ -6,8 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:putone/constants/enums.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/model/friends_quiz_model.dart';
 import 'package:putone/view/item/quiz_item.dart';
 import 'package:putone/view_model/follow_view_model.dart';
+import 'package:putone/view_model/friends_quiz_view_model.dart';
+import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
@@ -22,6 +25,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   final PostViewModel _postViewModel = PostViewModel();
   final FollowViewModel _followViewModel = FollowViewModel();
   final ProfileViewModel _profileViewModel = ProfileViewModel();
+  final LocalDatabaseViewModel _localDatabaseViewModel =
+      LocalDatabaseViewModel();
+  final FriendsQuizViewModel _friendsQuizViewModel = FriendsQuizViewModel();
 
   @override
   void initState() {
@@ -29,6 +35,23 @@ class _HomePageState extends ConsumerState<HomePage> {
     _postViewModel.setRef(ref);
     _followViewModel.setRef(ref);
     _profileViewModel.setRef(ref);
+    _localDatabaseViewModel.setRef(ref);
+  }
+
+  Future<void> _loadFriendsPosts() async {
+    final localUserPostAnswers =
+        await _localDatabaseViewModel.appDatabase!.getAllLocalUserPostAnswers();
+    print('home_pageにてgetAllLocalUserPostAnswersを実行');
+    print('localUserPostAnswers: $localUserPostAnswers');
+    //providerに友達のクイズへの回答状況を保存
+    if (localUserPostAnswers.isNotEmpty) {
+      _friendsQuizViewModel.savePostAnswers(_friendsQuizViewModel
+          .changeLocalUserPostAnswerstoPostAnswers(localUserPostAnswers));
+    }
+    await _postViewModel.getFollowingUsersPosts();
+    print('_postViewModel.getFollowingUsersPosts()を実施');
+    await _followViewModel.getFollowingUsers(_profileViewModel.uid);
+    print('_followViewModel.getFollowingUsers(_profileViewModel.uid)を実施');
   }
 
   Widget followingFriendsPostsList(AsyncSnapshot snapshot) {
@@ -93,10 +116,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
       body: FutureBuilder(
-        future: Future.wait([
-          _postViewModel.getFollowingUsersPosts(),
-          _followViewModel.getFollowingUsers(_postViewModel.uid),
-        ]),
+        future: _loadFriendsPosts(),
         builder: (context, snapshot) {
           return followingFriendsPostsList(snapshot);
         },

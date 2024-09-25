@@ -98,16 +98,16 @@ class PuTone extends ConsumerWidget {
                   await followViewModel.getFollowingUsers(profileViewModel.uid);
                   //ローカルDBから友達のクイズへの回答状況を取得する
                   //TODO ここでエラーが出ている
-                  final localUserPostAnswers =
-                      await database.getAllLocalUserPostAnswers();
-                  print('getAllLocalUserPostAnswersを実行');
-                  print('localUserPostAnswers: $localUserPostAnswers');
-                  //providerに友達のクイズへの回答状況を保存
-                  if (localUserPostAnswers.isNotEmpty) {
-                    friendsQuizViewModel.savePostAnswers(friendsQuizViewModel
-                        .changeLocalUserPostAnswerstoPostAnswers(
-                            localUserPostAnswers));
-                  }
+                  // final localUserPostAnswers =
+                  //     await database.getAllLocalUserPostAnswers();
+                  // print('getAllLocalUserPostAnswersを実行');
+                  // print('localUserPostAnswers: $localUserPostAnswers');
+                  // //providerに友達のクイズへの回答状況を保存
+                  // if (localUserPostAnswers.isNotEmpty) {
+                  //   friendsQuizViewModel.savePostAnswers(friendsQuizViewModel
+                  //       .changeLocalUserPostAnswerstoPostAnswers(
+                  //           localUserPostAnswers));
+                  // }
                   final localUserPosts = await database.getAllLocalUserPosts();
                   print('ローカルDBからUserPostsデータを取得');
                   //localUserPostsの内容をproviderに入れる

@@ -115,6 +115,7 @@ class FollowViewModel {
   Future<void> getFollowingUsers(String uid) async {
     final result = await _followModel.getFollowingUsers(uid);
     if (result is List<FollowingUser>) {
+      print('followingUsers: $result');
       saveFollowingUsers(result);
       saveFollowingNum(result.length);
     } else {
@@ -145,7 +146,12 @@ class FollowViewModel {
   Future<List<FollowingUser>> getFriendFollowingUsers(String uid) async {
     final result = await _followModel.getFollowingUsers(uid);
     print(result);
-    return result;
+    if (result is List<FollowingUser>) {
+      return result;
+    }
+    if (result == null) {
+      return [];
+    }
   }
 
   Future<int> getFriendFollowingNum(String uid) async {
