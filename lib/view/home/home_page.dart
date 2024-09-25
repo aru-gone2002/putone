@@ -7,7 +7,10 @@ import 'package:putone/constants/enums.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/model/friends_quiz_model.dart';
+import 'package:putone/theme/app_color_theme.dart';
+import 'package:putone/view/home/my_quiz_page.dart';
 import 'package:putone/view/item/quiz_item.dart';
+import 'package:putone/view/item/small_color_button.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
@@ -28,6 +31,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   final LocalDatabaseViewModel _localDatabaseViewModel =
       LocalDatabaseViewModel();
   final FriendsQuizViewModel _friendsQuizViewModel = FriendsQuizViewModel();
+  final PageController _controller = PageController(initialPage: 0);
+  int page = 0;
 
   @override
   void initState() {
@@ -36,6 +41,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     _followViewModel.setRef(ref);
     _profileViewModel.setRef(ref);
     _localDatabaseViewModel.setRef(ref);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> _loadFriendsPosts() async {
@@ -115,11 +126,124 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: _loadFriendsPosts(),
-        builder: (context, snapshot) {
-          return followingFriendsPostsList(snapshot);
-        },
+      body: Column(
+        children: [
+          const SizedBox(height: 12),
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _controller.animateToPage(0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.ease);
+                    setState(() {
+                      page = 0;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    side: BorderSide(
+                      color: page == 0
+                          ? AppColorTheme.color().accentColor
+                          : Colors.black,
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    backgroundColor:
+                        //TODO 選択されていたらaccentColor
+                        //選択されていなかったらwhite
+                        page == 0
+                            ? AppColorTheme.color().accentColor
+                            : Colors.white,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  ),
+                  child: Text(
+                    '友達の投稿',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: page == 0 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    _controller.animateToPage(1,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.ease);
+                    setState(() {
+                      page = 1;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    side: BorderSide(
+                      color: page == 1
+                          ? AppColorTheme.color().accentColor
+                          : Colors.black,
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    backgroundColor:
+                        //TODO 選択されていたらaccentColor
+                        //選択されていなかったらwhite
+                        page == 1
+                            ? AppColorTheme.color().accentColor
+                            : Colors.white,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  ),
+                  child: Text(
+                    '自分の投稿',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: page == 1 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          //const SizedBox(height: 8),
+          Expanded(
+            child: PageView(
+              controller: _controller,
+              children: [
+                FutureBuilder(
+                  future: _loadFriendsPosts(),
+                  builder: (context, snapshot) {
+                    return followingFriendsPostsList(snapshot);
+                  },
+                ),
+                const MyQuizPage(),
+              ],
+            ),
+            // child: FutureBuilder(
+            //   future: _loadFriendsPosts(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: CircularProgressIndicator());
+            //     } else if (snapshot.hasError) {
+            //       return const Center(
+            //         child: Text(failToGetFollowingUsersPostsErrorText),
+            //       );
+            //     }
+            //     return PageView(
+            //       controller: _controller,
+            //       children: [
+            //         followingFriendsPostsList(snapshot),
+            //         const MyQuizPage(),
+            //       ],
+            //     );
+            //   },
+            // ),
+          ),
+        ],
       ),
     );
   }

@@ -48,6 +48,7 @@ class PuTone extends ConsumerWidget {
         indicatorColor: AppColorTheme.color().mainColor,
         appBarTheme: AppBarTheme(
           iconTheme: const IconThemeData(color: Colors.white),
+          foregroundColor: Colors.white,
           backgroundColor: AppColorTheme.color().mainColor,
           elevation: 0,
         ),

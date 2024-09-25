@@ -26,7 +26,7 @@ class AfterSignInPage extends ConsumerWidget {
 
     const List<Widget> bottomNavigationWidgets = [
       HomePage(),
-      MyQuizPage(),
+      //MyQuizPage(),
       ArtistFollowPage(),
       ProfilePage(),
       ProfileCardPage(),
@@ -46,7 +46,7 @@ class AfterSignInPage extends ConsumerWidget {
             .saveBottomNavigationBarCurrentIndex(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-          BottomNavigationBarItem(icon: Icon(Icons.hail), label: 'myquiz'),
+          //BottomNavigationBarItem(icon: Icon(Icons.hail), label: 'myquiz'),
           BottomNavigationBarItem(
               icon: Icon(LineIcons.guitar), label: 'artist'),
           BottomNavigationBarItem(
