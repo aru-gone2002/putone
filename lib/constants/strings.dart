@@ -16,9 +16,6 @@ const String editBtnText = '編集';
 const String changeBtnText = '変更';
 const String followBtnText = 'フォロー';
 const String followingBtnText = 'フォロー中';
-const String decideToYouBtnText = '君に決めた';
-const String reconsiderBtnText = '考え直す...';
-const String listenInSpotifyBtnText = 'Spotifyで聴く';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -68,7 +65,6 @@ const String cropperTitle = 'Cropper';
 const String profileTitle = 'プロフィール文';
 const String signInTitle = 'ログイン';
 const String userSearchTitle = 'ユーザー検索';
-const String finalAnswerTitle = 'Final Answer?';
 
 //text
 const String emailAuthConfirmText = 'メールアドレス認証メールを\nお送りしましたのでご確認ください';
@@ -117,9 +113,6 @@ const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
 const String askToSearchByArtistText = 'アーティスト名で検索してください';
-const String lackOfFriendsText = '友達を3人以上登録しよう！';
-const String noFriendsPostText = '友達の投稿がありません';
-const String answerPosterText = 'このユーザーが投稿者だと思う';
 
 //hint text
 const String writeArtistNameHintText = 'アーティスト名を入力';
@@ -131,8 +124,6 @@ const String saveProfileMsgToastText = 'プロフィール文が保存されま�
 const String newPostSavedToastText = '投稿が保存されました';
 const String changeProfileMsgToastText = 'プロフィール文が変更されました';
 const String failToGetArtistInfoToastText = 'アーティスト情報が取得できませんでした';
-const String failToOpenSpotifyLinkToastText = 'Could not open Spotify link';
-const String failToGetPostAnswersToastText = '投稿への回答を取得中にエラーが発生しました';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
@@ -146,8 +137,6 @@ const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？
 
 //error
 const String failToReadDataErrorText = 'データの読み込みに失敗しました';
-const String failToGetFollowingUsersPostsErrorText = '友達の投稿取得中に何らかのエラーが発生しました';
-const String somethingErrorText = '何らかのエラーが発生しました';
 
 String returnUuidV4() {
   const Uuid uuid = Uuid();

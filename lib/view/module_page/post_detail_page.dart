@@ -9,7 +9,7 @@ import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/view/item/like_button.dart';
 import 'package:putone/view/item/post_user_info.dart';
-import 'package:putone/view/item/spotify_button.dart';
+import 'package:putone/view/item/spotigy_button.dart';
 import 'package:putone/theme/app_color_theme.dart';
 
 class PostDetailView extends ConsumerStatefulWidget {

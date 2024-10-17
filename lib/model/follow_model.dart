@@ -53,7 +53,7 @@ class FollowModel {
     }
   }
 
-  Future<List<FollowingUser>?> getFollowingUsers(String uid) async {
+  Future<dynamic> getFollowingUsers(String uid) async {
     try {
       final List<FollowingUser> followingUsers = [];
       //final uid = auth.currentUser!.uid;

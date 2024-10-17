@@ -20,15 +20,14 @@ PostAnswer _$PostAnswerFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PostAnswer {
-  String get postId => throw _privateConstructorUsedError;
-  String get posterUid => throw _privateConstructorUsedError;
-  String get posterUserName => throw _privateConstructorUsedError;
-  String get posterUserImg => throw _privateConstructorUsedError;
   String get replyUid => throw _privateConstructorUsedError;
   String get replyUserId => throw _privateConstructorUsedError;
   String get replyUserName => throw _privateConstructorUsedError;
   String get replyUserImg => throw _privateConstructorUsedError;
   String get answerUid => throw _privateConstructorUsedError;
+  String get posterUid => throw _privateConstructorUsedError;
+  String get posterUserName => throw _privateConstructorUsedError;
+  String get posterUserImg => throw _privateConstructorUsedError;
   String get quizChoice1Uid => throw _privateConstructorUsedError;
   String get quizChoice1UserName => throw _privateConstructorUsedError;
   String get quizChoice1UserImg => throw _privateConstructorUsedError;
@@ -54,15 +53,14 @@ abstract class $PostAnswerCopyWith<$Res> {
       _$PostAnswerCopyWithImpl<$Res, PostAnswer>;
   @useResult
   $Res call(
-      {String postId,
-      String posterUid,
-      String posterUserName,
-      String posterUserImg,
-      String replyUid,
+      {String replyUid,
       String replyUserId,
       String replyUserName,
       String replyUserImg,
       String answerUid,
+      String posterUid,
+      String posterUserName,
+      String posterUserImg,
       String quizChoice1Uid,
       String quizChoice1UserName,
       String quizChoice1UserImg,
@@ -87,15 +85,14 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? postId = null,
-    Object? posterUid = null,
-    Object? posterUserName = null,
-    Object? posterUserImg = null,
     Object? replyUid = null,
     Object? replyUserId = null,
     Object? replyUserName = null,
     Object? replyUserImg = null,
     Object? answerUid = null,
+    Object? posterUid = null,
+    Object? posterUserName = null,
+    Object? posterUserImg = null,
     Object? quizChoice1Uid = null,
     Object? quizChoice1UserName = null,
     Object? quizChoice1UserImg = null,
@@ -105,22 +102,6 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
     Object? answerTimestamp = null,
   }) {
     return _then(_value.copyWith(
-      postId: null == postId
-          ? _value.postId
-          : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUid: null == posterUid
-          ? _value.posterUid
-          : posterUid // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUserName: null == posterUserName
-          ? _value.posterUserName
-          : posterUserName // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUserImg: null == posterUserImg
-          ? _value.posterUserImg
-          : posterUserImg // ignore: cast_nullable_to_non_nullable
-              as String,
       replyUid: null == replyUid
           ? _value.replyUid
           : replyUid // ignore: cast_nullable_to_non_nullable
@@ -140,6 +121,18 @@ class _$PostAnswerCopyWithImpl<$Res, $Val extends PostAnswer>
       answerUid: null == answerUid
           ? _value.answerUid
           : answerUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUid: null == posterUid
+          ? _value.posterUid
+          : posterUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUserName: null == posterUserName
+          ? _value.posterUserName
+          : posterUserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUserImg: null == posterUserImg
+          ? _value.posterUserImg
+          : posterUserImg // ignore: cast_nullable_to_non_nullable
               as String,
       quizChoice1Uid: null == quizChoice1Uid
           ? _value.quizChoice1Uid
@@ -182,15 +175,14 @@ abstract class _$$PostAnswerImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String postId,
-      String posterUid,
-      String posterUserName,
-      String posterUserImg,
-      String replyUid,
+      {String replyUid,
       String replyUserId,
       String replyUserName,
       String replyUserImg,
       String answerUid,
+      String posterUid,
+      String posterUserName,
+      String posterUserImg,
       String quizChoice1Uid,
       String quizChoice1UserName,
       String quizChoice1UserImg,
@@ -213,15 +205,14 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? postId = null,
-    Object? posterUid = null,
-    Object? posterUserName = null,
-    Object? posterUserImg = null,
     Object? replyUid = null,
     Object? replyUserId = null,
     Object? replyUserName = null,
     Object? replyUserImg = null,
     Object? answerUid = null,
+    Object? posterUid = null,
+    Object? posterUserName = null,
+    Object? posterUserImg = null,
     Object? quizChoice1Uid = null,
     Object? quizChoice1UserName = null,
     Object? quizChoice1UserImg = null,
@@ -231,22 +222,6 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
     Object? answerTimestamp = null,
   }) {
     return _then(_$PostAnswerImpl(
-      postId: null == postId
-          ? _value.postId
-          : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUid: null == posterUid
-          ? _value.posterUid
-          : posterUid // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUserName: null == posterUserName
-          ? _value.posterUserName
-          : posterUserName // ignore: cast_nullable_to_non_nullable
-              as String,
-      posterUserImg: null == posterUserImg
-          ? _value.posterUserImg
-          : posterUserImg // ignore: cast_nullable_to_non_nullable
-              as String,
       replyUid: null == replyUid
           ? _value.replyUid
           : replyUid // ignore: cast_nullable_to_non_nullable
@@ -266,6 +241,18 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
       answerUid: null == answerUid
           ? _value.answerUid
           : answerUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUid: null == posterUid
+          ? _value.posterUid
+          : posterUid // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUserName: null == posterUserName
+          ? _value.posterUserName
+          : posterUserName // ignore: cast_nullable_to_non_nullable
+              as String,
+      posterUserImg: null == posterUserImg
+          ? _value.posterUserImg
+          : posterUserImg // ignore: cast_nullable_to_non_nullable
               as String,
       quizChoice1Uid: null == quizChoice1Uid
           ? _value.quizChoice1Uid
@@ -303,15 +290,14 @@ class __$$PostAnswerImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   const _$PostAnswerImpl(
-      {required this.postId,
-      required this.posterUid,
-      required this.posterUserName,
-      required this.posterUserImg,
-      required this.replyUid,
+      {required this.replyUid,
       required this.replyUserId,
       required this.replyUserName,
       required this.replyUserImg,
       required this.answerUid,
+      required this.posterUid,
+      required this.posterUserName,
+      required this.posterUserImg,
       required this.quizChoice1Uid,
       required this.quizChoice1UserName,
       required this.quizChoice1UserImg,
@@ -324,14 +310,6 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
       _$$PostAnswerImplFromJson(json);
 
   @override
-  final String postId;
-  @override
-  final String posterUid;
-  @override
-  final String posterUserName;
-  @override
-  final String posterUserImg;
-  @override
   final String replyUid;
   @override
   final String replyUserId;
@@ -341,6 +319,12 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   final String replyUserImg;
   @override
   final String answerUid;
+  @override
+  final String posterUid;
+  @override
+  final String posterUserName;
+  @override
+  final String posterUserImg;
   @override
   final String quizChoice1Uid;
   @override
@@ -358,7 +342,7 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostAnswer(postId: $postId, posterUid: $posterUid, posterUserName: $posterUserName, posterUserImg: $posterUserImg, replyUid: $replyUid, replyUserId: $replyUserId, replyUserName: $replyUserName, replyUserImg: $replyUserImg, answerUid: $answerUid, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice1UserImg: $quizChoice1UserImg, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, quizChoice2UserImg: $quizChoice2UserImg, answerTimestamp: $answerTimestamp)';
+    return 'PostAnswer(replyUid: $replyUid, replyUserId: $replyUserId, replyUserName: $replyUserName, replyUserImg: $replyUserImg, answerUid: $answerUid, posterUid: $posterUid, posterUserName: $posterUserName, posterUserImg: $posterUserImg, quizChoice1Uid: $quizChoice1Uid, quizChoice1UserName: $quizChoice1UserName, quizChoice1UserImg: $quizChoice1UserImg, quizChoice2Uid: $quizChoice2Uid, quizChoice2UserName: $quizChoice2UserName, quizChoice2UserImg: $quizChoice2UserImg, answerTimestamp: $answerTimestamp)';
   }
 
   @override
@@ -366,15 +350,14 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'PostAnswer'))
-      ..add(DiagnosticsProperty('postId', postId))
-      ..add(DiagnosticsProperty('posterUid', posterUid))
-      ..add(DiagnosticsProperty('posterUserName', posterUserName))
-      ..add(DiagnosticsProperty('posterUserImg', posterUserImg))
       ..add(DiagnosticsProperty('replyUid', replyUid))
       ..add(DiagnosticsProperty('replyUserId', replyUserId))
       ..add(DiagnosticsProperty('replyUserName', replyUserName))
       ..add(DiagnosticsProperty('replyUserImg', replyUserImg))
       ..add(DiagnosticsProperty('answerUid', answerUid))
+      ..add(DiagnosticsProperty('posterUid', posterUid))
+      ..add(DiagnosticsProperty('posterUserName', posterUserName))
+      ..add(DiagnosticsProperty('posterUserImg', posterUserImg))
       ..add(DiagnosticsProperty('quizChoice1Uid', quizChoice1Uid))
       ..add(DiagnosticsProperty('quizChoice1UserName', quizChoice1UserName))
       ..add(DiagnosticsProperty('quizChoice1UserImg', quizChoice1UserImg))
@@ -389,13 +372,6 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PostAnswerImpl &&
-            (identical(other.postId, postId) || other.postId == postId) &&
-            (identical(other.posterUid, posterUid) ||
-                other.posterUid == posterUid) &&
-            (identical(other.posterUserName, posterUserName) ||
-                other.posterUserName == posterUserName) &&
-            (identical(other.posterUserImg, posterUserImg) ||
-                other.posterUserImg == posterUserImg) &&
             (identical(other.replyUid, replyUid) ||
                 other.replyUid == replyUid) &&
             (identical(other.replyUserId, replyUserId) ||
@@ -406,6 +382,12 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
                 other.replyUserImg == replyUserImg) &&
             (identical(other.answerUid, answerUid) ||
                 other.answerUid == answerUid) &&
+            (identical(other.posterUid, posterUid) ||
+                other.posterUid == posterUid) &&
+            (identical(other.posterUserName, posterUserName) ||
+                other.posterUserName == posterUserName) &&
+            (identical(other.posterUserImg, posterUserImg) ||
+                other.posterUserImg == posterUserImg) &&
             (identical(other.quizChoice1Uid, quizChoice1Uid) ||
                 other.quizChoice1Uid == quizChoice1Uid) &&
             (identical(other.quizChoice1UserName, quizChoice1UserName) ||
@@ -426,15 +408,14 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      postId,
-      posterUid,
-      posterUserName,
-      posterUserImg,
       replyUid,
       replyUserId,
       replyUserName,
       replyUserImg,
       answerUid,
+      posterUid,
+      posterUserName,
+      posterUserImg,
       quizChoice1Uid,
       quizChoice1UserName,
       quizChoice1UserImg,
@@ -461,15 +442,14 @@ class _$PostAnswerImpl with DiagnosticableTreeMixin implements _PostAnswer {
 
 abstract class _PostAnswer implements PostAnswer {
   const factory _PostAnswer(
-      {required final String postId,
-      required final String posterUid,
-      required final String posterUserName,
-      required final String posterUserImg,
-      required final String replyUid,
+      {required final String replyUid,
       required final String replyUserId,
       required final String replyUserName,
       required final String replyUserImg,
       required final String answerUid,
+      required final String posterUid,
+      required final String posterUserName,
+      required final String posterUserImg,
       required final String quizChoice1Uid,
       required final String quizChoice1UserName,
       required final String quizChoice1UserImg,
@@ -482,14 +462,6 @@ abstract class _PostAnswer implements PostAnswer {
       _$PostAnswerImpl.fromJson;
 
   @override
-  String get postId;
-  @override
-  String get posterUid;
-  @override
-  String get posterUserName;
-  @override
-  String get posterUserImg;
-  @override
   String get replyUid;
   @override
   String get replyUserId;
@@ -499,6 +471,12 @@ abstract class _PostAnswer implements PostAnswer {
   String get replyUserImg;
   @override
   String get answerUid;
+  @override
+  String get posterUid;
+  @override
+  String get posterUserName;
+  @override
+  String get posterUserImg;
   @override
   String get quizChoice1Uid;
   @override
