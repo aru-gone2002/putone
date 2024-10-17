@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/followed_user/followed_user.dart';

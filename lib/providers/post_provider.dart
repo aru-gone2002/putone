@@ -33,3 +33,5 @@ final TempPostProvider = StateProvider<Post>(
 );
 
 final TempPostsProvider = StateProvider<List<Post>>((ref) => []);
+
+final followingUsersPostsProvider = StateProvider<List<Post>>((ref) => []);

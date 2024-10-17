@@ -12,3 +12,4 @@ const double userImgSmallWidth = 45;
 const double userImgMediumWidth = 60;
 const double userImgLargeWidth = 120;
 const double paddingForDeviceWidth = 56;
+const double friendsPostMusicImgWidth = 200;

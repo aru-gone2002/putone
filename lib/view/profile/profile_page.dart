@@ -7,7 +7,6 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
-import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_count.dart';

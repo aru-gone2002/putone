@@ -53,10 +53,34 @@ service cloud.firestore {
           }
       }
       
-      match /users/{friendUid}/followers/{myUid} {
+      // match /users/{friendUid}/followers/{myUid} {
+      //   allow read: if isAuthenticated();
+      //   allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && isUidOfDataSameToDocUid(myUid) && friendUid == request.resource.data.followedUid;
+      //   allow delete: if isAuthenticated() && isLoginUidSameToDocUid(myUid);
+      // }
+
+      match /users/{friendUid} {
+
+        match /followers/{myUid} {
+          allow read: if isAuthenticated();
+          allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && isUidOfDataSameToDocUid(myUid) && friendUid == request.resource.data.followedUid;
+          allow delete: if isAuthenticated() && isLoginUidSameToDocUid(myUid);
+        }
+
+        match /posts/{postId} {
+          
+          match /postAnswers/{myUid} {
+            allow read: if isAuthenticated();
+            //どんなことをしたいか？
+            allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid && friendUid == request.resource.data.posterUid; 
+          }
+        }
+      }
+
+      match /{path=**}/postAnswers/{myUid} {
         allow read: if isAuthenticated();
-        allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && isUidOfDataSameToDocUid(myUid) && friendUid == request.resource.data.followedUid;
-        allow delete: if isAuthenticated() && isLoginUidSameToDocUid(myUid);
+        //allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid;
+        // 本当はここに上のを追加したかった && friendUid == request.resource.data.posterUid; 
       }
 
       match /communities/{communityId}/users/{uid} {
@@ -64,5 +88,6 @@ service cloud.firestore {
         allow create, update: if isUserAuthenticated(uid);
         allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
       }
+
   }
 }

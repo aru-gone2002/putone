@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:putone/constants/enums.dart';
+import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/post/post.dart';
 
 class PostModel {
+  FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> uploadNewPost({required Post post}) async {
@@ -53,6 +56,62 @@ class PostModel {
     } catch (e) {
       print('Error getting userPosts from Firestore: $e');
       return [];
+    }
+  }
+
+  Future<dynamic> getFollowingUsersPosts() async {
+    final uid = auth.currentUser!.uid;
+    final List<String> followingUids = [];
+    final List<Post> followingUsersPosts = [];
+
+    try {
+      final followingUsersQuerySnap = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('followings')
+          .where('followingUid', isNotEqualTo: uid)
+          .get();
+
+      print('followingUsersQuerySnap.docs: ${followingUsersQuerySnap.docs}');
+
+      //フォローしている人が3人以上かそうでないかで分岐
+      if (followingUsersQuerySnap.docs.isEmpty ||
+          followingUsersQuerySnap.docs.length <= 2) {
+        return GetFollowingUsersPostsCondition.lackOfFriends;
+      }
+      // ----3人以上の時の処理----
+      //docsからuidを取得する
+      for (var docSnap in followingUsersQuerySnap.docs) {
+        final followingUser = FollowingUser.fromJson(docSnap.data());
+        followingUids.add(followingUser.followingUid);
+      }
+      print('followingUids: $followingUids');
+      //取得したuidの投稿を取得する
+      //トランザクションを用いて処理を書く
+      for (var followingUid in followingUids) {
+        final followingUsersPostsQuerySnap = await firestore
+            .collection('users')
+            .doc(followingUid)
+            .collection('posts')
+            .get();
+        if (followingUsersPostsQuerySnap.docs.isNotEmpty) {
+          for (var docSnap in followingUsersPostsQuerySnap.docs) {
+            final followingUserPost = Post.fromJson(docSnap.data());
+            followingUsersPosts.add(followingUserPost);
+          }
+        }
+      }
+      if (followingUsersPosts.isEmpty) {
+        return GetFollowingUsersPostsCondition.noPost;
+      }
+      //followingUsersPostsをpostTimestampで並べ替え
+      followingUsersPosts
+          .sort((a, b) => b.postTimestamp.compareTo(a.postTimestamp));
+      print('followingUsersPost: $followingUsersPosts');
+      return followingUsersPosts;
+    } catch (e) {
+      print('Error getting following user posts from Firestore: $e');
+      return null;
     }
   }
 }

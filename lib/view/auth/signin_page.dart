@@ -11,6 +11,7 @@ import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view/item/gray_color_text_button.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
+import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
@@ -30,6 +31,7 @@ class SignInPage extends StatelessWidget {
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final FollowViewModel followViewModel = FollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
+    final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signInFunction(
@@ -62,6 +64,7 @@ class SignInPage extends StatelessWidget {
           await authViewModel.checkUserEmailVerified();
           //----メールアドレスが認証されているかで遷移先を変更----
           if (authViewModel.userEmailVerified) {
+            //await postViewModel.getFollowingUsersPosts();
             //自分のプロフィール情報をFirestoreから取得し、user_profile_providerに格納
             await profileViewModel.getUserProfile(authViewModel.uid);
             print('getUserProfileをしました');
@@ -70,7 +73,20 @@ class SignInPage extends StatelessWidget {
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertUserBaseProfileをしました');
-            //TODO 自分の投稿をFirestoreから取得し、post_providerに格納する
+
+            //友達の投稿への回答情報をFirestoreから取得する。providerに入れる
+            //TODO ここのfirestoreでもエラーが出ている
+            await friendsQuizViewModel.getAllPostAnswersFromFirestore();
+            //友達の投稿への回答情報をローカルDBに入れる。
+            if (friendsQuizViewModel.postAnswers.isNotEmpty) {
+              for (var userPostAnswer in friendsQuizViewModel.postAnswers) {
+                await localDatabaseViewModel.appDatabase!
+                    .insertLocalUserPostAnswer(userPostAnswer);
+              }
+            }
+            print('友達の投稿への処理を実行');
+
+            //自分の投稿をFirestoreから取得し、post_providerに格納する
             final userPosts =
                 await postViewModel.getUserPosts(authViewModel.uid);
             if (userPosts != null) {
@@ -85,7 +101,13 @@ class SignInPage extends StatelessWidget {
             await localDatabaseViewModel.appDatabase!
                 .insertLocalUserProfile(profileViewModel.userProfile);
             print('insertLocalUserProfileをしました');
-            //TODO Firestoreからお気に入りアーティスト情報を取得する
+
+            //TODO フォロー中のユーザーとフォロワーのユーザーを取得
+            await followViewModel.getFollowingUsers(authViewModel.uid);
+            print('getFollowingUsers in signin');
+            await followViewModel.getFollowedUsers(authViewModel.uid);
+
+            //Firestoreからお気に入りアーティスト情報を取得する
             final userFavoriteArtists =
                 await artistFollowViewModel.getUserFavoriteArtists();
             if (userFavoriteArtists != null) {
@@ -95,8 +117,7 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserFavoriteArtist(userFavoriteArtist);
               }
             }
-            await followViewModel.getFollowedUsers(profileViewModel.uid);
-            await followViewModel.getFollowingUsers(profileViewModel.uid);
+
             await spotifyViewModel.fetchSpotifyAccessToken();
 
             if (context.mounted) {
@@ -195,6 +216,7 @@ class SignInPage extends StatelessWidget {
                     profileViewModel.setRef(ref);
                     postViewModel.setRef(ref);
                     localDatabaseViewModel.setRef(ref);
+                    friendsQuizViewModel.setRef(ref);
                     artistFollowViewModel.setRef(ref);
                     followViewModel.setRef(ref);
                     spotifyViewModel.setRef(ref);
