@@ -10,6 +10,7 @@ import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_count.dart';
+import 'package:putone/view/profile/favorite_artist_list_view.dart';
 import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
@@ -444,7 +445,7 @@ class ProfilePage extends ConsumerWidget {
                       },
                     ),
                     //お気に入りアーティスト表示画面
-                    Center(child: Text('お気に入りアーティスト')),
+                    const FavoriteArtistListView(),
                     Center(child: Text('グッズ')),
                   ],
                 ),

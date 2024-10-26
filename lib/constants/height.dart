@@ -15,3 +15,4 @@ const double userImgMediumHeight = userImgMediumWidth;
 const double userImgLargeHeight = userImgLargeWidth;
 const double spaceHeightForAppBarSearchItem = 12;
 const double friendsPostMusicImgHegiht = friendsPostMusicImgWidth;
+const double paddingHeightSmall = 12;
