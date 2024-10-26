@@ -41,6 +41,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _followViewModel.setRef(ref);
     _profileViewModel.setRef(ref);
     _localDatabaseViewModel.setRef(ref);
+    _friendsQuizViewModel.setRef(ref);
   }
 
   @override
