@@ -6,6 +6,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/artist/artist_follow_page.dart';
 import 'package:putone/view/home/home_page.dart';
 import 'package:putone/view/home/my_quiz_page.dart';
+import 'package:putone/view/items_market/items_market_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/profile_card/profile_card.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
@@ -26,8 +27,8 @@ class AfterSignInPage extends ConsumerWidget {
 
     const List<Widget> bottomNavigationWidgets = [
       HomePage(),
-      //MyQuizPage(),
       ArtistFollowPage(),
+      ItemsMarketPage(),
       ProfilePage(),
       ProfileCardPage(),
     ];
@@ -49,6 +50,8 @@ class AfterSignInPage extends ConsumerWidget {
           //BottomNavigationBarItem(icon: Icon(Icons.hail), label: 'myquiz'),
           BottomNavigationBarItem(
               icon: Icon(LineIcons.guitar), label: 'artist'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard), label: 'item'),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle,
