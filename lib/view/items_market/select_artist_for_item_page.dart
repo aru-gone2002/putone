@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/artist/artist.dart';
@@ -58,7 +59,7 @@ class _SelectArtistForItemPageState
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Select item\'s artist',
+            Text(selectItemArtistLabel,
                 style: Theme.of(context).textTheme.labelSmall,
                 textAlign: TextAlign.left),
             const SizedBox(height: 16),
@@ -157,6 +158,8 @@ class _SelectArtistForItemPageState
                                       spotifySearchArtist.spotifyArtistUrl,
                                 );
                                 //TODO ここにアイテム登録画面に遷移する処理を書く
+                                toItemBasicDataInputPagePage(
+                                    context: context, item: widget.item);
                               },
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 4),

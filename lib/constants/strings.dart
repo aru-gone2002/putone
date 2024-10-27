@@ -64,6 +64,7 @@ const String afterChangedProfileMsgLabel = '変更後のプロフィール文（
 const String resultOfSearchUserLabel = '検索の結果';
 const String followerCountLabel = 'フォロワー';
 const String followingCountLabel = 'フォロー中';
+const String selectItemArtistLabel = 'Select item\'s artist';
 
 //title
 const String signupTitle = '会員登録';
