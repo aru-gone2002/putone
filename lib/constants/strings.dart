@@ -127,12 +127,14 @@ const String noFriendsPostText = '友達の投稿がありません';
 const String answerPosterText = 'このユーザーが投稿者だと思う';
 const String askToRegisterItemPurposeText =
     "Select the purpose of item's registration";
+const String askToRegisterFavoriteArtistText = 'Register your favorite artists';
+const String askToRegisterArtistItemsText = 'Register your artist items';
 
 //hint text
 const String writeArtistNameHintText = 'Input artist name';
 const String writeItemNameHintText = 'Taylor Swift 2024 Tour T-shirt';
 const String writeItemDiscriptionHintText =
-    'Purchased in Taylor Swift 2024 Tour! Venue-exclusive merchandise!';
+    'Purchased at Taylor Swift 2024 Tour! Venue-exclusive merchandise!';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

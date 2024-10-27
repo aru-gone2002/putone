@@ -266,14 +266,3 @@ void toItemBasicDataInputPagePage({
     ),
   );
 }
-
-void toItemsMarketPage({
-  required BuildContext context,
-}) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: ((context) => const ItemsMarketPage()),
-    ),
-  );
-}

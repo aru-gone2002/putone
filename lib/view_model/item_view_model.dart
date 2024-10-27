@@ -14,7 +14,7 @@ class ItemViewModel {
     _ref = ref;
   }
 
-  List<Item> get items => _ref.watch(userItemsProvider);
+  List<Item> get userItems => _ref.watch(userItemsProvider);
 
   void saveUserItems(List<Item> value) {
     _ref.read(userItemsProvider.notifier).state = value;

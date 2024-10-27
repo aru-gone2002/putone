@@ -37,31 +37,29 @@ class PostGridView extends ConsumerWidget {
       );
     }
 
-    return Padding(
+    return GridView.builder(
       padding: const EdgeInsets.only(
         left: postGridPaddingWidth,
         right: postGridPaddingWidth,
         top: postGridPaddingHeight,
       ),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: postGridViewCrossAxisSpacing,
-          mainAxisSpacing: postGridViewMainAxisSpacing,
-          childAspectRatio: 1,
-          // postGridItemWidth /
-          //     (postGridItemWidth + postGridItemTitleSpaceHeight),
-        ),
-        itemCount: (snapshot.data as List<LocalUserPost>).length,
-        itemBuilder: (context, index) {
-          final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
-          return PostGridItem(
-            //userPost: postViewModel.posts[index],
-            localUserPost: localUserPost,
-            onTap: () => onPostTap(localUserPost),
-          );
-        },
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: postGridViewCrossAxisSpacing,
+        mainAxisSpacing: postGridViewMainAxisSpacing,
+        childAspectRatio: 1,
+        // postGridItemWidth /
+        //     (postGridItemWidth + postGridItemTitleSpaceHeight),
       ),
+      itemCount: (snapshot.data as List<LocalUserPost>).length,
+      itemBuilder: (context, index) {
+        final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
+        return PostGridItem(
+          //userPost: postViewModel.posts[index],
+          localUserPost: localUserPost,
+          onTap: () => onPostTap(localUserPost),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:putone/constants/doubles.dart';
 import 'package:putone/constants/height.dart';
@@ -129,7 +130,8 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                     TextFormField(
                       validator: itemNameValidator,
                       onSaved: (value) {
-                        currentItem.value ==
+                        //アイテム名を変更する
+                        currentItem.value =
                             currentItem.value.copyWith(itemName: value!);
                       },
                       maxLines: 2,
@@ -175,7 +177,7 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                     TextFormField(
                       validator: itemDiscriptionValidator,
                       onSaved: (value) {
-                        currentItem.value ==
+                        currentItem.value =
                             currentItem.value.copyWith(itemName: value!);
                       },
                       maxLines: 8,
@@ -231,7 +233,8 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                     )
                   : CircularButton(
                       onPressed: () async {
-                        if (formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate() ||
+                            currentItem.value.itemImgs[0] != '') {
                           formKey.currentState!.save();
                           //ここでFirestoreにアイテムを登録する。
                           await itemViewModel.sendItemToFirestore(
@@ -239,8 +242,11 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
 
                           //ItemsMarketPageに遷移する
                           if (context.mounted) {
-                            toItemsMarketPage(context: context);
+                            toAfterSignInPage(context: context);
                           }
+                        }
+                        if (currentItem.value.itemImgs[0] == '') {
+                          Fluttertoast.showToast(msg: 'Please register images');
                         }
                       },
                       text: completBtnText,
