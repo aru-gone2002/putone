@@ -69,4 +69,24 @@ class ItemModel {
         .doc(item.itemId)
         .set(item.toJson());
   }
+
+  Future<dynamic> fetchItemFromFirestore() async {
+    final List<Item> userItems = [];
+    //FirestoreにItemを送信する処理を書く
+    try {
+      final response = await firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('items')
+          .orderBy('createdAt', descending: false)
+          .get();
+      for (var docSnapshot in response.docs) {
+        final userItem = Item.fromJson(docSnapshot.data());
+        userItems.add(userItem);
+      }
+      return userItems;
+    } catch (e) {
+      print('Error getting userItems from Firestore: $e');
+    }
+  }
 }

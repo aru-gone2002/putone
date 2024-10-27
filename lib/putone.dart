@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nil/nil.dart';
 import 'package:putone/after_signIn_page.dart';
+import 'package:putone/data/item/item.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
@@ -12,6 +13,7 @@ import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/friends_quiz_view_model.dart';
+import 'package:putone/view_model/item_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -33,6 +35,7 @@ class PuTone extends ConsumerWidget {
     final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
+    final ItemViewModel itemViewModel = ItemViewModel();
     authViewModel.setRef(ref);
     profileViewModel.setRef(ref);
     postViewModel.setRef(ref);
@@ -41,6 +44,7 @@ class PuTone extends ConsumerWidget {
     friendsQuizViewModel.setRef(ref);
     artistFollowViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
+    itemViewModel.setRef(ref);
 
     return MaterialApp(
       title: 'PuTone',
@@ -130,6 +134,11 @@ class PuTone extends ConsumerWidget {
                   //フォロワーを取得し、providerに追加。
                   await followViewModel.getFollowedUsers(profileViewModel.uid);
                   await spotifyViewModel.fetchSpotifyAccessToken();
+                  //ユーザーのアイテム情報をFirestoreから取得
+                  final userItems =
+                      await itemViewModel.fetchItemFromFirestore();
+                  //providerにユーザーのアイテム情報を格納
+                  itemViewModel.saveUserItems(userItems as List<Item>);
                 });
 
                 //手渡しでAppDatabaseのインスタンスを渡す
