@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:putone/constants/routes.dart';
 
 class ItemsMarketPage extends ConsumerStatefulWidget {
   const ItemsMarketPage({Key? key}) : super(key: key);
@@ -16,7 +17,9 @@ class _ItemsMarketPageState extends ConsumerState<ItemsMarketPage> {
         child: Text('Items Market Page'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          toSelectItemPurposePage(context: context);
+        },
         child: const Icon(Icons.add),
       ),
     );

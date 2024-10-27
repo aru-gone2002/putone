@@ -9,6 +9,7 @@ import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/edit_profile/edit_user_id_page.dart';
 import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/home/user_search_page.dart';
+import 'package:putone/view/items_market/select_item_purpose_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
 import 'package:putone/view/profile/follow_list_screen.dart';
@@ -223,6 +224,17 @@ void toFriendProfilePage({
     context,
     MaterialPageRoute(
       builder: ((context) => FriendProfilePage(userProfile: userProfile)),
+    ),
+  );
+}
+
+void toSelectItemPurposePage({
+  required BuildContext context,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => const SelectItemPurposePage()),
     ),
   );
 }

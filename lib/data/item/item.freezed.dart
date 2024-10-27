@@ -22,7 +22,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 mixin _$Item {
   String get uid => throw _privateConstructorUsedError;
   String get itemId => throw _privateConstructorUsedError;
-  bool get isSaled => throw _privateConstructorUsedError;
+  bool get isForSale => throw _privateConstructorUsedError;
   String get artistSpotifyId => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
   String get artistSpotifyUrl => throw _privateConstructorUsedError;
@@ -31,7 +31,7 @@ mixin _$Item {
   String get itemDescription => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
   String get size => throw _privateConstructorUsedError;
-  String get categories => throw _privateConstructorUsedError;
+  List<String> get categories => throw _privateConstructorUsedError;
 
   /// Serializes this Item to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ abstract class $ItemCopyWith<$Res> {
   $Res call(
       {String uid,
       String itemId,
-      bool isSaled,
+      bool isForSale,
       String artistSpotifyId,
       String artistName,
       String artistSpotifyUrl,
@@ -59,7 +59,7 @@ abstract class $ItemCopyWith<$Res> {
       String itemDescription,
       int price,
       String size,
-      String categories});
+      List<String> categories});
 }
 
 /// @nodoc
@@ -79,7 +79,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
   $Res call({
     Object? uid = null,
     Object? itemId = null,
-    Object? isSaled = null,
+    Object? isForSale = null,
     Object? artistSpotifyId = null,
     Object? artistName = null,
     Object? artistSpotifyUrl = null,
@@ -99,9 +99,9 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.itemId
           : itemId // ignore: cast_nullable_to_non_nullable
               as String,
-      isSaled: null == isSaled
-          ? _value.isSaled
-          : isSaled // ignore: cast_nullable_to_non_nullable
+      isForSale: null == isForSale
+          ? _value.isForSale
+          : isForSale // ignore: cast_nullable_to_non_nullable
               as bool,
       artistSpotifyId: null == artistSpotifyId
           ? _value.artistSpotifyId
@@ -138,7 +138,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -153,7 +153,7 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
   $Res call(
       {String uid,
       String itemId,
-      bool isSaled,
+      bool isForSale,
       String artistSpotifyId,
       String artistName,
       String artistSpotifyUrl,
@@ -162,7 +162,7 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       String itemDescription,
       int price,
       String size,
-      String categories});
+      List<String> categories});
 }
 
 /// @nodoc
@@ -179,7 +179,7 @@ class __$$ItemImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? itemId = null,
-    Object? isSaled = null,
+    Object? isForSale = null,
     Object? artistSpotifyId = null,
     Object? artistName = null,
     Object? artistSpotifyUrl = null,
@@ -199,9 +199,9 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.itemId
           : itemId // ignore: cast_nullable_to_non_nullable
               as String,
-      isSaled: null == isSaled
-          ? _value.isSaled
-          : isSaled // ignore: cast_nullable_to_non_nullable
+      isForSale: null == isForSale
+          ? _value.isForSale
+          : isForSale // ignore: cast_nullable_to_non_nullable
               as bool,
       artistSpotifyId: null == artistSpotifyId
           ? _value.artistSpotifyId
@@ -236,9 +236,9 @@ class __$$ItemImplCopyWithImpl<$Res>
           : size // ignore: cast_nullable_to_non_nullable
               as String,
       categories: null == categories
-          ? _value.categories
+          ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
     ));
   }
 }
@@ -249,7 +249,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
   const _$ItemImpl(
       {required this.uid,
       required this.itemId,
-      required this.isSaled,
+      required this.isForSale,
       required this.artistSpotifyId,
       required this.artistName,
       required this.artistSpotifyUrl,
@@ -258,8 +258,9 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       required this.itemDescription,
       required this.price,
       required this.size,
-      required this.categories})
-      : _itemImgs = itemImgs;
+      required final List<String> categories})
+      : _itemImgs = itemImgs,
+        _categories = categories;
 
   factory _$ItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ItemImplFromJson(json);
@@ -269,7 +270,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
   @override
   final String itemId;
   @override
-  final bool isSaled;
+  final bool isForSale;
   @override
   final String artistSpotifyId;
   @override
@@ -292,12 +293,17 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
   final int price;
   @override
   final String size;
+  final List<String> _categories;
   @override
-  final String categories;
+  List<String> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Item(uid: $uid, itemId: $itemId, isSaled: $isSaled, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDescription: $itemDescription, price: $price, size: $size, categories: $categories)';
+    return 'Item(uid: $uid, itemId: $itemId, isForSale: $isForSale, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDescription: $itemDescription, price: $price, size: $size, categories: $categories)';
   }
 
   @override
@@ -307,7 +313,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       ..add(DiagnosticsProperty('type', 'Item'))
       ..add(DiagnosticsProperty('uid', uid))
       ..add(DiagnosticsProperty('itemId', itemId))
-      ..add(DiagnosticsProperty('isSaled', isSaled))
+      ..add(DiagnosticsProperty('isForSale', isForSale))
       ..add(DiagnosticsProperty('artistSpotifyId', artistSpotifyId))
       ..add(DiagnosticsProperty('artistName', artistName))
       ..add(DiagnosticsProperty('artistSpotifyUrl', artistSpotifyUrl))
@@ -326,7 +332,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
             other is _$ItemImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.itemId, itemId) || other.itemId == itemId) &&
-            (identical(other.isSaled, isSaled) || other.isSaled == isSaled) &&
+            (identical(other.isForSale, isForSale) ||
+                other.isForSale == isForSale) &&
             (identical(other.artistSpotifyId, artistSpotifyId) ||
                 other.artistSpotifyId == artistSpotifyId) &&
             (identical(other.artistName, artistName) ||
@@ -340,8 +347,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
                 other.itemDescription == itemDescription) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.size, size) || other.size == size) &&
-            (identical(other.categories, categories) ||
-                other.categories == categories));
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -350,7 +357,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       runtimeType,
       uid,
       itemId,
-      isSaled,
+      isForSale,
       artistSpotifyId,
       artistName,
       artistSpotifyUrl,
@@ -359,7 +366,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       itemDescription,
       price,
       size,
-      categories);
+      const DeepCollectionEquality().hash(_categories));
 
   /// Create a copy of Item
   /// with the given fields replaced by the non-null parameter values.
@@ -381,7 +388,7 @@ abstract class _Item implements Item {
   const factory _Item(
       {required final String uid,
       required final String itemId,
-      required final bool isSaled,
+      required final bool isForSale,
       required final String artistSpotifyId,
       required final String artistName,
       required final String artistSpotifyUrl,
@@ -390,7 +397,7 @@ abstract class _Item implements Item {
       required final String itemDescription,
       required final int price,
       required final String size,
-      required final String categories}) = _$ItemImpl;
+      required final List<String> categories}) = _$ItemImpl;
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
 
@@ -399,7 +406,7 @@ abstract class _Item implements Item {
   @override
   String get itemId;
   @override
-  bool get isSaled;
+  bool get isForSale;
   @override
   String get artistSpotifyId;
   @override
@@ -417,7 +424,7 @@ abstract class _Item implements Item {
   @override
   String get size;
   @override
-  String get categories;
+  List<String> get categories;
 
   /// Create a copy of Item
   /// with the given fields replaced by the non-null parameter values.

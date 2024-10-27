@@ -19,6 +19,8 @@ const String followingBtnText = 'フォロー中';
 const String decideToYouBtnText = '君に決めた';
 const String reconsiderBtnText = '考え直す...';
 const String listenInSpotifyBtnText = 'Spotifyで聴く';
+const String onlyForProfileBtnText = 'Only for Profile';
+const String salesAndProfileBtnText = 'For Sale & Profile';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -35,6 +37,7 @@ const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 const String homePageAppbarTitle = 'PuTone';
 const String userSearchPageAppbarTitle = 'ユーザー検索';
 const String artistFollowPageAppbarTitle = 'アーティスト';
+const String itemPageAppbarTitle = 'Item';
 
 //label
 const String emailAddressLabel = "メールアドレス";
@@ -120,6 +123,8 @@ const String askToSearchByArtistText = 'アーティスト名で検索してく�
 const String lackOfFriendsText = '友達を3人以上登録しよう！';
 const String noFriendsPostText = '友達の投稿がありません';
 const String answerPosterText = 'このユーザーが投稿者だと思う';
+const String askToRegisterItemPurposeText =
+    "Select the purpose of item's registration";
 
 //hint text
 const String writeArtistNameHintText = 'アーティスト名を入力';

@@ -13,7 +13,7 @@ class Item with _$Item {
   const factory Item({
     required String uid,
     required String itemId,
-    required bool isSaled,
+    required bool isForSale,
     required String artistSpotifyId,
     required String artistName,
     required String artistSpotifyUrl,
@@ -22,7 +22,7 @@ class Item with _$Item {
     required String itemDescription,
     required int price,
     required String size,
-    required String categories,
+    required List<String> categories,
   }) = _Item;
 
   factory Item.fromJson(Map<String, Object?> json) => _$ItemFromJson(json);

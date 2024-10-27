@@ -9,7 +9,7 @@ part of 'item.dart';
 _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       uid: json['uid'] as String,
       itemId: json['itemId'] as String,
-      isSaled: json['isSaled'] as bool,
+      isForSale: json['isForSale'] as bool,
       artistSpotifyId: json['artistSpotifyId'] as String,
       artistName: json['artistName'] as String,
       artistSpotifyUrl: json['artistSpotifyUrl'] as String,
@@ -19,14 +19,16 @@ _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       itemDescription: json['itemDescription'] as String,
       price: (json['price'] as num).toInt(),
       size: json['size'] as String,
-      categories: json['categories'] as String,
+      categories: (json['categories'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'itemId': instance.itemId,
-      'isSaled': instance.isSaled,
+      'isForSale': instance.isForSale,
       'artistSpotifyId': instance.artistSpotifyId,
       'artistName': instance.artistName,
       'artistSpotifyUrl': instance.artistSpotifyUrl,

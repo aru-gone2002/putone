@@ -7,7 +7,7 @@ import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/follow_button.dart';
+import 'package:putone/view/item/button/follow_button.dart';
 import 'package:putone/view/profile/friend_post_grid_view.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view_model/follow_view_model.dart';

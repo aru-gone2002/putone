@@ -8,9 +8,9 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
 import 'package:putone/model/profile_model.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/button/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
-import 'package:putone/view/item/gray_color_text_button.dart';
+import 'package:putone/view/item/button/gray_color_text_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
