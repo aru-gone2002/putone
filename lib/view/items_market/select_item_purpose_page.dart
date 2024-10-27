@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:putone/constants/doubles.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/item/item.dart';
 import 'package:putone/view/item/button/circular_button.dart';
@@ -14,19 +15,21 @@ class SelectItemPurposePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // We can use both hooks and providers here
 
-    final item = useState(const Item(
-        uid: '',
-        itemId: '',
-        isForSale: false,
-        artistSpotifyId: '',
-        artistName: '',
-        artistSpotifyUrl: '',
-        itemImgs: [],
-        itemName: '',
-        itemDescription: '',
-        price: 0,
-        size: '',
-        categories: []));
+    final item = useState(
+      const Item(
+          uid: '',
+          itemId: '',
+          isForSale: false,
+          artistSpotifyId: '',
+          artistName: '',
+          artistSpotifyUrl: '',
+          itemImgs: [],
+          itemName: '',
+          itemDescription: '',
+          price: 0,
+          size: '',
+          categories: []),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -50,6 +53,7 @@ class SelectItemPurposePage extends HookConsumerWidget {
               CircularButton(
                 onPressed: () {
                   item.value = item.value.copyWith(isForSale: false);
+                  toSelectArtistForItemPage(context: context, item: item);
                 },
                 text: onlyForProfileBtnText,
                 btnColor: Colors.white,
@@ -61,6 +65,7 @@ class SelectItemPurposePage extends HookConsumerWidget {
               CircularButton(
                 onPressed: () {
                   item.value = item.value.copyWith(isForSale: true);
+                  toSelectArtistForItemPage(context: context, item: item);
                 },
                 text: salesAndProfileBtnText,
                 btnColor: Colors.white,

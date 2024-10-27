@@ -119,7 +119,7 @@ const String notRegisteredCommunityIdText = '所属：未所属';
 const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
-const String askToSearchByArtistText = 'アーティスト名で検索してください';
+const String askToSearchByArtistText = 'Search by artist name';
 const String lackOfFriendsText = '友達を3人以上登録しよう！';
 const String noFriendsPostText = '友達の投稿がありません';
 const String answerPosterText = 'このユーザーが投稿者だと思う';
@@ -127,7 +127,7 @@ const String askToRegisterItemPurposeText =
     "Select the purpose of item's registration";
 
 //hint text
-const String writeArtistNameHintText = 'アーティスト名を入力';
+const String writeArtistNameHintText = 'Input artist name';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';

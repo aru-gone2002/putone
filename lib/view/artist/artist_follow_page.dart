@@ -81,6 +81,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
                     hintStyle:
                         Theme.of(context).textTheme.labelMedium!.copyWith(
                               color: AppColorTheme.color().gray1,
+                              fontWeight: FontWeight.normal,
                             ),
                     suffixIcon: IconButton(
                       onPressed: () async {
