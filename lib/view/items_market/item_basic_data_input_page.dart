@@ -1,7 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:putone/constants/doubles.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/ints.dart';
@@ -14,7 +14,7 @@ import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/button/circular_button.dart';
 import 'package:putone/view_model/item_view_model.dart';
 
-class ItemBasicDataInputPage extends ConsumerWidget {
+class ItemBasicDataInputPage extends HookConsumerWidget {
   const ItemBasicDataInputPage({super.key, required this.item});
 
   final ValueNotifier<Item> item;
@@ -25,13 +25,18 @@ class ItemBasicDataInputPage extends ConsumerWidget {
     itemViewModel.setRef(ref);
     final formKey = GlobalObjectKey<FormState>(context);
 
+    final currentItem = useState(item.value);
+
     Future<void> onImageTapped({required int index}) async {
-      final imgResult = await itemViewModel.onImageTapped(item: item.value);
+      final imgResult =
+          await itemViewModel.onImageTapped(item: currentItem.value);
       if (imgResult != null) {
         //TODO 本当はここでStorageに写真を入れず、最後に確定したタイミングで入れるようにしたい。
-        await itemViewModel.deletePhotoData(item.value.itemImgs[index]);
-        item.value.itemImgs.remove(index);
-        item.value.itemImgs.insert(index, imgResult);
+        //await itemViewModel.deletePhotoData(item.value.itemImgs[index]);
+        final templist = List<String>.from(currentItem.value.itemImgs);
+        templist.removeAt(index);
+        templist.insert(index, imgResult);
+        currentItem.value = currentItem.value.copyWith(itemImgs: templist);
       }
     }
 
@@ -69,7 +74,7 @@ class ItemBasicDataInputPage extends ConsumerWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                item.value.artistName,
+                currentItem.value.artistName,
                 style: TextStyle(
                   color: AppColorTheme.color().gray1,
                   fontWeight: FontWeight.bold,
@@ -89,9 +94,9 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                 children: List.generate(4, (index) {
                   return GestureDetector(
                     onTap: () => onImageTapped(index: index),
-                    child: item.value.itemImgs[index] != ''
+                    child: currentItem.value.itemImgs[index] != ''
                         ? ExtendedImage.network(
-                            item.value.itemImgs[index],
+                            currentItem.value.itemImgs[index],
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
@@ -124,7 +129,8 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                     TextFormField(
                       validator: itemNameValidator,
                       onSaved: (value) {
-                        item.value == item.value.copyWith(itemName: value!);
+                        currentItem.value ==
+                            currentItem.value.copyWith(itemName: value!);
                       },
                       maxLines: 2,
                       maxLength: maxItemNameLength,
@@ -169,7 +175,8 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                     TextFormField(
                       validator: itemDiscriptionValidator,
                       onSaved: (value) {
-                        item.value == item.value.copyWith(itemName: value!);
+                        currentItem.value ==
+                            currentItem.value.copyWith(itemName: value!);
                       },
                       maxLines: 8,
                       maxLength: maxItemDiscriptionLength,
@@ -204,7 +211,7 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 56),
-              item.value.isForSale
+              currentItem.value.isForSale
                   ? CircularButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
@@ -228,7 +235,7 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                           formKey.currentState!.save();
                           //ここでFirestoreにアイテムを登録する。
                           await itemViewModel.sendItemToFirestore(
-                              item: item.value);
+                              item: currentItem.value);
 
                           //ItemsMarketPageに遷移する
                           if (context.mounted) {
@@ -236,7 +243,7 @@ class ItemBasicDataInputPage extends ConsumerWidget {
                           }
                         }
                       },
-                      text: salesAndProfileBtnText,
+                      text: completBtnText,
                       btnColor: AppColorTheme.color().accentColor,
                       hasBorder: false,
                       fontColor: Colors.white,

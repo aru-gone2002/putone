@@ -39,8 +39,10 @@ class ItemModel {
     return croppedFile;
   }
 
-  Future<String> uploadItemImgAndGetURL(
-      {required CroppedFile croppedFile, required Item item}) async {
+  Future<String> uploadItemImgAndGetURL({
+    required CroppedFile croppedFile,
+    required Item item,
+  }) async {
     final profileImgFile = File(croppedFile.path);
     final String fileName = returnJpgFileName();
     final Reference storageRef = storage

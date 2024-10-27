@@ -20,17 +20,17 @@ class SelectItemPurposePage extends HookConsumerWidget {
     final item = useState(
       Item(
         uid: profileViewModel.uid,
-        itemId: '',
+        itemId: returnUuidV4(),
         isForSale: false,
         artistSpotifyId: '',
         artistName: '',
         artistSpotifyUrl: '',
         itemImgs: ['', '', '', ''],
         itemName: '',
-        itemDescription: '',
+        itemDiscription: '',
         price: 0,
         size: '',
-        categories: [],
+        categories: [''],
         createdAt: DateTime.now(),
       ),
     );

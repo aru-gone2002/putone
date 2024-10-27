@@ -21,6 +21,7 @@ const String reconsiderBtnText = '考え直す...';
 const String listenInSpotifyBtnText = 'Spotifyで聴く';
 const String onlyForProfileBtnText = 'Only for Profile';
 const String salesAndProfileBtnText = 'For Sale & Profile';
+const String completBtnText = 'Complete';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
