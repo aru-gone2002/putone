@@ -22,6 +22,7 @@ _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
@@ -38,4 +39,5 @@ Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
       'price': instance.price,
       'size': instance.size,
       'categories': instance.categories,
+      'createdAt': instance.createdAt.toIso8601String(),
     };

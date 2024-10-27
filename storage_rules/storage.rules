@@ -22,7 +22,7 @@ service firebase.storage {
       allow write: if isAuthenticated() && isSameUser(uid);
     }
 
-    match /items/{uid}/{imageId} {
+    match /items/{uid}/{imageId}/{fileName} {
       allow read: if isAuthenticated();
       allow write: if isAuthenticated() && isSameUser(uid);
     }

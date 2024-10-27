@@ -11,6 +11,7 @@ import 'package:putone/view/edit_profile/edit_user_id_page.dart';
 import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/home/user_search_page.dart';
 import 'package:putone/view/items_market/item_basic_data_input_page.dart';
+import 'package:putone/view/items_market/items_market_page.dart';
 import 'package:putone/view/items_market/select_artist_for_item_page.dart';
 import 'package:putone/view/items_market/select_item_purpose_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
@@ -262,6 +263,17 @@ void toItemBasicDataInputPagePage({
     context,
     MaterialPageRoute(
       builder: ((context) => ItemBasicDataInputPage(item: item)),
+    ),
+  );
+}
+
+void toItemsMarketPage({
+  required BuildContext context,
+}) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => const ItemsMarketPage()),
     ),
   );
 }

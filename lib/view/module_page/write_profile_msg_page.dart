@@ -58,9 +58,10 @@ class WriteProfileMsgPage extends StatelessWidget {
                     profileViewModel.setRef(ref);
                     return Text(
                       profileViewModel.userProfileMsg,
-                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: AppColorTheme.color().gray1,
-                          ),
+                      style: TextStyle(
+                        color: AppColorTheme.color().gray1,
+                        fontSize: 16,
+                      ),
                       softWrap: true,
                     );
                   }),

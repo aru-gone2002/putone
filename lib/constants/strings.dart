@@ -2,7 +2,7 @@ import 'package:uuid/uuid.dart';
 
 //button
 const String accountExistBtnText = '既にアカウントをお持ちの方';
-const String nextProgressBtnText = '次に進む';
+const String nextProgressBtnText = 'Next';
 const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 const String registerBtnText = '登録';
@@ -129,6 +129,9 @@ const String askToRegisterItemPurposeText =
 
 //hint text
 const String writeArtistNameHintText = 'Input artist name';
+const String writeItemNameHintText = 'Taylor Swift 2024 Tour T-shirt';
+const String writeItemDiscriptionHintText =
+    'Purchased in Taylor Swift 2024 Tour! Venue-exclusive merchandise!';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';
@@ -142,10 +145,16 @@ const String failToGetPostAnswersToastText = '投稿への回答を取得中に�
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
-const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
+const String askTextLengthLessThanOrEqual80Validator =
+    'No more than 80 characters';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
-const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String askTextLengthLessThanOrEqual120Validator =
+    'No more than 120 characters';
 const String userIdIsNotAvailableValidator = '既にこのuserIdは使用されています';
+const String askTextLengthLessThanOrEqual60Validator =
+    'No more than 60 characters';
+const String askTextLengthLessThanOrEqual200Validator =
+    'No more than 200 characters';
 
 //dialog title
 const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';

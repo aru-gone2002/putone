@@ -7,28 +7,32 @@ import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/item/item.dart';
 import 'package:putone/view/item/button/circular_button.dart';
+import 'package:putone/view_model/profile_view_model.dart';
 
 class SelectItemPurposePage extends HookConsumerWidget {
   const SelectItemPurposePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // We can use both hooks and providers here
+    ProfileViewModel profileViewModel = ProfileViewModel();
+    profileViewModel.setRef(ref);
 
     final item = useState(
-      const Item(
-          uid: '',
-          itemId: '',
-          isForSale: false,
-          artistSpotifyId: '',
-          artistName: '',
-          artistSpotifyUrl: '',
-          itemImgs: ['', '', '', ''],
-          itemName: '',
-          itemDescription: '',
-          price: 0,
-          size: '',
-          categories: []),
+      Item(
+        uid: profileViewModel.uid,
+        itemId: '',
+        isForSale: false,
+        artistSpotifyId: '',
+        artistName: '',
+        artistSpotifyUrl: '',
+        itemImgs: ['', '', '', ''],
+        itemName: '',
+        itemDescription: '',
+        price: 0,
+        size: '',
+        categories: [],
+        createdAt: DateTime.now(),
+      ),
     );
 
     return Scaffold(

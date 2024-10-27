@@ -23,6 +23,7 @@ class Item with _$Item {
     required int price,
     required String size,
     required List<String> categories,
+    required DateTime createdAt,
   }) = _Item;
 
   factory Item.fromJson(Map<String, Object?> json) => _$ItemFromJson(json);

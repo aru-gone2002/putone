@@ -32,6 +32,7 @@ mixin _$Item {
   int get price => throw _privateConstructorUsedError;
   String get size => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this Item to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,7 +60,8 @@ abstract class $ItemCopyWith<$Res> {
       String itemDescription,
       int price,
       String size,
-      List<String> categories});
+      List<String> categories,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -89,6 +91,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
     Object? price = null,
     Object? size = null,
     Object? categories = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -139,6 +142,10 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -162,7 +169,8 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       String itemDescription,
       int price,
       String size,
-      List<String> categories});
+      List<String> categories,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -189,6 +197,7 @@ class __$$ItemImplCopyWithImpl<$Res>
     Object? price = null,
     Object? size = null,
     Object? categories = null,
+    Object? createdAt = null,
   }) {
     return _then(_$ItemImpl(
       uid: null == uid
@@ -239,6 +248,10 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -258,7 +271,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       required this.itemDescription,
       required this.price,
       required this.size,
-      required final List<String> categories})
+      required final List<String> categories,
+      required this.createdAt})
       : _itemImgs = itemImgs,
         _categories = categories;
 
@@ -302,8 +316,11 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
   }
 
   @override
+  final DateTime createdAt;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Item(uid: $uid, itemId: $itemId, isForSale: $isForSale, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDescription: $itemDescription, price: $price, size: $size, categories: $categories)';
+    return 'Item(uid: $uid, itemId: $itemId, isForSale: $isForSale, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDescription: $itemDescription, price: $price, size: $size, categories: $categories, createdAt: $createdAt)';
   }
 
   @override
@@ -322,7 +339,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       ..add(DiagnosticsProperty('itemDescription', itemDescription))
       ..add(DiagnosticsProperty('price', price))
       ..add(DiagnosticsProperty('size', size))
-      ..add(DiagnosticsProperty('categories', categories));
+      ..add(DiagnosticsProperty('categories', categories))
+      ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
   @override
@@ -348,7 +366,9 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.size, size) || other.size == size) &&
             const DeepCollectionEquality()
-                .equals(other._categories, _categories));
+                .equals(other._categories, _categories) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -366,7 +386,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       itemDescription,
       price,
       size,
-      const DeepCollectionEquality().hash(_categories));
+      const DeepCollectionEquality().hash(_categories),
+      createdAt);
 
   /// Create a copy of Item
   /// with the given fields replaced by the non-null parameter values.
@@ -397,7 +418,8 @@ abstract class _Item implements Item {
       required final String itemDescription,
       required final int price,
       required final String size,
-      required final List<String> categories}) = _$ItemImpl;
+      required final List<String> categories,
+      required final DateTime createdAt}) = _$ItemImpl;
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
 
@@ -425,6 +447,8 @@ abstract class _Item implements Item {
   String get size;
   @override
   List<String> get categories;
+  @override
+  DateTime get createdAt;
 
   /// Create a copy of Item
   /// with the given fields replaced by the non-null parameter values.
