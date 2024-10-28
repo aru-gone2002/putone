@@ -42,118 +42,95 @@ class PostGridItem extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            SizedBox(
-              width: postGridItemWidth,
-              height: postGridItemWidth,
-              child: Stack(
-                fit: StackFit.expand,
+            Align(
+              alignment: const Alignment(0, 0),
+              child: ExtendedImage.network(
+                (userPost == null)
+                    ? localUserPost!.postMusicImg
+                    : userPost!.postMusicImg,
+                width: postGridItemWidth,
+                height: postGridItemWidth,
+                fit: BoxFit.cover,
+                cache: true,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            Align(
+              alignment: const Alignment(0, 0),
+              child: Container(
+                width: postGridItemWidth,
+                height: postGridItemWidth,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.2),
+                      Colors.black.withOpacity(0),
+                      Colors.black.withOpacity(0.8),
+                    ],
+                    stops: const [0.1, 0.6, 1.0],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: const Alignment(-0.95, 0.85),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Align(
-                    alignment: const Alignment(0, 0),
-                    child: ExtendedImage.network(
-                      (userPost == null)
-                          ? localUserPost!.postMusicImg
-                          : userPost!.postMusicImg,
-                      width: postGridItemWidth,
-                      height: postGridItemWidth,
-                      fit: BoxFit.cover,
-                      cache: true,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  const Icon(
+                    Icons.music_note_outlined,
+                    color: Colors.white,
                   ),
-                  Align(
-                    alignment: const Alignment(0, 0),
-                    child: Container(
-                      width: postGridItemWidth,
-                      height: postGridItemWidth,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.black.withOpacity(0.2),
-                            Colors.black.withOpacity(0),
-                            Colors.black.withOpacity(0.8),
-                          ],
-                          stops: const [0.1, 0.6, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: const Alignment(-0.95, 0.85),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  const SizedBox(width: 4),
+                  SizedBox(
+                    width: postGridItemWidth * 0.65,
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.music_note_outlined,
-                          color: Colors.white,
+                        Text(
+                          (userPost == null)
+                              ? localUserPost!.postMusicName
+                              : userPost!.postMusicName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(width: 4),
-                        SizedBox(
-                          width: postGridItemWidth * 0.65,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                (userPost == null)
-                                    ? localUserPost!.postMusicName
-                                    : userPost!.postMusicName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                (userPost == null)
-                                    ? localUserPost!.postMusicArtistName
-                                    : userPost!.postMusicArtistName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
+                        Text(
+                          (userPost == null)
+                              ? localUserPost!.postMusicArtistName
+                              : userPost!.postMusicArtistName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
-                    ),
-                  ),
-                  //TODO ボタンが押されたら赤くする
-                  Align(
-                    alignment: const Alignment(1.05, 0.95),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.favorite_border_outlined,
-                        color: Colors.white,
-                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            // Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(
-            //       horizontal: postGridItemTitlePaddingWidth,
-            //       vertical: postGridItemTitlePaddingHeight,
-            //     ),
-            //     child: Text(
-            //       localUserPost.postMsg,
-            //       maxLines: 2,
-            //       overflow: TextOverflow.ellipsis,
-            //       textAlign: TextAlign.start,
-            //     ),
-            //   ),
-            // ),
+            //TODO ボタンが押されたら赤くする
+            Align(
+              alignment: const Alignment(1.05, 0.95),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.favorite_border_outlined,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ],
         ),
       ),

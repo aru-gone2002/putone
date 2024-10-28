@@ -380,12 +380,12 @@ class ProfilePage extends ConsumerWidget {
                                 ),
                                 //所属先
                                 Align(
-                                  alignment: const Alignment(0.95, 0.75),
+                                  alignment: const Alignment(1.1, 0.75),
                                   child: SizedBox(
                                     width: sideProfileWidth,
                                     child: Text(
-                                      '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
-                                      maxLines: 1,
+                                      'Community\n${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
