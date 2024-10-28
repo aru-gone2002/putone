@@ -178,7 +178,7 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                       validator: itemDiscriptionValidator,
                       onSaved: (value) {
                         currentItem.value =
-                            currentItem.value.copyWith(itemName: value!);
+                            currentItem.value.copyWith(itemDiscription: value!);
                       },
                       maxLines: 8,
                       maxLength: maxItemDiscriptionLength,
@@ -239,6 +239,8 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                           //ここでFirestoreにアイテムを登録する。
                           await itemViewModel.sendItemToFirestore(
                               item: currentItem.value);
+
+                          itemViewModel.addUserItems(currentItem.value);
 
                           //ItemsMarketPageに遷移する
                           if (context.mounted) {

@@ -78,7 +78,7 @@ class ItemModel {
           .collection('users')
           .doc(auth.currentUser!.uid)
           .collection('items')
-          .orderBy('createdAt', descending: false)
+          .orderBy('createdAt', descending: true)
           .get();
       for (var docSnapshot in response.docs) {
         final userItem = Item.fromJson(docSnapshot.data());

@@ -20,6 +20,10 @@ class ItemViewModel {
     _ref.read(userItemsProvider.notifier).state = value;
   }
 
+  void addUserItems(Item value) {
+    _ref.read(userItemsProvider.notifier).state = [...userItems, value];
+  }
+
   Future<String?> onImageTapped({required Item item}) async {
     final XFile xFile = await _itemModel.getImageFromGallery();
     CroppedFile? croppedFile = await _itemModel.returnCroppedFile(xFile: xFile);

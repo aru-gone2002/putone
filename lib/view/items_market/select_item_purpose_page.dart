@@ -30,7 +30,7 @@ class SelectItemPurposePage extends HookConsumerWidget {
         itemDiscription: '',
         price: 0,
         size: '',
-        categories: [''],
+        categories: [],
         createdAt: DateTime.now(),
       ),
     );

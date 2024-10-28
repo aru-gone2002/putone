@@ -14,6 +14,13 @@ class UserItemListView extends ConsumerWidget {
     final ItemViewModel itemViewModel = ItemViewModel();
     itemViewModel.setRef(ref);
 
+    //投稿のGridViewの横の長さを計算
+    var size = MediaQuery.of(context).size;
+    //投稿のGridViewの横の長さを計算
+    final double postGridItemWidth =
+        (size.width - postGridViewCrossAxisSpacing - postGridPaddingWidth * 2) /
+            2;
+
     return itemViewModel.userItems.isEmpty
         ? const Center(
             child: Text(askToRegisterArtistItemsText),
@@ -24,13 +31,11 @@ class UserItemListView extends ConsumerWidget {
               right: postGridPaddingWidth,
               top: postGridPaddingHeight,
             ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: postGridViewCrossAxisSpacing,
               mainAxisSpacing: postGridViewMainAxisSpacing,
-              childAspectRatio: 1,
-              // postGridItemWidth /
-              //     (postGridItemWidth + postGridItemTitleSpaceHeight),
+              childAspectRatio: postGridItemWidth / (postGridItemWidth + 52),
             ),
             itemCount: itemViewModel.userItems.length,
             itemBuilder: (context, index) {
