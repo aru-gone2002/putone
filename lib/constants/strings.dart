@@ -66,6 +66,8 @@ const String resultOfSearchUserLabel = '検索の結果';
 const String followerCountLabel = 'Followers';
 const String followingCountLabel = 'Followings';
 const String selectItemArtistLabel = 'Select item\'s artist';
+const String itemDescriptionLabel = 'Description';
+const String itemNameLabel = 'Item Name';
 
 //title
 const String signupTitle = '会員登録';
@@ -133,7 +135,7 @@ const String askToRegisterArtistItemsText = 'Register your artist items';
 //hint text
 const String writeArtistNameHintText = 'Input artist name';
 const String writeItemNameHintText = 'Taylor Swift 2024 Tour T-shirt';
-const String writeItemDiscriptionHintText =
+const String writeItemDescriptionHintText =
     'Purchased at Taylor Swift 2024 Tour! Venue-exclusive merchandise!';
 
 //toast
@@ -145,6 +147,7 @@ const String changeProfileMsgToastText = 'プロフィール文が変更され�
 const String failToGetArtistInfoToastText = 'アーティスト情報が取得できませんでした';
 const String failToOpenSpotifyLinkToastText = 'Could not open Spotify link';
 const String failToGetPostAnswersToastText = '投稿への回答を取得中にエラーが発生しました';
+const String askToRegisterItemImgToastText = 'Please register images';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';

@@ -120,7 +120,7 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                   children: [
                     //Itemの名前
                     const Text(
-                      'Item Name',
+                      itemNameLabel,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -165,9 +165,9 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 24),
 
-                    //アイテムのDiscription
+                    //アイテムのDescription
                     const Text(
-                      'Discription',
+                      itemDescriptionLabel,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -175,20 +175,20 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
-                      validator: itemDiscriptionValidator,
+                      validator: itemDescriptionValidator,
                       onSaved: (value) {
                         currentItem.value =
-                            currentItem.value.copyWith(itemDiscription: value!);
+                            currentItem.value.copyWith(itemDescription: value!);
                       },
                       maxLines: 8,
-                      maxLength: maxItemDiscriptionLength,
+                      maxLength: maxItemDescriptionLength,
                       //expands: true,
                       cursorColor: AppColorTheme.color().mainColor,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 12),
                         isDense: true,
-                        hintText: writeItemDiscriptionHintText,
+                        hintText: writeItemDescriptionHintText,
                         hintStyle: TextStyle(
                           color: AppColorTheme.color().gray1,
                           fontWeight: FontWeight.normal,
@@ -248,7 +248,8 @@ class ItemBasicDataInputPage extends HookConsumerWidget {
                           }
                         }
                         if (currentItem.value.itemImgs[0] == '') {
-                          Fluttertoast.showToast(msg: 'Please register images');
+                          Fluttertoast.showToast(
+                              msg: askToRegisterItemImgToastText);
                         }
                       },
                       text: completBtnText,

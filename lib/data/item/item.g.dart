@@ -16,7 +16,7 @@ _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       itemImgs:
           (json['itemImgs'] as List<dynamic>).map((e) => e as String).toList(),
       itemName: json['itemName'] as String,
-      itemDiscription: json['itemDiscription'] as String,
+      itemDescription: json['itemDescription'] as String,
       price: (json['price'] as num).toDouble(),
       size: json['size'] as String,
       categories: (json['categories'] as List<dynamic>)
@@ -35,7 +35,7 @@ Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
       'artistSpotifyUrl': instance.artistSpotifyUrl,
       'itemImgs': instance.itemImgs,
       'itemName': instance.itemName,
-      'itemDiscription': instance.itemDiscription,
+      'itemDescription': instance.itemDescription,
       'price': instance.price,
       'size': instance.size,
       'categories': instance.categories,

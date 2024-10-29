@@ -19,7 +19,7 @@ class Item with _$Item {
     required String artistSpotifyUrl,
     required List<String> itemImgs,
     required String itemName,
-    required String itemDiscription,
+    required String itemDescription,
     required double price,
     required String size,
     required List<String> categories,

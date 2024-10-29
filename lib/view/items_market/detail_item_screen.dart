@@ -74,7 +74,7 @@ class DetailItemScreen extends StatelessWidget {
                       ),
                     const SizedBox(height: 32),
                     Text(
-                      userItem.itemDiscription,
+                      userItem.itemDescription,
                       style: const TextStyle(
                         fontSize: 16,
                       ),

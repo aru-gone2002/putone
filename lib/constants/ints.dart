@@ -4,4 +4,4 @@ const int maxEmailTextLength = 40;
 const int maxPasswordTextLength = 30;
 const int userIdAndUserNameTextLength = 16;
 const int maxItemNameLength = 60;
-const int maxItemDiscriptionLength = 200;
+const int maxItemDescriptionLength = 200;

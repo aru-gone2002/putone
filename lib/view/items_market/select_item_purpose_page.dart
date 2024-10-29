@@ -27,7 +27,7 @@ class SelectItemPurposePage extends HookConsumerWidget {
         artistSpotifyUrl: '',
         itemImgs: ['', '', '', ''],
         itemName: '',
-        itemDiscription: '',
+        itemDescription: '',
         price: 0,
         size: '',
         categories: [],

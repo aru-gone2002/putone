@@ -28,7 +28,7 @@ mixin _$Item {
   String get artistSpotifyUrl => throw _privateConstructorUsedError;
   List<String> get itemImgs => throw _privateConstructorUsedError;
   String get itemName => throw _privateConstructorUsedError;
-  String get itemDiscription => throw _privateConstructorUsedError;
+  String get itemDescription => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   String get size => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ abstract class $ItemCopyWith<$Res> {
       String artistSpotifyUrl,
       List<String> itemImgs,
       String itemName,
-      String itemDiscription,
+      String itemDescription,
       double price,
       String size,
       List<String> categories,
@@ -87,7 +87,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
     Object? artistSpotifyUrl = null,
     Object? itemImgs = null,
     Object? itemName = null,
-    Object? itemDiscription = null,
+    Object? itemDescription = null,
     Object? price = null,
     Object? size = null,
     Object? categories = null,
@@ -126,9 +126,9 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.itemName
           : itemName // ignore: cast_nullable_to_non_nullable
               as String,
-      itemDiscription: null == itemDiscription
-          ? _value.itemDiscription
-          : itemDiscription // ignore: cast_nullable_to_non_nullable
+      itemDescription: null == itemDescription
+          ? _value.itemDescription
+          : itemDescription // ignore: cast_nullable_to_non_nullable
               as String,
       price: null == price
           ? _value.price
@@ -166,7 +166,7 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       String artistSpotifyUrl,
       List<String> itemImgs,
       String itemName,
-      String itemDiscription,
+      String itemDescription,
       double price,
       String size,
       List<String> categories,
@@ -193,7 +193,7 @@ class __$$ItemImplCopyWithImpl<$Res>
     Object? artistSpotifyUrl = null,
     Object? itemImgs = null,
     Object? itemName = null,
-    Object? itemDiscription = null,
+    Object? itemDescription = null,
     Object? price = null,
     Object? size = null,
     Object? categories = null,
@@ -232,9 +232,9 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.itemName
           : itemName // ignore: cast_nullable_to_non_nullable
               as String,
-      itemDiscription: null == itemDiscription
-          ? _value.itemDiscription
-          : itemDiscription // ignore: cast_nullable_to_non_nullable
+      itemDescription: null == itemDescription
+          ? _value.itemDescription
+          : itemDescription // ignore: cast_nullable_to_non_nullable
               as String,
       price: null == price
           ? _value.price
@@ -268,7 +268,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       required this.artistSpotifyUrl,
       required final List<String> itemImgs,
       required this.itemName,
-      required this.itemDiscription,
+      required this.itemDescription,
       required this.price,
       required this.size,
       required final List<String> categories,
@@ -302,7 +302,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
   @override
   final String itemName;
   @override
-  final String itemDiscription;
+  final String itemDescription;
   @override
   final double price;
   @override
@@ -320,7 +320,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Item(uid: $uid, itemId: $itemId, isForSale: $isForSale, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDiscription: $itemDiscription, price: $price, size: $size, categories: $categories, createdAt: $createdAt)';
+    return 'Item(uid: $uid, itemId: $itemId, isForSale: $isForSale, artistSpotifyId: $artistSpotifyId, artistName: $artistName, artistSpotifyUrl: $artistSpotifyUrl, itemImgs: $itemImgs, itemName: $itemName, itemDescription: $itemDescription, price: $price, size: $size, categories: $categories, createdAt: $createdAt)';
   }
 
   @override
@@ -336,7 +336,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       ..add(DiagnosticsProperty('artistSpotifyUrl', artistSpotifyUrl))
       ..add(DiagnosticsProperty('itemImgs', itemImgs))
       ..add(DiagnosticsProperty('itemName', itemName))
-      ..add(DiagnosticsProperty('itemDiscription', itemDiscription))
+      ..add(DiagnosticsProperty('itemDescription', itemDescription))
       ..add(DiagnosticsProperty('price', price))
       ..add(DiagnosticsProperty('size', size))
       ..add(DiagnosticsProperty('categories', categories))
@@ -361,8 +361,8 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
             const DeepCollectionEquality().equals(other._itemImgs, _itemImgs) &&
             (identical(other.itemName, itemName) ||
                 other.itemName == itemName) &&
-            (identical(other.itemDiscription, itemDiscription) ||
-                other.itemDiscription == itemDiscription) &&
+            (identical(other.itemDescription, itemDescription) ||
+                other.itemDescription == itemDescription) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.size, size) || other.size == size) &&
             const DeepCollectionEquality()
@@ -383,7 +383,7 @@ class _$ItemImpl with DiagnosticableTreeMixin implements _Item {
       artistSpotifyUrl,
       const DeepCollectionEquality().hash(_itemImgs),
       itemName,
-      itemDiscription,
+      itemDescription,
       price,
       size,
       const DeepCollectionEquality().hash(_categories),
@@ -415,7 +415,7 @@ abstract class _Item implements Item {
       required final String artistSpotifyUrl,
       required final List<String> itemImgs,
       required final String itemName,
-      required final String itemDiscription,
+      required final String itemDescription,
       required final double price,
       required final String size,
       required final List<String> categories,
@@ -440,7 +440,7 @@ abstract class _Item implements Item {
   @override
   String get itemName;
   @override
-  String get itemDiscription;
+  String get itemDescription;
   @override
   double get price;
   @override

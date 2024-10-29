@@ -79,11 +79,11 @@ String? itemNameValidator(String? value) {
   return null;
 }
 
-String? itemDiscriptionValidator(String? value) {
+String? itemDescriptionValidator(String? value) {
   // if (value == null || value.trim().isEmpty) {
   //   return notInputTextValidator;
   // }
-  if (value != null && value.length > maxItemDiscriptionLength) {
+  if (value != null && value.length > maxItemDescriptionLength) {
     return askTextLengthLessThanOrEqual200Validator;
   }
   return null;
