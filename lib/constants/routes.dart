@@ -3,12 +3,17 @@ import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/following_user/following_user.dart';
+import 'package:putone/data/item/item.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
 import 'package:putone/view/edit_profile/edit_user_id_page.dart';
 import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/home/user_search_page.dart';
+import 'package:putone/view/items_market/item_basic_data_input_page.dart';
+import 'package:putone/view/items_market/items_market_page.dart';
+import 'package:putone/view/items_market/select_artist_for_item_page.dart';
+import 'package:putone/view/items_market/select_item_purpose_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
 import 'package:putone/view/profile/follow_list_screen.dart';
@@ -223,6 +228,41 @@ void toFriendProfilePage({
     context,
     MaterialPageRoute(
       builder: ((context) => FriendProfilePage(userProfile: userProfile)),
+    ),
+  );
+}
+
+void toSelectItemPurposePage({
+  required BuildContext context,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => const SelectItemPurposePage()),
+    ),
+  );
+}
+
+void toSelectArtistForItemPage({
+  required BuildContext context,
+  required ValueNotifier<Item> item,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => SelectArtistForItemPage(item: item)),
+    ),
+  );
+}
+
+void toItemBasicDataInputPagePage({
+  required BuildContext context,
+  required ValueNotifier<Item> item,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: ((context) => ItemBasicDataInputPage(item: item)),
     ),
   );
 }

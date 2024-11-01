@@ -5,7 +5,7 @@ import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
-import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/button/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 

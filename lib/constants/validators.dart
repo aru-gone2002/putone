@@ -68,3 +68,23 @@ String? profileMsgValidator(String? value) {
   }
   return null;
 }
+
+String? itemNameValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return notInputTextValidator;
+  }
+  if (value.length > maxItemNameLength) {
+    return askTextLengthLessThanOrEqual60Validator;
+  }
+  return null;
+}
+
+String? itemDescriptionValidator(String? value) {
+  // if (value == null || value.trim().isEmpty) {
+  //   return notInputTextValidator;
+  // }
+  if (value != null && value.length > maxItemDescriptionLength) {
+    return askTextLengthLessThanOrEqual200Validator;
+  }
+  return null;
+}

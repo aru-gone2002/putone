@@ -5,14 +5,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/data/item/item.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/button/accent_color_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
-import 'package:putone/view/item/gray_color_text_button.dart';
+import 'package:putone/view/item/button/gray_color_text_button.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
+import 'package:putone/view_model/item_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -32,6 +34,7 @@ class SignInPage extends StatelessWidget {
     final FollowViewModel followViewModel = FollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
+    final ItemViewModel itemViewModel = ItemViewModel();
     final formKey = GlobalObjectKey<FormState>(context);
 
     Future<void> signInFunction(
@@ -117,6 +120,10 @@ class SignInPage extends StatelessWidget {
                     .insertLocalUserFavoriteArtist(userFavoriteArtist);
               }
             }
+
+            //ユーザーのアイテム情報をFirestoreから取得
+            final userItems = await itemViewModel.fetchItemFromFirestore();
+            itemViewModel.saveUserItems(userItems as List<Item>);
 
             await spotifyViewModel.fetchSpotifyAccessToken();
 
@@ -220,6 +227,7 @@ class SignInPage extends StatelessWidget {
                     artistFollowViewModel.setRef(ref);
                     followViewModel.setRef(ref);
                     spotifyViewModel.setRef(ref);
+                    itemViewModel.setRef(ref);
                     return Visibility(
                       visible: !authViewModel.signInIsLoading,
                       replacement: SizedBox(

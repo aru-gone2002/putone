@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:putone/constants/doubles.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/ints.dart';
 import 'package:putone/constants/strings.dart';
@@ -10,10 +11,10 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/follow_button.dart';
+import 'package:putone/view/item/button/follow_button.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
-import 'package:putone/view/item/circular_button.dart';
+import 'package:putone/view/item/button/circular_button.dart';
 import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
@@ -281,8 +282,11 @@ class UserSearchPage extends StatelessWidget {
                                     formKey.currentState!.save();
                                   }
                                 },
+                                hasBorder: false,
                                 text: searchBtnText,
                                 btnColor: AppColorTheme.color().mainColor,
+                                fontColor: Colors.white,
+                                fontSize: fontLarge,
                               ),
                             );
                           },

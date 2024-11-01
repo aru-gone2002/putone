@@ -21,5 +21,10 @@ service firebase.storage {
       allow read: if isAuthenticated();
       allow write: if isAuthenticated() && isSameUser(uid);
     }
+
+    match /items/{uid}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isSameUser(uid);
+    }
   }
 }

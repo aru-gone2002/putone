@@ -10,7 +10,7 @@ import 'package:putone/model/friends_quiz_model.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/home/my_quiz_page.dart';
 import 'package:putone/view/item/quiz_item.dart';
-import 'package:putone/view/item/small_color_button.dart';
+import 'package:putone/view/item/button/small_color_button.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';

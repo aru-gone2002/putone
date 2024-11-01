@@ -6,7 +6,7 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
+import 'package:putone/view/item/button/deep_gray_button.dart';
 import 'package:putone/view/item/form_field_item.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';

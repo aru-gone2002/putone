@@ -8,7 +8,7 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/button/accent_color_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';

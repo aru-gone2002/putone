@@ -7,7 +7,7 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/validators.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/deep_gray_button.dart';
+import 'package:putone/view/item/button/deep_gray_button.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 
 class WriteProfileMsgPage extends StatelessWidget {
@@ -58,9 +58,10 @@ class WriteProfileMsgPage extends StatelessWidget {
                     profileViewModel.setRef(ref);
                     return Text(
                       profileViewModel.userProfileMsg,
-                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: AppColorTheme.color().gray1,
-                          ),
+                      style: TextStyle(
+                        color: AppColorTheme.color().gray1,
+                        fontSize: 16,
+                      ),
                       softWrap: true,
                     );
                   }),

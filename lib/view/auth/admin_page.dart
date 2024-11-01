@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/local_database.dart';
-import 'package:putone/view/item/accent_color_button.dart';
+import 'package:putone/view/item/button/accent_color_button.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';

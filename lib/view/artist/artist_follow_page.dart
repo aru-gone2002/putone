@@ -7,7 +7,7 @@ import 'package:putone/constants/strings.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/artist/artist.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/artist_follow_buton.dart';
+import 'package:putone/view/item/button/artist_follow_buton.dart';
 import 'package:putone/view_model/spotify_view_model.dart';
 
 class ArtistFollowPage extends ConsumerStatefulWidget {
@@ -81,6 +81,7 @@ class _ThemeSongSettingPageState extends ConsumerState<ArtistFollowPage> {
                     hintStyle:
                         Theme.of(context).textTheme.labelMedium!.copyWith(
                               color: AppColorTheme.color().gray1,
+                              fontWeight: FontWeight.normal,
                             ),
                     suffixIcon: IconButton(
                       onPressed: () async {

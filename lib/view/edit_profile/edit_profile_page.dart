@@ -9,7 +9,7 @@ import 'package:putone/constants/width.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/theme/app_color_theme.dart';
-import 'package:putone/view/item/title_and_text_button.dart';
+import 'package:putone/view/item/button/title_and_text_button.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/spotify_view_model.dart';

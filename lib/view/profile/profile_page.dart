@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,9 +10,9 @@ import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_count.dart';
 import 'package:putone/view/profile/favorite_artist_list_view.dart';
-import 'package:putone/view/profile/friend_profile_page.dart';
 import 'package:putone/view/profile/post_grid_view.dart';
 import 'package:putone/view/profile/profile_drawer.dart';
+import 'package:putone/view/profile/user_item_list_view.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
@@ -381,12 +380,12 @@ class ProfilePage extends ConsumerWidget {
                                 ),
                                 //所属先
                                 Align(
-                                  alignment: const Alignment(0.95, 0.75),
+                                  alignment: const Alignment(1.1, 0.75),
                                   child: SizedBox(
                                     width: sideProfileWidth,
                                     child: Text(
-                                      '所属：${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
-                                      maxLines: 1,
+                                      'Community\n${profileViewModel.communityMap[(snapshot.data as List<LocalUserProfile>).first.communityId]!.communityName}',
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
@@ -446,7 +445,9 @@ class ProfilePage extends ConsumerWidget {
                     ),
                     //お気に入りアーティスト表示画面
                     const FavoriteArtistListView(),
-                    Center(child: Text('グッズ')),
+                    //アイテム表示画面
+                    // Center(child: Text('グッズ')),
+                    const UserItemListView(),
                   ],
                 ),
               ),

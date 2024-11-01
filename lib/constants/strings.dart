@@ -2,7 +2,7 @@ import 'package:uuid/uuid.dart';
 
 //button
 const String accountExistBtnText = '既にアカウントをお持ちの方';
-const String nextProgressBtnText = '次に進む';
+const String nextProgressBtnText = 'Next';
 const String tapForSettingBtnText = 'タップして設定';
 const String skipBtnText = '後で登録';
 const String registerBtnText = '登録';
@@ -12,13 +12,16 @@ const String accountNotExistBtnText = '会員登録する';
 const String signInBtnText = 'ログイン';
 const String signOutBtnText = 'ログアウト';
 const String postBtnText = '投稿';
-const String editBtnText = '編集';
+const String editBtnText = 'Edit';
 const String changeBtnText = '変更';
-const String followBtnText = 'フォロー';
-const String followingBtnText = 'フォロー中';
+const String followBtnText = 'follow';
+const String followingBtnText = 'follower';
 const String decideToYouBtnText = '君に決めた';
 const String reconsiderBtnText = '考え直す...';
 const String listenInSpotifyBtnText = 'Spotifyで聴く';
+const String onlyForProfileBtnText = 'Only for Profile';
+const String salesAndProfileBtnText = 'For Sale & Profile';
+const String completBtnText = 'Complete';
 
 //appbar
 const String themeSongSettingPageAppbarTitle = 'テーマソングの登録';
@@ -26,7 +29,7 @@ const String setProfileMsgPageAppbarTitle = 'プロフィール文の登録';
 const String setCommunityPageAppbarTitle = 'コミュニティの登録';
 const String postCreatePageAppbarTitle = '投稿作成画面';
 const String profileSettingAppbarTitle = 'プロフィール情報の登録';
-const String editProfileAppbarTitle = 'プロフィール情報の編集';
+const String editProfileAppbarTitle = 'Edit Profile';
 const String editUserNameAppbarTitle = 'ユーザー名の変更';
 const String editUserIdAppbarTitle = 'ユーザーIDの変更';
 const String editThemeSongAppBarTitle = 'テーマソングの変更';
@@ -35,19 +38,20 @@ const String editProfileMsgAppbarTitle = 'プロフィール文の変更';
 const String homePageAppbarTitle = 'PuTone';
 const String userSearchPageAppbarTitle = 'ユーザー検索';
 const String artistFollowPageAppbarTitle = 'アーティスト';
+const String itemPageAppbarTitle = 'Item';
 
 //label
 const String emailAddressLabel = "メールアドレス";
 const String passwordLabel = "パスワード";
 const String musicNameLabel = '楽曲名';
-const String userIdLabel = 'ユーザーID';
-const String userNameLabel = 'ユーザー名';
+const String userIdLabel = 'User ID';
+const String userNameLabel = 'User Name';
 const String artistNameLabel = 'アーティスト名';
-const String themeSongLabel = 'テーマソング';
+const String themeSongLabel = 'Theme Song';
 const String profileMsgLabel = 'プロフィール文（80字以内)';
-const String currentThemeSongLabel = '現在のテーマソング';
-const String belongCommunityLabel = '所属コミュニティ';
-const String selectedCommunityLabel = '選択したコミュニティ';
+const String currentThemeSongLabel = 'Current Theme Song';
+const String belongCommunityLabel = 'Community';
+const String selectedCommunityLabel = 'Selected Community';
 const String selectSongLabel = '曲の選択';
 const String selectedSongLabel = '選択した曲';
 const String currentUserNameLabel = '現在のユーザー名';
@@ -59,13 +63,16 @@ const String afterChangedCommunityLabel = '変更後のコミュニティ';
 const String currentProfileMsgLabel = '現在のプロフィール文';
 const String afterChangedProfileMsgLabel = '変更後のプロフィール文（80字以内)';
 const String resultOfSearchUserLabel = '検索の結果';
-const String followerCountLabel = 'フォロワー';
-const String followingCountLabel = 'フォロー中';
+const String followerCountLabel = 'Followers';
+const String followingCountLabel = 'Followings';
+const String selectItemArtistLabel = 'Select item\'s artist';
+const String itemDescriptionLabel = 'Description';
+const String itemNameLabel = 'Item Name';
 
 //title
 const String signupTitle = '会員登録';
 const String cropperTitle = 'Cropper';
-const String profileTitle = 'プロフィール文';
+const String profileTitle = 'Profile Text';
 const String signInTitle = 'ログイン';
 const String userSearchTitle = 'ユーザー検索';
 const String finalAnswerTitle = 'Final Answer?';
@@ -98,7 +105,7 @@ const String emailIsNotVerifiedText =
 const String missEmailAndreSignUpText = 'メールアドレスを間違えたため、再度会員登録する';
 const String passwordRestrictionText = '半角英数字8文字以上';
 const String userIdRestrictionText = '4文字以上。英小文字(a-z)、数字、ビリオド(.)が利用可。';
-const String registerProfileImgText = 'プロフィール画像を登録';
+const String registerProfileImgText = 'Register your profile image';
 const String askToSearchByTrackAndArtistText = '楽曲名とアーティスト名で検索してください';
 const String setThemeMusicConfirmDialogText = '以下の楽曲をテーマソングに登録しますか？';
 const String profileMsgHintText = '〇〇大学 ××学部';
@@ -116,13 +123,20 @@ const String notRegisteredCommunityIdText = '所属：未所属';
 const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\n未登録';
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
-const String askToSearchByArtistText = 'アーティスト名で検索してください';
+const String askToSearchByArtistText = 'Search by artist name';
 const String lackOfFriendsText = '友達を3人以上登録しよう！';
 const String noFriendsPostText = '友達の投稿がありません';
 const String answerPosterText = 'このユーザーが投稿者だと思う';
+const String askToRegisterItemPurposeText =
+    "Select the purpose of item's registration";
+const String askToRegisterFavoriteArtistText = 'Register your favorite artists';
+const String askToRegisterArtistItemsText = 'Register your artist items';
 
 //hint text
-const String writeArtistNameHintText = 'アーティスト名を入力';
+const String writeArtistNameHintText = 'Input artist name';
+const String writeItemNameHintText = 'Taylor Swift 2024 Tour T-shirt';
+const String writeItemDescriptionHintText =
+    'Purchased at Taylor Swift 2024 Tour! Venue-exclusive merchandise!';
 
 //toast
 const String userIdAndNameCompleteToastText = 'ユーザーIDとユーザー名の登録完了';
@@ -133,13 +147,20 @@ const String changeProfileMsgToastText = 'プロフィール文が変更され�
 const String failToGetArtistInfoToastText = 'アーティスト情報が取得できませんでした';
 const String failToOpenSpotifyLinkToastText = 'Could not open Spotify link';
 const String failToGetPostAnswersToastText = '投稿への回答を取得中にエラーが発生しました';
+const String askToRegisterItemImgToastText = 'Please register images';
 
 //validator
 const String notInputTextValidator = '文字が入力されていません';
-const String askTextLengthLessThanOrEqual80Validator = '80字以下で入力してください';
+const String askTextLengthLessThanOrEqual80Validator =
+    'No more than 80 characters';
 const String askSelectCommunityValidator = 'コミュニティを選択してください';
-const String askTextLengthLessThanOrEqual120Validator = '120字以下で入力してください';
+const String askTextLengthLessThanOrEqual120Validator =
+    'No more than 120 characters';
 const String userIdIsNotAvailableValidator = '既にこのuserIdは使用されています';
+const String askTextLengthLessThanOrEqual60Validator =
+    'No more than 60 characters';
+const String askTextLengthLessThanOrEqual200Validator =
+    'No more than 200 characters';
 
 //dialog title
 const String askwhetherSignOutOrNotDialogTitle = 'ログアウトしますか？';

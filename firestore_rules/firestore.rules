@@ -51,6 +51,12 @@ service cloud.firestore {
               allow read: if isAuthenticated();
             }
           }
+
+          match /items/{itemId} {
+            allow read: if isAuthenticated();
+            allow create: if isUserAuthenticated(uid);
+            allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
+          }
       }
       
       // match /users/{friendUid}/followers/{myUid} {

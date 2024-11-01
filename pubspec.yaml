@@ -67,6 +67,8 @@ dependencies:
   line_icons: ^2.0.3
   just_audio_cache: ^0.1.2
   fl_chart: ^0.69.0
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.20.5
 
 dev_dependencies:
   flutter_test:
