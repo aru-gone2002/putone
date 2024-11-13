@@ -20,7 +20,7 @@ FollowingUser _$FollowingUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FollowingUser {
-  String get uid => throw _privateConstructorUsedError;
+  String get uid => throw _privateConstructorUsedError; //フォローされる人のuid
   String get followingUid => throw _privateConstructorUsedError;
 
   /// Serializes this FollowingUser to a JSON map.
@@ -125,6 +125,7 @@ class _$FollowingUserImpl
 
   @override
   final String uid;
+//フォローされる人のuid
   @override
   final String followingUid;
 
@@ -181,7 +182,7 @@ abstract class _FollowingUser implements FollowingUser {
       _$FollowingUserImpl.fromJson;
 
   @override
-  String get uid;
+  String get uid; //フォローされる人のuid
   @override
   String get followingUid;
 

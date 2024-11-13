@@ -47,9 +47,9 @@ service cloud.firestore {
               allow delete: if isLoginUidSameToDocUid(uid) && isAuthenticated();
             }
 
-            match /postAnswers/{replyUid} {
-              allow read: if isAuthenticated();
-            }
+            // match /postAnswers/{replyUid} {
+            //   allow read: if isAuthenticated();
+            // }
           }
       }
       
@@ -67,21 +67,21 @@ service cloud.firestore {
           allow delete: if isAuthenticated() && isLoginUidSameToDocUid(myUid);
         }
 
-        match /posts/{postId} {
+        // match /posts/{postId} {
           
-          match /postAnswers/{myUid} {
-            allow read: if isAuthenticated();
-            //どんなことをしたいか？
-            allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid && friendUid == request.resource.data.posterUid; 
-          }
-        }
+        //   match /postAnswers/{myUid} {
+        //     allow read: if isAuthenticated();
+        //     //どんなことをしたいか？
+        //     allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid && friendUid == request.resource.data.posterUid; 
+        //   }
+        // }
       }
 
-      match /{path=**}/postAnswers/{myUid} {
-        allow read: if isAuthenticated();
-        //allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid;
-        // 本当はここに上のを追加したかった && friendUid == request.resource.data.posterUid; 
-      }
+      // match /{path=**}/postAnswers/{myUid} {
+      //   allow read: if isAuthenticated();
+      //   //allow create: if isAuthenticated() && isLoginUidSameToDocUid(myUid) && myUid == request.resource.data.replyUid;
+      //   // 本当はここに上のを追加したかった && friendUid == request.resource.data.posterUid; 
+      // }
 
       match /communities/{communityId}/users/{uid} {
         allow read: if isAuthenticated();

@@ -1,10 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:putone/constants/enums.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/local_database.dart';
 import 'package:putone/model/post_model.dart';
-import 'package:putone/providers/friends_quiz_provider.dart';
 import 'package:putone/providers/post_provider.dart';
 
 class PostViewModel {
@@ -46,8 +43,8 @@ class PostViewModel {
 
   List<Post> get followingUsersPosts => _ref.watch(followingUsersPostsProvider);
 
-  Enum get getFollowingUsersPostsCondition =>
-      _ref.watch(getFollowingUsersPostConditionProvider);
+  // Enum get getFollowingUsersPostsCondition =>
+  //     _ref.watch(getFollowingUsersPostConditionProvider);
 
   void saveUid(String value) {
     _ref.read(postProvider.notifier).state =
@@ -98,10 +95,6 @@ class PostViewModel {
     _ref.read(followingUsersPostsProvider.notifier).state = value;
   }
 
-  void saveFollowingUsersPostsCondition(Enum value) {
-    _ref.read(getFollowingUsersPostConditionProvider.notifier).state = value;
-  }
-
   void addNewPostToList() {
     _ref.read(postsProvider.notifier).state = [
       ..._ref.read(postsProvider.notifier).state,
@@ -134,22 +127,12 @@ class PostViewModel {
     final result = await _postModel.getFollowingUsersPosts();
     if (result is List<Post>) {
       saveFollowingUsersPosts(result);
-      saveFollowingUsersPostsCondition(
-          GetFollowingUsersPostsCondition.havePosts);
+      // saveFollowingUsersPostsCondition(
+      //     GetFollowingUsersPostsCondition.havePosts);
     }
 
     if (result is List<Post> && result.isNotEmpty) {
       saveFollowingUsersPosts(result);
-    }
-    if (result == GetFollowingUsersPostsCondition.lackOfFriends) {
-      saveFollowingUsersPostsCondition(
-          GetFollowingUsersPostsCondition.lackOfFriends);
-    }
-    if (result == GetFollowingUsersPostsCondition.noPost) {
-      saveFollowingUsersPostsCondition(GetFollowingUsersPostsCondition.noPost);
-    }
-    if (result == null) {
-      saveFollowingUsersPostsCondition(GetFollowingUsersPostsCondition.error);
     }
   }
 
@@ -188,8 +171,8 @@ class PostViewModel {
     _ref.read(postsProvider.notifier).state = [];
   }
 
-  void resetFollowingUsersPostsCondition() {
-    _ref.read(getFollowingUsersPostConditionProvider.notifier).state =
-        GetFollowingUsersPostsCondition.lackOfFriends;
-  }
+  // void resetFollowingUsersPostsCondition() {
+  //   _ref.read(getFollowingUsersPostConditionProvider.notifier).state =
+  //       GetFollowingUsersPostsCondition.lackOfFriends;
+  // }
 }
