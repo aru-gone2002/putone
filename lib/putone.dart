@@ -11,7 +11,6 @@ import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
-import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -30,7 +29,7 @@ class PuTone extends ConsumerWidget {
     final LocalDatabaseViewModel localDatabaseViewModel =
         LocalDatabaseViewModel();
     final FollowViewModel followViewModel = FollowViewModel();
-    final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
+
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
     authViewModel.setRef(ref);
@@ -38,7 +37,6 @@ class PuTone extends ConsumerWidget {
     postViewModel.setRef(ref);
     localDatabaseViewModel.setRef(ref);
     followViewModel.setRef(ref);
-    friendsQuizViewModel.setRef(ref);
     artistFollowViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
 

@@ -74,12 +74,6 @@ class PostModel {
 
       print('followingUsersQuerySnap.docs: ${followingUsersQuerySnap.docs}');
 
-      //フォローしている人が3人以上かそうでないかで分岐
-      if (followingUsersQuerySnap.docs.isEmpty ||
-          followingUsersQuerySnap.docs.length <= 2) {
-        return GetFollowingUsersPostsCondition.lackOfFriends;
-      }
-      // ----3人以上の時の処理----
       //docsからuidを取得する
       for (var docSnap in followingUsersQuerySnap.docs) {
         final followingUser = FollowingUser.fromJson(docSnap.data());
@@ -100,9 +94,6 @@ class PostModel {
             followingUsersPosts.add(followingUserPost);
           }
         }
-      }
-      if (followingUsersPosts.isEmpty) {
-        return GetFollowingUsersPostsCondition.noPost;
       }
       //followingUsersPostsをpostTimestampで並べ替え
       followingUsersPosts

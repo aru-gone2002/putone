@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:putone/data/artist/artist.dart';
 import 'package:putone/data/post/post.dart';
-import 'package:putone/data/post_answer/post_answer.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
@@ -61,33 +60,12 @@ class LocalUserPosts extends Table {
       text().withDefault(const Constant('')).nullable()();
 }
 
-@DataClassName('LocalUserPostAnswer')
-class LocalUserPostAnswers extends Table {
-  TextColumn get postId => text()();
-  TextColumn get replyUid => text()();
-  TextColumn get replyUserName => text()();
-  TextColumn get replyUserId => text()();
-  TextColumn get replyUserImg => text()();
-  TextColumn get answerUid => text()();
-  TextColumn get posterUid => text()();
-  TextColumn get posterUserName => text()();
-  TextColumn get posterUserImg => text()();
-  TextColumn get quizChoice1Uid => text()();
-  TextColumn get quizChoice1UserName => text()();
-  TextColumn get quizChoice1UserImg => text()();
-  TextColumn get quizChoice2Uid => text()();
-  TextColumn get quizChoice2UserName => text()();
-  TextColumn get quizChoice2UserImg => text()();
-  DateTimeColumn get answerTimestamp => dateTime()();
-}
-
 //AppDatabaseがDriftのローカルDBであり、
 //そのデータのテーブルズとしてTodoItemsのリストを指定
 @DriftDatabase(tables: [
   LocalUserProfiles,
   LocalUserFavoriteArtists,
   LocalUserPosts,
-  LocalUserPostAnswers,
 ])
 class AppDatabase extends _$AppDatabase {
   //AppDatabaseをインスタンス化した際に_openConnection()を実行することを明記
@@ -316,62 +294,6 @@ class AppDatabase extends _$AppDatabase {
       userFavoriteArtistImg: Value(artist.artistImg),
       userFavoriteArtistName: Value(artist.artistName),
       userFavoriteArtistSpotifyUrl: Value(artist.spotifyArtistUrl),
-    );
-  }
-
-  //----ユーザーのクイズ回答情報----
-  // ローカルDBから全てのLocalUserPostAnswerをストリームとして取得する。
-  // LocalUserPostAnswerが追加、更新、削除されると、このストリームは新しいリストを返す。
-  Stream<List<LocalUserPostAnswer>> watchAllLocalUserPostAnswers() {
-    return (select(localUserPostAnswers)).watch();
-  }
-
-  // ローカルDBから全てのLocalUserPostAnswersを一度だけ取得する。
-  Future<List<LocalUserPostAnswer>> getAllLocalUserPostAnswers() async {
-    final query = select(localUserPostAnswers);
-    final result = await query.get();
-    if (result.isNotEmpty) {
-      return result;
-    } else {
-      return [];
-    }
-  }
-
-  // 新しいLocalUserPostAnswerをローカルDBに挿入する。
-  Future<void> insertLocalUserPostAnswer(PostAnswer postAnswer) async {
-    try {
-      await into(localUserPostAnswers)
-          .insert(changePostAnswerToLocalUserPostAnswer(postAnswer));
-    } catch (e) {
-      print('insertLocalUserPostAnswer error: $e');
-    }
-  }
-
-  // TODO ローカルDBから全てのLocalUserPostAnswersを削除する。
-  Future<void> deleteAllLocalUserPostAnswers() async {
-    await delete(localUserPostAnswers).go();
-  }
-
-  // TODO PostAnswerをLocalUserPostAnswersCompanionに変換する
-  LocalUserPostAnswersCompanion changePostAnswerToLocalUserPostAnswer(
-      PostAnswer postAnswer) {
-    return LocalUserPostAnswersCompanion(
-      postId: Value(postAnswer.postId),
-      replyUid: Value(postAnswer.replyUid),
-      replyUserName: Value(postAnswer.replyUserName),
-      replyUserId: Value(postAnswer.replyUserId),
-      replyUserImg: Value(postAnswer.replyUserImg),
-      answerUid: Value(postAnswer.answerUid),
-      posterUid: Value(postAnswer.posterUid),
-      posterUserName: Value(postAnswer.posterUserName),
-      posterUserImg: Value(postAnswer.posterUserImg),
-      quizChoice1Uid: Value(postAnswer.quizChoice1Uid),
-      quizChoice1UserName: Value(postAnswer.quizChoice1UserName),
-      quizChoice1UserImg: Value(postAnswer.quizChoice1UserImg),
-      quizChoice2Uid: Value(postAnswer.quizChoice2Uid),
-      quizChoice2UserName: Value(postAnswer.quizChoice2UserName),
-      quizChoice2UserImg: Value(postAnswer.quizChoice2UserImg),
-      answerTimestamp: Value(postAnswer.answerTimestamp),
     );
   }
 }

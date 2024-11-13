@@ -20,7 +20,7 @@ FollowedUser _$FollowedUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FollowedUser {
-  String get uid => throw _privateConstructorUsedError;
+  String get uid => throw _privateConstructorUsedError; //フォローされる人のuid
   String get followedUid => throw _privateConstructorUsedError;
 
   /// Serializes this FollowedUser to a JSON map.
@@ -123,6 +123,7 @@ class _$FollowedUserImpl with DiagnosticableTreeMixin implements _FollowedUser {
 
   @override
   final String uid;
+//フォローされる人のuid
   @override
   final String followedUid;
 
@@ -179,7 +180,7 @@ abstract class _FollowedUser implements FollowedUser {
       _$FollowedUserImpl.fromJson;
 
   @override
-  String get uid;
+  String get uid; //フォローされる人のuid
   @override
   String get followedUid;
 

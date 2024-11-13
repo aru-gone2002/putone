@@ -7,7 +7,6 @@ import 'package:putone/local_database.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
 import 'package:putone/view_model/bottom_navigation_bar_view_model.dart';
-import 'package:putone/view_model/friends_quiz_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -25,7 +24,7 @@ class ProfileDrawer extends ConsumerWidget {
     final BottomNavigationBarViewModel bottomNavigationBarViewModel =
         BottomNavigationBarViewModel();
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
-    final FriendsQuizViewModel friendsQuizViewModel = FriendsQuizViewModel();
+
     final FollowViewModel followViewModel = FollowViewModel();
 
     authViewModel.setRef(ref);
@@ -33,7 +32,6 @@ class ProfileDrawer extends ConsumerWidget {
     postViewModel.setRef(ref);
     bottomNavigationBarViewModel.setRef(ref);
     artistFollowViewModel.setRef(ref);
-    friendsQuizViewModel.setRef(ref);
     followViewModel.setRef(ref);
 
     return Drawer(
@@ -71,14 +69,11 @@ class ProfileDrawer extends ConsumerWidget {
                           profileViewModel.resetUserProfileProvider();
                           postViewModel.resetPostProvider();
                           postViewModel.resetPostsProvider();
-                          postViewModel.resetFollowingUsersPostsCondition();
                           artistFollowViewModel.resetFollowingArtistsProvider();
-                          friendsQuizViewModel.resetPostAnswers();
                           followViewModel.resetAllFollowProviders();
                           await database.deleteLocalUserProfile();
                           await database.deleteAllLocalUserPosts();
                           await database.deleteAllLocalUserFavoriteArtists();
-                          await database.deleteAllLocalUserPostAnswers();
                         },
                         child: const Text(signOutBtnText),
                       ),
