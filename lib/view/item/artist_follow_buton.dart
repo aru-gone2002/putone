@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/strings.dart';
 import 'package:putone/data/artist/artist.dart';
-import 'package:putone/data/following_user/following_user.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/follow_view_model.dart';
