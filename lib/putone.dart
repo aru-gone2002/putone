@@ -40,6 +40,41 @@ class PuTone extends ConsumerWidget {
     artistFollowViewModel.setRef(ref);
     spotifyViewModel.setRef(ref);
 
+    Future<void> initialLoadWithAuth() async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        localDatabaseViewModel
+            .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
+        //ローカルDBからUserProfileデータを取得
+        final localUserProfiles = await database.getLocalUserProfiles();
+        print('ローカルDBからUserProfileデータを取得');
+        final userBaseProfile = localUserProfiles.first;
+        print('firstを実行');
+        //localUserProfileの内容をproviderに入れる
+        profileViewModel.saveUserProfileLocalDBData(userBaseProfile);
+        print('saveUserProfileLocalDBDataを実施');
+        final localUserPosts = await database.getAllLocalUserPosts();
+        print('ローカルDBからUserPostsデータを取得');
+        //localUserPostsの内容をproviderに入れる
+        postViewModel.insertPostsToList(
+          postViewModel.changeLocalUserPoststoPosts(localUserPosts),
+        );
+        //ローカルDBからUserFavoriteArtistsのデータを取得
+        final localUserFavoriteArtists =
+            await database.getAllLocalUserFavoriteArtists();
+        print('DBからお気に入りアーティストを取得');
+        //localUserFavoriteArtistsの内容をproviderに入れる
+        artistFollowViewModel.insertArtistsToList(
+          artistFollowViewModel.changeLocalUserFavoriteArtiststoFavoriteArtists(
+              localUserFavoriteArtists),
+        );
+        //フォロー中のユーザーを取得し、providerに追加。
+        await followViewModel.getFollowingUsers(profileViewModel.uid);
+        //フォロワーを取得し、providerに追加。
+        await followViewModel.getFollowedUsers(profileViewModel.uid);
+        await spotifyViewModel.fetchSpotifyAccessToken();
+      });
+    }
+
     return MaterialApp(
       title: 'PuTone',
       theme: ThemeData(
@@ -77,6 +112,15 @@ class PuTone extends ConsumerWidget {
               return nil;
             } else {
               if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                // FutureBuilder(
+                //   future: initialLoadWithAuth(),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return const SplashScreen();
+                //     }
+                //     return const AfterSignInPage();
+                //   },
+                // );
                 print('snapshot.hasDataが実行されています');
 
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -130,7 +174,6 @@ class PuTone extends ConsumerWidget {
                   await spotifyViewModel.fetchSpotifyAccessToken();
                 });
 
-                //手渡しでAppDatabaseのインスタンスを渡す
                 return const AfterSignInPage();
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -118,8 +118,8 @@ class PostViewModel {
     ];
   }
 
-  Future<List<Post>?> getUserPosts(String authUid) async {
-    final userPosts = await _postModel.getUserPosts(authUid);
+  Future<List<Post>?> getUserPosts(String uid) async {
+    final userPosts = await _postModel.getUserPosts(uid);
     //returnでuserPostsをリターンして、そこからinsertFirestorePostsToListと
     //データベースへの格納をすればいいのでは？
     if (userPosts is List<Post>) {

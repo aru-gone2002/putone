@@ -4,10 +4,7 @@ import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
-import 'package:putone/local_database.dart';
 import 'package:putone/view/item/post_grid_item.dart';
-import 'package:putone/view/module_page/post_detail_page.dart';
-import 'package:putone/view/post/post_list_view.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class PostGridView extends ConsumerWidget {
