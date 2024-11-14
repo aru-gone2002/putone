@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:extended_image/extended_image.dart';
 import 'package:putone/data/post/post.dart';
-import 'package:putone/model/post_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:putone/local_database.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:putone/view/item/audio_player_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -119,7 +117,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: widget.post.postMusicPreviewUrl.isNotEmpty
                         ? AudioPlayerBar(audioPlayer: widget.audioPlayer)
-                        : Text("No preview available",
+                        : const Text("No preview available",
                             style: TextStyle(color: Colors.white)),
                   ),
                   // メインコンテンツ
@@ -149,7 +147,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                                           cache: true),
                                     ),
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   // アーティスト名
                                   Text(
                                     widget.post.postMusicArtistName,
@@ -173,14 +171,15 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                                         ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   // コメント
                                   Flexible(
                                     flex: 2,
                                     child: SingleChildScrollView(
                                       child: Text(
                                         widget.post.postMsg,
-                                        style: TextStyle(color: Colors.white),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -199,7 +198,7 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
                                   postId: widget.post.postId,
                                   postOwnerId: widget.post.uid,
                                 ),
-                                SizedBox(width: 20),
+                                const SizedBox(width: 20),
                                 SpotifyButton(
                                   spotifyUrl: widget.post.postMusicSpotifyUrl,
                                 ),

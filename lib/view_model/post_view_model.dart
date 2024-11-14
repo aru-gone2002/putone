@@ -43,6 +43,8 @@ class PostViewModel {
 
   List<Post> get followingUsersPosts => _ref.watch(followingUsersPostsProvider);
 
+  List<Post> get tempPosts => _ref.watch(tempPostsProvider);
+
   // Enum get getFollowingUsersPostsCondition =>
   //     _ref.watch(getFollowingUsersPostConditionProvider);
 
@@ -95,6 +97,10 @@ class PostViewModel {
     _ref.read(followingUsersPostsProvider.notifier).state = value;
   }
 
+  void saveTempPosts(List<Post> value) {
+    _ref.read(tempPostsProvider.notifier).state = value;
+  }
+
   void addNewPostToList() {
     _ref.read(postsProvider.notifier).state = [
       ..._ref.read(postsProvider.notifier).state,
@@ -123,15 +129,12 @@ class PostViewModel {
     }
   }
 
-  Future<void> getFollowingUsersPosts() async {
-    final result = await _postModel.getFollowingUsersPosts();
-    if (result is List<Post>) {
-      saveFollowingUsersPosts(result);
-      // saveFollowingUsersPostsCondition(
-      //     GetFollowingUsersPostsCondition.havePosts);
-    }
+  Future<void> getFollowingUsersPosts(
+      {required List<String> followingUids}) async {
+    final result =
+        await _postModel.getFollowingUsersPosts(followingUids: followingUids);
 
-    if (result is List<Post> && result.isNotEmpty) {
+    if (result is List<Post>) {
       saveFollowingUsersPosts(result);
     }
   }
@@ -175,4 +178,6 @@ class PostViewModel {
   //   _ref.read(getFollowingUsersPostConditionProvider.notifier).state =
   //       GetFollowingUsersPostsCondition.lackOfFriends;
   // }
+
+  // Future<List<Post>>
 }

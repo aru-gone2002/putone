@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:putone/constants/height.dart';
 import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/strings.dart';
+import 'package:putone/constants/width.dart';
+import 'package:putone/view/post/post_grid_view.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/local_database_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
@@ -21,8 +24,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   final ProfileViewModel _profileViewModel = ProfileViewModel();
   final LocalDatabaseViewModel _localDatabaseViewModel =
       LocalDatabaseViewModel();
-  final PageController _controller = PageController(initialPage: 0);
-  int page = 0;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -31,42 +33,41 @@ class _HomePageState extends ConsumerState<HomePage> {
     _followViewModel.setRef(ref);
     _profileViewModel.setRef(ref);
     _localDatabaseViewModel.setRef(ref);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadFollowingsPosts();
+    });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
-  Future<void> _loadFriendsPosts() async {
-    await _postViewModel.getFollowingUsersPosts();
-    print('_postViewModel.getFollowingUsersPosts()を実施');
+  Future<void> _loadFollowingsPosts() async {
     await _followViewModel.getFollowingUsers(_profileViewModel.uid);
-    print('_followViewModel.getFollowingUsers(_profileViewModel.uid)を実施');
+    final followingUids =
+        _followViewModel.followingUsers.map((e) => e.uid).toList();
+    await _postViewModel.getFollowingUsersPosts(followingUids: followingUids);
+    setState(() {
+      isLoading = false;
+    });
   }
 
-  Widget followingFriendsPostsList(AsyncSnapshot snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
+  Widget followingFriendsPostsList() {
+    final followingUsersPosts = _postViewModel.followingUsersPosts;
+    final followingUsers = _followViewModel.followingUsers;
+    if (followingUsers.isEmpty) {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: Text(noFriendsText),
       );
     }
-    if (snapshot.hasError) {
+    if (followingUsersPosts.isEmpty) {
       return const Center(
-        child: Text(failToGetFollowingUsersPostsErrorText),
+        child: Text(noFriendsPostText),
       );
     }
-    //TODO もし投稿がなかった時とかの処理
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _postViewModel.followingUsersPosts.length,
-      itemBuilder: (context, index) {
-        final post = _postViewModel.followingUsersPosts[index];
-        // return QuizItem(post: post);
-        return Text('友達の投稿の表示');
-      },
-    );
+    //TODO post_grid_viewを使う
+    return PostGridView(posts: followingUsersPosts);
   }
 
   @override
@@ -91,10 +92,9 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Text('ホーム画面'),
-      ),
-
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : followingFriendsPostsList(),
       // Column(
       //   children: [
       //     const SizedBox(height: 12),

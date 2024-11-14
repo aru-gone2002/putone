@@ -59,27 +59,11 @@ class PostModel {
     }
   }
 
-  Future<dynamic> getFollowingUsersPosts() async {
-    final uid = auth.currentUser!.uid;
-    final List<String> followingUids = [];
+  Future<dynamic> getFollowingUsersPosts(
+      {required List<String> followingUids}) async {
     final List<Post> followingUsersPosts = [];
 
     try {
-      final followingUsersQuerySnap = await firestore
-          .collection('users')
-          .doc(uid)
-          .collection('followings')
-          .where('followingUid', isNotEqualTo: uid)
-          .get();
-
-      print('followingUsersQuerySnap.docs: ${followingUsersQuerySnap.docs}');
-
-      //docsからuidを取得する
-      for (var docSnap in followingUsersQuerySnap.docs) {
-        final followingUser = FollowingUser.fromJson(docSnap.data());
-        followingUids.add(followingUser.followingUid);
-      }
-      print('followingUids: $followingUids');
       //取得したuidの投稿を取得する
       //トランザクションを用いて処理を書く
       for (var followingUid in followingUids) {

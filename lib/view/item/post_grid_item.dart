@@ -8,12 +8,12 @@ class PostGridItem extends StatelessWidget {
   const PostGridItem({
     super.key,
     required this.onTap,
-    this.userPost,
-    this.localUserPost,
+    required this.userPost,
+    // this.localUserPost,
   });
 
-  final Post? userPost;
-  final LocalUserPost? localUserPost;
+  final Post userPost;
+  // final LocalUserPost? localUserPost;
   final VoidCallback onTap;
 
   @override
@@ -54,9 +54,7 @@ class PostGridItem extends StatelessWidget {
                   Align(
                     alignment: const Alignment(0, 0),
                     child: ExtendedImage.network(
-                      (userPost == null)
-                          ? localUserPost!.postMusicImg
-                          : userPost!.postMusicImg,
+                      userPost.postMusicImg,
                       width: postGridItemWidth,
                       height: postGridItemWidth,
                       fit: BoxFit.cover,
@@ -103,17 +101,13 @@ class PostGridItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                (userPost == null)
-                                    ? localUserPost!.postMusicName
-                                    : userPost!.postMusicName,
+                                userPost.postMusicName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(color: Colors.white),
                               ),
                               Text(
-                                (userPost == null)
-                                    ? localUserPost!.postMusicArtistName
-                                    : userPost!.postMusicArtistName,
+                                userPost.postMusicArtistName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(color: Colors.white),

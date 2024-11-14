@@ -16,15 +16,21 @@ class FollowViewModel {
   }
 
   List<FollowingUser> get followingUsers => _ref.read(followingUsersProvider);
+
   List<FollowedUser> get followedUsers => _ref.read(followedUsersProvider);
+
   List<FollowingUser> get friendFollowingUsers =>
       _ref.read(friendFollowingUsersProvider);
+
   List<FollowedUser> get friendFollowedUsers =>
       _ref.read(friendFollowedUsersProvider);
 
   int get followingNum => _ref.read(followingNumProvider);
+
   int get followedNum => _ref.read(followedNumProvider);
+
   int get friendFollowingNum => _ref.read(friendFollowingNumProvider);
+
   int get friendFollowedNum => _ref.read(friendFollowedNumProvider);
 
   void saveFollowingUsers(List<FollowingUser> value) {

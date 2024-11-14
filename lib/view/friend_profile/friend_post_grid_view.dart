@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
-import 'package:putone/local_database.dart';
 import 'package:putone/view/item/post_grid_item.dart';
-import 'package:putone/view/module_page/post_detail_page.dart';
-import 'package:putone/view/posting/post_list_view.dart';
-import 'package:putone/view_model/post_view_model.dart';
+import 'package:putone/view/post/post_list_view.dart';
 
 class FriendPostGridView extends ConsumerWidget {
-  FriendPostGridView({super.key, required this.snapshot});
+  const FriendPostGridView({
+    super.key,
+    required this.posts,
+  });
 
-  final AsyncSnapshot<List<Post>?> snapshot;
+  final List<Post> posts;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +22,7 @@ class FriendPostGridView extends ConsumerWidget {
         MaterialPageRoute(
           builder: (context) => PostListView(
             initialPostId: post.postId,
-            uid: post.uid,
+            posts: posts,
           ),
         ),
       );
@@ -41,9 +41,9 @@ class FriendPostGridView extends ConsumerWidget {
           mainAxisSpacing: postGridViewMainAxisSpacing,
           childAspectRatio: 1,
         ),
-        itemCount: (snapshot.data as List<Post>).length,
+        itemCount: posts.length,
         itemBuilder: (context, index) {
-          final userPost = (snapshot.data!)[index];
+          final userPost = posts[index];
           return PostGridItem(
             userPost: userPost,
             onTap: () => onPostTap(userPost),

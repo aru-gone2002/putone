@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:putone/data/post/post.dart';
-import 'package:putone/model/post_model.dart';
-import 'package:putone/providers/post_provider.dart';
 import 'package:putone/view/module_page/post_detail_page.dart';
+import 'package:putone/view_model/post_view_model.dart';
 
 class PostListView extends ConsumerStatefulWidget {
   final String initialPostId;
-  final String uid;
+  final List<Post> posts;
 
-  const PostListView({Key? key, required this.initialPostId, required this.uid})
-      : super(key: key);
+  const PostListView({
+    Key? key,
+    required this.initialPostId,
+    required this.posts,
+  }) : super(key: key);
 
   @override
   ConsumerState<PostListView> createState() => _PostListViewState();
@@ -19,8 +21,8 @@ class PostListView extends ConsumerStatefulWidget {
 
 class _PostListViewState extends ConsumerState<PostListView> {
   late PageController _pageController;
-  final PostModel _postModel = PostModel();
-  AudioPlayer _audioPlayer = AudioPlayer(); // 共通のAudioPlayer
+  final PostViewModel _postViewModel = PostViewModel();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // 共通のAudioPlayer
   late LockCachingAudioSource _audioSources;
   int _currentIndex = -1;
   bool _isLoading = true;
@@ -33,9 +35,10 @@ class _PostListViewState extends ConsumerState<PostListView> {
   }
 
   Future<List<Post>> _loadPosts() async {
-    final posts = await _postModel.getPosterPostsByTime(widget.uid);
+    final posts = widget.posts;
+
     if (posts.isNotEmpty) {
-      ref.read(TempPostsProvider.notifier).state = posts;
+      _postViewModel.saveTempPosts(posts);
       final initialIndex =
           posts.indexWhere((post) => post.postId == widget.initialPostId);
 
@@ -51,7 +54,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
   }
 
   Future<void> _playAudioForPost(int index) async {
-    final posts = ref.read(TempPostsProvider);
+    final posts = _postViewModel.tempPosts;
     if (index < 0 || index >= posts.length) return; // 範囲外を防止
     final post = posts[index];
     if (post.postMusicPreviewUrl == '' || post.postMusicPreviewUrl.isEmpty) {
@@ -65,7 +68,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
         await _audioPlayer.pause();
       }
       _audioSources =
-          await LockCachingAudioSource(Uri.parse(post.postMusicPreviewUrl));
+          LockCachingAudioSource(Uri.parse(post.postMusicPreviewUrl));
       await _audioPlayer.setAudioSource(_audioSources);
       await _audioPlayer.setLoopMode(LoopMode.all); // ループ再生
       await _audioPlayer.play(); // 再生
@@ -94,7 +97,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
         future: _loadPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -131,7 +134,7 @@ class _PostListViewState extends ConsumerState<PostListView> {
             );
           }
 
-          return Center(
+          return const Center(
             child: Text("No posts available"),
           );
         },

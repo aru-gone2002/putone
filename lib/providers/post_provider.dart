@@ -18,7 +18,7 @@ final postProvider = StateProvider<Post>(
 
 final postsProvider = StateProvider<List<Post>>((ref) => []);
 
-final TempPostProvider = StateProvider<Post>(
+final tempPostProvider = StateProvider<Post>(
   (ref) => Post(
     uid: '',
     postId: '',
@@ -32,6 +32,6 @@ final TempPostProvider = StateProvider<Post>(
   ),
 );
 
-final TempPostsProvider = StateProvider<List<Post>>((ref) => []);
+final tempPostsProvider = StateProvider<List<Post>>((ref) => []);
 
 final followingUsersPostsProvider = StateProvider<List<Post>>((ref) => []);
