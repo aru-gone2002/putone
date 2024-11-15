@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/width.dart';
 import 'package:putone/data/post/post.dart';
 import 'package:putone/view/item/post_grid_item.dart';
@@ -17,15 +18,19 @@ class FriendPostGridView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onPostTap(Post post) {
+      final initialIndex =
+          posts.indexWhere((element) => element.postId == post.postId);
+      toPostListView(
+          context: context, initialIndex: initialIndex, posts: posts);
       // 新しいviewへの遷移処理
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PostListView(
-            initialPostId: post.postId,
-            posts: posts,
-          ),
-        ),
-      );
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => PostListView(
+      //       initialPostId: post.postId,
+      //       posts: posts,
+      //     ),
+      //   ),
+      // );
     }
 
     return Padding(

@@ -27,16 +27,10 @@ class PostGridView extends ConsumerWidget {
 
     void onPostTap(Post post) {
       // 新しいviewへの遷移処理
+      final initialIndex =
+          posts.indexWhere((element) => element.postId == post.postId);
       toPostListView(
-          context: context, initialPostId: post.postId, posts: posts);
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (context) => PostListView(
-      //       initialPostId: post.postId,
-      //       uid: post.uid,
-      //     ),
-      //   ),
-      // );
+          context: context, initialIndex: initialIndex, posts: posts);
     }
 
     return Padding(

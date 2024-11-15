@@ -229,13 +229,13 @@ void toFriendProfilePage({
 
 void toPostListView({
   required BuildContext context,
-  required String initialPostId,
+  required int initialIndex,
   required List<Post> posts,
 }) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => PostListView(
-        initialPostId: initialPostId,
+        initialIndex: initialIndex,
         posts: posts,
       ),
     ),
