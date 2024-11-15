@@ -33,12 +33,13 @@ class _PostListViewState extends ConsumerState<PostListView> {
     _pageController = PageController(initialPage: widget.initialIndex);
     _audioSources = LockCachingAudioSource(Uri.parse(''));
     _postViewModel.setRef(ref);
+    _loadPosts();
   }
 
   Future<void> _loadPosts() async {
     final posts = widget.posts;
     //ここでpost自体はあることは確認
-    print('posts in post_list_view: $posts');
+    // print('posts in post_list_view: $posts');
 
     if (posts.isNotEmpty) {
       // _postViewModel.saveTempPosts(posts);
@@ -48,12 +49,14 @@ class _PostListViewState extends ConsumerState<PostListView> {
       // final targetIndex = initialIndex != -1 ? initialIndex : 0;
       // print('initialIndex: $initialIndex');
       // print('targetIndex: $targetIndex');
-      //TODOここでcontrollerにページを伝えているはず
-      _pageController.jumpToPage(widget.initialIndex);
+      //TODO ここでcontrollerにページを伝えているはず
+      // ここをなぜか消すと音は表示されるがページが表示されない
+
+      //_pageController.jumpToPage(widget.initialIndex);
       await _playAudioForPost(widget.initialIndex);
       // WidgetsBinding.instance.addPostFrameCallback((_) {
-      //   _pageController.jumpToPage(targetIndex);
-      //   _playAudioForPost(targetIndex);
+      //   _pageController.jumpToPage(widget.initialIndex);
+      //   _playAudioForPost(widget.initialIndex);
       // });
       // _isLoading = false;
       // return posts;
@@ -99,52 +102,34 @@ class _PostListViewState extends ConsumerState<PostListView> {
 
   @override
   Widget build(BuildContext context) {
+    final posts = widget.posts;
     return Scaffold(
-      body: FutureBuilder(
-        future: _loadPosts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification notification) {
+          if (notification.depth == 0) {
+            if (notification is ScrollUpdateNotification) {
+              final PageMetrics metrics = notification.metrics as PageMetrics;
+              final int currentPage = metrics.page!.round();
+              if (currentPage != _currentIndex) {
+                _playAudioForPost(currentPage);
+              }
+            }
           }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            final posts = widget.posts;
-            return NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification notification) {
-                if (notification.depth == 0) {
-                  if (notification is ScrollUpdateNotification) {
-                    final PageMetrics metrics =
-                        notification.metrics as PageMetrics;
-                    final int currentPage = metrics.page!.round();
-                    if (currentPage != _currentIndex) {
-                      _playAudioForPost(currentPage);
-                    }
-                  }
-                }
-                return false;
-              },
-              child: PageView.builder(
-                scrollDirection: Axis.vertical,
-                controller: _pageController,
-                itemCount: posts.length,
-                itemBuilder: (context, index) {
-                  final post = posts[index];
-                  return PostDetailView(
-                    post: post,
-                    audioPlayer: _audioPlayer,
-                    isCurrentPage: index == _currentIndex,
-                  );
-                },
-              ),
-            );
-          }
-
-          return const Center(
-            child: Text("No posts available"),
-          );
+          return false;
         },
+        child: PageView.builder(
+          scrollDirection: Axis.vertical,
+          controller: _pageController,
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return PostDetailView(
+              post: post,
+              audioPlayer: _audioPlayer,
+              isCurrentPage: index == _currentIndex,
+            );
+          },
+        ),
       ),
     );
   }
