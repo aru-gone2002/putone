@@ -14,7 +14,7 @@ import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view/item/left_border_text.dart';
 import 'package:putone/view/item/main_color_circulalar_text_field.dart';
 import 'package:putone/view/item/circular_button.dart';
-import 'package:putone/view/profile/friend_profile_page.dart';
+import 'package:putone/view/friend_profile/friend_profile_page.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/user_search_view_model.dart';
 

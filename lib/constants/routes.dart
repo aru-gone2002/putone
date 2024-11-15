@@ -3,6 +3,7 @@ import 'package:putone/after_signIn_page.dart';
 import 'package:putone/data/community/community.dart';
 import 'package:putone/data/followed_user/followed_user.dart';
 import 'package:putone/data/following_user/following_user.dart';
+import 'package:putone/data/post/post.dart';
 import 'package:putone/data/spotify_track/spotify_track.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
@@ -11,8 +12,9 @@ import 'package:putone/view/edit_profile/edit_user_name_page.dart';
 import 'package:putone/view/home/user_search_page.dart';
 import 'package:putone/view/post/post_add_msg_page.dart';
 import 'package:putone/view/edit_profile/edit_profile_page.dart';
+import 'package:putone/view/post/post_list_view.dart';
 import 'package:putone/view/profile/follow_list_screen.dart';
-import 'package:putone/view/profile/friend_profile_page.dart';
+import 'package:putone/view/friend_profile/friend_profile_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/module_page/select_community_page.dart';
 import 'package:putone/view/profile_setting/first_profile_setting_page.dart';
@@ -221,6 +223,21 @@ void toFriendProfilePage({
     context,
     MaterialPageRoute(
       builder: ((context) => FriendProfilePage(userProfile: userProfile)),
+    ),
+  );
+}
+
+void toPostListView({
+  required BuildContext context,
+  required int initialIndex,
+  required List<Post> posts,
+}) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => PostListView(
+        initialIndex: initialIndex,
+        posts: posts,
+      ),
     ),
   );
 }

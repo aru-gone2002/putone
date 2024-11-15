@@ -117,7 +117,7 @@ const String notRegisteredProfileMsgText = 'プロフィール\nメッセージ\
 const String notExistProfileDataText = 'プロフィール情報が存在しません';
 const String editCommunityConfirmDialogText = '以下のコミュニティに変更しますか？';
 const String askToSearchByArtistText = 'アーティスト名で検索してください';
-const String lackOfFriendsText = '友達を3人以上登録しよう！';
+const String noFriendsText = 'No friends. \nLet\'s follow your friends!';
 const String noFriendsPostText = '友達の投稿がありません';
 const String answerPosterText = 'このユーザーが投稿者だと思う';
 

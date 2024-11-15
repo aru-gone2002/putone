@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:putone/constants/height.dart';
+import 'package:putone/constants/routes.dart';
 import 'package:putone/constants/width.dart';
-import 'package:putone/local_database.dart';
+import 'package:putone/data/post/post.dart';
 import 'package:putone/view/item/post_grid_item.dart';
-import 'package:putone/view/module_page/post_detail_page.dart';
-import 'package:putone/view/posting/post_list_view.dart';
 import 'package:putone/view_model/post_view_model.dart';
 
 class PostGridView extends ConsumerWidget {
-  const PostGridView({super.key, required this.snapshot});
+  const PostGridView({super.key, required this.posts});
 
-  final AsyncSnapshot<Object> snapshot;
+  // final AsyncSnapshot<Object> snapshot;
+  final List<Post> posts;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,16 +25,12 @@ class PostGridView extends ConsumerWidget {
     //final localUserPosts = snapshot.data! as List<LocalUserPost>;
     //localUserPosts.sort(((a, b) => b.postTimestamp.compareTo(a.postTimestamp)));
 
-    void onPostTap(LocalUserPost post) {
+    void onPostTap(Post post) {
       // 新しいviewへの遷移処理
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PostListView(
-            initialPostId: post.postId,
-            uid: post.uid,
-          ),
-        ),
-      );
+      final initialIndex =
+          posts.indexWhere((element) => element.postId == post.postId);
+      toPostListView(
+          context: context, initialIndex: initialIndex, posts: posts);
     }
 
     return Padding(
@@ -52,13 +48,13 @@ class PostGridView extends ConsumerWidget {
           // postGridItemWidth /
           //     (postGridItemWidth + postGridItemTitleSpaceHeight),
         ),
-        itemCount: (snapshot.data as List<LocalUserPost>).length,
+        itemCount: posts.length,
         itemBuilder: (context, index) {
-          final localUserPost = (snapshot.data! as List<LocalUserPost>)[index];
+          final post = posts[index];
           return PostGridItem(
             //userPost: postViewModel.posts[index],
-            localUserPost: localUserPost,
-            onTap: () => onPostTap(localUserPost),
+            userPost: post,
+            onTap: () => onPostTap(post),
           );
         },
       ),
