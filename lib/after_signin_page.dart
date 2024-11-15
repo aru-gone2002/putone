@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/artist/artist_follow_page.dart';
+import 'package:putone/view/community/community_page.dart';
 import 'package:putone/view/home/home_page.dart';
 import 'package:putone/view/profile/profile_page.dart';
 import 'package:putone/view/profile_card/profile_card.dart';
@@ -24,6 +25,7 @@ class AfterSignInPage extends ConsumerWidget {
 
     const List<Widget> bottomNavigationWidgets = [
       HomePage(),
+      CommunityPage(),
       ArtistFollowPage(),
       ProfilePage(),
       ProfileCardPage(),
@@ -44,6 +46,7 @@ class AfterSignInPage extends ConsumerWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
           // //BottomNavigationBarItem(icon: Icon(Icons.hail), label: 'myquiz'),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'community'),
           BottomNavigationBarItem(
               icon: Icon(LineIcons.guitar), label: 'artist'),
           BottomNavigationBarItem(
