@@ -27,6 +27,6 @@ class UserProfile with _$UserProfile {
     required String communityId,
   }) = _UserProfile;
 
-  factory UserProfile.fromJson(Map<String, Object?> json) =>
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
 }
