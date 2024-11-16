@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:putone/data/artist/artist.dart';
 import 'package:putone/data/user_profile/user_profile.dart';
 
 class CommunityModel {
@@ -37,6 +38,28 @@ class CommunityModel {
       return communityUsers;
     } catch (e) {
       print('Error getting communityUsers from Firestore: $e');
+      return null;
+    }
+  }
+
+  Future<List<Artist>?> getFavoriteArtists({required String uid}) async {
+    final List<Artist> favoriteArtists = [];
+    try {
+      final response = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('favoriteArtists')
+          .get();
+      if (response.docs.isEmpty) {
+        return [];
+      }
+      for (var docSnapshot in response.docs) {
+        final favoriteArtist = Artist.fromJson(docSnapshot.data());
+        favoriteArtists.add(favoriteArtist);
+      }
+      return favoriteArtists;
+    } catch (e) {
+      print('Error getting favoriteArtists from Firestore: $e');
       return null;
     }
   }
