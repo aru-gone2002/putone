@@ -61,7 +61,7 @@ class FormFieldItem extends StatelessWidget {
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               isDense: true,
-              hintText: '$itemNameを入力',
+              hintText: 'Input $itemName',
               hintStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
                     color: AppColorTheme.color().gray1,
                   ),

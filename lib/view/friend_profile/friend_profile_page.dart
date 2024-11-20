@@ -9,7 +9,6 @@ import 'package:putone/data/user_profile/user_profile.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/item/follow_button.dart';
 import 'package:putone/view/friend_profile/friend_post_grid_view.dart';
-import 'package:putone/view/post/post_grid_view.dart';
 import 'package:putone/view_model/follow_view_model.dart';
 import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
@@ -338,11 +337,22 @@ class FriendProfilePageState extends ConsumerState<FriendProfilePage> {
                   alignment: const Alignment(0.95, 0.75),
                   child: SizedBox(
                     width: sideProfileWidth,
-                    child: Text(
-                      '所属：${profileViewModel.communityMap[(widget.userProfile.communityId)]!.communityName}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          profileViewModel
+                              .communityMap[(widget.userProfile.communityId)]!
+                              .communityName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
                     ),
                   ),
                 ),
