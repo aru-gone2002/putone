@@ -152,7 +152,7 @@ class ProfileCardPage extends ConsumerWidget {
                               child: Card(
                                 margin: EdgeInsets.zero,
                                 color: AppColorTheme.color().gray2,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(5),
                                     topRight: Radius.circular(5),
@@ -219,7 +219,7 @@ class ProfileCardPage extends ConsumerWidget {
                                                       ? userProfile
                                                           .themeMusicName
                                                       : 'No theme song set',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16),
                                                   overflow:
@@ -231,7 +231,7 @@ class ProfileCardPage extends ConsumerWidget {
                                               Text(
                                                 userProfile
                                                     .themeMusicArtistName,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.white70,
                                                     fontSize: 14),
                                                 overflow: TextOverflow.ellipsis,
@@ -256,7 +256,7 @@ class ProfileCardPage extends ConsumerWidget {
                             width: double.infinity,
                             alignment: Alignment.center,
                             child: Text(
-                              'ARTISTS',
+                              'Musicians',
                               style: GoogleFonts.emblemaOne(
                                 textStyle: TextStyle(
                                     fontSize:

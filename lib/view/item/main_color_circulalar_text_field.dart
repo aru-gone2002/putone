@@ -26,7 +26,7 @@ class MainColorCirculalarTextField extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        hintText: '$itemNameを入力',
+        hintText: 'Enter $itemName',
         hintStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
               color: AppColorTheme.color().gray1,
             ),

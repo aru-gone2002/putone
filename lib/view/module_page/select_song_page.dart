@@ -153,7 +153,7 @@ class _ThemeSongSettingPageState extends ConsumerState<SelectSongPage> {
                   Center(
                     child: SizedBox(
                       height: 40,
-                      width: 108,
+                      width: 128,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColorTheme.color().gray1,

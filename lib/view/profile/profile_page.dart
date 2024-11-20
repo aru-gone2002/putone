@@ -302,11 +302,22 @@ class ProfilePage extends ConsumerWidget {
                       alignment: const Alignment(0.95, 0.75),
                       child: SizedBox(
                         width: sideProfileWidth,
-                        child: Text(
-                          '所属：${profileViewModel.communityMap[profileViewModel.communityId]!.communityName}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              profileViewModel
+                                  .communityMap[profileViewModel.communityId]!
+                                  .communityName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -345,7 +356,7 @@ class ProfilePage extends ConsumerWidget {
 
                     //お気に入りアーティスト表示画面
                     const FavoriteArtistListView(),
-                    Center(child: Text('グッズ')),
+                    const Center(child: Text('グッズ')),
                   ],
                 ),
               ),
