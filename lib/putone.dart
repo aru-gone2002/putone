@@ -7,6 +7,7 @@ import 'package:putone/local_database.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/view/auth/auth_page.dart';
 import 'package:putone/view/auth/email_auth_page.dart';
+import 'package:putone/view/auth/signin_page.dart';
 import 'package:putone/view/splash_screen.dart';
 import 'package:putone/view_model/artist_follow_view_model.dart';
 import 'package:putone/view_model/auth_view_model.dart';
@@ -181,9 +182,7 @@ class PuTone extends ConsumerWidget {
                   localDatabaseViewModel
                       .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
                 });
-                localDatabaseViewModel
-                    .saveAppDatabase(database); //これはレンダリングが終わったあとでもとりあえずOK
-                return const EmailAuthPage();
+                return const SignInPage();
               }
             }
           }

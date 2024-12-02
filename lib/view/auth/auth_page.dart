@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:putone/constants/routes.dart';
+import 'package:putone/constants/strings.dart';
 import 'package:putone/theme/app_color_theme.dart';
 import 'package:putone/theme/app_font_theme.dart';
 
@@ -47,7 +48,7 @@ class AuthPage extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'ログイン',
+                    signInBtnText,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -64,7 +65,7 @@ class AuthPage extends StatelessWidget {
               child: TextButton(
                 onPressed: () => toSignUpPage(context: context),
                 child: const Text(
-                  '新規会員登録',
+                  signUpBtnText,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

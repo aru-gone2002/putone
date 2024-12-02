@@ -17,11 +17,11 @@ import 'package:putone/view_model/post_view_model.dart';
 import 'package:putone/view_model/profile_view_model.dart';
 import 'package:putone/view_model/spotify_view_model.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final AuthViewModel authViewModel = AuthViewModel();
     final ProfileViewModel profileViewModel = ProfileViewModel();
     final PostViewModel postViewModel = PostViewModel();
@@ -30,10 +30,17 @@ class SignInPage extends StatelessWidget {
     final ArtistFollowViewModel artistFollowViewModel = ArtistFollowViewModel();
     final FollowViewModel followViewModel = FollowViewModel();
     final SpotifyViewModel spotifyViewModel = SpotifyViewModel();
+    authViewModel.setRef(ref);
+    profileViewModel.setRef(ref);
+    postViewModel.setRef(ref);
+    localDatabaseViewModel.setRef(ref);
+    artistFollowViewModel.setRef(ref);
+    followViewModel.setRef(ref);
+    spotifyViewModel.setRef(ref);
+
     final formKey = GlobalObjectKey<FormState>(context);
 
-    Future<void> signInFunction(
-        GlobalObjectKey<FormState> formKey, WidgetRef ref) async {
+    Future<void> signInFunction(GlobalObjectKey<FormState> formKey) async {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
 
@@ -170,70 +177,57 @@ class SignInPage extends StatelessWidget {
                     authViewModel.saveEmail(value as String);
                   },
                 ),
-                Consumer(builder: (context, ref, _) {
-                  authViewModel.setRef(ref);
-                  return FormFieldItem(
-                    autovalidateMode: null,
-                    controller: null,
-                    onChanged: null,
-                    maxLength: maxPasswordTextLength,
-                    itemName: passwordLabel,
-                    textRestriction: '',
-                    //TODO validatorは緩くする
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return notInputPasswordText;
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      authViewModel.savePassword(value as String);
-                    },
-                  );
-                }),
-                const SizedBox(height: 60),
-                //isLoadingでグルグルさせる
-                Consumer(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColorTheme.color().accentColor,
-                    ),
-                  ),
-                  builder: (context, ref, child) {
-                    authViewModel.setRef(ref);
-                    profileViewModel.setRef(ref);
-                    postViewModel.setRef(ref);
-                    localDatabaseViewModel.setRef(ref);
-                    artistFollowViewModel.setRef(ref);
-                    followViewModel.setRef(ref);
-                    spotifyViewModel.setRef(ref);
-                    return Visibility(
-                      visible: !authViewModel.signInIsLoading,
-                      replacement: SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: child,
-                      ),
-                      child: AccentColorButton(
-                        //loadingSignInメソッドをauthViewModelに作成
-                        //メールアドレスとパスワードを使って、FirebaseAuthでログインする
-                        //メールアドレスが認証されていなかったらメールアドレスを認証する画面を表示させる
-                        //ユーザーのプロフィール情報を取得する
-                        //completedSignInメソッドをauthViewModelに作成
-                        onPressed: () async {
-                          authViewModel.loadingSignIn();
-                          await signInFunction(formKey, ref);
-                          authViewModel.completedSignIn();
-                        },
-                        text: signInBtnText,
-                      ),
-                    );
+                FormFieldItem(
+                  autovalidateMode: null,
+                  controller: null,
+                  onChanged: null,
+                  maxLength: maxPasswordTextLength,
+                  itemName: passwordLabel,
+                  textRestriction: '',
+                  //TODO validatorは緩くする
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return notInputPasswordText;
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    authViewModel.savePassword(value as String);
                   },
                 ),
+
+                const SizedBox(height: 60),
+                //isLoadingでグルグルさせる
+                Visibility(
+                  visible: !authViewModel.signInIsLoading,
+                  replacement: SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColorTheme.color().accentColor,
+                      ),
+                    ),
+                  ),
+                  child: AccentColorButton(
+                    //loadingSignInメソッドをauthViewModelに作成
+                    //メールアドレスとパスワードを使って、FirebaseAuthでログインする
+                    //メールアドレスが認証されていなかったらメールアドレスを認証する画面を表示させる
+                    //ユーザーのプロフィール情報を取得する
+                    //completedSignInメソッドをauthViewModelに作成
+                    onPressed: () async {
+                      authViewModel.loadingSignIn();
+                      await signInFunction(formKey);
+                      authViewModel.completedSignIn();
+                    },
+                    text: signInBtnText,
+                  ),
+                ),
+
                 const SizedBox(height: 32),
                 GrayColorTextButton(
                   onPressed: () => toSignUpPage(context: context),
-                  text: accountNotExistBtnText,
+                  text: signUpBtnText,
                 ),
                 //TODO パスワードを再発行するボタンを作成する
               ],

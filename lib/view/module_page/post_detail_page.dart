@@ -55,12 +55,12 @@ class _PostDetailViewState extends ConsumerState<PostDetailView>
   }
 
   void _playAudio() async {
-    await widget.audioPlayer?.play();
+    await widget.audioPlayer.play();
     _isPlaying = true;
   }
 
   void _pauseAudio() async {
-    await widget.audioPlayer?.pause();
+    await widget.audioPlayer.pause();
     _isPlaying = false;
   }
 
